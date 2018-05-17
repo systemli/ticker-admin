@@ -105,7 +105,8 @@ export default class TickerList extends React.Component {
     render() {
         const tickers = this.state.tickers || [];
 
-        return (<Container>
+        return (
+            <Container>
                 <Grid>
                     <Grid.Column>
                         <Icon name='refresh'

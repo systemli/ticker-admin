@@ -68,7 +68,9 @@ export default class TickerView extends React.Component {
 
     _renderTicker() {
         if (this.state.ticker.id !== undefined) {
-            return (<Ticker ticker={this.state.ticker}/>);
+            return (
+                <Ticker ticker={this.state.ticker}/>
+            );
         }
     }
 
@@ -113,7 +115,7 @@ export default class TickerView extends React.Component {
     }
 
     render() {
-        return (<div>
+        return (
             <Container>
                 <Grid columns={2}>
                     <Grid.Row>
@@ -150,6 +152,6 @@ export default class TickerView extends React.Component {
                     </Grid.Row>
                 </Grid>
             </Container>
-        </div>);
+        );
     }
 }

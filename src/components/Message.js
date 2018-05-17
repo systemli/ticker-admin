@@ -27,7 +27,9 @@ export default class Message extends React.Component {
     }
 
     _getText() {
-        return (<p dangerouslySetInnerHTML={{ __html: this.state.text }} />);
+        return (
+            <p dangerouslySetInnerHTML={{__html: this.state.text}}/>
+        );
     }
 
     _deleteMessage(event) {
@@ -39,14 +41,17 @@ export default class Message extends React.Component {
     }
 
     render() {
-        return (<Card fluid>
-            <Card.Content>
-                <a onClick={this._deleteMessage}><Icon fitted link color='grey' name='close' style={{float: 'right'}}/></a>
-                {this._getText()}
-                <Card.Meta>
-                    <Moment fromNow>{this.state.creationDate}</Moment>
-                </Card.Meta>
-            </Card.Content>
-        </Card>);
+        return (
+            <Card fluid>
+                <Card.Content>
+                    <a onClick={this._deleteMessage}><Icon fitted link color='grey' name='close'
+                                                           style={{float: 'right'}}/></a>
+                    {this._getText()}
+                    <Card.Meta>
+                        <Moment fromNow>{this.state.creationDate}</Moment>
+                    </Card.Meta>
+                </Card.Content>
+            </Card>
+        );
     }
 }
