@@ -62,7 +62,9 @@ export default class Ticker extends React.Component {
 
     handleConfirm() {
         deleteTicker(this.state.ticker.id).then(() => {
-            this.props.reload();
+            if (this.props.reload !== undefined) {
+                this.props.reload();
+            }
             this.closeConfirm();
         });
     };
