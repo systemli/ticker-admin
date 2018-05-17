@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Container, Feed, Form, Grid, Loader, Message as Error, TextArea} from "semantic-ui-react";
+import {Button, Container, Feed, Form, Grid, Label, Loader, Message as Error, TextArea} from "semantic-ui-react";
 import {getTicker} from "../api/Ticker";
 import Ticker from "./Ticker";
 import {getMessages, postMessage} from "../api/Message";
@@ -18,10 +18,35 @@ export default class TickerView extends React.Component {
             showError: false,
             error: '',
             text: '',
+            counter: 0,
+            counterColor: 'green',
+            limit: 280
         };
 
         this._submitMessage = this._submitMessage.bind(this);
         this.loadMessages = this.loadMessages.bind(this);
+        this.handleInput = this.handleInput.bind(this);
+    }
+
+    handleInput(event, input) {
+        let color = 'green';
+
+        //TODO: Calculate length for Twitter (cutting links to 20 characters)
+        if (input.value.length >= 280) {
+            color = 'red';
+        } else if (input.value.length >= 260) {
+            color = 'orange';
+        } else if (input.value.length >= 220) {
+            color = 'yellow';
+        } else {
+            color = 'green';
+        }
+
+        this.setState({
+            text: input.value,
+            counter: input.value.length,
+            counterColor: color,
+        });
     }
 
     _loadTicker() {
@@ -104,9 +129,10 @@ export default class TickerView extends React.Component {
                             <Form onSubmit={this._submitMessage}>
                                 <Form.Field>
                                     <TextArea placeholder='Write a message'
-                                              onChange={(event, input) => this.setState({text: input.value})}/>
+                                              onChange={this.handleInput}/>
                                 </Form.Field>
-                                <Button type='submit' content='Send'/>
+                                <Button color='teal' type='submit' content='Send'/>
+                                <Label basic content={`${this.state.counter}/${this.state.limit}`} color={this.state.counterColor} style={{float: 'right'}}/>
                             </Form>
                             {this._renderMessages()}
                         </Grid.Column>
