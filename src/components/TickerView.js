@@ -62,6 +62,10 @@ export default class TickerView extends React.Component {
     }
 
     _submitMessage() {
+        if (this.state.text.length === 0) {
+            return;
+        }
+
         postMessage(this.state.id, this.state.text).then(response => {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
