@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Card, Checkbox, Container, Form, Grid, Header, Icon, Input, Modal} from "semantic-ui-react";
+import {Button, Card, Checkbox, Container, Form, Grid, Header, Icon, Input, Loader, Modal} from "semantic-ui-react";
 import Ticker from "./Ticker";
 import {getTickers, postTicker} from "../api/Ticker";
 
@@ -115,6 +115,7 @@ export default class TickerList extends React.Component {
                               style={{float: 'right', paddingTop: 35}}
                         />
                         <Header size='large' dividing>Available Configurations</Header>
+                        <Loader active={this.state.isLoading} size='large'/>
                         <Card.Group>
                             {tickers.map(ticker => <Ticker key={ticker.id} ticker={ticker} reload={this.reload}/>)}
                         </Card.Group>
