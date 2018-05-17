@@ -112,9 +112,9 @@ export default class TickerList extends React.Component {
                         <Icon name='refresh'
                               loading={this.state.isLoading}
                               onClick={this.reload}
-                              style={{float: 'right', paddingTop: 35}}
+                              style={{float: 'right', paddingTop: 30}}
                         />
-                        <Header size='large' dividing>Available Configurations</Header>
+                        <Header dividing>Available Configurations</Header>
                         <Loader active={this.state.isLoading} size='large'/>
                         <Card.Group>
                             {tickers.map(ticker => <Ticker key={ticker.id} ticker={ticker} reload={this.reload}/>)}

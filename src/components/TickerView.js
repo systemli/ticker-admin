@@ -117,11 +117,11 @@ export default class TickerView extends React.Component {
     render() {
         return (
             <Container>
+                <Loader active={this.state.isConfigurationLoading || this.state.isMessagesLoading} size='large'/>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column>
-                            <h1>Messages</h1>
-                            <Loader active={this.state.isMessagesLoading} size='large'/>
+                            <Header dividing>Messages</Header>
                             <Form onSubmit={this._submitMessage} error={this.state.formError}>
                                 <Form.Field>
                                     <Form.TextArea
@@ -144,8 +144,7 @@ export default class TickerView extends React.Component {
                             {this._renderMessages()}
                         </Grid.Column>
                         <Grid.Column>
-                            <h1>Configuration</h1>
-                            <Loader active={this.state.isConfigurationLoading} size='large'/>
+                            <Header dividing>Configuration</Header>
                             {this._renderTicker()}
                             <h1>Twitter</h1>
                         </Grid.Column>
