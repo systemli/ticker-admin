@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Container} from "semantic-ui-react";
-import Menu from './components/Menu';
 import TickerList from "./components/TickerList";
 import {Switch, Route} from "react-router-dom";
 import TickerView from "./components/TickerView";
+import Navigation from "./components/Navigation";
 
 const Home = () => {
     return (<TickerList/>);
@@ -26,7 +26,7 @@ class App extends Component {
     render() {
 
         return (<div>
-            <Menu/>
+            <Navigation/>
             <Container style={{marginTop: 100}}>
                 <Main/>
             </Container>
