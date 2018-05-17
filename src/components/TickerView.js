@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Container, Feed, Form, Grid, Label, Loader, Message as Error, TextArea} from "semantic-ui-react";
+import {Button, Container, Feed, Form, Grid, Label, Loader, Message as Error} from "semantic-ui-react";
 import {getTicker} from "../api/Ticker";
 import Ticker from "./Ticker";
 import {getMessages, postMessage} from "../api/Message";
@@ -12,15 +12,15 @@ export default class TickerView extends React.Component {
         this.state = {
             counter: 0,
             counterColor: 'green',
-            error: false,
-            errorMessage: '',
+            counterLimit: 280,
+            formError: false,
+            formErrorMessage: '',
             id: props.id,
             isConfigurationLoading: true,
             isMessagesLoading: true,
-            limit: 280,
             messages: [],
             showError: false,
-            text: '',
+            input: '',
             ticker: {},
         };
 
@@ -31,10 +31,14 @@ export default class TickerView extends React.Component {
 
     handleInput(event, input) {
         let color = 'green';
+        let message = '';
+        let error = false;
 
         //TODO: Calculate length for Twitter (cutting links to 20 characters)
-        if (input.value.length >= 280) {
+        if (input.value.length > this.state.counterLimit) {
             color = 'red';
+            message = `The message is too long. You must remove ${input.value.length - this.state.counterLimit} characters.`;
+            error = true;
         } else if (input.value.length >= 260) {
             color = 'orange';
         } else if (input.value.length >= 220) {
@@ -44,9 +48,11 @@ export default class TickerView extends React.Component {
         }
 
         this.setState({
-            text: input.value,
+            input: input.value,
             counter: input.value.length,
             counterColor: color,
+            formError: error,
+            formErrorMessage: message,
         });
     }
 
@@ -54,20 +60,10 @@ export default class TickerView extends React.Component {
         getTicker(this.state.id).then((response) => {
             if (response.data !== undefined && response.data.ticker !== undefined) {
                 this.setState({ticker: response.data.ticker, isConfigurationLoading: false});
-            } else {
-                this._showError(response.error.message, response.error.code);
             }
         });
 
         this.loadMessages();
-    }
-
-    _showError(message, code) {
-        this.setState({
-            error: `${message} (${code})`,
-            showError: true,
-            isConfigurationLoading: false,
-        });
     }
 
     _renderTicker() {
@@ -88,13 +84,16 @@ export default class TickerView extends React.Component {
     }
 
     _submitMessage() {
-        if (this.state.text.length === 0) {
+        if (this.state.input.length === 0 || this.state.input.length > this.state.counterLimit) {
             return;
         }
 
-        postMessage(this.state.id, this.state.text).then(response => {
+        postMessage(this.state.id, this.state.input).then(response => {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
+                this.setState({
+                    input: '', counter: 0
+                });
             }
         });
 
@@ -105,8 +104,6 @@ export default class TickerView extends React.Component {
         getMessages(this.state.id).then((response) => {
             if (response.data !== undefined && response.data.messages !== undefined) {
                 this.setState({messages: response.data.messages, isMessagesLoading: false});
-            } else {
-                this._showError(response.error.message, response.error.code);
             }
         });
     }
@@ -117,23 +114,30 @@ export default class TickerView extends React.Component {
 
     render() {
         return (<div>
-            <Error negative hidden={!this.state.showError}>
-                <Error.Header>An Error occurred</Error.Header>
-                <p>{this.state.error}</p>
-            </Error>
             <Container>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column>
                             <h1>Messages</h1>
                             <Loader active={this.state.isMessagesLoading} size='large'/>
-                            <Form onSubmit={this._submitMessage}>
+                            <Form onSubmit={this._submitMessage} error={this.state.formError}>
                                 <Form.Field>
-                                    <TextArea placeholder='Write a message'
-                                              onChange={this.handleInput}/>
+                                    <Form.TextArea
+                                        placeholder='Write a message' rows='4'
+                                        value={this.state.input}
+                                        onChange={this.handleInput}/>
                                 </Form.Field>
-                                <Button color='teal' type='submit' content='Send'/>
-                                <Label basic content={`${this.state.counter}/${this.state.limit}`} color={this.state.counterColor} style={{float: 'right'}}/>
+                                <Error
+                                    error
+                                    icon='ban'
+                                    hidden={!this.state.formError}
+                                    header='Error'
+                                    content={this.state.formErrorMessage}
+                                />
+                                <Button color='teal' type='submit' content='Send' icon='send'
+                                        disabled={this.state.formError}/>
+                                <Label basic content={`${this.state.counter}/${this.state.counterLimit}`}
+                                       color={this.state.counterColor} style={{float: 'right'}}/>
                             </Form>
                             {this._renderMessages()}
                         </Grid.Column>
