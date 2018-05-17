@@ -6,31 +6,38 @@ import TickerView from "./components/TickerView";
 import Navigation from "./components/Navigation";
 
 const Home = () => {
-    return (<TickerList/>);
+    return (
+        <TickerList/>
+    );
 };
 
 const Ticker = ({match}) => {
-    return (<TickerView id={match.params.id}/>);
+    return (
+        <TickerView id={match.params.id}/>
+    );
 };
 
 const Main = () => {
-    return (<main>
-        <Switch>
-            <Route exact path="/" component={Home}/>
-            <Route path="/ticker/:id" component={Ticker}/>
-        </Switch>
-    </main>);
+    return (
+        <main>
+            <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route path="/ticker/:id" component={Ticker}/>
+            </Switch>
+        </main>
+    );
 };
 
 class App extends Component {
     render() {
-
-        return (<div>
-            <Navigation/>
-            <Container style={{marginTop: 100}}>
-                <Main/>
-            </Container>
-        </div>);
+        return (
+            <div>
+                <Navigation/>
+                <Container style={{marginTop: 100}}>
+                    <Main/>
+                </Container>
+            </div>
+        );
     }
 }
 
