@@ -33,7 +33,7 @@ class App extends Component {
         return (
             <div>
                 <Navigation/>
-                <Container style={{marginTop: 100}}>
+                <Container style={{marginTop: 50}}>
                     <Main/>
                 </Container>
             </div>
