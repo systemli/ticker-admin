@@ -10,17 +10,18 @@ export default class TickerView extends React.Component {
         super(props);
 
         this.state = {
-            id: props.id,
-            ticker: {},
-            messages: [],
-            isConfigurationLoading: true,
-            isMessagesLoading: true,
-            showError: false,
-            error: '',
-            text: '',
             counter: 0,
             counterColor: 'green',
-            limit: 280
+            error: false,
+            errorMessage: '',
+            id: props.id,
+            isConfigurationLoading: true,
+            isMessagesLoading: true,
+            limit: 280,
+            messages: [],
+            showError: false,
+            text: '',
+            ticker: {},
         };
 
         this._submitMessage = this._submitMessage.bind(this);
