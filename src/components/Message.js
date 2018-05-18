@@ -10,6 +10,7 @@ export default class Message extends React.Component {
 
         this.state = {
             id: props.message.id,
+            ticker: props.message.ticker,
             text: Message._replaceMagic(props.message.text),
             creationDate: props.message.creation_date
         };
@@ -33,7 +34,7 @@ export default class Message extends React.Component {
     }
 
     _deleteMessage(event) {
-        deleteMessage(this.state.id).then(() => {
+        deleteMessage(this.state.ticker, this.state.id).then(() => {
             this.props.loadMessages()
         });
 

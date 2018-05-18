@@ -5,20 +5,19 @@ import {API_URL} from "./Api";
  * @returns {Promise<any>}
  */
 export function getMessages(ticker) {
-    return fetch(`${API_URL}/admin/messages?ticker=${ticker}`).then(response => response.json());
+    return fetch(`${API_URL}/admin/tickers/${ticker}/messages`).then(response => response.json());
 }
 
 /**
  *
- * @param id
+ * @param ticker
  * @param text
  * @returns {Promise<any>}
  */
-export function postMessage(id, text) {
-    return fetch(`${API_URL}/admin/messages`, {
+export function postMessage(ticker, text) {
+    return fetch(`${API_URL}/admin/tickers/${ticker}/messages`, {
         body: JSON.stringify({
-            text: text,
-            ticker: parseInt(id, 10)
+            text: text
         }),
         headers: {'content-type': 'application/json'},
         method: 'POST'
@@ -27,11 +26,12 @@ export function postMessage(id, text) {
 
 /**
  *
- * @param id
+ * @param ticker
+ * @param message
  * @returns {Promise<any>}
  */
-export function deleteMessage(id) {
-    return fetch(`${API_URL}/admin/messages/${id}`, {
+export function deleteMessage(ticker, message) {
+    return fetch(`${API_URL}/admin/tickers/${ticker}/messages/${message}`, {
         headers: {'content-type': 'application/json'},
         method: 'DELETE'
     }).then(response => response.json());
