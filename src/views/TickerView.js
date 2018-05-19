@@ -11,8 +11,6 @@ class TickerView extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log(props);
-
         this.state = {
             counter: 0,
             counterColor: 'green',

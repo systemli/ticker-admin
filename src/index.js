@@ -9,7 +9,6 @@ import LoginView from "./views/LoginView";
 import TickerView from "./views/TickerView";
 
 const Ticker = ({match}) => {
-    console.log(match);
     return (
         <TickerView id={match.params.id}/>
     );
