@@ -94,7 +94,7 @@ export default class TickerView extends React.Component {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
-                    input: '', counter: 0
+                    input: '', counter: 0, counterColor: 'green'
                 });
             }
         });
