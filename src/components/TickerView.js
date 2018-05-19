@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Container, Feed, Form, Grid, Label, Loader, Message as Error} from "semantic-ui-react";
+import {Button, Container, Feed, Form, Grid, Header, Label, Loader, Message as Error} from "semantic-ui-react";
 import {getTicker} from "../api/Ticker";
 import Ticker from "./Ticker";
 import {getMessages, postMessage} from "../api/Message";
