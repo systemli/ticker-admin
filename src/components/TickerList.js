@@ -117,7 +117,8 @@ export default class TickerList extends React.Component {
                         <Header dividing>Available Configurations</Header>
                         <Loader active={this.state.isLoading} size='large'/>
                         <Card.Group>
-                            {tickers.map(ticker => <Ticker key={ticker.id} ticker={ticker} reload={this.reload}/>)}
+                            {tickers.map(ticker => <Ticker use delete key={ticker.id} ticker={ticker}
+                                                           reload={this.reload}/>)}
                         </Card.Group>
                     </Grid.Column>
                 </Grid>
