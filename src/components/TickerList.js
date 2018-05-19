@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Card, Checkbox, Container, Form, Grid, Header, Icon, Input, Loader, Modal} from "semantic-ui-react";
+import {Button, Card, Container, Form, Grid, Header, Icon, Input, Loader, Modal} from "semantic-ui-react";
 import Ticker from "./Ticker";
 import {getTickers, postTicker} from "../api/Ticker";
 
