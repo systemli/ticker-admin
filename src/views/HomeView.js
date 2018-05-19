@@ -1,9 +1,11 @@
 import React from "react";
 import {Button, Card, Container, Form, Grid, Header, Icon, Input, Loader, Modal} from "semantic-ui-react";
-import Ticker from "./Ticker";
+import Ticker from "../components/Ticker";
 import {getTickers, postTicker} from "../api/Ticker";
+import withAuth from "../components/withAuth";
+import Navigation from "./Navigation";
 
-export default class TickerList extends React.Component {
+class HomeView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -29,7 +31,8 @@ export default class TickerList extends React.Component {
     }
 
     _fetch() {
-        getTickers().then(data => this.setState({tickers: data.data.tickers}));
+        getTickers()
+            .then(data => this.setState({tickers: data.data.tickers}));
     }
 
     reload() {
@@ -156,27 +159,33 @@ export default class TickerList extends React.Component {
 
         return (
             <Container>
-                <Grid>
-                    <Grid.Column>
-                        <Icon name='refresh'
-                              loading={this.state.isLoading}
-                              onClick={this.reload}
-                              style={{float: 'right', paddingTop: 30}}
-                        />
-                        <Header dividing>Available Configurations</Header>
-                        <Loader active={this.state.isLoading} size='large'/>
-                        <Card.Group>
-                            {tickers.map(ticker => <Ticker use delete key={ticker.id} ticker={ticker}
-                                                           reload={this.reload}/>)}
-                        </Card.Group>
-                    </Grid.Column>
-                </Grid>
-                <Grid>
-                    <Grid.Column>
-                        {this.getForm()}
-                    </Grid.Column>
-                </Grid>
+                <Navigation/>
+                <Container className='app'>
+                    <Grid>
+                        <Grid.Column>
+                            <Icon name='refresh'
+                                  loading={this.state.isLoading}
+                                  onClick={this.reload}
+                                  style={{float: 'right', paddingTop: 30}}
+                            />
+                            <Header dividing>Available Configurations</Header>
+                            <Loader active={this.state.isLoading} size='large'/>
+                            <Card.Group>
+                                {tickers.map(ticker => <Ticker use delete key={ticker.id} ticker={ticker}
+                                                               reload={this.reload}/>)}
+                            </Card.Group>
+                        </Grid.Column>
+                    </Grid>
+                    <Grid>
+                        <Grid.Column>
+                            {this.getForm()}
+                        </Grid.Column>
+                    </Grid>
+                </Container>
             </Container>
+
         );
     }
 }
+
+export default withAuth(HomeView);

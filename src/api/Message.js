@@ -1,11 +1,14 @@
-import {API_URL} from "./Api";
+import {ApiUrl} from "./Api";
+import AuthService from "../components/AuthService";
 
 /**
  *
  * @returns {Promise<any>}
  */
 export function getMessages(ticker) {
-    return fetch(`${API_URL}/admin/tickers/${ticker}/messages`).then(response => response.json());
+    const Auth = new AuthService(ApiUrl);
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`);
 }
 
 /**
@@ -15,13 +18,14 @@ export function getMessages(ticker) {
  * @returns {Promise<any>}
  */
 export function postMessage(ticker, text) {
-    return fetch(`${API_URL}/admin/tickers/${ticker}/messages`, {
+    const Auth = new AuthService(ApiUrl);
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
         body: JSON.stringify({
             text: text
         }),
-        headers: {'content-type': 'application/json'},
         method: 'POST'
-    }).then(response => response.json());
+    });
 }
 
 /**
@@ -31,8 +35,9 @@ export function postMessage(ticker, text) {
  * @returns {Promise<any>}
  */
 export function deleteMessage(ticker, message) {
-    return fetch(`${API_URL}/admin/tickers/${ticker}/messages/${message}`, {
-        headers: {'content-type': 'application/json'},
+    const Auth = new AuthService(ApiUrl);
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages/${message}`, {
         method: 'DELETE'
-    }).then(response => response.json());
+    });
 }

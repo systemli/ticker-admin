@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container, Image, Menu} from 'semantic-ui-react';
-import Clock from "./Clock";
+import Clock from "../components/Clock";
 
 export default class Navigation extends React.Component {
     render() {

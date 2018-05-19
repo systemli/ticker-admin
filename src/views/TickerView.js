@@ -1,13 +1,17 @@
 import React from "react";
 import {Button, Container, Feed, Form, Grid, Header, Label, Loader, Message as Error} from "semantic-ui-react";
 import {getTicker} from "../api/Ticker";
-import Ticker from "./Ticker";
+import Ticker from "../components/Ticker";
 import {getMessages, postMessage} from "../api/Message";
-import Message from "./Message";
+import Message from "../components/Message";
+import withAuth from "../components/withAuth";
+import Navigation from "./Navigation";
 
-export default class TickerView extends React.Component {
+class TickerView extends React.Component {
     constructor(props) {
         super(props);
+
+        console.log(props);
 
         this.state = {
             counter: 0,
@@ -28,6 +32,7 @@ export default class TickerView extends React.Component {
         this.loadMessages = this.loadMessages.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
+
     componentWillMount() {
         this._loadTicker();
     }
@@ -117,40 +122,45 @@ export default class TickerView extends React.Component {
     render() {
         return (
             <Container>
-                <Loader active={this.state.isConfigurationLoading || this.state.isMessagesLoading} size='large'/>
-                <Grid columns={2}>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Header dividing>Messages</Header>
-                            <Form onSubmit={this._submitMessage} error={this.state.formError}>
-                                <Form.Field>
-                                    <Form.TextArea
-                                        placeholder='Write a message' rows='4'
-                                        value={this.state.input}
-                                        onChange={this.handleInput}/>
-                                </Form.Field>
-                                <Error
-                                    error
-                                    icon='ban'
-                                    hidden={!this.state.formError}
-                                    header='Error'
-                                    content={this.state.formErrorMessage}
-                                />
-                                <Button color='teal' type='submit' content='Send' icon='send'
-                                        disabled={this.state.formError}/>
-                                <Label basic content={`${this.state.counter}/${this.state.counterLimit}`}
-                                       color={this.state.counterColor} style={{float: 'right'}}/>
-                            </Form>
-                            {this._renderMessages()}
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Header dividing>Configuration</Header>
-                            {this._renderTicker()}
-                            <h1>Twitter</h1>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <Navigation/>
+                <Container className='app'>
+                    <Loader active={this.state.isConfigurationLoading || this.state.isMessagesLoading} size='large'/>
+                    <Grid columns={2}>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Header dividing>Messages</Header>
+                                <Form onSubmit={this._submitMessage} error={this.state.formError}>
+                                    <Form.Field>
+                                        <Form.TextArea
+                                            placeholder='Write a message' rows='4'
+                                            value={this.state.input}
+                                            onChange={this.handleInput}/>
+                                    </Form.Field>
+                                    <Error
+                                        error
+                                        icon='ban'
+                                        hidden={!this.state.formError}
+                                        header='Error'
+                                        content={this.state.formErrorMessage}
+                                    />
+                                    <Button color='teal' type='submit' content='Send' icon='send'
+                                            disabled={this.state.formError}/>
+                                    <Label basic content={`${this.state.counter}/${this.state.counterLimit}`}
+                                           color={this.state.counterColor} style={{float: 'right'}}/>
+                                </Form>
+                                {this._renderMessages()}
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Header dividing>Configuration</Header>
+                                {this._renderTicker()}
+                                <h1>Twitter</h1>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Container>
             </Container>
         );
     }
 }
+
+export default withAuth(TickerView);

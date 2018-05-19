@@ -1,11 +1,14 @@
-import {API_URL} from "./Api";
+import {ApiUrl} from "./Api";
+import AuthService from "../components/AuthService";
 
 /**
  *
  * @returns {Promise<any>}
  */
 export function getTickers() {
-    return fetch(`${API_URL}/admin/tickers`).then(response => response.json());
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers`);
 }
 
 /**
@@ -14,7 +17,9 @@ export function getTickers() {
  * @returns {Promise<any>}
  */
 export function getTicker(id) {
-    return fetch(`${API_URL}/admin/tickers/${id}`).then(response => response.json());
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`);
 }
 
 /**
@@ -23,11 +28,12 @@ export function getTicker(id) {
  * @returns {Promise<any>}
  */
 export function postTicker(data) {
-    return fetch(`${API_URL}/admin/tickers`, {
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers`, {
         body: JSON.stringify(data),
-        headers: {'content-type': 'application/json'},
         method: 'POST'
-    }).then(response => response.json());
+    });
 }
 
 /**
@@ -37,11 +43,12 @@ export function postTicker(data) {
  * @returns {Promise<any>}
  */
 export function putTicker(data, id) {
-    return fetch(`${API_URL}/admin/tickers/${id}`, {
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
         body: JSON.stringify(data),
-        headers: {'content-type': 'application/json'},
         method: 'PUT'
-    }).then(response => response.json());
+    });
 }
 
 /**
@@ -49,8 +56,9 @@ export function putTicker(data, id) {
  * @param id
  */
 export function deleteTicker(id) {
-    return fetch(`${API_URL}/admin/tickers/${id}`, {
-        headers: {'content-type': 'application/json'},
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
         method: 'DELETE'
-    }).then(response => response.json());
+    });
 }
