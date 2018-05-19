@@ -64,31 +64,80 @@ export default class TickerList extends React.Component {
                 <Header>Create Configuration</Header>
                 <Modal.Content>
                     <Form onSubmit={this.handleSubmit} id='editTicker'>
-                        <Form.Field>
-                            <Input required label='Title' name='title'
-                                   onChange={(event, input) => this.form.title = input.value}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <Input required label='Description' name='description'
-                                   onChange={(event, input) => this.form.description = input.value}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <Input required label='Domain' name='domain'
-                                   onChange={(event, input) => this.form.domain = input.value}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <Checkbox toggle label='Active' name='active'
-                                      onChange={(event, input) => this.form.active = input.checked}/>
-                        </Form.Field>
-                        <Header dividing>Contact Details</Header>
-                        <Form.Field>
-                            <Input label='Homepage' name='information.url'
-                                   onChange={(event, input) => this.form.information.url = input.value}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <Input label='E-Mail' name='information.email'
-                                   onChange={(event, input) => this.form.information.email = input.value}/>
-                        </Form.Field>
+                        <Form.Group widths='equal'>
+                            <Form.Input
+                                label='Title'
+                                name='title'
+                                onChange={(event, input) => this.form.title = input.value}
+                            />
+                            <Form.Input
+                                label='Domain'
+                                name='domain'
+                                onChange={(event, input) => this.form.domain = input.value}
+                            />
+                        </Form.Group>
+                        <Form.Checkbox
+                            toggle
+                            label='Active'
+                            name='active'
+                            onChange={(event, input) => this.form.active = input.checked}
+                        />
+                        <Form.TextArea
+                            label='Description'
+                            name='description'
+                            rows='5'
+                            onChange={(event, input) => this.form.description = input.value}
+                        />
+                        <Header dividing>Information</Header>
+                        <Form.Group widths='equal'>
+                            <Form.Input label='Author'>
+                                <Input
+                                    iconPosition='left'
+                                    placeholder='Author' name='information.author'
+                                    onChange={(event, input) => this.form.information.author = input.value}>
+                                    <Icon name='users'/>
+                                    <input/>
+                                </Input>
+                            </Form.Input>
+                            <Form.Input label='Homepage'>
+                                <Input
+                                    iconPosition='left'
+                                    name='information.url'
+                                    onChange={(event, input) => this.form.information.url = input.value}>
+                                    <Icon name='home'/>
+                                    <input/>
+                                </Input>
+                            </Form.Input>
+                        </Form.Group>
+                        <Form.Group widths='equal'>
+                            <Form.Input label='Email'>
+                                <Input
+                                    iconPosition='left'
+                                    placeholder='Email' name='information.email'
+                                    onChange={(event, input) => this.form.information.email = input.value}>
+                                    <Icon name='at'/>
+                                    <input/>
+                                </Input>
+                            </Form.Input>
+                            <Form.Input label='Twitter'>
+                                <Input
+                                    iconPosition='left'
+                                    name='information.twitter'
+                                    onChange={(event, input) => this.form.information.twitter = input.value}>
+                                    <Icon name='twitter'/>
+                                    <input/>
+                                </Input>
+                            </Form.Input>
+                            <Form.Input label='Facebook'>
+                                <Input
+                                    iconPosition='left'
+                                    name='information.facebook'
+                                    onChange={(event, input) => this.form.information.facebook = input.value}>
+                                    <Icon name='facebook'/>
+                                    <input/>
+                                </Input>
+                            </Form.Input>
+                        </Form.Group>
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
