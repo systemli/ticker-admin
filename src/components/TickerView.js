@@ -28,6 +28,10 @@ export default class TickerView extends React.Component {
         this.loadMessages = this.loadMessages.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
+    componentWillMount() {
+        this._loadTicker();
+    }
+
 
     handleInput(event, input) {
         let color = 'green';
@@ -108,10 +112,6 @@ export default class TickerView extends React.Component {
                 this.setState({messages: response.data.messages, isMessagesLoading: false});
             }
         });
-    }
-
-    componentWillMount() {
-        this._loadTicker();
     }
 
     render() {
