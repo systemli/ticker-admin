@@ -1,8 +1,9 @@
 import React from 'react';
 import {Button, Card, Confirm, Form, Header, Icon, Input, Label, Modal} from 'semantic-ui-react';
 import {deleteTicker, putTicker} from "../api/Ticker";
+import {withRouter} from "react-router-dom";
 
-export default class Ticker extends React.Component {
+class Ticker extends React.Component {
     constructor(props) {
         super(props);
 
@@ -182,7 +183,7 @@ export default class Ticker extends React.Component {
     renderUseButton() {
         if (this.state.useButton) {
             return (
-                <Button color='teal' icon='rocket' content='Use' href={`/ticker/${this.state.ticker.id}`}/>
+                <Button color='teal' icon='rocket' content='Use' onClick={() => {this.props.history.replace(`/ticker/${this.state.ticker.id}`)}}/>
             );
         }
     }
@@ -229,3 +230,5 @@ export default class Ticker extends React.Component {
         );
     }
 }
+
+export default withRouter(Ticker);
