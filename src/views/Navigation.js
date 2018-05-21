@@ -22,6 +22,16 @@ class Navigation extends React.Component {
         }
     }
 
+    renderUsersItem() {
+        if (this.props.user.is_super_admin) {
+            return (
+                <Menu.Item active={window.location.pathname === '/users'} onClick={() => {
+                    this.props.history.replace("/users")
+                }}><strong>Users</strong></Menu.Item>
+            );
+        }
+    }
+
     render() {
         return (
             <Menu fixed='top' size='tiny' inverted>
@@ -31,9 +41,7 @@ class Navigation extends React.Component {
                     <Menu.Item active={window.location.pathname === '/'} onClick={() => {
                         this.props.history.replace("/")
                     }}><strong>Home</strong></Menu.Item>
-                    <Menu.Item active={window.location.pathname === '/users'} onClick={() => {
-                        this.props.history.replace("/users")
-                    }}><strong>Users</strong></Menu.Item>
+                    {this.renderUsersItem()}
                     <Menu.Menu position='right'>
                         <Menu.Item><Clock format='dddd, YY/MM/DD, HH:mm:ss'/></Menu.Item>
                         {this.renderUserItem()}
