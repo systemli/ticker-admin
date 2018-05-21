@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Container, Form, Grid, Header, Icon, Input} from "semantic-ui-react";
+import {Button, Container, Form, Grid, Header, Icon, Input, Message} from "semantic-ui-react";
 import AuthService from "../components/AuthService";
 import Navigation from "./Navigation";
 
@@ -9,6 +9,10 @@ export default class LoginView extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.Auth = new AuthService();
+
+        this.state = {
+            showError: false,
+        }
     }
 
     componentWillMount() {
@@ -28,12 +32,24 @@ export default class LoginView extends React.Component {
         e.preventDefault();
 
         this.Auth.login(this.state.email, this.state.password)
-            .then(res => {
+            .then(() => {
                 this.props.history.replace('/');
             })
-            .catch(err => {
-                alert(err);
-            })
+            .catch(() => {
+                this.setState({showError: true});
+            });
+    }
+
+    renderError() {
+        if (this.state.showError) {
+            return (
+                <Message negative>
+                    <Message.Header>Error</Message.Header>
+                    <p>Wrong credentials</p>
+                </Message>
+            );
+        }
+
     }
 
     render() {
@@ -53,6 +69,7 @@ export default class LoginView extends React.Component {
                             </Grid.Row>
                             <Grid.Row>
                                 <Form onSubmit={this.handleFormSubmit}>
+                                    {this.renderError()}
                                     <Form.Input>
                                         <Input
                                             required
