@@ -1,6 +1,6 @@
 import React from "react";
-import {Button, Container, Form, Header, Icon, Label, Loader, Modal, Table} from "semantic-ui-react";
-import {getUsers, postUser, putUser} from "../api/User";
+import {Button, Confirm, Container, Form, Header, Icon, Label, Loader, Modal, Table} from "semantic-ui-react";
+import {deleteUser, getUsers, postUser, putUser} from "../api/User";
 import Moment from "react-moment";
 
 class UserList extends React.Component {
@@ -12,13 +12,16 @@ class UserList extends React.Component {
         this.state = {
             users: [],
             isLoading: true,
-            showModal: false,
+            deleteUser: null,
             editUser: null,
+            showModal: false,
+            showDeleteConfirm: false,
         };
 
         this.openModal = this.openModal.bind(this);
         this.renderModal = this.renderModal.bind(this);
         this.handleForm = this.handleForm.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.renderForm = this.renderForm.bind(this);
         this.reloadUsers = this.reloadUsers.bind(this);
     }
@@ -52,6 +55,16 @@ class UserList extends React.Component {
             this.setState({editUser: null, showModal: false});
             this.reloadUsers();
         });
+    }
+
+    handleDelete() {
+        if (this.state.deleteUser) {
+            deleteUser(this.state.deleteUser.id).then(() => {
+                this.setState({showDeleteConfirm: false, deleteUser: null});
+
+                this.reloadUsers();
+            });
+        }
     }
 
     renderForm() {
@@ -122,6 +135,21 @@ class UserList extends React.Component {
         );
     }
 
+    renderDeleteConfirm() {
+        return (
+            <Confirm open={this.state.showDeleteConfirm}
+                     onCancel={() => {
+                         this.setState({showDeleteConfirm: false})
+                     }}
+                     onConfirm={this.handleDelete}
+                     dimmer='blurring'
+                     size='mini'
+                //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
+                     style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}
+            />
+        );
+    }
+
     render() {
         const users = this.state.users || [];
 
@@ -152,14 +180,20 @@ class UserList extends React.Component {
                                     <Table.Cell><Moment fromNow date={user.creation_date}/></Table.Cell>
                                     <Table.Cell>{user.roles}</Table.Cell>
                                     <Table.Cell textAlign='right'>
-                                        <Button icon='edit'
-                                                labelPosition='left'
-                                                size='mini'
-                                                content='Edit'
-                                                onClick={() => {
-                                                    this.openModal(user)
-                                                }}
-                                        />
+                                        <Button.Group size='small'>
+                                            <Button icon='edit'
+                                                    color='black'
+                                                    onClick={() => {
+                                                        this.openModal(user)
+                                                    }}
+                                            />
+                                            <Button icon='delete'
+                                                    color='red'
+                                                    onClick={() => {
+                                                        this.setState({showDeleteConfirm: true, deleteUser: user});
+                                                    }}
+                                            />
+                                        </Button.Group>
                                     </Table.Cell>
                                 </Table.Row>
                             );
@@ -174,7 +208,8 @@ class UserList extends React.Component {
                             <Table.HeaderCell/>
                             <Table.HeaderCell/>
                             <Table.HeaderCell>
-                                <Button floated='right' icon labelPosition='left' primary size='small'
+                                <Button floated='right' icon labelPosition='left' primary
+                                        size='small'
                                         onClick={() => {
                                             this.openModal()
                                         }}>
@@ -184,7 +219,12 @@ class UserList extends React.Component {
                         </Table.Row>
                     </Table.Footer>
                 </Table>
-                {this.renderModal()}
+                {
+                    this.renderModal()
+                }
+                {
+                    this.renderDeleteConfirm()
+                }
             </Container>
         );
     }

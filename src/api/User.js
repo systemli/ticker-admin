@@ -39,3 +39,15 @@ export function putUser(data, id) {
         method: 'PUT'
     });
 }
+
+/**
+ *
+ * @param id
+ */
+export function deleteUser(id) {
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/users/${id}`, {
+        method: 'DELETE'
+    });
+}
