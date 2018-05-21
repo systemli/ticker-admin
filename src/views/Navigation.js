@@ -31,6 +31,9 @@ class Navigation extends React.Component {
                     <Menu.Item active={window.location.pathname === '/'} onClick={() => {
                         this.props.history.replace("/")
                     }}><strong>Home</strong></Menu.Item>
+                    <Menu.Item active={window.location.pathname === '/users'} onClick={() => {
+                        this.props.history.replace("/users")
+                    }}><strong>Users</strong></Menu.Item>
                     <Menu.Menu position='right'>
                         <Menu.Item><Clock format='dddd, YY/MM/DD, HH:mm:ss'/></Menu.Item>
                         {this.renderUserItem()}

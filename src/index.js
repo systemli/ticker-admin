@@ -7,6 +7,7 @@ import './index.css';
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 import TickerView from "./views/TickerView";
+import UsersView from "./views/UsersView";
 
 const Ticker = ({match}) => {
     return (
@@ -20,6 +21,7 @@ ReactDOM.render(
             <Route exact path="/" component={HomeView}/>
             <Route exact path="/login" component={LoginView}/>
             <Route path="/ticker/:id" component={Ticker}/>
+            <Route path="/users" component={UsersView}/>
         </Switch>
     </BrowserRouter>,
     document.getElementById('root')
