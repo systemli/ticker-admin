@@ -1,7 +1,8 @@
 import React from "react";
-import {Button, Confirm, Container, Form, Header, Icon, Label, Loader, Modal, Table} from "semantic-ui-react";
+import {Button, Confirm, Container, Form, Header, Icon, Label, Loader, Message, Modal, Table} from "semantic-ui-react";
 import {deleteUser, getUsers, postUser, putUser} from "../api/User";
 import Moment from "react-moment";
+import TickersDropdown from "./TickersDropdown";
 
 class UserList extends React.Component {
     constructor(props) {
@@ -102,7 +103,30 @@ class UserList extends React.Component {
                         //TODO: check password
                     />
                 </Form.Group>
+                {this.renderTickerDropdown()}
             </Form>
+        );
+    }
+
+    renderTickerDropdown() {
+        if ((this.state.editUser && this.state.editUser.is_super_admin) || this.form.is_super_admin) {
+            return (
+                <Container>
+                    <Header>Permissions</Header>
+                    <Message info>Admin Users don't need special permissions for Tickers.</Message>
+                </Container>
+            );
+        }
+
+        return (
+            <Container>
+                <Header>Permissions</Header>
+                <TickersDropdown
+                    placeholder='Select a Ticker'
+                    defaultValue={this.state.editUser ? this.state.editUser.tickers : undefined}
+                    onChange={(event, input) => this.form.tickers = input.value}
+                />
+            </Container>
         );
     }
 
