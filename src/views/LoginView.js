@@ -1,7 +1,6 @@
 import React from "react";
 import {Button, Container, Form, Grid, Header, Icon, Input, Message} from "semantic-ui-react";
 import AuthService from "../components/AuthService";
-import Navigation from "./Navigation";
 
 export default class LoginView extends React.Component {
     constructor() {
@@ -55,7 +54,6 @@ export default class LoginView extends React.Component {
     render() {
         return (
             <Container>
-                <Navigation/>
                 <Container className='app'>
                     <Grid centered>
                         <Grid.Column computer={6} mobile={16}>

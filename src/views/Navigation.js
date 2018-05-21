@@ -2,7 +2,7 @@ import React from 'react';
 import {Container, Icon, Image, Menu} from 'semantic-ui-react';
 import Clock from "../components/Clock";
 import AuthService from "../components/AuthService";
-import {withRouter} from "react-router-dom";
+import withAuth from "../components/withAuth";
 
 class Navigation extends React.Component {
     constructor(props) {
@@ -41,4 +41,4 @@ class Navigation extends React.Component {
     }
 }
 
-export default withRouter(Navigation);
+export default withAuth(Navigation);

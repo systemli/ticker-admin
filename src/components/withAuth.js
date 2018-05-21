@@ -21,8 +21,11 @@ export default function withAuth(AuthComponent) {
             else {
                 try {
                     const profile = Auth.getProfile();
-                    this.setState({
-                        user: profile
+
+                    Auth.fetch(`${ApiUrl}/admin/users/${profile.id}`).then(response => {
+                        this.setState({
+                            user: response.data.user,
+                        });
                     });
                 }
                 catch (err) {
