@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import AuthService from './AuthService';
 import {ApiUrl} from "../api/Api";
+import {withRouter} from "react-router-dom";
 
 export default function withAuth(AuthComponent) {
     const Auth = new AuthService(ApiUrl);
 
-    return class AuthWrapped extends Component {
+    return withRouter(class AuthWrapped extends Component {
         constructor(props) {
             super(props);
             this.state = {
@@ -41,5 +42,5 @@ export default function withAuth(AuthComponent) {
                 return null;
             }
         }
-    }
+    });
 }
