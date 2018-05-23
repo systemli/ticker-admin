@@ -10,6 +10,5 @@ npm start # starts a local server on localhost:3000
 
 .env.local
 ```
-REACT_APP_API_BASE_URL="http://localhost:8080"
-REACT_APP_API_VERSION="v1"
+REACT_APP_API_URL="http://localhost:8080/v1"
 ```
