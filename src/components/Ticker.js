@@ -40,7 +40,21 @@ class Ticker extends React.Component {
 
     handleSubmit(event) {
         if (Object.keys(this.form).length > 0) {
-            putTicker(this.form, this.state.ticker.id).then(response => this.setState({ticker: response.data.ticker}));
+            let formData = {
+                title: this.form.title || this.state.ticker.title,
+                domain: this.form.domain || this.state.ticker.domain,
+                description: this.form.description || this.state.ticker.description,
+                active: this.form.active || this.state.ticker.active,
+                information: this.form.information || {
+                    author: this.form.information.author || this.state.ticker.information.author,
+                    url: this.form.information.url || this.state.ticker.information.url,
+                    email: this.form.information.email || this.state.ticker.information.email,
+                    twitter: this.form.information.twitter || this.state.ticker.information.twitter,
+                    facebook: this.form.information.facebook || this.state.ticker.information.facebook,
+                }
+            };
+
+            putTicker(formData, this.state.ticker.id).then(response => this.setState({ticker: response.data.ticker}));
         }
 
         this.setState({modalOpen: false});
