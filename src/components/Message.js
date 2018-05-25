@@ -12,7 +12,9 @@ export default class Message extends React.Component {
             id: props.message.id,
             ticker: props.message.ticker,
             text: Message._replaceMagic(props.message.text),
-            creationDate: props.message.creation_date
+            creationDate: props.message.creation_date,
+            tweetId: props.message.tweet_id || null,
+            tweetUser: props.message.tweet_user || null,
         };
 
         this._getText = this._getText.bind(this);
@@ -42,15 +44,21 @@ export default class Message extends React.Component {
     }
 
     render() {
+        let twitterIcon = (this.state.tweetId != null) ? (
+            <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank'><Icon
+                name='twitter'/></a>) : (<Icon name='twitter' disabled/>);
+
         return (
             <Card fluid>
                 <Card.Content>
-                    <a onClick={this._deleteMessage}><Icon fitted link color='grey' name='close'
-                                                           style={{float: 'right'}}/></a>
+                    <a onClick={this._deleteMessage}>
+                        <Icon fitted link color='grey' name='close' style={{float: 'right'}}/>
+                    </a>
                     {this._getText()}
-                    <Card.Meta>
-                        <Moment fromNow>{this.state.creationDate}</Moment>
-                    </Card.Meta>
+                </Card.Content>
+                <Card.Content extra>
+                    {twitterIcon}
+                    <Moment fromNow>{this.state.creationDate}</Moment>
                 </Card.Content>
             </Card>
         );
