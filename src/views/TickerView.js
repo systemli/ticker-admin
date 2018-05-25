@@ -10,7 +10,7 @@ import {
     Icon, Image,
     Label,
     Loader,
-    Message as Error
+    Message as Error, Sticky
 } from "semantic-ui-react";
 import {getTicker, putTickerTwitter} from "../api/Ticker";
 import Ticker from "../components/Ticker";
@@ -273,10 +273,12 @@ class TickerView extends React.Component {
                                 {this._renderMessages()}
                             </Grid.Column>
                             <Grid.Column width={6}>
-                                <Header dividing>Configuration</Header>
-                                {this._renderTicker()}
-                                <Header dividing>Twitter</Header>
-                                {this._renderTwitter()}
+                                <Sticky offset={50}>
+                                    <Header dividing>Configuration</Header>
+                                    {this._renderTicker()}
+                                    <Header dividing>Twitter</Header>
+                                    {this._renderTwitter()}
+                                </Sticky>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
