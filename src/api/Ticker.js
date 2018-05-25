@@ -53,6 +53,21 @@ export function putTicker(data, id) {
 
 /**
  *
+ * @param data
+ * @param id
+ * @returns {Promise<any>}
+ */
+export function putTickerTwitter(data, id) {
+    const Auth = new AuthService();
+
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
+        body: JSON.stringify(data),
+        method: 'PUT'
+    });
+}
+
+/**
+ *
  * @param id
  */
 export function deleteTicker(id) {
