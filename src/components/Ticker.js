@@ -212,7 +212,7 @@ class Ticker extends React.Component {
 
     render() {
         return (
-            <Card>
+            <Card fluid={this.props.fluid}>
                 <Card.Content>
                     <Card.Header>
                         <Icon color={this.state.ticker.active ? 'green' : 'red'}
