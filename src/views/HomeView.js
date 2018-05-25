@@ -69,11 +69,13 @@ class HomeView extends React.Component {
                     <Form onSubmit={this.handleSubmit} id='editTicker'>
                         <Form.Group widths='equal'>
                             <Form.Input
+                                required
                                 label='Title'
                                 name='title'
                                 onChange={(event, input) => this.form.title = input.value}
                             />
                             <Form.Input
+                                required
                                 label='Domain'
                                 name='domain'
                                 onChange={(event, input) => this.form.domain = input.value}
@@ -86,6 +88,7 @@ class HomeView extends React.Component {
                             onChange={(event, input) => this.form.active = input.checked}
                         />
                         <Form.TextArea
+                            required
                             label='Description'
                             name='description'
                             rows='5'
