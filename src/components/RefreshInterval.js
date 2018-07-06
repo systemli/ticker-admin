@@ -27,7 +27,7 @@ class RefreshInterval extends React.Component {
     handleSubmit(event) {
         if (Object.keys(this.form).length > 0) {
             let formData = {
-                refresh_interval: parseInt(this.form.refresh_interval),
+                refresh_interval: parseInt(this.form.refresh_interval, 10),
             };
 
             putRefreshInterval(formData).then((response) => {
