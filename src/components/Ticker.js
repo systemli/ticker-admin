@@ -44,7 +44,7 @@ class Ticker extends React.Component {
                 title: this.form.title || this.state.ticker.title,
                 domain: this.form.domain || this.state.ticker.domain,
                 description: this.form.description || this.state.ticker.description,
-                active: this.form.active || this.state.ticker.active,
+                active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
                 information: this.form.information || {
                     author: this.form.information.author || this.state.ticker.information.author,
                     url: this.form.information.url || this.state.ticker.information.url,
