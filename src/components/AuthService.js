@@ -18,10 +18,10 @@ export default class AuthService {
                 username,
                 password
             })
-        }).then(response => {
+        }).then((response) => {
             this.setToken(response.token);
             return Promise.resolve(response);
-        })
+        });
     }
 
     loggedIn() {
@@ -33,23 +33,18 @@ export default class AuthService {
         try {
             const decoded = decode(token);
 
-            if (decoded.exp < Date.now() / 1000) {
-                return true;
-            }
-            else
-                return false;
-        }
-        catch (err) {
+            return decoded.exp < Date.now() / 1000;
+        } catch (err) {
             return false;
         }
     }
 
     setToken(idToken) {
-        localStorage.setItem('id_token', idToken)
+        localStorage.setItem('id_token', idToken);
     }
 
     getToken() {
-        return localStorage.getItem('id_token')
+        return localStorage.getItem('id_token');
     }
 
     logout() {
@@ -60,7 +55,6 @@ export default class AuthService {
         return decode(this.getToken());
     }
 
-
     fetch(url, options) {
         const headers = {
             'Accept': 'application/json',
@@ -68,20 +62,21 @@ export default class AuthService {
         };
 
         if (this.loggedIn()) {
-            headers['Authorization'] = 'Bearer ' + this.getToken()
+            headers['Authorization'] = 'Bearer ' + this.getToken();
         }
 
         return fetch(url, {headers, ...options})
             .then(this._checkStatus)
-            .then(response => response.json())
+            .then(response => response.json());
     }
 
     _checkStatus(response) {
         if (response.status >= 200 && response.status < 300) {
-            return response
+            return response;
         } else {
             let error = new Error(response.statusText);
             error.response = response;
+
             throw error;
         }
     }
