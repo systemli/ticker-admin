@@ -27,7 +27,6 @@ class InactiveSettings extends React.Component {
     handleSubmit(event) {
         if (Object.keys(this.form).length > 0) {
             let formData = {...this.state.inactiveSettings, ...this.form};
-            console.log(formData);
 
             putInactiveSettings(formData).then((response) => {
                 if (response.data !== undefined && response.data.setting !== undefined) {
