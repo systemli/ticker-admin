@@ -8,6 +8,7 @@ import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 import TickerView from "./views/TickerView";
 import UsersView from "./views/UsersView";
+import SettingsView from "./views/SettingsView";
 
 const Ticker = ({match}) => {
     return (
@@ -22,6 +23,7 @@ ReactDOM.render(
             <Route exact path="/login" component={LoginView}/>
             <Route path="/ticker/:id" component={Ticker}/>
             <Route path="/users" component={UsersView}/>
+            <Route path="/settings" component={SettingsView}/>
         </Switch>
     </BrowserRouter>,
     document.getElementById('root')
