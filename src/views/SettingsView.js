@@ -3,6 +3,7 @@ import withAuth from "../components/withAuth";
 import {Container, Grid, Header} from "semantic-ui-react";
 import Navigation from "./Navigation";
 import InactiveSettings from "../components/InactiveSettings";
+import RefreshInterval from "../components/RefreshInterval";
 
 class SettingsView extends React.Component {
     render() {
@@ -16,8 +17,13 @@ class SettingsView extends React.Component {
                                 <Header dividing>Settings</Header>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
-                            <InactiveSettings/>
+                        <Grid.Row columns={4}>
+                            <Grid.Column>
+                                <InactiveSettings/>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <RefreshInterval/>
+                            </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Container>

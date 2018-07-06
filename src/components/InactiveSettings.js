@@ -144,6 +144,8 @@ class InactiveSettings extends React.Component {
                     <Card.Content>
                         <Card.Header><Icon name='question circle'/>Inactive Settings</Card.Header>
                         <Card.Meta>These settings have affect for inactive or non-configured tickers.</Card.Meta>
+                    </Card.Content>
+                    <Card.Content>
                         <Card.Description>
                             <List>
                                 <List.Item>
