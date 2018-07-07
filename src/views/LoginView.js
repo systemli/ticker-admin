@@ -1,13 +1,14 @@
 import React from "react";
 import {Button, Container, Form, Grid, Header, Icon, Input, Message} from "semantic-ui-react";
-import AuthService from "../components/AuthService";
+import AuthSingleton from "../components/AuthService";
+
+const Auth = AuthSingleton.getInstance();
 
 export default class LoginView extends React.Component {
     constructor() {
         super();
         this.handleChange = this.handleChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.Auth = new AuthService();
 
         this.state = {
             showError: false,
@@ -15,7 +16,7 @@ export default class LoginView extends React.Component {
     }
 
     componentWillMount() {
-        if (this.Auth.loggedIn())
+        if (Auth.loggedIn())
             this.props.history.replace('/');
     }
 
@@ -30,7 +31,7 @@ export default class LoginView extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
 
-        this.Auth.login(this.state.email, this.state.password)
+        Auth.login(this.state.email, this.state.password)
             .then(() => {
                 this.props.history.replace('/');
             })

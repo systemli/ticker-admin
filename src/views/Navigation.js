@@ -1,21 +1,17 @@
 import React from 'react';
 import {Container, Icon, Image, Menu} from 'semantic-ui-react';
 import Clock from "../components/Clock";
-import AuthService from "../components/AuthService";
+import AuthSingleton from "../components/AuthService";
 import withAuth from "../components/withAuth";
 
+const Auth = AuthSingleton.getInstance();
+
 class Navigation extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.Auth = new AuthService();
-    }
-
     renderUserItem() {
-        if (this.Auth.loggedIn()) {
+        if (Auth.loggedIn()) {
             return (
                 <Menu.Item onClick={() => {
-                    this.Auth.logout();
+                    Auth.removeToken();
                     this.props.history.replace("/login");
                 }}><Icon name='user'/>Logout</Menu.Item>
             );

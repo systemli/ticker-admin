@@ -1,25 +1,23 @@
 import {ApiUrl} from "./Api";
-import AuthService from "../components/AuthService";
+import AuthSingleton from "../components/AuthService";
+
+const Auth = AuthSingleton.getInstance();
 
 /**
- *
- * @returns {Promise<any>}
+ * @param {string} ticker
+ * @returns {Promise<Response>}
  */
 export function getMessages(ticker) {
-    const Auth = new AuthService(ApiUrl);
-
     return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`);
 }
 
 /**
  *
- * @param ticker
- * @param text
- * @returns {Promise<any>}
+ * @param {string} ticker
+ * @param {string} text
+ * @returns {Promise<Response>}
  */
 export function postMessage(ticker, text) {
-    const Auth = new AuthService(ApiUrl);
-
     return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
         body: JSON.stringify({
             text: text
@@ -30,13 +28,11 @@ export function postMessage(ticker, text) {
 
 /**
  *
- * @param ticker
- * @param message
+ * @param {string} ticker
+ * @param {string} message
  * @returns {Promise<any>}
  */
 export function deleteMessage(ticker, message) {
-    const Auth = new AuthService(ApiUrl);
-
     return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages/${message}`, {
         method: 'DELETE'
     });

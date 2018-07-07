@@ -1,35 +1,30 @@
 import {ApiUrl} from "./Api";
-import AuthService from "../components/AuthService";
+import AuthSingleton from "../components/AuthService";
+
+const Auth = AuthSingleton.getInstance();
 
 /**
- *
- * @returns {Promise<any>}
+ * @returns {Promise<Response>}
  */
 export function getTickers() {
-    const Auth = new AuthService();
-
     return Auth.fetch(`${ApiUrl}/admin/tickers`);
 }
 
 /**
  *
- * @param id
- * @returns {Promise<any>}
+ * @param {string} id
+ * @returns {Promise<Response>}
  */
 export function getTicker(id) {
-    const Auth = new AuthService();
-
     return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`);
 }
 
 /**
  *
- * @param data
- * @returns {Promise<any>}
+ * @param {object} data
+ * @returns {Promise<Response>}
  */
 export function postTicker(data) {
-    const Auth = new AuthService();
-
     return Auth.fetch(`${ApiUrl}/admin/tickers`, {
         body: JSON.stringify(data),
         method: 'POST'
@@ -38,13 +33,11 @@ export function postTicker(data) {
 
 /**
  *
- * @param data
- * @param id
- * @returns {Promise<any>}
+ * @param {object} data
+ * @param {string} id
+ * @returns {Promise<Response>}
  */
 export function putTicker(data, id) {
-    const Auth = new AuthService();
-
     return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
         body: JSON.stringify(data),
         method: 'PUT'
@@ -58,9 +51,7 @@ export function putTicker(data, id) {
  * @returns {Promise<any>}
  */
 export function putTickerTwitter(data, id) {
-    const Auth = new AuthService();
-
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
+    return AuthSingleton.getInstance().fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
         body: JSON.stringify(data),
         method: 'PUT'
     });
@@ -71,9 +62,7 @@ export function putTickerTwitter(data, id) {
  * @param id
  */
 export function deleteTicker(id) {
-    const Auth = new AuthService();
-
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
+    return AuthSingleton.getInstance().fetch(`${ApiUrl}/admin/tickers/${id}`, {
         method: 'DELETE'
     });
 }

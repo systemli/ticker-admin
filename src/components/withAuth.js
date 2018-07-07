@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import AuthService from './AuthService';
 import {ApiUrl} from "../api/Api";
 import {withRouter} from "react-router-dom";
+import AuthSingleton from "./AuthService";
 
 export default function withAuth(AuthComponent) {
-    const Auth = new AuthService(ApiUrl);
+    const Auth = AuthSingleton.getInstance();
 
     return withRouter(class AuthWrapped extends Component {
         constructor(props) {
             super(props);
+
             this.state = {
-                user: null
-            }
+                user: null,
+            };
         }
 
         componentWillMount() {
@@ -29,7 +30,7 @@ export default function withAuth(AuthComponent) {
                     });
                 }
                 catch (err) {
-                    Auth.logout();
+                    Auth.removeToken();
                     this.props.history.replace('/login');
                 }
             }
