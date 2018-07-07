@@ -37,7 +37,7 @@ class AuthService {
         this.checkResponse = this.checkResponse.bind(this);
         this.refreshToken = this.refreshToken.bind(this);
 
-        setInterval(() => this.refreshToken(), 5000);
+        setInterval(() => this.refreshToken(), 60000);
     }
 
     /**
@@ -120,7 +120,7 @@ class AuthService {
 
         let now = Date.now() / 1000;
         let expire = this.getTokenExpiration(this.getToken());
-        let limit = 60;
+        let limit = 600;
 
         if (now >= (expire - limit)) {
             return this.fetch(`${ApiUrl}/admin/refresh_token`)
