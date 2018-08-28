@@ -245,8 +245,6 @@ class Ticker extends React.Component {
                          onConfirm={this.handleConfirm}
                          dimmer='blurring'
                          size='mini'
-                    //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
-                         style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}
                 />
             </Card>
         );
