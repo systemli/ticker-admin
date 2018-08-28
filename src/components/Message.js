@@ -46,7 +46,7 @@ export default class Message extends React.Component {
 
     render() {
         let twitterIcon = (this.state.tweetId != null) ? (
-            <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank'><Icon
+            <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank' rel='noopener noreferrer'><Icon
                 name='twitter'/></a>) : (<Icon name='twitter' disabled/>);
 
         return (

@@ -67,20 +67,20 @@ class Ticker extends React.Component {
     }
 
     openDeleteModal() {
-        this.setState({confirmOpen: true})
-    };
+        this.setState({confirmOpen: true});
+    }
 
     handleCancel() {
-        this.setState({confirmOpen: false})
-    };
+        this.setState({confirmOpen: false});
+    }
 
     closeConfirm() {
         this.setState({confirmOpen: false});
-    };
+    }
 
     closeModal() {
-        this.setState({modalOpen: false})
-    };
+        this.setState({modalOpen: false});
+    }
 
     handleConfirm() {
         deleteTicker(this.state.ticker.id).then(() => {
@@ -89,7 +89,7 @@ class Ticker extends React.Component {
             }
             this.closeConfirm();
         });
-    };
+    }
 
     getForm() {
         return (
@@ -273,4 +273,5 @@ Ticker.propTypes = {
     fluid: PropTypes.bool,
     use: PropTypes.bool,
     delete: PropTypes.bool,
+    reload: PropTypes.func,
 };
