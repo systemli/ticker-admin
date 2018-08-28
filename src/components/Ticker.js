@@ -184,7 +184,7 @@ class Ticker extends React.Component {
         return (
             <Modal trigger={<Button color='black' icon='edit' content='edit'
                                     onClick={() => this.setState({modalOpen: true})}/>}
-                   dimmer='blurring' closeOnRootNodeClick={false} open={this.state.modalOpen} closeIcon
+                   dimmer='blurring' open={this.state.modalOpen} closeIcon
                    onClose={this.closeModal}
             >
                 <Header>Edit {this.state.ticker.title}</Header>

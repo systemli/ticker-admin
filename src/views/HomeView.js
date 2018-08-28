@@ -61,7 +61,7 @@ class HomeView extends React.Component {
         return (
             <Modal trigger={<Button color='green' icon='plus' content='Create'
                                     onClick={() => this.setState({modalOpen: true})}/>}
-                   dimmer='blurring' closeOnRootNodeClick={false} open={this.state.modalOpen} closeIcon
+                   dimmer='blurring' open={this.state.modalOpen} closeIcon
                    onClose={() => this.setState({modalOpen: false})}
             >
                 <Header>Create Configuration</Header>

@@ -136,7 +136,6 @@ class UserList extends React.Component {
         return (
             <Modal
                 dimmer='blurring'
-                closeOnRootNodeClick={false}
                 open={this.state.showModal}
                 closeIcon
                 onClose={() => this.setState({showModal: false, editUser: undefined})}
