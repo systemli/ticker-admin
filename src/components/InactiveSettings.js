@@ -16,7 +16,7 @@ class InactiveSettings extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         getInactiveSettings().then((response) => {
             if (response.data !== undefined && response.data.setting !== undefined) {
                 this.setState({inactiveSettings: response.data.setting.value});

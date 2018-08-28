@@ -16,7 +16,7 @@ class RefreshInterval extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         getRefreshInterval().then((response) => {
             if (response.data !== undefined && response.data.setting !== undefined) {
                 this.setState({refresh_interval: response.data.setting.value});

@@ -49,7 +49,7 @@ class TickerView extends React.Component {
         this.twitterToggle = this.twitterToggle.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this._loadTicker();
     }
 

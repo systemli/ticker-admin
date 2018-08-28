@@ -12,7 +12,7 @@ class TickersDropdown extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         getTickers().then(response => {
             let options = [];
             response.data.tickers.map(ticker => {

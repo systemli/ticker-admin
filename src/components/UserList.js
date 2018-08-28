@@ -27,7 +27,7 @@ class UserList extends React.Component {
         this.reloadUsers = this.reloadUsers.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.reloadUsers();
     }
 

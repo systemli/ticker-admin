@@ -15,7 +15,7 @@ export default class LoginView extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (Auth.loggedIn())
             this.props.history.replace('/');
     }
