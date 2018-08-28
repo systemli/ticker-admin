@@ -60,8 +60,7 @@ class RefreshInterval extends React.Component {
                                     onClick={() => this.setState({modalOpen: true})}/>}
                    dimmer='blurring' closeOnRootNodeClick={false} open={this.state.modalOpen} closeIcon
                    onClose={() => this.setState({modalOpen: false})}
-                //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
-                   style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}>
+            >
                 <Header>Edit Refresh Interval</Header>
                 <Modal.Content>
                     {this.renderForm()}

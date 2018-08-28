@@ -141,8 +141,7 @@ class UserList extends React.Component {
                 closeIcon
                 onClose={() => this.setState({showModal: false, editUser: undefined})}
                 size='small'
-                //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
-                style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}>
+            >
                 <Header>{isNew ? 'Create User' : 'Edit User'}</Header>
                 <Modal.Content>
                     {this.renderForm(user)}

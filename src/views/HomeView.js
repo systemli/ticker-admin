@@ -24,6 +24,7 @@ class HomeView extends React.Component {
         this.reload = this.reload.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.reload = this.reload.bind(this);
+        this.closeModal = this.reload.bind(this);
     }
 
     componentDidMount() {
@@ -41,7 +42,7 @@ class HomeView extends React.Component {
         this.setState({isConfigurationLoading: false});
     }
 
-    static closeModal() {
+    closeModal() {
         this.setState({modalOpen: false})
     }
 
@@ -62,8 +63,7 @@ class HomeView extends React.Component {
                                     onClick={() => this.setState({modalOpen: true})}/>}
                    dimmer='blurring' closeOnRootNodeClick={false} open={this.state.modalOpen} closeIcon
                    onClose={() => this.setState({modalOpen: false})}
-                //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
-                   style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}>
+            >
                 <Header>Create Configuration</Header>
                 <Modal.Content>
                     <Form onSubmit={this.handleSubmit} id='editTicker'>

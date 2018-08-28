@@ -36,6 +36,10 @@ class Ticker extends React.Component {
         this.handleConfirm = this.handleConfirm.bind(this);
         this.renderUseButton = this.renderUseButton.bind(this);
         this.renderDeleteButton = this.renderDeleteButton.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.openDeleteModal = this.openDeleteModal.bind(this);
+        this.closeConfirm = this.closeConfirm.bind(this);
     }
 
     handleSubmit(event) {
@@ -61,19 +65,19 @@ class Ticker extends React.Component {
         event.preventDefault();
     }
 
-    static openDeleteModal() {
+    openDeleteModal() {
         this.setState({confirmOpen: true})
     };
 
-    static handleCancel() {
+    handleCancel() {
         this.setState({confirmOpen: false})
     };
 
-    static closeConfirm() {
+    closeConfirm() {
         this.setState({confirmOpen: false});
     };
 
-    static closeModal() {
+    closeModal() {
         this.setState({modalOpen: false})
     };
 
@@ -182,8 +186,7 @@ class Ticker extends React.Component {
                                     onClick={() => this.setState({modalOpen: true})}/>}
                    dimmer='blurring' closeOnRootNodeClick={false} open={this.state.modalOpen} closeIcon
                    onClose={this.closeModal}
-                //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
-                   style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}>
+            >
                 <Header>Edit {this.state.ticker.title}</Header>
                 <Modal.Content>
                     {this.getForm()}
