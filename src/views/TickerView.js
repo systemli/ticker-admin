@@ -267,7 +267,7 @@ class TickerView extends React.Component {
                                     />
                                     <Button color='teal' type='submit' content='Send' icon='send'
                                             disabled={this.state.formError}/>
-                                    <Label basic content={`${this.state.counter}/${this.state.counterLimit}`}
+                                    <Label content={`${this.state.counter}/${this.state.counterLimit}`}
                                            color={this.state.counterColor} style={{float: 'right'}}/>
                                 </Form>
                                 {this._renderMessages()}
