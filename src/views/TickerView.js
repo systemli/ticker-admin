@@ -20,6 +20,7 @@ import withAuth from "../components/withAuth";
 import Navigation from "./Navigation";
 import TwitterLogin from 'react-twitter-auth';
 import {ApiUrl} from "../api/Api";
+import PropTypes from 'prop-types';
 
 class TickerView extends React.Component {
     constructor(props) {
@@ -289,3 +290,7 @@ class TickerView extends React.Component {
 }
 
 export default withAuth(TickerView);
+
+TickerView.propTypes = {
+    id: PropTypes.number.isRequired,
+};

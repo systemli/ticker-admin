@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Card, Confirm, Form, Header, Icon, Input, Label, Modal} from 'semantic-ui-react';
 import {deleteTicker, putTicker} from "../api/Ticker";
 import {withRouter} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 class Ticker extends React.Component {
     constructor(props) {
@@ -252,3 +253,24 @@ class Ticker extends React.Component {
 }
 
 export default withRouter(Ticker);
+
+Ticker.propTypes = {
+    ticker: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        domain: PropTypes.string,
+        description: PropTypes.string,
+        active: PropTypes.bool,
+        information: PropTypes.shape({
+            author: PropTypes.string,
+            url: PropTypes.string,
+            email: PropTypes.string,
+            twitter: PropTypes.string,
+            facebook: PropTypes.string,
+        })
+    }),
+    history: PropTypes.any.isRequired,
+    fluid: PropTypes.bool,
+    use: PropTypes.bool,
+    delete: PropTypes.bool,
+};

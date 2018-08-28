@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Container, Form, Grid, Header, Icon, Input, Message} from "semantic-ui-react";
 import AuthSingleton from "../components/AuthService";
+import PropTypes from 'prop-types';
 
 const Auth = AuthSingleton.getInstance();
 
@@ -101,3 +102,7 @@ export default class LoginView extends React.Component {
         );
     }
 }
+
+LoginView.propTypes = {
+    history: PropTypes.any.isRequired,
+};

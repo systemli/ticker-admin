@@ -1,5 +1,6 @@
 import React from "react";
 import {Card, Icon} from "semantic-ui-react";
+import PropTypes from 'prop-types';
 
 import Moment from "react-moment";
 import {deleteMessage} from "../api/Message";
@@ -64,3 +65,15 @@ export default class Message extends React.Component {
         );
     }
 }
+
+Message.propTypes = {
+    message: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        ticker: PropTypes.object.isRequired,
+        text: PropTypes.string.isRequired,
+        creation_date: PropTypes.number.isRequired,
+        tweet_id: PropTypes.string,
+        tweet_user: PropTypes.string,
+    }),
+    loadMessages: PropTypes.func.isRequired,
+};

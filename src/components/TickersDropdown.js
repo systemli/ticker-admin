@@ -2,6 +2,7 @@ import React from "react";
 import {Dropdown} from "semantic-ui-react";
 import withAuth from "./withAuth";
 import {getTickers} from "../api/Ticker";
+import PropTypes from 'prop-types';
 
 class TickersDropdown extends React.Component {
     constructor(props) {
@@ -39,3 +40,9 @@ class TickersDropdown extends React.Component {
 }
 
 export default withAuth(TickersDropdown);
+
+TickersDropdown.propTypes = {
+    placeholder: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    defaultValue: PropTypes.string.isRequired,
+};

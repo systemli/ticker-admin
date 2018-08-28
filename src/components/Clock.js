@@ -1,5 +1,6 @@
 import React from "react";
 import Moment from "react-moment";
+import PropTypes from 'prop-types';
 
 export default class Clock extends React.Component {
     constructor(props) {
@@ -35,3 +36,7 @@ export default class Clock extends React.Component {
         );
     }
 }
+
+Clock.propTypes = {
+    format: PropTypes.string
+};

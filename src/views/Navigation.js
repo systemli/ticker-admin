@@ -4,6 +4,7 @@ import Clock from "../components/Clock";
 import AuthSingleton from "../components/AuthService";
 import withAuth from "../components/withAuth";
 import logo from "../assets/logo.png";
+import PropTypes from "prop-types";
 
 const Auth = AuthSingleton.getInstance();
 
@@ -61,3 +62,10 @@ class Navigation extends React.Component {
 }
 
 export default withAuth(Navigation);
+
+Navigation.propTypes = {
+    history: PropTypes.object.isRequired,
+    user: PropTypes.shape({
+        is_super_admin: PropTypes.bool.isRequired
+    }),
+};
