@@ -61,14 +61,19 @@ class Ticker extends React.Component {
         event.preventDefault();
     }
 
-    openDeleteModal = () => this.setState({confirmOpen: true});
-    handleCancel = () => this.setState({confirmOpen: false});
+    static openDeleteModal() {
+        this.setState({confirmOpen: true})
+    };
 
-    closeConfirm = () => {
+    static handleCancel() {
+        this.setState({confirmOpen: false})
+    };
+
+    static closeConfirm() {
         this.setState({confirmOpen: false});
     };
 
-    closeModal = () => {
+    static closeModal() {
         this.setState({modalOpen: false})
     };
 

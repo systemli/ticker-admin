@@ -3,6 +3,7 @@ import {Container, Icon, Image, Menu} from 'semantic-ui-react';
 import Clock from "../components/Clock";
 import AuthSingleton from "../components/AuthService";
 import withAuth from "../components/withAuth";
+import logo from "../assets/logo.png";
 
 const Auth = AuthSingleton.getInstance();
 
@@ -42,7 +43,7 @@ class Navigation extends React.Component {
         return (
             <Menu fixed='top' size='tiny' inverted>
                 <Container>
-                    <Menu.Item><Image src='/logo.png' spaced='right'
+                    <Menu.Item><Image src={logo} spaced='right'
                                       style={{position: 'absolute', right: 0}}/></Menu.Item>
                     <Menu.Item active={window.location.pathname === '/'} onClick={() => {
                         this.props.history.replace("/")

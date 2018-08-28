@@ -41,9 +41,9 @@ class HomeView extends React.Component {
         this.setState({isConfigurationLoading: false});
     }
 
-    closeModal = () => {
+    static closeModal() {
         this.setState({modalOpen: false})
-    };
+    }
 
     handleSubmit(event) {
         if (Object.keys(this.form).length > 0) {
