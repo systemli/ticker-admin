@@ -5,6 +5,9 @@ module.exports = merge(config, {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',
+        historyApiFallback: true,
+        watchContentBase: true,
+        port: 3000
     }
 });

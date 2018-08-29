@@ -54,7 +54,7 @@
     "whatwg-fetch": "^2.0.4"
   },
   "scripts": {
-    "start": "webpack-dev-server --port 3000 --history-api-fallback --watch --config webpack.dev.js",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
   },
   "eslintConfig": {
