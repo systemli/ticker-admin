@@ -69,9 +69,9 @@ export default class Message extends React.Component {
 Message.propTypes = {
     message: PropTypes.shape({
         id: PropTypes.number.isRequired,
-        ticker: PropTypes.object.isRequired,
+        ticker: PropTypes.number.isRequired,
         text: PropTypes.string.isRequired,
-        creation_date: PropTypes.number.isRequired,
+        creation_date: PropTypes.string.isRequired,
         tweet_id: PropTypes.string,
         tweet_user: PropTypes.string,
     }),

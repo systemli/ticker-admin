@@ -44,5 +44,5 @@ export default withAuth(TickersDropdown);
 TickersDropdown.propTypes = {
     placeholder: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    defaultValue: PropTypes.string.isRequired,
+    defaultValue: PropTypes.array,
 };

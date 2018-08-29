@@ -9,10 +9,13 @@ import LoginView from "./views/LoginView";
 import TickerView from "./views/TickerView";
 import UsersView from "./views/UsersView";
 import SettingsView from "./views/SettingsView";
+import PropTypes from 'prop-types';
 
 const Ticker = ({match}) => {
+    let id = parseInt(match.params.id);
+
     return (
-        <TickerView id={match.params.id}/>
+        <TickerView id={id}/>
     );
 };
 
@@ -29,3 +32,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 registerServiceWorker();
+
+Ticker.propTypes = {
+    match: PropTypes.object.isRequired,
+};
