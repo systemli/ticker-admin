@@ -1,10 +1,8 @@
-const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin');
 
 module.exports = {
@@ -17,8 +15,7 @@ module.exports = {
                 cache: true,
                 parallel: true,
                 sourceMap: true // set to true if you want JS source maps
-            }),
-            new OptimizeCSSAssetsPlugin({})
+            })
         ]
     },
     module: {
@@ -31,49 +28,46 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader'
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    "css-loader"
                 ]
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|jpg|gif|ico|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    publicPath: '/'
+                    outputPath: './images/',
+                    name: '[name].[ext]?[hash:8]',
                 }
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 loader: 'file-loader',
                 options: {
-                    publicPath: '/'
+                    outputPath: './fonts/',
+                    name: '[name].[ext]?[hash:8]',
                 }
-            },
-            {
-                test: /\.ico$/,
-                loader: 'file-loader?name=[name].[ext]',
-                options: {
-                    publicPath: '/'
-                }
-            },
+            }
         ]
     },
     plugins: [
         new Dotenv(),
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, './public/index.html'),
-            favicon: path.join(__dirname, './public/favicon.ico'),
+            template: __dirname + '/public/index.html',
+            favicon: __dirname + '/public/favicon.ico',
         }),
         new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
+            filename: "[name].css?[hash:8]",
+            chunkFilename: "[id].css?[hash:8]"
         }),
         new ManifestPlugin(),
     ],
     output: {
         publicPath: '/',
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: '[name].js?[hash:8]',
+        path: __dirname + '/dist',
     }
 };
