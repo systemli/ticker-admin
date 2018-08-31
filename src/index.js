@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import registerServiceWorker from './registerServiceWorker';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import HomeView from "./views/HomeView";
@@ -31,7 +30,6 @@ ReactDOM.render(
     </BrowserRouter>,
     document.getElementById('root')
 );
-registerServiceWorker();
 
 Ticker.propTypes = {
     match: PropTypes.object.isRequired,
