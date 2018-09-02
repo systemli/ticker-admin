@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Card, Confirm, Form, Header, Icon, Input, Label, Modal} from 'semantic-ui-react';
 import {deleteTicker, putTicker} from "../api/Ticker";
 import {withRouter} from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import PropTypes from 'prop-types';
 
 class Ticker extends React.Component {
@@ -231,7 +232,7 @@ class Ticker extends React.Component {
                         <Label content={this.state.ticker.id} size='mini' style={{float: 'right'}}/>
                     </Card.Header>
                     <Card.Meta content={this.state.ticker.domain}/>
-                    <Card.Description content={this.state.ticker.description}/>
+                    <Card.Description content={<ReactMarkdown source={this.state.ticker.description} />}/>
                 </Card.Content>
                 <Card.Content>
                     <Button.Group size='tiny' fluid compact>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Card, Container, Form, Header, Icon, Input, List, Modal} from "semantic-ui-react";
 import {getInactiveSettings, putInactiveSettings} from "../api/Settings";
+import ReactMarkdown from 'react-markdown';
 
 class InactiveSettings extends React.Component {
     constructor(props) {
@@ -156,7 +157,7 @@ class InactiveSettings extends React.Component {
                                 </List.Item>
                                 <List.Item>
                                     <List.Header>Description</List.Header>
-                                    {this.state.inactiveSettings.description}
+                                    <ReactMarkdown source={this.state.inactiveSettings.description} />
                                 </List.Item>
                             </List>
                             <Header size='medium'>Information</Header>
