@@ -20,6 +20,7 @@ class Ticker extends React.Component {
                 domain: props.ticker.domain || '',
                 description: props.ticker.description || '',
                 active: props.ticker.active,
+                timestampAfter: props.timestampAfter,
                 information: props.ticker.information || {
                     author: '',
                     url: '',
@@ -51,6 +52,7 @@ class Ticker extends React.Component {
                 domain: this.form.domain || this.state.ticker.domain,
                 description: this.form.description || this.state.ticker.description,
                 active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
+                timestampAfter: this.form.timestampAfter !== undefined ? this.form.timestampAfter : this.state.ticker.timestampAfter,
                 information: this.form.information || {
                     author: this.form.information.author || this.state.ticker.information.author,
                     url: this.form.information.url || this.state.ticker.information.url,
@@ -115,6 +117,13 @@ class Ticker extends React.Component {
                     name='active'
                     defaultChecked={this.state.ticker.active}
                     onChange={(event, input) => this.form.active = input.checked}
+                />
+                <Form.Checkbox
+                    toggle
+                    label='Timestamp After Message'
+                    name='Timestamp After Message'
+                    defaultChecked={this.state.ticker.timestampAfter}
+                    onChange={(event, input) => this.form.timestampAfter = input.checked}
                 />
                 <Form.TextArea
                     label='Description'
@@ -262,6 +271,7 @@ Ticker.propTypes = {
         domain: PropTypes.string,
         description: PropTypes.string,
         active: PropTypes.bool,
+        timestampAfter: PropTypes.bool,
         information: PropTypes.shape({
             author: PropTypes.string,
             url: PropTypes.string,

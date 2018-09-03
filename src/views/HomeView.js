@@ -11,6 +11,7 @@ class HomeView extends React.Component {
 
         this.form = {
             active: false,
+            timestampAfter: true,
             information: {},
         };
 
@@ -87,6 +88,13 @@ class HomeView extends React.Component {
                             name='active'
                             onChange={(event, input) => this.form.active = input.checked}
                         />
+                        <Form.Checkbox
+                            toggle
+                            label='Timestamp After Message'
+                            name='Timestamp After Message'
+                            defaultChecked={this.form.timestampAfter}
+                            onChange={(event, input) => this.form.timestampAfter = input.checked}
+                            />
                         <Form.TextArea
                             required
                             label='Description'
