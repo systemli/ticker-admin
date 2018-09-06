@@ -20,7 +20,7 @@ class Ticker extends React.Component {
                 domain: props.ticker.domain || '',
                 description: props.ticker.description || '',
                 active: props.ticker.active,
-                prepend_timestamp: props.ticker.prepend_timestamp,
+                prepend_time: props.ticker.prepend_time,
                 information: props.ticker.information || {
                     author: '',
                     url: '',
@@ -52,7 +52,7 @@ class Ticker extends React.Component {
                 domain: this.form.domain || this.state.ticker.domain,
                 description: this.form.description || this.state.ticker.description,
                 active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
-                prepend_timestamp: this.form.prepend_timestamp !== undefined ? this.form.prepend_timestamp : this.state.ticker.prepend_timestamp,
+                prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.state.ticker.prepend_time,
                 information: this.form.information || {
                     author: this.form.information.author || this.state.ticker.information.author,
                     url: this.form.information.url || this.state.ticker.information.url,
@@ -122,8 +122,8 @@ class Ticker extends React.Component {
                     toggle
                     label='Prepend the message timestamp'
                     name='Prepend the message timestamp'
-                    defaultChecked={this.state.ticker.prepend_timestamp}
-                    onChange={(event, input) => this.form.prepend_timestamp = input.checked}
+                    defaultChecked={this.state.ticker.prepend_time}
+                    onChange={(event, input) => this.form.prepend_time = input.checked}
                 />
                 <Form.TextArea
                     label='Description'
@@ -271,7 +271,7 @@ Ticker.propTypes = {
         domain: PropTypes.string,
         description: PropTypes.string,
         active: PropTypes.bool,
-        prepend_timestamp: PropTypes.bool,
+        prepend_time: PropTypes.bool,
         information: PropTypes.shape({
             author: PropTypes.string,
             url: PropTypes.string,
