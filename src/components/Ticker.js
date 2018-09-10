@@ -242,6 +242,9 @@ class Ticker extends React.Component {
                     </Card.Header>
                     <Card.Meta content={this.state.ticker.domain}/>
                     <Card.Description content={<ReactMarkdown source={this.state.ticker.description} />}/>
+                    <Icon color={this.state.ticker.active ? 'green' : 'red'}
+                    name={this.state.ticker.prepend_time ? 'toggle on' : 'toggle off'}
+                    /> Prepend Time
                 </Card.Content>
                 <Card.Content>
                     <Button.Group size='tiny' fluid compact>
