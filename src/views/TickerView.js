@@ -232,7 +232,7 @@ class TickerView extends React.Component {
         }
 
         if (this.state.ticker.prepend_time) {
-            this.state.input = moment().format('HH:mm') + ' ' + this.state.input;
+            this.setState({input: moment().format('HH:mm') + ' ' + this.state.input});
         }
 
         postMessage(this.state.id, this.state.input).then(response => {
