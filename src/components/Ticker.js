@@ -62,7 +62,10 @@ class Ticker extends React.Component {
                 }
             };
 
-            putTicker(formData, this.state.ticker.id).then(response => this.setState({ticker: response.data.ticker}));
+            putTicker(formData, this.state.ticker.id).then((response) => {
+                this.setState({ticker: response.data.ticker})
+                this.props.onSubmitSuccess(response.data.ticker);
+            });
         }
 
         this.setState({modalOpen: false});

@@ -28,10 +28,11 @@ class TickerView extends React.Component {
     constructor(props) {
         super(props);
 
+        this.MAX_MESSAGE_CHAR = 280;
         this.state = {
             counter: 0,
             counterColor: 'green',
-            counterLimit: 280,
+            counterLimit: TickerView.MAX_MESSAGE_CHAR,
             formError: false,
             formErrorMessage: '',
             id: props.id,
@@ -122,27 +123,32 @@ class TickerView extends React.Component {
             if (response.data !== undefined && response.data.ticker !== undefined) {
 
                 let twitter = response.data.ticker.twitter;
+                let counterLimit = this.MAX_MESSAGE_CHAR;
+                if (response.data.ticker.prepend_time) {
+                    // 'xx:xx ' that format needs 6 characters
+                    counterLimit = this.state.counterLimit - 6;
+                }
 
                 this.setState({
                     ticker: response.data.ticker,
                     isConfigurationLoading: false,
                     isTwitterConnected: twitter.connected,
+                    counterLimit: counterLimit,
                 });
-
-                if (this.state.ticker.prepend_time) {
-                    // 'xx:xx ' that format needs 6 characters
-                    this.state.counterLimit -= 6;
-                }
             }
         });
 
         this.loadMessages();
     }
 
+    onTickerEditSucces() {
+        this._loadTicker();
+    };
+
     _renderTicker() {
         if (this.state.ticker.id !== undefined) {
             return (
-                <Ticker fluid ticker={this.state.ticker}/>
+                <Ticker fluid ticker={this.state.ticker} onSubmitSuccess={this.onTickerEditSucces.bind(this)}/>
             );
         }
     }
