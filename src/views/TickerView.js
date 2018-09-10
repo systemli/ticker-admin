@@ -126,6 +126,11 @@ class TickerView extends React.Component {
                     isConfigurationLoading: false,
                     isTwitterConnected: twitter.connected,
                 });
+
+                if (this.state.ticker.prepend_time) {
+                    // 'xx:xx ' that format needs 6 characters
+                    this.state.counterLimit -= 6;
+                }
             }
         });
 
