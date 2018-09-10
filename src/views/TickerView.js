@@ -1,4 +1,6 @@
 import React from "react";
+import moment from "moment"
+
 import {
     Button,
     Card,
@@ -227,6 +229,10 @@ class TickerView extends React.Component {
     _submitMessage() {
         if (this.state.input.length === 0 || this.state.input.length > this.state.counterLimit) {
             return;
+        }
+
+        if (this.state.ticker.prepend_time) {
+            this.state.input = moment().format('HH:mm') + ' ' + this.state.input;
         }
 
         postMessage(this.state.id, this.state.input).then(response => {
