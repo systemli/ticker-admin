@@ -237,12 +237,14 @@ class TickerView extends React.Component {
         if (this.state.input.length === 0 || this.state.input.length > this.state.counterLimit) {
             return;
         }
+        
+        let message = this.state.input;
 
         if (this.state.ticker.prepend_time) {
-            this.setState({input: moment().format('HH:mm') + ' ' + this.state.input});
+            message =  moment().format('HH:mm') + ' ' + this.state.input;
         }
 
-        postMessage(this.state.id, this.state.input).then(response => {
+        postMessage(this.state.id, message).then(response => {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
