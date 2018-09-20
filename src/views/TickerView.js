@@ -1,4 +1,6 @@
 import React from "react";
+import moment from "moment"
+
 import {
     Button,
     Card,
@@ -29,7 +31,7 @@ class TickerView extends React.Component {
         this.state = {
             counter: 0,
             counterColor: 'green',
-            counterLimit: 280,
+            counterLimit: this.counterLimit,
             formError: false,
             formErrorMessage: '',
             id: props.id,
@@ -41,6 +43,8 @@ class TickerView extends React.Component {
             input: '',
             ticker: {},
         };
+
+        this.counterLimit = 280;
 
         this._submitMessage = this._submitMessage.bind(this);
         this.loadMessages = this.loadMessages.bind(this);
@@ -120,11 +124,17 @@ class TickerView extends React.Component {
             if (response.data !== undefined && response.data.ticker !== undefined) {
 
                 let twitter = response.data.ticker.twitter;
+                let counterLimit = this.counterLimit;
+                if (response.data.ticker.prepend_time) {
+                    // 'xx:xx ' that format needs 6 characters
+                    counterLimit -= 'xx:xx '.length;
+                }
 
                 this.setState({
                     ticker: response.data.ticker,
                     isConfigurationLoading: false,
                     isTwitterConnected: twitter.connected,
+                    counterLimit: counterLimit,
                 });
             }
         });
@@ -132,10 +142,14 @@ class TickerView extends React.Component {
         this.loadMessages();
     }
 
+    onTickerEditSucces() {
+        this._loadTicker();
+    }
+
     _renderTicker() {
         if (this.state.ticker.id !== undefined) {
             return (
-                <Ticker fluid ticker={this.state.ticker}/>
+                <Ticker fluid ticker={this.state.ticker} onSubmitSuccess={this.onTickerEditSucces.bind(this)}/>
             );
         }
     }
@@ -222,6 +236,10 @@ class TickerView extends React.Component {
     _submitMessage() {
         if (this.state.input.length === 0 || this.state.input.length > this.state.counterLimit) {
             return;
+        }
+
+        if (this.state.ticker.prepend_time) {
+            this.setState({input: moment().format('HH:mm') + ' ' + this.state.input});
         }
 
         postMessage(this.state.id, this.state.input).then(response => {

@@ -2,8 +2,8 @@ import React from 'react';
 import {Button, Card, Confirm, Form, Header, Icon, Input, Label, Modal} from 'semantic-ui-react';
 import {deleteTicker, putTicker} from "../api/Ticker";
 import {withRouter} from "react-router-dom";
-import ReactMarkdown from "react-markdown";
 import PropTypes from 'prop-types';
+import ReactMarkdown from "react-markdown";
 
 class Ticker extends React.Component {
     constructor(props) {
@@ -20,6 +20,7 @@ class Ticker extends React.Component {
                 domain: props.ticker.domain || '',
                 description: props.ticker.description || '',
                 active: props.ticker.active,
+                prepend_time: props.ticker.prepend_time,
                 information: props.ticker.information || {
                     author: '',
                     url: '',
@@ -51,6 +52,7 @@ class Ticker extends React.Component {
                 domain: this.form.domain || this.state.ticker.domain,
                 description: this.form.description || this.state.ticker.description,
                 active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
+                prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.state.ticker.prepend_time,
                 information: this.form.information || {
                     author: this.form.information.author || this.state.ticker.information.author,
                     url: this.form.information.url || this.state.ticker.information.url,
@@ -60,7 +62,10 @@ class Ticker extends React.Component {
                 }
             };
 
-            putTicker(formData, this.state.ticker.id).then(response => this.setState({ticker: response.data.ticker}));
+            putTicker(formData, this.state.ticker.id).then((response) => {
+                this.setState({ticker: response.data.ticker});
+                this.props.onSubmitSuccess(response.data.ticker);
+            });
         }
 
         this.setState({modalOpen: false});
@@ -115,6 +120,13 @@ class Ticker extends React.Component {
                     name='active'
                     defaultChecked={this.state.ticker.active}
                     onChange={(event, input) => this.form.active = input.checked}
+                />
+                <Form.Checkbox
+                    toggle
+                    label='Prepend the message timestamp'
+                    name='Prepend the message timestamp'
+                    defaultChecked={this.state.ticker.prepend_time}
+                    onChange={(event, input) => this.form.prepend_time = input.checked}
                 />
                 <Form.TextArea
                     label='Description'
@@ -207,7 +219,9 @@ class Ticker extends React.Component {
     renderUseButton() {
         if (this.state.useButton) {
             return (
-                <Button color='teal' icon='rocket' content='Use' onClick={() => {this.props.history.replace(`/ticker/${this.state.ticker.id}`)}}/>
+                <Button color='teal' icon='rocket' content='Use' onClick={() => {
+                    this.props.history.replace(`/ticker/${this.state.ticker.id}`)
+                }}/>
             );
         }
     }
@@ -232,7 +246,17 @@ class Ticker extends React.Component {
                         <Label content={this.state.ticker.id} size='mini' style={{float: 'right'}}/>
                     </Card.Header>
                     <Card.Meta content={this.state.ticker.domain}/>
-                    <Card.Description content={<ReactMarkdown source={this.state.ticker.description} />}/>
+                    <Card.Description>
+                        <ReactMarkdown source={this.state.ticker.description}/>
+                    </Card.Description>
+                </Card.Content>
+                <Card.Content>
+                    <Card.Description>
+                        <Header content={'Settings'} size={'small'}/>
+                        <Icon color={this.state.ticker.active ? 'green' : 'red'}
+                              name={this.state.ticker.prepend_time ? 'toggle on' : 'toggle off'}
+                        /> Prepend Time
+                    </Card.Description>
                 </Card.Content>
                 <Card.Content>
                     <Button.Group size='tiny' fluid compact>
@@ -256,12 +280,14 @@ class Ticker extends React.Component {
 export default withRouter(Ticker);
 
 Ticker.propTypes = {
+    onSubmitSuccess: PropTypes.func,
     ticker: PropTypes.shape({
         id: PropTypes.number,
         title: PropTypes.string,
         domain: PropTypes.string,
         description: PropTypes.string,
         active: PropTypes.bool,
+        prepend_time: PropTypes.bool,
         information: PropTypes.shape({
             author: PropTypes.string,
             url: PropTypes.string,

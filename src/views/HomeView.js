@@ -11,6 +11,7 @@ class HomeView extends React.Component {
 
         this.form = {
             active: false,
+            prepend_time: false,
             information: {},
         };
 
@@ -87,6 +88,12 @@ class HomeView extends React.Component {
                             name='active'
                             onChange={(event, input) => this.form.active = input.checked}
                         />
+                        <Form.Checkbox
+                            toggle
+                            label='Prepend the message timestamp'
+                            name='Prepend the message timestamp'
+                            onChange={(event, input) => this.form.prepend_time = input.checked}
+                            />
                         <Form.TextArea
                             required
                             label='Description'
