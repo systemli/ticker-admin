@@ -164,4 +164,5 @@ export default withAuth(TickerList);
 
 TickerList.propTypes = {
     history: PropTypes.any.isRequired,
+    user: PropTypes.object,
 };
