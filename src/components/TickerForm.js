@@ -179,6 +179,6 @@ export default class TickerForm extends React.Component {
 }
 
 TickerForm.propTypes = {
-    ticker: PropTypes.objectOf(Ticker).isRequired,
+    ticker: PropTypes.object,
     callback: PropTypes.func,
 };
