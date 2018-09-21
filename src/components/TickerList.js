@@ -15,6 +15,7 @@ class TickerList extends React.Component {
             deleteTicker: null,
             deleteConfirmOpen: false,
             tickers: [],
+            user: props.user,
         };
 
         this.loadTickers = this.loadTickers.bind(this);
@@ -86,6 +87,28 @@ class TickerList extends React.Component {
         return null;
     }
 
+    renderCreateButton() {
+        if (!this.state.user.is_super_admin) {
+            return null;
+        }
+
+        return (
+            <Button content={'Create'} icon={'plus'} color={'green'} onClick={this.createTicker}/>
+        )
+    }
+
+    renderDeleteButton(ticker) {
+        if (!this.state.user.is_super_admin) {
+            return null;
+        }
+
+        return (
+            <Button ticker={ticker} color='red' icon='delete' content='Delete'
+                    onClick={this.deleteTicker}/>
+        )
+
+    }
+
     render() {
         const tickers = this.state.tickers;
 
@@ -117,8 +140,7 @@ class TickerList extends React.Component {
                                                         onClick={this.redirectToTicker}/>
                                                 <Button ticker={ticker} color='black' icon='edit' content='Edit'
                                                         onClick={this.editTicker}/>
-                                                <Button ticker={ticker} color='red' icon='delete' content='Delete'
-                                                        onClick={this.deleteTicker}/>
+                                                {this.renderDeleteButton(ticker)}
                                             </Button.Group>
                                         </Table.Cell>
                                     </Table.Row>
@@ -127,7 +149,7 @@ class TickerList extends React.Component {
                         )}
                     </Table.Body>
                 </Table>
-                <Button content={'Create'} icon={'plus'} color={'green'} onClick={this.createTicker}/>
+                {this.renderCreateButton()}
                 {this.renderTickerForm()}
                 <Confirm
                     open={this.state.deleteConfirmOpen}
