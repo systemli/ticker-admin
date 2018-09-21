@@ -2,7 +2,6 @@ import React from "react";
 import {Button, Form, Header, Icon, Input, Modal} from "semantic-ui-react";
 import {postTicker, putTicker} from "../api/Ticker";
 import PropTypes from 'prop-types';
-import Ticker from "../models/Ticker";
 
 export default class TickerForm extends React.Component {
     constructor(props) {
