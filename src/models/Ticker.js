@@ -20,6 +20,12 @@ export default class Ticker {
             email: undefined !== props.information.email ? props.information.email : null,
             twitter: undefined !== props.information.twitter ? props.information.twitter : null,
             facebook: undefined !== props.information.facebook ? props.information.facebook : null,
+        };
+        this.twitter = {
+            active: undefined !== props.twitter.active ? props.twitter.name : false,
+            name: undefined !== props.twitter.name ? props.twitter.name : null,
+            screen_name: undefined !== props.twitter.screen_name ? props.twitter.screen_name : null,
+            description: undefined !== props.twitter.description ? props.twitter.description : null,
         }
     }
 }
@@ -37,5 +43,11 @@ Ticker.propTypes = {
         email: PropTypes.string,
         twitter: PropTypes.string,
         facebook: PropTypes.string,
+    }),
+    twitter: PropTypes.shape({
+        active: PropTypes.bool,
+        name: PropTypes.string,
+        screen_name: PropTypes.string,
+        description: PropTypes.string,
     })
 };
