@@ -11,7 +11,7 @@ export default function withAuth(AuthComponent) {
             super(props);
 
             this.state = {
-                user: null,
+                user: null !== localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
             };
         }
 
@@ -21,13 +21,17 @@ export default function withAuth(AuthComponent) {
             }
             else {
                 try {
-                    const profile = Auth.getProfile();
+                    if (null === this.state.user) {
+                        const profile = Auth.getProfile();
 
-                    Auth.fetch(`${ApiUrl}/admin/users/${profile.id}`, {}).then(response => {
-                        this.setState({
-                            user: response.data.user,
+                        Auth.fetch(`${ApiUrl}/admin/users/${profile.id}`, {}).then(response => {
+                            localStorage.setItem('user', JSON.stringify(response.data.user));
+
+                            this.setState({
+                                user: response.data.user,
+                            });
                         });
-                    });
+                    }
                 }
                 catch (err) {
                     Auth.removeToken();
