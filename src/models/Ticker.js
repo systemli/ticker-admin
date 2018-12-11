@@ -23,6 +23,14 @@ export default class Ticker {
                 twitter: undefined !== props.information.twitter ? props.information.twitter : null,
                 facebook: undefined !== props.information.facebook ? props.information.facebook : null,
             };
+        } else {
+            this.information = {
+                author: '',
+                url: '',
+                email: '',
+                twitter: '',
+                facebook: '',
+            }
         }
 
         if (undefined !== props.twitter) {
@@ -31,6 +39,13 @@ export default class Ticker {
                 name: undefined !== props.twitter.name ? props.twitter.name : null,
                 screen_name: undefined !== props.twitter.screen_name ? props.twitter.screen_name : null,
                 description: undefined !== props.twitter.description ? props.twitter.description : null,
+            }
+        } else {
+            this.twitter = {
+                active: false,
+                name: '',
+                screen_name: '',
+                description: '',
             }
         }
     }
