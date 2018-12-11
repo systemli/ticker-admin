@@ -1,4 +1,4 @@
-# ticker-admin
+# ticker-admin [![Build Status](https://travis-ci.com/systemli/ticker-admin.svg?branch=master)](https://travis-ci.com/systemli/ticker-admin)
 
 ## development
 
