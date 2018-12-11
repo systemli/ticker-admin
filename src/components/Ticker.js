@@ -253,7 +253,7 @@ class Ticker extends React.Component {
                 <Card.Content>
                     <Card.Description>
                         <Header content={'Settings'} size={'small'}/>
-                        <Icon color={this.state.ticker.active ? 'green' : 'red'}
+                        <Icon color={this.state.ticker.prepend_time ? 'green' : 'red'}
                               name={this.state.ticker.prepend_time ? 'toggle on' : 'toggle off'}
                         /> Prepend Time
                     </Card.Description>
