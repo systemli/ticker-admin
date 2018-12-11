@@ -22,19 +22,20 @@ export default class TickerForm extends React.Component {
 
     handleSubmit() {
         if (Object.keys(this.form).length > 0) {
+            let information = {};
+            information.author = undefined !== this.form.information.author ? this.form.information.author : this.state.ticker.information.author;
+            information.url = undefined !== this.form.information.url ? this.form.information.url : this.state.ticker.information.url;
+            information.email = undefined !== this.form.information.email ? this.form.information.email : this.state.ticker.information.email;
+            information.twitter = undefined !== this.form.information.twitter ? this.form.information.twitter : this.state.ticker.information.twitter;
+            information.facebook = undefined !== this.form.information.facebook ? this.form.information.facebook : this.state.ticker.information.facebook;
+
             let formData = {
                 title: this.form.title || this.state.ticker.title,
                 domain: this.form.domain || this.state.ticker.domain,
                 description: this.form.description || this.state.ticker.description,
                 active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
                 prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.state.ticker.prepend_time,
-                information: this.form.information || {
-                    author: this.form.information.author || this.state.ticker.information.author,
-                    url: this.form.information.url || this.state.ticker.information.url,
-                    email: this.form.information.email || this.state.ticker.information.email,
-                    twitter: this.form.information.twitter || this.state.ticker.information.twitter,
-                    facebook: this.form.information.facebook || this.state.ticker.information.facebook,
-                }
+                information: information,
             };
 
             if (null !== this.state.ticker.id) {
