@@ -4,6 +4,7 @@ import {deleteTicker, putTicker} from "../api/Ticker";
 import {withRouter} from "react-router-dom";
 import PropTypes from 'prop-types';
 import ReactMarkdown from "react-markdown";
+import TickerForm from "./TickerForm";
 
 class Ticker extends React.Component {
     constructor(props) {
@@ -33,16 +34,18 @@ class Ticker extends React.Component {
             modalOpen: false,
             useButton: props.use || false,
             deleteButton: props.delete || false,
+            closeEditForm: false,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleConfirm = this.handleConfirm.bind(this);
         this.renderUseButton = this.renderUseButton.bind(this);
         this.renderDeleteButton = this.renderDeleteButton.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.openDeleteModal = this.openDeleteModal.bind(this);
         this.closeConfirm = this.closeConfirm.bind(this);
+        this.editTicker = this.editTicker.bind(this);
+        this.closeEditForm = this.closeEditForm.bind(this);
     }
 
     handleSubmit(event) {
@@ -84,8 +87,12 @@ class Ticker extends React.Component {
         this.setState({confirmOpen: false});
     }
 
-    closeModal() {
-        this.setState({modalOpen: false});
+    editTicker() {
+        this.setState({showEditForm: true});
+    }
+
+    closeEditForm(ticker) {
+        this.setState({showEditForm: false, ticker: ticker});
     }
 
     handleConfirm() {
@@ -95,125 +102,6 @@ class Ticker extends React.Component {
             }
             this.closeConfirm();
         });
-    }
-
-    getForm() {
-        return (
-            <Form onSubmit={this.handleSubmit} id='editTicker'>
-                <Form.Group widths='equal'>
-                    <Form.Input
-                        label='Title'
-                        name='title'
-                        defaultValue={this.state.ticker.title}
-                        onChange={(event, input) => this.form.title = input.value}
-                    />
-                    <Form.Input
-                        label='Domain'
-                        name='domain'
-                        defaultValue={this.state.ticker.domain}
-                        onChange={(event, input) => this.form.domain = input.value}
-                    />
-                </Form.Group>
-                <Form.Checkbox
-                    toggle
-                    label='Active'
-                    name='active'
-                    defaultChecked={this.state.ticker.active}
-                    onChange={(event, input) => this.form.active = input.checked}
-                />
-                <Form.Checkbox
-                    toggle
-                    label='Prepend the message timestamp'
-                    name='Prepend the message timestamp'
-                    defaultChecked={this.state.ticker.prepend_time}
-                    onChange={(event, input) => this.form.prepend_time = input.checked}
-                />
-                <Form.TextArea
-                    label='Description'
-                    name='description'
-                    rows='5'
-                    defaultValue={this.state.ticker.description}
-                    onChange={(event, input) => this.form.description = input.value}
-                />
-                <Header dividing>Information</Header>
-                <Form.Group widths='equal'>
-                    <Form.Input label='Author'>
-                        <Input
-                            iconPosition='left'
-                            placeholder='Author' name='information.author'
-                            defaultValue={this.state.ticker.information.author}
-                            onChange={(event, input) => this.form.information.author = input.value}>
-                            <Icon name='users'/>
-                            <input/>
-                        </Input>
-                    </Form.Input>
-                    <Form.Input label='Homepage'>
-                        <Input
-                            iconPosition='left'
-                            name='information.url'
-                            defaultValue={this.state.ticker.information.url}
-                            onChange={(event, input) => this.form.information.url = input.value}>
-                            <Icon name='home'/>
-                            <input/>
-                        </Input>
-                    </Form.Input>
-                </Form.Group>
-                <Form.Group widths='equal'>
-                    <Form.Input label='Email'>
-                        <Input
-                            iconPosition='left'
-                            placeholder='Email' name='information.email'
-                            defaultValue={this.state.ticker.information.email}
-                            onChange={(event, input) => this.form.information.email = input.value}>
-                            <Icon name='at'/>
-                            <input/>
-                        </Input>
-                    </Form.Input>
-                    <Form.Input label='Twitter'>
-                        <Input
-                            iconPosition='left'
-                            name='information.twitter'
-                            defaultValue={this.state.ticker.information.twitter}
-                            onChange={(event, input) => this.form.information.twitter = input.value}>
-                            <Icon name='twitter'/>
-                            <input/>
-                        </Input>
-                    </Form.Input>
-                    <Form.Input label='Facebook'>
-                        <Input
-                            iconPosition='left'
-                            name='information.facebook'
-                            defaultValue={this.state.ticker.information.facebook}
-                            onChange={(event, input) => this.form.information.facebook = input.value}>
-                            <Icon name='facebook'/>
-                            <input/>
-                        </Input>
-                    </Form.Input>
-                </Form.Group>
-            </Form>
-        );
-    }
-
-    getModal() {
-        return (
-            <Modal trigger={<Button color='black' icon='edit' content='edit'
-                                    onClick={() => this.setState({modalOpen: true})}/>}
-                   dimmer='blurring' open={this.state.modalOpen} closeIcon
-                   onClose={this.closeModal}
-            >
-                <Header>Edit {this.state.ticker.title}</Header>
-                <Modal.Content>
-                    {this.getForm()}
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button.Group>
-                        <Button type='submit' color='green' content='Save' form='editTicker'/>
-                        <Button.Or/>
-                        <Button color='red' content='Close' onClick={this.closeModal}/>
-                    </Button.Group>
-                </Modal.Actions>
-            </Modal>
-        );
     }
 
     renderUseButton() {
@@ -226,12 +114,28 @@ class Ticker extends React.Component {
         }
     }
 
+    renderEditButton() {
+        return (
+            <Button color={'black'} icon={'edit'} content={'edit'} onClick={this.editTicker}/>
+        );
+    }
+
     renderDeleteButton() {
         if (this.state.deleteButton) {
             return (
                 <Button color='red' icon='delete' content='Delete' onClick={this.openDeleteModal}/>
             );
         }
+    }
+
+    renderEditForm() {
+        if (!this.state.showEditForm) {
+            return null;
+        }
+
+        return (
+            <TickerForm ticker={this.state.ticker} callback={this.closeEditForm}/>
+        );
     }
 
     render() {
@@ -261,7 +165,7 @@ class Ticker extends React.Component {
                 <Card.Content>
                     <Button.Group size='tiny' fluid compact>
                         {this.renderUseButton()}
-                        {this.getModal()}
+                        {this.renderEditButton()}
                         {this.renderDeleteButton()}
 
                     </Button.Group>
@@ -272,6 +176,7 @@ class Ticker extends React.Component {
                          dimmer='blurring'
                          size='mini'
                 />
+                {this.renderEditForm()}
             </Card>
         );
     }
