@@ -52,6 +52,7 @@ class TickerView extends React.Component {
         this.twitterConnect = this.twitterConnect.bind(this);
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
+        this.updateTicker = this.updateTicker.bind(this);
     }
 
     componentDidMount() {
@@ -142,14 +143,16 @@ class TickerView extends React.Component {
         this.loadMessages();
     }
 
-    onTickerEditSucces() {
-        this._loadTicker();
+    updateTicker(ticker) {
+        if (ticker !== undefined) {
+            this.setState({ticker: ticker});
+        }
     }
 
     _renderTicker() {
         if (this.state.ticker.id !== undefined) {
             return (
-                <Ticker fluid ticker={this.state.ticker} onSubmitSuccess={this.onTickerEditSucces.bind(this)}/>
+                <Ticker fluid ticker={this.state.ticker} callback={this.updateTicker}/>
             );
         }
     }

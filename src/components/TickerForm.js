@@ -13,7 +13,6 @@ export default class TickerForm extends React.Component {
 
         this.state = {
             modalOpen: true,
-            ticker: props.ticker,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,23 +22,23 @@ export default class TickerForm extends React.Component {
     handleSubmit() {
         if (Object.keys(this.form).length > 0) {
             let information = {};
-            information.author = undefined !== this.form.information.author ? this.form.information.author : this.state.ticker.information.author;
-            information.url = undefined !== this.form.information.url ? this.form.information.url : this.state.ticker.information.url;
-            information.email = undefined !== this.form.information.email ? this.form.information.email : this.state.ticker.information.email;
-            information.twitter = undefined !== this.form.information.twitter ? this.form.information.twitter : this.state.ticker.information.twitter;
-            information.facebook = undefined !== this.form.information.facebook ? this.form.information.facebook : this.state.ticker.information.facebook;
+            information.author = undefined !== this.form.information.author ? this.form.information.author : this.props.ticker.information.author;
+            information.url = undefined !== this.form.information.url ? this.form.information.url : this.props.ticker.information.url;
+            information.email = undefined !== this.form.information.email ? this.form.information.email : this.props.ticker.information.email;
+            information.twitter = undefined !== this.form.information.twitter ? this.form.information.twitter : this.props.ticker.information.twitter;
+            information.facebook = undefined !== this.form.information.facebook ? this.form.information.facebook : this.props.ticker.information.facebook;
 
             let formData = {
-                title: this.form.title || this.state.ticker.title,
-                domain: this.form.domain || this.state.ticker.domain,
-                description: this.form.description || this.state.ticker.description,
-                active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
-                prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.state.ticker.prepend_time,
+                title: this.form.title || this.props.ticker.title,
+                domain: this.form.domain || this.props.ticker.domain,
+                description: this.form.description || this.props.ticker.description,
+                active: this.form.active !== undefined ? this.form.active : this.props.ticker.active,
+                prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.props.ticker.prepend_time,
                 information: information,
             };
 
-            if (null !== this.state.ticker.id) {
-                putTicker(formData, this.state.ticker.id).then(response => {
+            if (null !== this.props.ticker.id) {
+                putTicker(formData, this.props.ticker.id).then(response => {
                     this.closeModal(response.data.ticker);
                 });
             } else {
@@ -57,7 +56,7 @@ export default class TickerForm extends React.Component {
             if (undefined !== ticker) {
                 this.props.callback(ticker)
             } else {
-                this.props.callback(this.state.ticker)
+                this.props.callback(this.props.ticker)
             }
         }
     }
@@ -67,21 +66,21 @@ export default class TickerForm extends React.Component {
             <Modal dimmer='blurring' open={this.state.modalOpen} closeIcon
                    onClose={this.closeModal}
             >
-                <Header>{null === this.state.ticker.id ? 'Create Ticker' : 'Edit ' + this.state.ticker.title}</Header>
+                <Header>{null === this.props.ticker.id ? 'Create Ticker' : 'Edit ' + this.props.ticker.title}</Header>
                 <Modal.Content>
                     <Form onSubmit={this.handleSubmit} id='editTicker'>
                         <Form.Group widths='equal'>
                             <Form.Input
                                 label='Title'
                                 name='title'
-                                defaultValue={this.state.ticker.title}
+                                defaultValue={this.props.ticker.title}
                                 onChange={(event, input) => this.form.title = input.value}
                                 required
                             />
                             <Form.Input
                                 label='Domain'
                                 name='domain'
-                                defaultValue={this.state.ticker.domain}
+                                defaultValue={this.props.ticker.domain}
                                 onChange={(event, input) => this.form.domain = input.value}
                                 required
                             />
@@ -90,14 +89,14 @@ export default class TickerForm extends React.Component {
                             toggle
                             label='Active'
                             name='active'
-                            defaultChecked={this.state.ticker.active}
+                            defaultChecked={this.props.ticker.active}
                             onChange={(event, input) => this.form.active = input.checked}
                         />
                         <Form.TextArea
                             label='Description'
                             name='description'
                             rows='5'
-                            defaultValue={this.state.ticker.description}
+                            defaultValue={this.props.ticker.description}
                             onChange={(event, input) => this.form.description = input.value}
                             required
                         />
@@ -107,7 +106,7 @@ export default class TickerForm extends React.Component {
                                 <Input
                                     iconPosition='left'
                                     placeholder='Author' name='information.author'
-                                    defaultValue={this.state.ticker.information.author}
+                                    defaultValue={this.props.ticker.information.author}
                                     onChange={(event, input) => this.form.information.author = input.value}>
                                     <Icon name='users'/>
                                     <input/>
@@ -117,7 +116,7 @@ export default class TickerForm extends React.Component {
                                 <Input
                                     iconPosition='left'
                                     name='information.url'
-                                    defaultValue={this.state.ticker.information.url}
+                                    defaultValue={this.props.ticker.information.url}
                                     onChange={(event, input) => this.form.information.url = input.value}>
                                     <Icon name='home'/>
                                     <input/>
@@ -129,7 +128,7 @@ export default class TickerForm extends React.Component {
                                 <Input
                                     iconPosition='left'
                                     placeholder='Email' name='information.email'
-                                    defaultValue={this.state.ticker.information.email}
+                                    defaultValue={this.props.ticker.information.email}
                                     onChange={(event, input) => this.form.information.email = input.value}>
                                     <Icon name='at'/>
                                     <input/>
@@ -139,7 +138,7 @@ export default class TickerForm extends React.Component {
                                 <Input
                                     iconPosition='left'
                                     name='information.twitter'
-                                    defaultValue={this.state.ticker.information.twitter}
+                                    defaultValue={this.props.ticker.information.twitter}
                                     onChange={(event, input) => this.form.information.twitter = input.value}>
                                     <Icon name='twitter'/>
                                     <input/>
@@ -149,7 +148,7 @@ export default class TickerForm extends React.Component {
                                 <Input
                                     iconPosition='left'
                                     name='information.facebook'
-                                    defaultValue={this.state.ticker.information.facebook}
+                                    defaultValue={this.props.ticker.information.facebook}
                                     onChange={(event, input) => this.form.information.facebook = input.value}>
                                     <Icon name='facebook'/>
                                     <input/>
@@ -160,7 +159,7 @@ export default class TickerForm extends React.Component {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button.Group>
-                        <Button type='submit' color='green' content={null === this.state.ticker.id ? 'Create' : 'Save'}
+                        <Button type='submit' color='green' content={null === this.props.ticker.id ? 'Create' : 'Save'}
                                 form='editTicker'/>
                         <Button.Or/>
                         <Button color='red' content='Close' onClick={this.closeModal}/>

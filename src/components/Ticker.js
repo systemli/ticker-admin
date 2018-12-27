@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button, Card, Confirm, Header, Icon, Label} from 'semantic-ui-react';
-import {deleteTicker, putTicker} from "../api/Ticker";
+import {Button, Card, Confirm, Icon, Label} from 'semantic-ui-react';
+import {deleteTicker} from "../api/Ticker";
 import {withRouter} from "react-router-dom";
 import PropTypes from 'prop-types';
 import ReactMarkdown from "react-markdown";
@@ -10,26 +10,7 @@ class Ticker extends React.Component {
     constructor(props) {
         super(props);
 
-        this.form = {
-            information: {},
-        };
-
         this.state = {
-            ticker: {
-                id: props.ticker.id || null,
-                title: props.ticker.title || '',
-                domain: props.ticker.domain || '',
-                description: props.ticker.description || '',
-                active: props.ticker.active,
-                prepend_time: props.ticker.prepend_time,
-                information: props.ticker.information || {
-                    author: '',
-                    url: '',
-                    email: '',
-                    twitter: '',
-                    facebook: '',
-                }
-            },
             confirmOpen: false,
             modalOpen: false,
             useButton: props.use || false,
@@ -37,7 +18,6 @@ class Ticker extends React.Component {
             closeEditForm: false,
         };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleConfirm = this.handleConfirm.bind(this);
         this.renderUseButton = this.renderUseButton.bind(this);
         this.renderDeleteButton = this.renderDeleteButton.bind(this);
@@ -46,33 +26,6 @@ class Ticker extends React.Component {
         this.closeConfirm = this.closeConfirm.bind(this);
         this.editTicker = this.editTicker.bind(this);
         this.closeEditForm = this.closeEditForm.bind(this);
-    }
-
-    handleSubmit(event) {
-        if (Object.keys(this.form).length > 0) {
-            let formData = {
-                title: this.form.title || this.state.ticker.title,
-                domain: this.form.domain || this.state.ticker.domain,
-                description: this.form.description || this.state.ticker.description,
-                active: this.form.active !== undefined ? this.form.active : this.state.ticker.active,
-                prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.state.ticker.prepend_time,
-                information: this.form.information || {
-                    author: this.form.information.author || this.state.ticker.information.author,
-                    url: this.form.information.url || this.state.ticker.information.url,
-                    email: this.form.information.email || this.state.ticker.information.email,
-                    twitter: this.form.information.twitter || this.state.ticker.information.twitter,
-                    facebook: this.form.information.facebook || this.state.ticker.information.facebook,
-                }
-            };
-
-            putTicker(formData, this.state.ticker.id).then((response) => {
-                this.setState({ticker: response.data.ticker});
-                this.props.onSubmitSuccess(response.data.ticker);
-            });
-        }
-
-        this.setState({modalOpen: false});
-        event.preventDefault();
     }
 
     openDeleteModal() {
@@ -93,10 +46,12 @@ class Ticker extends React.Component {
 
     closeEditForm(ticker) {
         this.setState({showEditForm: false, ticker: ticker});
+
+        this.props.callback(ticker);
     }
 
     handleConfirm() {
-        deleteTicker(this.state.ticker.id).then(() => {
+        deleteTicker(this.props.ticker.id).then(() => {
             if (this.props.reload !== undefined) {
                 this.props.reload();
             }
@@ -134,7 +89,7 @@ class Ticker extends React.Component {
         }
 
         return (
-            <TickerForm ticker={this.state.ticker} callback={this.closeEditForm}/>
+            <TickerForm ticker={this.props.ticker} callback={this.closeEditForm}/>
         );
     }
 
@@ -143,16 +98,16 @@ class Ticker extends React.Component {
             <Card fluid={this.props.fluid}>
                 <Card.Content>
                     <Card.Header>
-                        <Icon color={this.state.ticker.active ? 'green' : 'red'}
-                              name={this.state.ticker.active ? 'toggle on' : 'toggle off'}
+                        <Icon color={this.props.ticker.active ? 'green' : 'red'}
+                              name={this.props.ticker.active ? 'toggle on' : 'toggle off'}
                         />
-                        {this.state.ticker.title}
-                        <Label content={this.state.ticker.id} size='mini' style={{float: 'right'}}/>
+                        {this.props.ticker.title}
+                        <Label content={this.props.ticker.id} size='mini' style={{float: 'right'}}/>
                     </Card.Header>
                     <Card.Meta><a target='_blank' rel='noopener noreferrer'
-                                  href={'https://' + this.state.ticker.domain}>{this.state.ticker.domain}</a></Card.Meta>
+                                  href={'https://' + this.props.ticker.domain}>{this.props.ticker.domain}</a></Card.Meta>
                     <Card.Description>
-                        <ReactMarkdown source={this.state.ticker.description}/>
+                        <ReactMarkdown source={this.props.ticker.description}/>
                     </Card.Description>
                 </Card.Content>
                 <Card.Content>
@@ -178,7 +133,7 @@ class Ticker extends React.Component {
 export default withRouter(Ticker);
 
 Ticker.propTypes = {
-    onSubmitSuccess: PropTypes.func,
+    callback: PropTypes.func,
     ticker: PropTypes.shape({
         id: PropTypes.number,
         title: PropTypes.string,
