@@ -156,14 +156,6 @@ class Ticker extends React.Component {
                     </Card.Description>
                 </Card.Content>
                 <Card.Content>
-                    <Card.Description>
-                        <Header content={'Settings'} size={'small'}/>
-                        <Icon color={this.state.ticker.prepend_time ? 'green' : 'red'}
-                              name={this.state.ticker.prepend_time ? 'toggle on' : 'toggle off'}
-                        /> Prepend Time
-                    </Card.Description>
-                </Card.Content>
-                <Card.Content>
                     <Button.Group size='tiny' fluid compact>
                         {this.renderUseButton()}
                         {this.renderEditButton()}

@@ -93,13 +93,6 @@ export default class TickerForm extends React.Component {
                             defaultChecked={this.state.ticker.active}
                             onChange={(event, input) => this.form.active = input.checked}
                         />
-                        <Form.Checkbox
-                            toggle
-                            label='Prepend the message timestamp'
-                            name='Prepend the message timestamp'
-                            defaultChecked={this.state.ticker.prepend_time}
-                            onChange={(event, input) => this.form.prepend_time = input.checked}
-                        />
                         <Form.TextArea
                             label='Description'
                             name='description'
