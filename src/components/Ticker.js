@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Confirm, Form, Header, Icon, Input, Label, Modal} from 'semantic-ui-react';
+import {Button, Card, Confirm, Header, Icon, Label} from 'semantic-ui-react';
 import {deleteTicker, putTicker} from "../api/Ticker";
 import {withRouter} from "react-router-dom";
 import PropTypes from 'prop-types';
@@ -149,7 +149,8 @@ class Ticker extends React.Component {
                         {this.state.ticker.title}
                         <Label content={this.state.ticker.id} size='mini' style={{float: 'right'}}/>
                     </Card.Header>
-                    <Card.Meta content={this.state.ticker.domain}/>
+                    <Card.Meta><a target='_blank' rel='noopener noreferrer'
+                                  href={'https://' + this.state.ticker.domain}>{this.state.ticker.domain}</a></Card.Meta>
                     <Card.Description>
                         <ReactMarkdown source={this.state.ticker.description}/>
                     </Card.Description>

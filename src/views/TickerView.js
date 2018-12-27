@@ -9,7 +9,7 @@ import {
     Form,
     Grid,
     Header,
-    Icon, Image,
+    Icon,
     Label,
     Loader,
     Message as Error, Sticky
@@ -174,7 +174,6 @@ class TickerView extends React.Component {
             <Container>
                 <Card fluid>
                     <Card.Content>
-                        <Image floated='right' size='mini' src={twitter.image_url}/>
                         <Card.Header>
                             <Icon color={twitter.active ? 'green' : 'red'}
                                   name={twitter.active ? 'toggle on' : 'toggle off'}
@@ -182,7 +181,8 @@ class TickerView extends React.Component {
                             {twitter.name}
                         </Card.Header>
                         <Card.Meta>
-                            @{twitter.screen_name}
+                            <a target='_blank' rel='noopener noreferrer'
+                               href={'https://twitter.com/' + twitter.screen_name}>@{twitter.screen_name}</a>
                         </Card.Meta>
                         <Card.Description>
                             {twitter.description}
