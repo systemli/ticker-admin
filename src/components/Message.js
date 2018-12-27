@@ -25,9 +25,10 @@ export default class Message extends React.Component {
     static _replaceMagic(text) {
         return (text
             .replace(/(https?:\/\/([^\s]+))/g, '<a href="$1" target="_blank">$2</a>')
-            .replace(/#(\S+)/g, '<a target="_blank" href="https://twitter.com/search?q=%23$1">#$1</a>')
-            .replace(/@(\S+)/g, '<a target="_blank" href="https://twitter.com/$1">@$1</a>')
-            .replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+            .replace(/#(\S+)/g, '<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/search?q=%23$1">#$1</a>')
+            .replace(/ @(\S+)/g, ' <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/$1">@$1</a>')
+            .replace(/(\w+@\w+.\w+)/g, '<a href="mailto:$1">$1</a>')
+            .replace(/(?:\r\n|\r|\n)/g, '<br/>'))
     }
 
     _getText() {
@@ -46,7 +47,8 @@ export default class Message extends React.Component {
 
     render() {
         let twitterIcon = (this.state.tweetId != null) ? (
-            <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank' rel='noopener noreferrer'><Icon
+            <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank'
+               rel='noopener noreferrer'><Icon
                 name='twitter'/></a>) : (<Icon name='twitter' disabled/>);
 
         return (
