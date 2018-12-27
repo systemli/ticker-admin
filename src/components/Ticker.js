@@ -45,7 +45,7 @@ class Ticker extends React.Component {
     }
 
     closeEditForm(ticker) {
-        this.setState({showEditForm: false, ticker: ticker});
+        this.setState({showEditForm: false});
 
         this.props.callback(ticker);
     }

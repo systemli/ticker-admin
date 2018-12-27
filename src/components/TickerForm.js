@@ -12,6 +12,7 @@ export default class TickerForm extends React.Component {
         };
 
         this.state = {
+            ticker: props.ticker,
             modalOpen: true,
         };
 
@@ -39,25 +40,25 @@ export default class TickerForm extends React.Component {
 
             if (null !== this.props.ticker.id) {
                 putTicker(formData, this.props.ticker.id).then(response => {
-                    this.closeModal(response.data.ticker);
+                    this.setState({ticker: response.data.ticker});
+
+                    this.closeModal();
                 });
             } else {
                 postTicker(formData).then(response => {
-                    this.closeModal(response.data.ticker);
+                    this.setState({ticker: response.data.ticker});
+
+                    this.closeModal();
                 })
             }
         }
     }
 
-    closeModal(ticker) {
+    closeModal() {
         this.setState({modalOpen: false});
 
         if (undefined !== this.props.callback) {
-            if (undefined !== ticker) {
-                this.props.callback(ticker)
-            } else {
-                this.props.callback(this.props.ticker)
-            }
+            this.props.callback(this.state.ticker);
         }
     }
 
