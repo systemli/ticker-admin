@@ -10,6 +10,21 @@ import UsersView from "./views/UsersView";
 import SettingsView from "./views/SettingsView";
 import PropTypes from 'prop-types';
 
+const runtime = require('offline-plugin/runtime');
+
+runtime.install({
+    onUpdating: () => {
+    },
+    onUpdateReady: () => {
+        runtime.applyUpdate()
+    },
+    onUpdated: () => {
+        window.reload();
+    },
+    onUpdateFailed: () => {
+    }
+});
+
 const Ticker = ({match}) => {
     let id = parseInt(match.params.id);
 
