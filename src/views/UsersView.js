@@ -17,7 +17,9 @@ class UsersView extends React.Component {
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
-                            <UserList/>
+                            <Grid.Column>
+                                <UserList/>
+                            </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Container>
