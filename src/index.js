@@ -19,7 +19,6 @@ runtime.install({
         runtime.applyUpdate()
     },
     onUpdated: () => {
-        window.reload();
     },
     onUpdateFailed: () => {
     }
