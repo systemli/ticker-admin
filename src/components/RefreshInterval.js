@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Card, Container, Form, Header, Icon, List, Modal} from "semantic-ui-react";
+import {Button, Card, Form, Header, Icon, List, Modal} from "semantic-ui-react";
 import {getRefreshInterval, putRefreshInterval} from "../api/Settings";
 
 class RefreshInterval extends React.Component {
@@ -78,7 +78,7 @@ class RefreshInterval extends React.Component {
 
     render() {
         return (
-            <Container>
+            <React.Fragment>
                 <Card>
                     <Card.Content>
                         <Card.Header><Icon name='refresh'/>Refresh Interval</Card.Header>
@@ -98,7 +98,7 @@ class RefreshInterval extends React.Component {
                         {this.renderModal()}
                     </Card.Content>
                 </Card>
-            </Container>
+            </React.Fragment>
         );
     }
 }

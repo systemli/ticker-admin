@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Container, Form, Header, Icon, Input, List, Modal} from "semantic-ui-react";
+import {Button, Card, Form, Header, Icon, Input, List, Modal} from "semantic-ui-react";
 import {getInactiveSettings, putInactiveSettings} from "../api/Settings";
 import ReactMarkdown from 'react-markdown';
 
@@ -138,7 +138,7 @@ class InactiveSettings extends React.Component {
 
     render() {
         return (
-            <Container>
+            <React.Fragment>
                 <Card>
                     <Card.Content>
                         <Card.Header><Icon name='question circle'/>Inactive Settings</Card.Header>
@@ -185,7 +185,7 @@ class InactiveSettings extends React.Component {
                         {this.renderModal()}
                     </Card.Content>
                 </Card>
-            </Container>
+            </React.Fragment>
         );
     }
 }

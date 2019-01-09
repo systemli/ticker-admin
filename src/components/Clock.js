@@ -30,9 +30,9 @@ export default class Clock extends React.Component {
 
     render() {
         return (
-            <p>
+            <React.Fragment>
                 <Moment format={this.state.format}>{this.state.date}</Moment>
-            </p>
+            </React.Fragment>
         );
     }
 }
