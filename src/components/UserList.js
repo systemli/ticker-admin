@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Confirm, Container, Form, Header, Icon, Label, Loader, Message, Modal, Table} from "semantic-ui-react";
+import {Button, Confirm, Container, Form, Header, Icon, Label, Message, Modal, Table} from "semantic-ui-react";
 import {deleteUser, getUsers, postUser, putUser} from "../api/User";
 import Moment from "react-moment";
 import TickersDropdown from "./TickersDropdown";
@@ -12,7 +12,6 @@ class UserList extends React.Component {
 
         this.state = {
             users: [],
-            isLoading: true,
             deleteUser: null,
             editUser: null,
             showModal: false,
@@ -32,10 +31,8 @@ class UserList extends React.Component {
     }
 
     reloadUsers() {
-        this.setState({isLoading: true});
-
         getUsers().then(response => {
-            this.setState({users: response.data.users, isLoading: false});
+            this.setState({users: response.data.users});
         });
     }
 
@@ -176,8 +173,7 @@ class UserList extends React.Component {
         const users = this.state.users || [];
 
         return (
-            <Container>
-                <Loader active={this.state.isLoading}/>
+            <React.Fragment>
                 <Table>
                     <Table.Header>
                         <Table.Row>
@@ -185,7 +181,6 @@ class UserList extends React.Component {
                             <Table.HeaderCell>Admin</Table.HeaderCell>
                             <Table.HeaderCell>Email</Table.HeaderCell>
                             <Table.HeaderCell>Creation Time</Table.HeaderCell>
-                            <Table.HeaderCell>Roles</Table.HeaderCell>
                             <Table.HeaderCell/>
                         </Table.Row>
                     </Table.Header>
@@ -200,17 +195,18 @@ class UserList extends React.Component {
                                     </Label></Table.Cell>
                                     <Table.Cell>{user.email}</Table.Cell>
                                     <Table.Cell><Moment fromNow date={user.creation_date}/></Table.Cell>
-                                    <Table.Cell>{user.roles}</Table.Cell>
                                     <Table.Cell textAlign='right'>
                                         <Button.Group size='small'>
                                             <Button icon='edit'
                                                     color='black'
+                                                    content='Edit'
                                                     onClick={() => {
                                                         this.openModal(user)
                                                     }}
                                             />
                                             <Button icon='delete'
                                                     color='red'
+                                                    content='Delete'
                                                     onClick={() => {
                                                         this.setState({showDeleteConfirm: true, deleteUser: user});
                                                     }}
@@ -228,7 +224,6 @@ class UserList extends React.Component {
                             <Table.HeaderCell/>
                             <Table.HeaderCell/>
                             <Table.HeaderCell/>
-                            <Table.HeaderCell/>
                             <Table.HeaderCell>
                                 <Button floated='right' icon labelPosition='left' primary
                                         size='small'
@@ -241,13 +236,9 @@ class UserList extends React.Component {
                         </Table.Row>
                     </Table.Footer>
                 </Table>
-                {
-                    this.renderModal()
-                }
-                {
-                    this.renderDeleteConfirm()
-                }
-            </Container>
+                {this.renderModal()}
+                {this.renderDeleteConfirm()}
+            </React.Fragment>
         );
     }
 }

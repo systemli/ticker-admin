@@ -1,6 +1,6 @@
 import React from "react";
 import {deleteTicker, getTickers} from "../api/Ticker";
-import {Button, Confirm, Container, Icon, Table} from "semantic-ui-react";
+import {Button, Confirm, Icon, Table} from "semantic-ui-react";
 import withAuth from "./withAuth";
 import PropTypes from "prop-types";
 import TickerForm from "./TickerForm";
@@ -93,7 +93,8 @@ class TickerList extends React.Component {
         }
 
         return (
-            <Button content={'Create'} icon={'plus'} color={'green'} onClick={this.createTicker}/>
+            <Button labelPosition='left' size='small' floated='right' content='Create Ticker' icon='plus' color='green'
+                    onClick={this.createTicker}/>
         )
     }
 
@@ -113,8 +114,8 @@ class TickerList extends React.Component {
         const tickers = this.state.tickers;
 
         return (
-            <Container>
-                <Table celled striped>
+            <React.Fragment>
+                <Table>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell/>
@@ -148,14 +149,23 @@ class TickerList extends React.Component {
                             }
                         )}
                     </Table.Body>
+                    <Table.Footer fullWidth>
+                        <Table.Row>
+                            <Table.HeaderCell/>
+                            <Table.HeaderCell/>
+                            <Table.HeaderCell/>
+                            <Table.HeaderCell>
+                                {this.renderCreateButton()}
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Footer>
                 </Table>
-                {this.renderCreateButton()}
                 {this.renderTickerForm()}
                 <Confirm
                     open={this.state.deleteConfirmOpen}
                     onCancel={this.handleDeleteCancel}
                     onConfirm={this.handleDeleteConfirm}/>
-            </Container>
+            </React.Fragment>
         );
     }
 }
