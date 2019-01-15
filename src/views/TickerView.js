@@ -23,6 +23,7 @@ import Navigation from "./Navigation";
 import TwitterLogin from 'react-twitter-auth';
 import {ApiUrl} from "../api/Api";
 import PropTypes from 'prop-types';
+import TickerUserList from "../components/TickerUserList";
 
 class TickerView extends React.Component {
     constructor(props) {
@@ -263,6 +264,17 @@ class TickerView extends React.Component {
         });
     }
 
+    renderUsers() {
+        if (null !== this.props.user && this.props.user.is_super_admin) {
+            return (
+                <React.Fragment>
+                    <Header dividing>Users</Header>
+                    <TickerUserList id={this.props.id}/>
+                </React.Fragment>
+            );
+        }
+    }
+
     render() {
         return (
             <Container>
@@ -300,6 +312,7 @@ class TickerView extends React.Component {
                                     {this._renderTicker()}
                                     <Header dividing>Twitter</Header>
                                     {this._renderTwitter()}
+                                    {this.renderUsers()}
                                 </Sticky>
                             </Grid.Column>
                         </Grid.Row>
@@ -314,4 +327,5 @@ export default withAuth(TickerView);
 
 TickerView.propTypes = {
     id: PropTypes.number.isRequired,
+    user: PropTypes.object,
 };

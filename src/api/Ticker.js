@@ -66,3 +66,35 @@ export function deleteTicker(id) {
         method: 'DELETE'
     });
 }
+
+/**
+ *
+ * @param {string|number} id
+ * @returns {Promise<Response>}
+ */
+export function getTickerUsers(id) {
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users`);
+}
+
+/**
+ * @param id
+ * @param users
+ * @returns {Promise<Response>}
+ */
+export function putTickerUser(id, ...users) {
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users`, {
+        body: JSON.stringify({"users": users}),
+        method: 'PUT'
+    })
+}
+
+/**
+ * @param id
+ * @param userId
+ * @returns {Promise<Response>}
+ */
+export function deleteTickerUser(id, userId) {
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users/${userId}`, {
+        method: 'DELETE'
+    })
+}
