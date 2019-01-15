@@ -98,3 +98,13 @@ export function deleteTickerUser(id, userId) {
         method: 'DELETE'
     })
 }
+
+/**
+ * @param id
+ * @returns {Promise<Response>}
+ */
+export function putTickerReset(id) {
+    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/reset`, {
+        method: 'PUT'
+    })
+}

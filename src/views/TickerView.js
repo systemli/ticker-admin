@@ -24,6 +24,7 @@ import TwitterLogin from 'react-twitter-auth';
 import {ApiUrl} from "../api/Api";
 import PropTypes from 'prop-types';
 import TickerUserList from "../components/TickerUserList";
+import TickerResetButton from "../components/TickerResetButton";
 
 class TickerView extends React.Component {
     constructor(props) {
@@ -275,6 +276,21 @@ class TickerView extends React.Component {
         }
     }
 
+    renderDangerZone() {
+        if (null !== this.props.user && this.props.user.is_super_admin) {
+            return (
+                <React.Fragment>
+                    <Header dividing>Danger Zone</Header>
+                    <TickerResetButton ticker={this.state.ticker} reset={this.reset.bind(this)}/>
+                </React.Fragment>
+            )
+        }
+    }
+
+    reset(ticker) {
+        this.setState({ticker: ticker, messages: []});
+    }
+
     render() {
         return (
             <Container>
@@ -313,6 +329,7 @@ class TickerView extends React.Component {
                                     <Header dividing>Twitter</Header>
                                     {this._renderTwitter()}
                                     {this.renderUsers()}
+                                    {this.renderDangerZone()}
                                 </Sticky>
                             </Grid.Column>
                         </Grid.Row>
