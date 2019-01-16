@@ -207,8 +207,7 @@ class TickerView extends React.Component {
             <Container>
                 <Card fluid>
                     <Card.Content>
-                        You currently not connected with Twitter. This means new messages will not published to your
-                        account.
+                        You're currently not connected with Twitter. New messages will not be published to your account.
                     </Card.Content>
                     <Card.Content extra>
                         <TwitterLogin
