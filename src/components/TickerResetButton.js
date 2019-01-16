@@ -33,7 +33,7 @@ class TickerResetButton extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Button negative icon labelPosition='left' onClick={this.open.bind(this)}>
+                <Button size='tiny' negative icon labelPosition='left' onClick={this.open.bind(this)}>
                     <Icon name='remove'/>
                     Reset
                 </Button>

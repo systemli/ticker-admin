@@ -98,7 +98,7 @@ class TickerUserList extends React.Component {
     renderAddButton() {
         return (
             <Modal trigger={<Button onClick={this.openUsersModal.bind(this)}
-                                    color='teal' content='Add' icon='add' size='mini'/>}
+                                    color='teal' content='Add' icon='add' size='tiny' compact/>}
                    open={this.state.usersModalOpen}
                    onOpen={this.loadUsers.bind(this)}
                    onClose={this.closeUsersModal.bind(this)}
@@ -157,7 +157,7 @@ class TickerUserList extends React.Component {
 
     renderDeleteButton(user) {
         return (
-            <Button basic color='red' icon='delete' size='mini' content='Remove'
+            <Button basic color='red' icon='delete' size='tiny' content='Remove' compact
                     onClick={this.openDeleteModal.bind(this, user)}/>
         );
     }
