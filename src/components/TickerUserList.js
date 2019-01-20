@@ -118,7 +118,7 @@ class TickerUserList extends React.Component {
 
         if (users.length === 0) {
             return (
-                <React.Fragment>There are no users granted access this ticker.</React.Fragment>
+                <React.Fragment>No users are allowed to use this ticker.</React.Fragment>
             )
         }
 
@@ -144,7 +144,7 @@ class TickerUserList extends React.Component {
             <Modal size='mini' open={this.state.deleteModalOpen} onClose={this.closeDeleteModal.bind(this)}>
                 <Modal.Header>Revoke Access</Modal.Header>
                 <Modal.Content>
-                    <p>Are you sure you want to revoke access</p>
+                    <p>Are you sure you want to revoke the access for this user?</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button negative onClick={this.closeDeleteModal.bind(this)}>No</Button>
@@ -170,8 +170,8 @@ class TickerUserList extends React.Component {
                 <Message icon>
                     <Icon name='info circle'/>
                     <Message.Content>
-                        <Message.Header>No users found</Message.Header>
-                        You need to add a new user if you want to add them.
+                        <Message.Header>No available users found</Message.Header>
+                        You need to add a user, before you can add them here.
                     </Message.Content>
                 </Message>
             )
@@ -203,7 +203,7 @@ class TickerUserList extends React.Component {
             <React.Fragment>
                 <Card fluid>
                     <Card.Content>
-                        List of all granted users to this ticker. Only Admins can manage this list.
+                        The users listed below can use this ticker. Only admins can add or remove users.
                     </Card.Content>
                     <Card.Content>
                         {this.renderUserList()}

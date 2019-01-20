@@ -67,19 +67,19 @@ export default class TickerForm extends React.Component {
             <Modal dimmer='blurring' open={this.state.modalOpen} closeIcon
                    onClose={this.closeModal}
             >
-                <Header>{null === this.props.ticker.id ? 'Create Ticker' : 'Edit ' + this.props.ticker.title}</Header>
+                <Header>{null === this.props.ticker.id ? 'Create a Ticker' : 'Edit ' + this.props.ticker.title}</Header>
                 <Modal.Content>
                     <Form onSubmit={this.handleSubmit} id='editTicker'>
                         <Form.Group widths='equal'>
                             <Form.Input
-                                label='Title'
+                                label='Ticker Title'
                                 name='title'
                                 defaultValue={this.props.ticker.title}
                                 onChange={(event, input) => this.form.title = input.value}
                                 required
                             />
                             <Form.Input
-                                label='Domain'
+                                label='Ticker Domain'
                                 name='domain'
                                 defaultValue={this.props.ticker.domain}
                                 onChange={(event, input) => this.form.domain = input.value}
@@ -94,14 +94,14 @@ export default class TickerForm extends React.Component {
                             onChange={(event, input) => this.form.active = input.checked}
                         />
                         <Form.TextArea
-                            label='Description'
+                            label='Ticker Description'
                             name='description'
                             rows='5'
                             defaultValue={this.props.ticker.description}
                             onChange={(event, input) => this.form.description = input.value}
                             required
                         />
-                        <Header dividing>Information</Header>
+                        <Header dividing>Information about the author</Header>
                         <Form.Group widths='equal'>
                             <Form.Input label='Author'>
                                 <Input
@@ -125,7 +125,7 @@ export default class TickerForm extends React.Component {
                             </Form.Input>
                         </Form.Group>
                         <Form.Group widths='equal'>
-                            <Form.Input label='Email'>
+                            <Form.Input label='E-Mail Address'>
                                 <Input
                                     iconPosition='left'
                                     placeholder='Email' name='information.email'
@@ -135,7 +135,7 @@ export default class TickerForm extends React.Component {
                                     <input/>
                                 </Input>
                             </Form.Input>
-                            <Form.Input label='Twitter'>
+                            <Form.Input label='Twitter Handle'>
                                 <Input
                                     iconPosition='left'
                                     name='information.twitter'
@@ -145,7 +145,7 @@ export default class TickerForm extends React.Component {
                                     <input/>
                                 </Input>
                             </Form.Input>
-                            <Form.Input label='Facebook'>
+                            <Form.Input label='Facebook Page'>
                                 <Input
                                     iconPosition='left'
                                     name='information.facebook'

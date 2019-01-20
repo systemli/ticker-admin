@@ -61,7 +61,7 @@ class RefreshInterval extends React.Component {
                    dimmer='blurring' open={this.state.modalOpen} closeIcon
                    onClose={() => this.setState({modalOpen: false})}
             >
-                <Header>Edit Refresh Interval</Header>
+                <Header>Configure Refresh Interval</Header>
                 <Modal.Content>
                     {this.renderForm()}
                 </Modal.Content>
@@ -82,7 +82,7 @@ class RefreshInterval extends React.Component {
                 <Card>
                     <Card.Content>
                         <Card.Header><Icon name='refresh'/>Refresh Interval</Card.Header>
-                        <Card.Meta>These setting configures the reload interval for the frontend</Card.Meta>
+                        <Card.Meta>This setting will set the reload interval of the frontend. After the specified amount of time, a reload of the frontend will be enforced.</Card.Meta>
                     </Card.Content>
                     <Card.Content>
                         <Card.Description>

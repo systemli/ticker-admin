@@ -64,7 +64,7 @@ class InactiveSettings extends React.Component {
                     defaultValue={this.state.inactiveSettings.description}
                     onChange={(event, input) => this.form.description = input.value}
                 />
-                <Header dividing>Information</Header>
+                <Header dividing>Information about the author</Header>
                 <Form.Group widths='equal'>
                     <Form.Input label='Author'>
                         <Input
@@ -120,7 +120,7 @@ class InactiveSettings extends React.Component {
                    dimmer='blurring' open={this.state.modalOpen} closeIcon
                    onClose={() => this.setState({modalOpen: false})}
             >
-                <Header>Edit Inactive Settings</Header>
+                <Header>Edit Settings for inactive tickers</Header>
                 <Modal.Content>
                     {this.renderForm()}
                 </Modal.Content>
@@ -141,8 +141,8 @@ class InactiveSettings extends React.Component {
             <React.Fragment>
                 <Card>
                     <Card.Content>
-                        <Card.Header><Icon name='question circle'/>Inactive Settings</Card.Header>
-                        <Card.Meta>These settings have affect for inactive or non-configured tickers.</Card.Meta>
+                        <Card.Header><Icon name='question circle'/>Settings for inactive tickers</Card.Header>
+                        <Card.Meta>These settings will affect all inactive or non-configured tickers.</Card.Meta>
                     </Card.Content>
                     <Card.Content>
                         <Card.Description>
@@ -160,7 +160,7 @@ class InactiveSettings extends React.Component {
                                     <ReactMarkdown source={this.state.inactiveSettings.description} />
                                 </List.Item>
                             </List>
-                            <Header size='medium'>Information</Header>
+                            <Header size='medium'>Information about the author</Header>
                             <List>
                                 <List.Item>
                                     <List.Icon name='users'/>

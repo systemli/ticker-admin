@@ -38,10 +38,9 @@ class TickerResetButton extends React.Component {
                     Reset
                 </Button>
                 <Modal size='mini' open={this.state.open} onClose={this.close}>
-                    <Modal.Header>Reset Ticker</Modal.Header>
+                    <Modal.Header>Are you sure you want to reset the ticker?</Modal.Header>
                     <Modal.Content>
-                        <p><strong>Are you sure you want to reset the ticker?</strong></p>
-                        <p>This will remove all messages, descriptions, the connection to twitter and disable the
+                        <p>This will delete all existing messages, descriptions, the connection to Twitter and disable the
                             ticker.</p>
                     </Modal.Content>
                     <Modal.Actions>

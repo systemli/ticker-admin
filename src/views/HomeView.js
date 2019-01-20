@@ -17,7 +17,7 @@ class HomeView extends React.Component {
                     <Grid>
                         <Grid.Row>
                             <Grid.Column>
-                                <Header dividing>Available Configurations</Header>
+                                <Header dividing>Available Ticker Configurations</Header>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>

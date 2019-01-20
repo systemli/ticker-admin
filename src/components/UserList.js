@@ -110,7 +110,7 @@ class UserList extends React.Component {
             return (
                 <Container>
                     <Header>Permissions</Header>
-                    <Message info>Admin Users don't need special permissions for Tickers.</Message>
+                    <Message info>Admin users don't need special permissions for Tickers.</Message>
                 </Container>
             );
         }

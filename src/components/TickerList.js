@@ -119,8 +119,8 @@ class TickerList extends React.Component {
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell/>
-                            <Table.HeaderCell>Title</Table.HeaderCell>
-                            <Table.HeaderCell>Domain</Table.HeaderCell>
+                            <Table.HeaderCell>Ticker Title</Table.HeaderCell>
+                            <Table.HeaderCell>Ticker Domain</Table.HeaderCell>
                             <Table.HeaderCell/>
                         </Table.Row>
                     </Table.Header>
