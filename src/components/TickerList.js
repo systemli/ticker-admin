@@ -1,12 +1,11 @@
 import React from "react";
 import {deleteTicker, getTickers} from "../api/Ticker";
 import {Button, Confirm, Icon, Table} from "semantic-ui-react";
-import withAuth from "./withAuth";
 import PropTypes from "prop-types";
 import TickerForm from "./TickerForm";
 import Ticker from "../models/Ticker";
 
-class TickerList extends React.Component {
+export default class TickerList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -19,7 +18,6 @@ class TickerList extends React.Component {
         };
 
         this.loadTickers = this.loadTickers.bind(this);
-        this.redirectToTicker = this.redirectToTicker.bind(this);
         this.editTicker = this.editTicker.bind(this);
         this.createTicker = this.createTicker.bind(this);
         this.deleteTicker = this.deleteTicker.bind(this);
@@ -40,7 +38,7 @@ class TickerList extends React.Component {
     }
 
     redirectToTicker(event, data) {
-        this.props.history.replace(`/ticker/${data.ticker.id}`)
+        this.props.history.push(`/ticker/${data.ticker.id}`)
     }
 
     editTicker(event, data) {
@@ -138,7 +136,7 @@ class TickerList extends React.Component {
                                         <Table.Cell collapsing textAlign='right'>
                                             <Button.Group size='small'>
                                                 <Button ticker={ticker} color='teal' icon='rocket' content='Use'
-                                                        onClick={this.redirectToTicker}/>
+                                                        onClick={this.redirectToTicker.bind(this)}/>
                                                 <Button ticker={ticker} color='black' icon='edit' content='Edit'
                                                         onClick={this.editTicker}/>
                                                 {this.renderDeleteButton(ticker)}
@@ -170,9 +168,7 @@ class TickerList extends React.Component {
     }
 }
 
-export default withAuth(TickerList);
-
 TickerList.propTypes = {
-    history: PropTypes.any.isRequired,
-    user: PropTypes.object,
+    history: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
 };

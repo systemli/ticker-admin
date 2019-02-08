@@ -8,7 +8,7 @@ class UsersView extends React.Component {
     render() {
         return (
             <Container>
-                <Navigation/>
+                <Navigation history={this.props.history} user={this.props.user}/>
                 <Container className='app'>
                     <Grid>
                         <Grid.Row>

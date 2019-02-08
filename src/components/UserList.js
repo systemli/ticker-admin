@@ -4,7 +4,7 @@ import {deleteUser, getUsers, postUser, putUser} from "../api/User";
 import Moment from "react-moment";
 import TickersDropdown from "./TickersDropdown";
 
-class UserList extends React.Component {
+export default class UserList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -242,5 +242,3 @@ class UserList extends React.Component {
         );
     }
 }
-
-export default UserList;

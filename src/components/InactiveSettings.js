@@ -3,7 +3,7 @@ import {Button, Card, Form, Header, Icon, Input, List, Modal} from "semantic-ui-
 import {getInactiveSettings, putInactiveSettings} from "../api/Settings";
 import ReactMarkdown from 'react-markdown';
 
-class InactiveSettings extends React.Component {
+export default class InactiveSettings extends React.Component {
     constructor(props) {
         super(props);
 
@@ -189,5 +189,3 @@ class InactiveSettings extends React.Component {
         );
     }
 }
-
-export default InactiveSettings;

@@ -2,19 +2,18 @@ import React from 'react';
 import {Container, Icon, Image, Menu} from 'semantic-ui-react';
 import Clock from "../components/Clock";
 import AuthSingleton from "../components/AuthService";
-import withAuth from "../components/withAuth";
 import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
 
 const Auth = AuthSingleton.getInstance();
 
-class Navigation extends React.Component {
+export default class Navigation extends React.Component {
     renderUserItem() {
         if (Auth.loggedIn()) {
             return (
                 <Menu.Item onClick={() => {
                     Auth.removeToken();
-                    this.props.history.replace("/login");
+                    this.props.history.push("/login");
                 }}><Icon name='user'/>Logout</Menu.Item>
             );
         }
@@ -24,7 +23,7 @@ class Navigation extends React.Component {
         if (this.props.user.is_super_admin) {
             return (
                 <Menu.Item active={window.location.pathname === '/users'} onClick={() => {
-                    this.props.history.replace("/users")
+                    this.props.history.push("/users")
                 }}><strong>Users</strong></Menu.Item>
             );
         }
@@ -34,7 +33,7 @@ class Navigation extends React.Component {
         if (this.props.user.is_super_admin) {
             return (
                 <Menu.Item active={window.location.pathname === '/settings'} onClick={() => {
-                    this.props.history.replace("/settings")
+                    this.props.history.push("/settings")
                 }}><strong>Settings</strong></Menu.Item>
             );
         }
@@ -47,7 +46,7 @@ class Navigation extends React.Component {
                     <Menu.Item><Image src={logo} spaced='right'
                                       style={{position: 'absolute', right: 0}}/></Menu.Item>
                     <Menu.Item active={window.location.pathname === '/'} onClick={() => {
-                        this.props.history.replace("/")
+                        this.props.history.push("/")
                     }}><strong>Home</strong></Menu.Item>
                     {this.renderUsersItem()}
                     {this.renderSettingsItem()}
@@ -60,8 +59,6 @@ class Navigation extends React.Component {
         );
     }
 }
-
-export default withAuth(Navigation);
 
 Navigation.propTypes = {
     history: PropTypes.object.isRequired,

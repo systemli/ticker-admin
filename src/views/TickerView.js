@@ -154,7 +154,7 @@ class TickerView extends React.Component {
     _renderTicker() {
         if (this.state.ticker.id !== undefined) {
             return (
-                <Ticker fluid ticker={this.state.ticker} callback={this.updateTicker}/>
+                <Ticker fluid ticker={this.state.ticker} callback={this.updateTicker} history={this.props.history}/>
             );
         }
     }
@@ -293,7 +293,7 @@ class TickerView extends React.Component {
     render() {
         return (
             <Container>
-                <Navigation/>
+                <Navigation history={this.props.history} user={this.props.user}/>
                 <Container className='app'>
                     <Loader active={this.state.isConfigurationLoading || this.state.isMessagesLoading} size='large'/>
                     <Grid columns={2}>
@@ -343,5 +343,6 @@ export default withAuth(TickerView);
 
 TickerView.propTypes = {
     id: PropTypes.number.isRequired,
-    user: PropTypes.object,
+    history: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
 };

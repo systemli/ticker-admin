@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Card, Form, Header, Icon, List, Modal} from "semantic-ui-react";
 import {getRefreshInterval, putRefreshInterval} from "../api/Settings";
 
-class RefreshInterval extends React.Component {
+export default class RefreshInterval extends React.Component {
     constructor(props) {
         super(props);
 
@@ -102,5 +102,3 @@ class RefreshInterval extends React.Component {
         );
     }
 }
-
-export default RefreshInterval;

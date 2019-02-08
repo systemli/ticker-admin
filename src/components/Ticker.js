@@ -1,12 +1,11 @@
 import React from 'react';
 import {Button, Card, Confirm, Icon, Label} from 'semantic-ui-react';
 import {deleteTicker} from "../api/Ticker";
-import {withRouter} from "react-router-dom";
 import PropTypes from 'prop-types';
 import ReactMarkdown from "react-markdown";
 import TickerForm from "./TickerForm";
 
-class Ticker extends React.Component {
+export default class Ticker extends React.Component {
     constructor(props) {
         super(props);
 
@@ -130,8 +129,6 @@ class Ticker extends React.Component {
     }
 }
 
-export default withRouter(Ticker);
-
 Ticker.propTypes = {
     callback: PropTypes.func,
     ticker: PropTypes.shape({
@@ -149,7 +146,7 @@ Ticker.propTypes = {
             facebook: PropTypes.string,
         })
     }),
-    history: PropTypes.any.isRequired,
+    history: PropTypes.object.isRequired,
     fluid: PropTypes.bool,
     use: PropTypes.bool,
     delete: PropTypes.bool,
