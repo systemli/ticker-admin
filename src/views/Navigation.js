@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Icon, Image, Menu} from 'semantic-ui-react';
+import {Container, Dropdown, Image, Menu} from 'semantic-ui-react';
 import Clock from "../components/Clock";
 import AuthSingleton from "../components/AuthService";
 import logo from "../assets/logo.png";
@@ -11,10 +11,16 @@ export default class Navigation extends React.Component {
     renderUserItem() {
         if (Auth.loggedIn()) {
             return (
-                <Menu.Item onClick={() => {
-                    Auth.removeToken();
-                    this.props.history.push("/login");
-                }}><Icon name='user'/>Logout</Menu.Item>
+                <Dropdown item text={this.props.user.email}>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => {
+                            Auth.removeToken();
+                            this.props.history.push("/login");
+                        }}>
+                            Logout
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             );
         }
     }
@@ -63,6 +69,7 @@ export default class Navigation extends React.Component {
 Navigation.propTypes = {
     history: PropTypes.object.isRequired,
     user: PropTypes.shape({
+        email: PropTypes.string,
         is_super_admin: PropTypes.bool.isRequired
     }),
 };
