@@ -108,6 +108,35 @@ export default class TickerList extends React.Component {
 
     }
 
+    renderList(tickers) {
+        if (tickers) {
+            return tickers.map(ticker => {
+                return (
+                    <Table.Row key={ticker.id}>
+                        <Table.Cell collapsing><Icon
+                            size={'large'}
+                            color={ticker.active ? 'green' : 'red'}
+                            name={ticker.active ? 'toggle on' : 'toggle off'}
+                        /></Table.Cell>
+                        <Table.Cell>{ticker.title}</Table.Cell>
+                        <Table.Cell>{ticker.domain}</Table.Cell>
+                        <Table.Cell collapsing textAlign='right'>
+                            <Button.Group size='small'>
+                                <Button ticker={ticker} color='teal' icon='rocket' content='Use'
+                                        onClick={this.redirectToTicker.bind(this)}/>
+                                <Button ticker={ticker} color='black' icon='edit' content='Edit'
+                                        onClick={this.editTicker}/>
+                                {this.renderDeleteButton(ticker)}
+                            </Button.Group>
+                        </Table.Cell>
+                    </Table.Row>
+                );
+            })
+        } else {
+            return <Table.Row><Table.Cell>No tickers created yet...</Table.Cell></Table.Row>
+        }
+    }
+
     render() {
         const tickers = this.state.tickers;
 
@@ -123,29 +152,7 @@ export default class TickerList extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {tickers.map(ticker => {
-                                return (
-                                    <Table.Row key={ticker.id}>
-                                        <Table.Cell collapsing><Icon
-                                            size={'large'}
-                                            color={ticker.active ? 'green' : 'red'}
-                                            name={ticker.active ? 'toggle on' : 'toggle off'}
-                                        /></Table.Cell>
-                                        <Table.Cell>{ticker.title}</Table.Cell>
-                                        <Table.Cell>{ticker.domain}</Table.Cell>
-                                        <Table.Cell collapsing textAlign='right'>
-                                            <Button.Group size='small'>
-                                                <Button ticker={ticker} color='teal' icon='rocket' content='Use'
-                                                        onClick={this.redirectToTicker.bind(this)}/>
-                                                <Button ticker={ticker} color='black' icon='edit' content='Edit'
-                                                        onClick={this.editTicker}/>
-                                                {this.renderDeleteButton(ticker)}
-                                            </Button.Group>
-                                        </Table.Cell>
-                                    </Table.Row>
-                                );
-                            }
-                        )}
+                      {this.renderList(tickers)}
                     </Table.Body>
                     <Table.Footer fullWidth>
                         <Table.Row>
