@@ -3,6 +3,7 @@ import moment from "moment";
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import {
     Button,
+    Radio,
     Card,
     Container,
     Feed,
@@ -45,6 +46,7 @@ class TickerView extends React.Component {
             showError: false,
             input: '',
             ticker: {},
+            showMap: false
         };
 
         this.counterLimit = 280;
@@ -292,46 +294,55 @@ class TickerView extends React.Component {
     }
 
     renderMap() {
-        const position = [51.505, -0.09]
-        return (
-              <Map center={position} zoom={13}>
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                />
-                <Marker position={position}>
-                  <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-                </Marker>
-              </Map>
-        );
+        if (this.state.showMap) {
+            const position = [51.505, -0.09]
+            return (
+                <Card.Content>
+                    <Map center={position} zoom={13}>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                        />
+                        <Marker position={position}>
+                            <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                        </Marker>
+                    </Map>
+                </Card.Content>
+            );
+        }
     }
 
     renderMessageForm() {
-      return (
-          <Form onSubmit={this._submitMessage} error={this.state.formError}>
-              <Form.Field>
-                  <Form.TextArea
-                      placeholder='Write a message' rows='4'
-                      value={this.state.input}
-                      onChange={this.handleInput}/>
-              </Form.Field>
-              <Form.Field>
-                { this.renderMap() }
-              </Form.Field>
-              <Error
-                  error
-                  icon='ban'
-                  hidden={!this.state.formError}
-                  header='Error'
-                  content={this.state.formErrorMessage}
-              />
-              <Button color='teal' type='submit' content='Send' icon='send'
-                      disabled={this.state.formError}/>
-              <Label content={`${this.state.counter}/${this.state.counterLimit}`}
-                     color={this.state.counterColor} style={{float: 'right'}}/>
-          </Form>
-      );
-    }
+        return (
+            <Form onSubmit={this._submitMessage} error={this.state.formError}>
+                <Form.Field>
+                    <Card fluid>
+                        <Card.Content>
+                            <Radio toggle label='Show map' onChange={ (e, data) => this.setState({ showMap: data.checked })}/>
+                        </Card.Content>
+                        {this.renderMap()}
+                    </Card>
+                </Form.Field>
+                <Form.Field>
+                    <Form.TextArea
+                        placeholder='Write a message' rows='5'
+                        value={this.state.input}
+                        onChange={this.handleInput}/>
+                    </Form.Field>
+                    <Error
+                        error
+                        icon='ban'
+                        hidden={!this.state.formError}
+                        header='Error'
+                        content={this.state.formErrorMessage}
+                    />
+                    <Button color='teal' type='submit' content='Send' icon='send'
+                        disabled={this.state.formError}/>
+                        <Label content={`${this.state.counter}/${this.state.counterLimit}`}
+                        color={this.state.counterColor} style={{float: 'right'}}/>
+                    </Form>
+                );
+            }
 
     render() {
         return (
