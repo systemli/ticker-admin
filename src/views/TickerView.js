@@ -1,6 +1,6 @@
 import React from "react";
-import moment from "moment"
-
+import moment from "moment";
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import {
     Button,
     Card,
@@ -14,6 +14,7 @@ import {
     Loader,
     Message as Error, Sticky
 } from "semantic-ui-react";
+
 import {getTicker, putTickerTwitter} from "../api/Ticker";
 import Ticker from "../components/Ticker";
 import {getMessages, postMessage} from "../api/Message";
@@ -290,6 +291,48 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
+    renderMap() {
+        const position = [51.505, -0.09]
+        return (
+              <Map center={position} zoom={13}>
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                />
+                <Marker position={position}>
+                  <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                </Marker>
+              </Map>
+        );
+    }
+
+    renderMessageForm() {
+      return (
+          <Form onSubmit={this._submitMessage} error={this.state.formError}>
+              <Form.Field>
+                  <Form.TextArea
+                      placeholder='Write a message' rows='4'
+                      value={this.state.input}
+                      onChange={this.handleInput}/>
+              </Form.Field>
+              <Form.Field>
+                { this.renderMap() }
+              </Form.Field>
+              <Error
+                  error
+                  icon='ban'
+                  hidden={!this.state.formError}
+                  header='Error'
+                  content={this.state.formErrorMessage}
+              />
+              <Button color='teal' type='submit' content='Send' icon='send'
+                      disabled={this.state.formError}/>
+              <Label content={`${this.state.counter}/${this.state.counterLimit}`}
+                     color={this.state.counterColor} style={{float: 'right'}}/>
+          </Form>
+      );
+    }
+
     render() {
         return (
             <Container>
@@ -300,25 +343,7 @@ class TickerView extends React.Component {
                         <Grid.Row>
                             <Grid.Column width={10}>
                                 <Header dividing>Messages</Header>
-                                <Form onSubmit={this._submitMessage} error={this.state.formError}>
-                                    <Form.Field>
-                                        <Form.TextArea
-                                            placeholder='Write a message' rows='4'
-                                            value={this.state.input}
-                                            onChange={this.handleInput}/>
-                                    </Form.Field>
-                                    <Error
-                                        error
-                                        icon='ban'
-                                        hidden={!this.state.formError}
-                                        header='Error'
-                                        content={this.state.formErrorMessage}
-                                    />
-                                    <Button color='teal' type='submit' content='Send' icon='send'
-                                            disabled={this.state.formError}/>
-                                    <Label content={`${this.state.counter}/${this.state.counterLimit}`}
-                                           color={this.state.counterColor} style={{float: 'right'}}/>
-                                </Form>
+                                {this.renderMessageForm()}
                                 {this._renderMessages()}
                             </Grid.Column>
                             <Grid.Column width={6}>

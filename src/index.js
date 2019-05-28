@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
+import 'leaflet/dist/leaflet.css';
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 import TickerView from "./views/TickerView";

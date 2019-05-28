@@ -7,3 +7,7 @@
 .app {
     margin-top: 50px;
 }
+
+.leaflet-container {
+    height: 600px
+}
