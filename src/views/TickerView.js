@@ -34,7 +34,8 @@ class TickerView extends React.Component {
             showError: false,
             input: '',
             ticker: {},
-            showMap: false
+            showMap: false,
+            geoFeatures: {},
         };
 
         this.counterLimit = 280;
@@ -46,6 +47,7 @@ class TickerView extends React.Component {
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
         this.updateTicker = this.updateTicker.bind(this);
+        this.handleEditorChange = this.handleEditorChange.bind(this);
     }
 
     componentDidMount() {
@@ -281,9 +283,13 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
+    handleEditorChange(geojson) {
+        this.setState({geoFeatures: geojson})
+    }
+
     renderMap() {
         if (this.state.showMap) {
-            return <MessageMap />
+            return <MessageMap editorChange={this.handleEditorChange} />
         }
     }
 
@@ -300,24 +306,29 @@ class TickerView extends React.Component {
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
+                        placeholder='geoFeature' rows='3'
+                        value={JSON.stringify(this.state.geoFeatures)} />
+                </Form.Field>
+                <Form.Field>
+                    <Form.TextArea
                         placeholder='Write a message' rows='5'
                         value={this.state.input}
                         onChange={this.handleInput}/>
-                    </Form.Field>
-                    <Error
-                        error
-                        icon='ban'
-                        hidden={!this.state.formError}
-                        header='Error'
-                        content={this.state.formErrorMessage}
-                    />
-                    <Button color='teal' type='submit' content='Send' icon='send'
-                        disabled={this.state.formError}/>
-                        <Label content={`${this.state.counter}/${this.state.counterLimit}`}
-                        color={this.state.counterColor} style={{float: 'right'}}/>
-                    </Form>
-                );
-            }
+                </Form.Field>
+                <Error
+                    error
+                    icon='ban'
+                    hidden={!this.state.formError}
+                    header='Error'
+                    content={this.state.formErrorMessage}
+                />
+                <Button color='teal' type='submit' content='Send' icon='send'
+                    disabled={this.state.formError}/>
+                    <Label content={`${this.state.counter}/${this.state.counterLimit}`}
+                    color={this.state.counterColor} style={{float: 'right'}}/>
+            </Form>
+        );
+    }
 
     render() {
         return (

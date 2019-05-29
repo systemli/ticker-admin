@@ -7,32 +7,28 @@ import { Card } from 'semantic-ui-react';
 export default class MessageMap extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+    }
+
+    _onChange() {
+        let geojson = this._editableFeatureGroup.leafletElement.toGeoJSON();
+        this.props.editorChange(geojson)
+    }
+
+    _onFeatureGroupReady(featureGroupRef) {
+        this._editableFeatureGroup = featureGroupRef;
     }
 
     render() {
-        const position = [53.505, -0.09];
-
         return (
             <Card.Content>
-                <Map center={position} zoom={13}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                    />
-                    <Marker position={position}>
-                        <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-                    </Marker>
-                    <FeatureGroup>
+                <Map center={[0, 0]} zoom={1}>
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    <FeatureGroup ref={ (featureGroupRef) => {this._onFeatureGroupReady(featureGroupRef)} }>
                         <EditControl
                             position='topright'
-                            onEdited={this._onEditPath}
-                            onCreated={this._onCreate}
-                            onDeleted={this._onDeleted}
-                            draw={{
-                                rectangle: false
-                            }}
+                            onEdited={this._onChange.bind(this)}
+                            onCreated={this._onChange.bind(this)}
+                            onDeleted={this._onChange.bind(this)}
                         />
                     </FeatureGroup>
                 </Map>
