@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Card } from "semantic-ui-react";
+import { Map, Marker, Popup, TileLayer, FeatureGroup } from 'react-leaflet';
+import { EditControl } from 'react-leaflet-draw';
+import { Card } from 'semantic-ui-react';
 
-export default class Clock extends React.Component {
+export default class MessageMap extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,11 +24,22 @@ export default class Clock extends React.Component {
                     <Marker position={position}>
                         <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
                     </Marker>
+                    <FeatureGroup>
+                        <EditControl
+                            position='topright'
+                            onEdited={this._onEditPath}
+                            onCreated={this._onCreate}
+                            onDeleted={this._onDeleted}
+                            draw={{
+                                rectangle: false
+                            }}
+                        />
+                    </FeatureGroup>
                 </Map>
             </Card.Content>
         );
     }
 }
 
-Clock.propTypes = {
+MessageMap.propTypes = {
 };

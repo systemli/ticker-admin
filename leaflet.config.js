@@ -1,4 +1,5 @@
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-draw/dist/leaflet.draw.css';
 
 // explicitly assign marker graphics due to problem with webpack serving
 // see https://github.com/PaulLeCam/react-leaflet/issues/255
