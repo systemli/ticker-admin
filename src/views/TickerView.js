@@ -1,23 +1,11 @@
 import React from "react";
 import moment from "moment";
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import {
-    Button,
-    Radio,
-    Card,
-    Container,
-    Feed,
-    Form,
-    Grid,
-    Header,
-    Icon,
-    Label,
-    Loader,
-    Message as Error, Sticky
+import { Button, Radio, Card, Container, Feed, Form, Grid,
+    Header, Icon, Label, Loader, Message as Error, Sticky
 } from "semantic-ui-react";
-
 import {getTicker, putTickerTwitter} from "../api/Ticker";
 import Ticker from "../components/Ticker";
+import MessageMap from "../components/MessageMap";
 import {getMessages, postMessage} from "../api/Message";
 import Message from "../components/Message";
 import withAuth from "../components/withAuth";
@@ -295,20 +283,7 @@ class TickerView extends React.Component {
 
     renderMap() {
         if (this.state.showMap) {
-            const position = [51.505, -0.09]
-            return (
-                <Card.Content>
-                    <Map center={position} zoom={13}>
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                        />
-                        <Marker position={position}>
-                            <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-                        </Marker>
-                    </Map>
-                </Card.Content>
-            );
+            return <MessageMap />
         }
     }
 
