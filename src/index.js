@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
-import 'leaflet/dist/leaflet.css';
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";
 import TickerView from "./views/TickerView";
 import UsersView from "./views/UsersView";
 import SettingsView from "./views/SettingsView";
 import PropTypes from 'prop-types';
+import '../leaflet.config.js';
 
 /* Offline-plugin allows offline availability.
 Only loaded in prod environment (see webpack.prod.js)
