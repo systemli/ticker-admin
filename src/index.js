@@ -10,6 +10,9 @@ import UsersView from "./views/UsersView";
 import SettingsView from "./views/SettingsView";
 import PropTypes from 'prop-types';
 
+/* Offline-plugin allows offline availability.
+Only loaded in prod environment (see webpack.prod.js)
+to allow hot reloading of webpack-dev-server */
 const runtime = require('offline-plugin/runtime');
 
 runtime.install({
