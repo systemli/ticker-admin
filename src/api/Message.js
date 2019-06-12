@@ -17,10 +17,12 @@ export function getMessages(ticker) {
  * @param {string} text
  * @returns {Promise<Response>}
  */
-export function postMessage(ticker, text) {
+export function postMessage(ticker, text, geoInformation) {
+    debugger
     return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
         body: JSON.stringify({
-            text: text
+            text: text,
+            geoInformation: geoInformation
         }),
         method: 'POST'
     });

@@ -35,7 +35,7 @@ class TickerView extends React.Component {
             input: '',
             ticker: {},
             showMap: false,
-            geoFeatures: {},
+            geoInformation: {},
         };
 
         this.counterLimit = 280;
@@ -47,7 +47,7 @@ class TickerView extends React.Component {
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
         this.updateTicker = this.updateTicker.bind(this);
-        this.handleMapEditorChange = this.handleMap  EditorChange.bind(this);
+        this.handleMapEditorChange = this.handleMapEditorChange.bind(this);
     }
 
     componentDidMount() {
@@ -239,7 +239,7 @@ class TickerView extends React.Component {
             this.setState({input: moment().format('HH:mm') + ' ' + this.state.input});
         }
 
-        postMessage(this.state.id, this.state.input).then(response => {
+        postMessage(this.state.id, this.state.input, this.state.geoInformation).then(response => {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
@@ -284,7 +284,7 @@ class TickerView extends React.Component {
     }
 
     handleMapEditorChange(geojson) {
-        this.setState({geoFeatures: geojson})
+        this.setState({geoInformation: geojson})
     }
 
     renderMap() {
@@ -306,8 +306,8 @@ class TickerView extends React.Component {
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
-                        placeholder='geoFeature' rows='3'
-                        value={JSON.stringify(this.state.geoFeatures)} />
+                        rows='3'
+                        value={JSON.stringify(this.state.geoInformation)} />
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
