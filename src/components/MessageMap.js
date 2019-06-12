@@ -11,7 +11,7 @@ export default class MessageMap extends React.Component {
 
     _onChange() {
         let geojson = this._editableFeatureGroup.leafletElement.toGeoJSON();
-        this.props.editorChange(geojson)
+        this.props.mapEditorChange(geojson)
     }
 
     _onFeatureGroupReady(featureGroupRef) {

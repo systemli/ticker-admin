@@ -47,7 +47,7 @@ class TickerView extends React.Component {
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
         this.updateTicker = this.updateTicker.bind(this);
-        this.handleEditorChange = this.handleEditorChange.bind(this);
+        this.handleMapEditorChange = this.handleMap  EditorChange.bind(this);
     }
 
     componentDidMount() {
@@ -283,13 +283,13 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
-    handleEditorChange(geojson) {
+    handleMapEditorChange(geojson) {
         this.setState({geoFeatures: geojson})
     }
 
     renderMap() {
         if (this.state.showMap) {
-            return <MessageMap editorChange={this.handleEditorChange} />
+            return <MessageMap mapEditorChange={this.handleMapEditorChange} />
         }
     }
 
