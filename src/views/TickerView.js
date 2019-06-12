@@ -243,7 +243,7 @@ class TickerView extends React.Component {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
-                    input: '', counter: 0, counterColor: 'green'
+                    input: '', counter: 0, counterColor: 'green', geoInformation: {}
                 });
             }
         });
