@@ -40,4 +40,5 @@ export default class MessageMap extends React.Component {
 }
 
 MessageMap.propTypes = {
+    mapEditorChange: PropTypes.func.isRequired
 };
