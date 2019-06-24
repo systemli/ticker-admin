@@ -21,7 +21,7 @@ export function postMessage(ticker, text, geoInformation) {
     return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
         body: JSON.stringify({
             text: text,
-            geoInformation: geoInformation
+            geo_information: geoInformation
         }),
         method: 'POST'
     });
