@@ -23,7 +23,7 @@ export default class MessageMap extends React.Component {
     render() {
         return (
             <Card.Content>
-                <Map center={[0, 0]} zoom={1}>
+                <Map center={[52, 12]} zoom={5}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <FeatureGroup ref={ (featureGroupRef) => {this._onFeatureGroupReady(featureGroupRef)} }>
                         <EditControl
