@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Icon} from "semantic-ui-react";
+import {Card, Icon, Radio} from "semantic-ui-react";
 import { Map, TileLayer, GeoJSON} from 'react-leaflet';
 import PropTypes from 'prop-types';
 
@@ -49,12 +49,17 @@ export default class Message extends React.Component {
     _renderMap() {
         if( this.state.geoInformation.features.length < 1) return null;
         return(
-            <Card.Content>
-                <Map center={[0, 0]} zoom={1}>
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    <GeoJSON data={this.state.geoInformation} />
-                </Map>
-            </Card.Content>
+           <div>
+                <Card.Content>
+                    <Radio toggle label='Show map' onChange={ (e, data) => this.setState({ showMap: data.checked })}/>
+                </Card.Content>
+                <Card.Content>
+                    <Map center={[0, 0]} zoom={1}>
+                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                        <GeoJSON data={this.state.geoInformation} />
+                    </Map>
+                </Card.Content>
+           </div>
         );
     }
 
