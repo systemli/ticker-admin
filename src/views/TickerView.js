@@ -304,9 +304,9 @@ class TickerView extends React.Component {
                         {this.renderMap()}
                     </Card>
                 </Form.Field>
-                <Form.Field>
+                <Form.Field style={{display: 'none'}}>
                     <Form.TextArea
-                        rows='3'
+                        rows='1'
                         value={JSON.stringify(this.state.geoInformation)} />
                 </Form.Field>
                 <Form.Field>
