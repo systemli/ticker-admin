@@ -18,6 +18,7 @@ export default class Message extends React.Component {
             creationDate: props.message.creation_date,
             tweetId: props.message.tweet_id || null,
             tweetUser: props.message.tweet_user || null,
+            showMap: false
         };
 
         this._getText = this._getText.bind(this);
@@ -57,7 +58,7 @@ export default class Message extends React.Component {
     }
 
     _renderMap() {
-        if( this.state.geoInformation.features.length < 1) return null;
+        if( this.state.geoInformation.features.length < 1 || !this.state.showMap) return null;
         return(
             <Map center={[0, 0]} zoom={1}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
