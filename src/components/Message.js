@@ -68,7 +68,15 @@ export default class Message extends React.Component {
     }
 
     onGeoInformationAdded(event, that) {
-      that.mapRef.current.leafletElement.fitBounds(event.target.getBounds());
+        const map = that.mapRef.current.leafletElement;
+        const features = this.state.geoInformation.features;
+
+        if (features.length == 1 && features[0].geometry.type == 'Point') {
+            const coords = features[0].geometry.coordinates;
+            map.setView([coords[1], coords[0]], 13);
+        } else {
+            map.fitBounds(event.target.getBounds());
+        };
     }
 
     render() {
