@@ -28,6 +28,7 @@ export default class MessageMap extends React.Component {
                     <FeatureGroup ref={ (featureGroupRef) => {this._onFeatureGroupReady(featureGroupRef)} }>
                         <EditControl
                             position='topright'
+                            draw={{ circle: false, circlemarker: false }} //TODO repair this broken marker types
                             onEdited={this._onChange.bind(this)}
                             onCreated={this._onChange.bind(this)}
                             onDeleted={this._onChange.bind(this)}
