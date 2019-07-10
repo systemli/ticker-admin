@@ -20,7 +20,6 @@ export default class Message extends React.Component {
             tweetUser: props.message.tweet_user || null,
             showMap: false
         };
-        this.mapRef = React.createRef();
         this._getText = this._getText.bind(this);
         this._deleteMessage = this._deleteMessage.bind(this);
     }
@@ -60,22 +59,22 @@ export default class Message extends React.Component {
     _renderMap() {
         if( this.state.geoInformation.features.length < 1 || !this.state.showMap) return null;
         return(
-            <Map center={[0, 0]} zoom={1} ref={this.mapRef} >
+            <Map center={[0, 0]} zoom={1} >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <GeoJSON data={this.state.geoInformation} onAdd={(event) => this.onGeoInformationAdded(event, this)} />
+                <GeoJSON data={this.state.geoInformation} onAdd={this.onGeoInformationAdded} />
             </Map>
         );
     }
 
-    onGeoInformationAdded(event, that) {
-        const map = that.mapRef.current.leafletElement;
-        const features = this.state.geoInformation.features;
+    onGeoInformationAdded(event) {
+        const leafletLayer = event.target;
+        const features = Object.values(leafletLayer._layers);
 
-        if (features.length == 1 && features[0].geometry.type == 'Point') {
-            const coords = features[0].geometry.coordinates;
-            map.setView([coords[1], coords[0]], 13);
+        if (features.length == 1 && features[0].feature.geometry.type == 'Point') {
+            const coords = features[0].feature.geometry.coordinates;
+            leafletLayer._map.setView([coords[1], coords[0]], 13);
         } else {
-            map.fitBounds(event.target.getBounds());
+            leafletLayer._map.fitBounds(leafletLayer.getBounds());
         };
     }
 
