@@ -289,7 +289,10 @@ class TickerView extends React.Component {
 
     renderMap() {
         if (this.state.showMap) {
-            return <MessageMap mapEditorChange={this.handleMapEditorChange} />
+            return <MessageMap
+                key={this.state.messages.length} // force rerendering after message submitted
+                mapEditorChange={this.handleMapEditorChange}
+            />
         }
     }
 
