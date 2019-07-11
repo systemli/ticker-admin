@@ -1,5 +1,6 @@
 import React from "react";
-import {Card, Icon} from "semantic-ui-react";
+import {Card, Icon, Radio} from "semantic-ui-react";
+import { Map, TileLayer, GeoJSON} from 'react-leaflet';
 import PropTypes from 'prop-types';
 
 import Moment from "react-moment";
@@ -13,11 +14,12 @@ export default class Message extends React.Component {
             id: props.message.id,
             ticker: props.message.ticker,
             text: Message._replaceMagic(props.message.text),
+            geoInformation: JSON.parse(props.message.geo_information),
             creationDate: props.message.creation_date,
             tweetId: props.message.tweet_id || null,
             tweetUser: props.message.tweet_user || null,
+            showMap: false
         };
-
         this._getText = this._getText.bind(this);
         this._deleteMessage = this._deleteMessage.bind(this);
     }
@@ -45,6 +47,37 @@ export default class Message extends React.Component {
         event.preventDefault();
     }
 
+    _renderMapToggle() {
+        if( this.state.geoInformation.features.length < 1) return null;
+        return(
+            <Card.Content>
+                <Radio toggle label='Show map' onChange={ (e, data) => this.setState({ showMap: data.checked })}/>
+            </Card.Content>
+        );
+    }
+
+    _renderMap() {
+        if( this.state.geoInformation.features.length < 1 || !this.state.showMap) return null;
+        return(
+            <Map center={[0, 0]} zoom={1} >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <GeoJSON data={this.state.geoInformation} onAdd={this.onGeoInformationAdded} />
+            </Map>
+        );
+    }
+
+    onGeoInformationAdded(event) {
+        const leafletLayer = event.target;
+        const features = Object.values(leafletLayer._layers);
+
+        if (features.length == 1 && features[0].feature.geometry.type == 'Point') {
+            const coords = features[0].feature.geometry.coordinates;
+            leafletLayer._map.setView([coords[1], coords[0]], 13);
+        } else {
+            leafletLayer._map.fitBounds(leafletLayer.getBounds());
+        };
+    }
+
     render() {
         let twitterIcon = (this.state.tweetId != null) ? (
             <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank'
@@ -59,6 +92,8 @@ export default class Message extends React.Component {
                     </a>
                     {this._getText()}
                 </Card.Content>
+                {this._renderMapToggle()}
+                {this._renderMap()}
                 <Card.Content extra>
                     {twitterIcon}
                     <Moment fromNow>{this.state.creationDate}</Moment>

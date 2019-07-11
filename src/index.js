@@ -9,6 +9,7 @@ import TickerView from "./views/TickerView";
 import UsersView from "./views/UsersView";
 import SettingsView from "./views/SettingsView";
 import PropTypes from 'prop-types';
+import '../leaflet.config.js';
 
 /* Offline-plugin allows offline availability.
 Only loaded in prod environment (see webpack.prod.js)

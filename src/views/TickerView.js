@@ -1,21 +1,11 @@
 import React from "react";
-import moment from "moment"
-
-import {
-    Button,
-    Card,
-    Container,
-    Feed,
-    Form,
-    Grid,
-    Header,
-    Icon,
-    Label,
-    Loader,
-    Message as Error, Sticky
+import moment from "moment";
+import { Button, Radio, Card, Container, Feed, Form, Grid,
+    Header, Icon, Label, Loader, Message as Error, Sticky
 } from "semantic-ui-react";
 import {getTicker, putTickerTwitter} from "../api/Ticker";
 import Ticker from "../components/Ticker";
+import MessageMap from "../components/MessageMap";
 import {getMessages, postMessage} from "../api/Message";
 import Message from "../components/Message";
 import withAuth from "../components/withAuth";
@@ -44,6 +34,8 @@ class TickerView extends React.Component {
             showError: false,
             input: '',
             ticker: {},
+            showMap: false,
+            geoInformation: {},
         };
 
         this.counterLimit = 280;
@@ -55,6 +47,7 @@ class TickerView extends React.Component {
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
         this.updateTicker = this.updateTicker.bind(this);
+        this.handleMapEditorChange = this.handleMapEditorChange.bind(this);
     }
 
     componentDidMount() {
@@ -246,11 +239,11 @@ class TickerView extends React.Component {
             this.setState({input: moment().format('HH:mm') + ' ' + this.state.input});
         }
 
-        postMessage(this.state.id, this.state.input).then(response => {
+        postMessage(this.state.id, this.state.input, this.state.geoInformation).then(response => {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
-                    input: '', counter: 0, counterColor: 'green'
+                    input: '', counter: 0, counterColor: 'green', geoInformation: {}
                 });
             }
         });
@@ -290,6 +283,56 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
+    handleMapEditorChange(geojson) {
+        this.setState({geoInformation: geojson})
+    }
+
+    renderMap() {
+        if (this.state.showMap) {
+            return <MessageMap
+                key={this.state.messages.length} // force rerendering after message submitted
+                mapEditorChange={this.handleMapEditorChange}
+            />
+        }
+    }
+
+    renderMessageForm() {
+        return (
+            <Form onSubmit={this._submitMessage} error={this.state.formError}>
+                <Form.Field>
+                    <Card fluid>
+                        <Card.Content>
+                            <Radio toggle label='Show map' onChange={ (e, data) => this.setState({ showMap: data.checked })}/>
+                        </Card.Content>
+                        {this.renderMap()}
+                    </Card>
+                </Form.Field>
+                <Form.Field style={{display: 'none'}}>
+                    <Form.TextArea
+                        rows='1'
+                        value={JSON.stringify(this.state.geoInformation)} />
+                </Form.Field>
+                <Form.Field>
+                    <Form.TextArea
+                        placeholder='Write a message' rows='5'
+                        value={this.state.input}
+                        onChange={this.handleInput}/>
+                </Form.Field>
+                <Error
+                    error
+                    icon='ban'
+                    hidden={!this.state.formError}
+                    header='Error'
+                    content={this.state.formErrorMessage}
+                />
+                <Button color='teal' type='submit' content='Send' icon='send'
+                    disabled={this.state.formError}/>
+                    <Label content={`${this.state.counter}/${this.state.counterLimit}`}
+                    color={this.state.counterColor} style={{float: 'right'}}/>
+            </Form>
+        );
+    }
+
     render() {
         return (
             <Container>
@@ -300,25 +343,7 @@ class TickerView extends React.Component {
                         <Grid.Row>
                             <Grid.Column width={10}>
                                 <Header dividing>Messages</Header>
-                                <Form onSubmit={this._submitMessage} error={this.state.formError}>
-                                    <Form.Field>
-                                        <Form.TextArea
-                                            placeholder='Write a message' rows='4'
-                                            value={this.state.input}
-                                            onChange={this.handleInput}/>
-                                    </Form.Field>
-                                    <Error
-                                        error
-                                        icon='ban'
-                                        hidden={!this.state.formError}
-                                        header='Error'
-                                        content={this.state.formErrorMessage}
-                                    />
-                                    <Button color='teal' type='submit' content='Send' icon='send'
-                                            disabled={this.state.formError}/>
-                                    <Label content={`${this.state.counter}/${this.state.counterLimit}`}
-                                           color={this.state.counterColor} style={{float: 'right'}}/>
-                                </Form>
+                                {this.renderMessageForm()}
                                 {this._renderMessages()}
                             </Grid.Column>
                             <Grid.Column width={6}>
