@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
-import { Button, Radio, Card, Container, Feed, Form, Grid,
+import {
+    Button, Radio, Card, Container, Feed, Form, Grid,
     Header, Icon, Label, Loader, Message as Error, Sticky
 } from "semantic-ui-react";
 import {getTicker, putTickerTwitter} from "../api/Ticker";
@@ -283,8 +284,8 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
-    handleMapEditorChange(geojson) {
-        this.setState({geoInformation: geojson})
+    handleMapEditorChange(geoInformation) {
+        this.setState({geoInformation: geoInformation})
     }
 
     renderMap() {
@@ -302,7 +303,8 @@ class TickerView extends React.Component {
                 <Form.Field>
                     <Card fluid>
                         <Card.Content>
-                            <Radio toggle label='Show map' onChange={ (e, data) => this.setState({ showMap: data.checked })}/>
+                            <Radio toggle label='Show map'
+                                   onChange={(e, data) => this.setState({showMap: data.checked})}/>
                         </Card.Content>
                         {this.renderMap()}
                     </Card>
@@ -310,7 +312,7 @@ class TickerView extends React.Component {
                 <Form.Field style={{display: 'none'}}>
                     <Form.TextArea
                         rows='1'
-                        value={JSON.stringify(this.state.geoInformation)} />
+                        value={JSON.stringify(this.state.geoInformation)}/>
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
@@ -326,9 +328,9 @@ class TickerView extends React.Component {
                     content={this.state.formErrorMessage}
                 />
                 <Button color='teal' type='submit' content='Send' icon='send'
-                    disabled={this.state.formError}/>
-                    <Label content={`${this.state.counter}/${this.state.counterLimit}`}
-                    color={this.state.counterColor} style={{float: 'right'}}/>
+                        disabled={this.state.formError}/>
+                <Label content={`${this.state.counter}/${this.state.counterLimit}`}
+                       color={this.state.counterColor} style={{float: 'right'}}/>
             </Form>
         );
     }
