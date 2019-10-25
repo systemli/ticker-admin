@@ -1,6 +1,6 @@
 import React from "react";
 import {deleteTicker, getTickers} from "../api/Ticker";
-import {Button, Confirm, Icon, Table} from "semantic-ui-react";
+import {Button, Confirm, Icon, Message, Table} from "semantic-ui-react";
 import PropTypes from "prop-types";
 import TickerForm from "./TickerForm";
 import Ticker from "../models/Ticker";
@@ -109,36 +109,42 @@ export default class TickerList extends React.Component {
     }
 
     renderList(tickers) {
-        if (tickers) {
-            return tickers.map(ticker => {
-                return (
-                    <Table.Row key={ticker.id}>
-                        <Table.Cell collapsing><Icon
-                            size={'large'}
-                            color={ticker.active ? 'green' : 'red'}
-                            name={ticker.active ? 'toggle on' : 'toggle off'}
-                        /></Table.Cell>
-                        <Table.Cell>{ticker.title}</Table.Cell>
-                        <Table.Cell>{ticker.domain}</Table.Cell>
-                        <Table.Cell collapsing textAlign='right'>
-                            <Button.Group size='small'>
-                                <Button ticker={ticker} color='teal' icon='rocket' content='Use'
-                                        onClick={this.redirectToTicker.bind(this)}/>
-                                <Button ticker={ticker} color='black' icon='edit' content='Edit'
-                                        onClick={this.editTicker}/>
-                                {this.renderDeleteButton(ticker)}
-                            </Button.Group>
-                        </Table.Cell>
-                    </Table.Row>
-                );
-            })
-        } else {
-            return <Table.Row><Table.Cell>No tickers created yet...</Table.Cell></Table.Row>
-        }
+        return tickers.map(ticker => {
+            return (
+                <Table.Row key={ticker.id}>
+                    <Table.Cell collapsing><Icon
+                        size={'large'}
+                        color={ticker.active ? 'green' : 'red'}
+                        name={ticker.active ? 'toggle on' : 'toggle off'}
+                    /></Table.Cell>
+                    <Table.Cell>{ticker.title}</Table.Cell>
+                    <Table.Cell>{ticker.domain}</Table.Cell>
+                    <Table.Cell collapsing textAlign='right'>
+                        <Button.Group size='small'>
+                            <Button ticker={ticker} color='teal' icon='rocket' content='Use'
+                                    onClick={this.redirectToTicker.bind(this)}/>
+                            <Button ticker={ticker} color='black' icon='edit' content='Edit'
+                                    onClick={this.editTicker}/>
+                            {this.renderDeleteButton(ticker)}
+                        </Button.Group>
+                    </Table.Cell>
+                </Table.Row>
+            );
+        })
     }
 
     render() {
         const tickers = this.state.tickers;
+
+        if (!tickers) {
+            return (
+                <Message
+                    icon='info'
+                    header='Information'
+                    content='You are not able to see any tickers or no ticker is created yet. If you want to access a
+                        specific ticker and dont see them, contact us.'/>
+            )
+        }
 
         return (
             <React.Fragment>
@@ -152,7 +158,7 @@ export default class TickerList extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                      {this.renderList(tickers)}
+                        {this.renderList(tickers)}
                     </Table.Body>
                     <Table.Footer fullWidth>
                         <Table.Row>
@@ -175,7 +181,8 @@ export default class TickerList extends React.Component {
     }
 }
 
-TickerList.propTypes = {
+TickerList
+    .propTypes = {
     history: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
 };
