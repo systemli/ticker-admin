@@ -117,7 +117,7 @@ Message.propTypes = {
         creation_date: PropTypes.string.isRequired,
         tweet_id: PropTypes.string,
         tweet_user: PropTypes.string,
-        geo_information: PropTypes.object,
+        geo_information: PropTypes.string,
     }),
     loadMessages: PropTypes.func.isRequired,
 };
