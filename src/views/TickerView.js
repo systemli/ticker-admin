@@ -1,12 +1,12 @@
 import React from "react";
 import moment from "moment";
 import {
-    Button, Radio, Card, Container, Feed, Form, Grid,
+    Button, Checkbox, Card, Container, Feed, Form, Grid,
     Header, Icon, Label, Loader, Message as Error, Sticky
 } from "semantic-ui-react";
 import {getTicker, putTickerTwitter} from "../api/Ticker";
 import Ticker from "../components/Ticker";
-import MessageMap from "../components/MessageMap";
+import EditMapModal from "../components/EditMapModal";
 import {getMessages, postMessage} from "../api/Message";
 import Message from "../components/Message";
 import withAuth from "../components/withAuth";
@@ -43,12 +43,10 @@ class TickerView extends React.Component {
 
         this._submitMessage = this._submitMessage.bind(this);
         this.loadMessages = this.loadMessages.bind(this);
-        this.handleInput = this.handleInput.bind(this);
         this.twitterConnect = this.twitterConnect.bind(this);
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
         this.updateTicker = this.updateTicker.bind(this);
-        this.handleMapEditorChange = this.handleMapEditorChange.bind(this);
     }
 
     componentDidMount() {
@@ -244,7 +242,7 @@ class TickerView extends React.Component {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
-                    input: '', counter: 0, counterColor: 'green', geoInformation: {}
+                    input: '', counter: 0, counterColor: 'green', geoInformation: {}, showMap: false,
                 });
             }
         });
@@ -284,53 +282,64 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
-    handleMapEditorChange(geoInformation) {
-        this.setState({geoInformation: geoInformation})
-    }
-
-    renderMap() {
-        if (this.state.showMap) {
-            return <MessageMap
+    renderEditMapModal() {
+        return (
+            <EditMapModal
+                geoInformation={this.state.geoInformation}
                 key={this.state.messages.length} // force rerendering after message submitted
-                mapEditorChange={this.handleMapEditorChange}
+                open={this.state.showMap}
+                onSubmit={(geoInformation) => this.setState({showMap: false, geoInformation: geoInformation})}
+                onClose={() => this.setState({showMap: false})}
             />
-        }
+        )
     }
 
     renderMessageForm() {
+        const state = this.state;
+
         return (
-            <Form onSubmit={this._submitMessage} error={this.state.formError}>
+            <Form onSubmit={this._submitMessage} error={state.formError}>
                 <Form.Field>
-                    <Card fluid>
-                        <Card.Content>
-                            <Radio toggle label='Show map'
-                                   onChange={(e, data) => this.setState({showMap: data.checked})}/>
-                        </Card.Content>
-                        {this.renderMap()}
-                    </Card>
+                    {this.renderEditMapModal()}
                 </Form.Field>
                 <Form.Field style={{display: 'none'}}>
                     <Form.TextArea
-                        rows='1'
-                        value={JSON.stringify(this.state.geoInformation)}/>
+                        rows='3'
+                        value={JSON.stringify(state.geoInformation)}
+                    />
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
                         placeholder='Write a message' rows='5'
-                        value={this.state.input}
-                        onChange={this.handleInput}/>
+                        value={state.input}
+                        onChange={this.handleInput.bind(this)}
+                    />
                 </Form.Field>
                 <Error
                     error
                     icon='ban'
-                    hidden={!this.state.formError}
+                    hidden={!state.formError}
                     header='Error'
-                    content={this.state.formErrorMessage}
+                    content={state.formErrorMessage}
                 />
-                <Button color='teal' type='submit' content='Send' icon='send'
-                        disabled={this.state.formError}/>
-                <Label content={`${this.state.counter}/${this.state.counterLimit}`}
-                       color={this.state.counterColor} style={{float: 'right'}}/>
+                <Button
+                    color='teal'
+                    type='submit'
+                    content='Send'
+                    icon='send'
+                    disabled={state.formError}
+                />
+                <Button
+                    color='orange'
+                    content={(this.state.geoInformation.type === 'FeatureCollection') ? 'Change Map' : 'Add Map'}
+                    icon={(this.state.geoInformation.type === 'FeatureCollection') ? 'map' : 'map outline'}
+                    toggle
+                    onClick={() => this.setState({showMap: true})}
+                />
+                <Label
+                    content={`${state.counter}/${state.counterLimit}`}
+                    color={state.counterColor} style={{float: 'right'}}
+                />
             </Form>
         );
     }
