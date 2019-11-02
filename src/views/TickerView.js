@@ -47,10 +47,15 @@ class TickerView extends React.Component {
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
         this.twitterToggle = this.twitterToggle.bind(this);
         this.updateTicker = this.updateTicker.bind(this);
+        this.handleContextRef = this.handleContextRef.bind(this)
     }
 
     componentDidMount() {
         this._loadTicker();
+    }
+
+    handleContextRef(stickyContext) {
+        this.setState({stickyContext})
     }
 
     handleInput(event, input) {
@@ -345,6 +350,8 @@ class TickerView extends React.Component {
     }
 
     render() {
+        const {stickyContext} = this.state;
+
         return (
             <Container>
                 <Navigation history={this.props.history} user={this.props.user}/>
@@ -353,12 +360,14 @@ class TickerView extends React.Component {
                     <Grid columns={2}>
                         <Grid.Row>
                             <Grid.Column width={10}>
-                                <Header dividing>Messages</Header>
-                                {this.renderMessageForm()}
-                                {this._renderMessages()}
+                                <div ref={this.handleContextRef}>
+                                    <Header dividing>Messages</Header>
+                                    {this.renderMessageForm()}
+                                    {this._renderMessages()}
+                                </div>
                             </Grid.Column>
                             <Grid.Column width={6}>
-                                <Sticky offset={50}>
+                                <Sticky context={stickyContext} offset={50}>
                                     <Header dividing>Configuration</Header>
                                     {this._renderTicker()}
                                     <Header dividing>Twitter</Header>
