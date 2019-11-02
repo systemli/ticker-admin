@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import {
-    Button, Checkbox, Card, Container, Feed, Form, Grid,
+    Button, Card, Container, Feed, Form, Grid,
     Header, Icon, Label, Loader, Message as Error, Sticky
 } from "semantic-ui-react";
 import {getTicker, putTickerTwitter} from "../api/Ticker";
@@ -35,7 +35,7 @@ class TickerView extends React.Component {
             showError: false,
             input: '',
             ticker: {},
-            showMap: false,
+            showEditMapModal: false,
             geoInformation: {},
         };
 
@@ -242,7 +242,7 @@ class TickerView extends React.Component {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.loadMessages();
                 this.setState({
-                    input: '', counter: 0, counterColor: 'green', geoInformation: {}, showMap: false,
+                    input: '', counter: 0, counterColor: 'green', geoInformation: {},
                 });
             }
         });
@@ -287,9 +287,9 @@ class TickerView extends React.Component {
             <EditMapModal
                 geoInformation={this.state.geoInformation}
                 key={this.state.messages.length} // force rerendering after message submitted
-                open={this.state.showMap}
-                onSubmit={(geoInformation) => this.setState({showMap: false, geoInformation: geoInformation})}
-                onClose={() => this.setState({showMap: false})}
+                open={this.state.showEditMapModal}
+                onSubmit={(geoInformation) => this.setState({showEditMapModal: false, geoInformation: geoInformation})}
+                onClose={() => this.setState({showEditMapModal: false})}
             />
         )
     }
@@ -334,7 +334,7 @@ class TickerView extends React.Component {
                     content={(this.state.geoInformation.type === 'FeatureCollection') ? 'Change Map' : 'Add Map'}
                     icon={(this.state.geoInformation.type === 'FeatureCollection') ? 'map' : 'map outline'}
                     toggle
-                    onClick={() => this.setState({showMap: true})}
+                    onClick={() => this.setState({showEditMapModal: true})}
                 />
                 <Label
                     content={`${state.counter}/${state.counterLimit}`}
