@@ -298,7 +298,7 @@ class TickerView extends React.Component {
         const state = this.state;
 
         return (
-            <Form onSubmit={this._submitMessage} error={state.formError}>
+            <Form error={state.formError}>
                 <Form.Field>
                     {this.renderEditMapModal()}
                 </Form.Field>
@@ -324,10 +324,10 @@ class TickerView extends React.Component {
                 />
                 <Button
                     color='teal'
-                    type='submit'
                     content='Send'
                     icon='send'
                     disabled={state.formError}
+                    onClick={() => this._submitMessage()}
                 />
                 <Button
                     color='orange'
