@@ -132,7 +132,7 @@ export default class UserList extends React.Component {
 
         return (
             <Modal
-                dimmer='blurring'
+                dimmer
                 open={this.state.showModal}
                 closeIcon
                 onClose={() => this.setState({showModal: false, editUser: undefined})}
@@ -156,15 +156,12 @@ export default class UserList extends React.Component {
 
     renderDeleteConfirm() {
         return (
-            <Confirm open={this.state.showDeleteConfirm}
-                     onCancel={() => {
-                         this.setState({showDeleteConfirm: false})
-                     }}
-                     onConfirm={this.handleDelete}
-                     dimmer='blurring'
-                     size='mini'
-                //https://github.com/Semantic-Org/Semantic-UI-React/issues/2558
-                     style={{marginTop: '0px !important', marginLeft: 'auto', marginRight: 'auto'}}
+            <Confirm
+                open={this.state.showDeleteConfirm}
+                onCancel={() => this.setState({showDeleteConfirm: false})}
+                onConfirm={this.handleDelete}
+                dimmer
+                size='mini'
             />
         );
     }

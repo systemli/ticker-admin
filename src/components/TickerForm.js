@@ -64,8 +64,10 @@ export default class TickerForm extends React.Component {
 
     render() {
         return (
-            <Modal dimmer='blurring' open={this.state.modalOpen} closeIcon
-                   onClose={this.closeModal}
+            <Modal
+                closeIcon
+                open={this.state.modalOpen}
+                onClose={this.closeModal}
             >
                 <Header>{null === this.props.ticker.id ? 'Create Ticker' : 'Edit ' + this.props.ticker.title}</Header>
                 <Modal.Content>

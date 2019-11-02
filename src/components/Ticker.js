@@ -117,11 +117,12 @@ export default class Ticker extends React.Component {
 
                     </Button.Group>
                 </Card.Content>
-                <Confirm open={this.state.confirmOpen}
-                         onCancel={this.handleCancel}
-                         onConfirm={this.handleConfirm}
-                         dimmer='blurring'
-                         size='mini'
+                <Confirm
+                    open={this.state.confirmOpen}
+                    onCancel={this.handleCancel}
+                    onConfirm={this.handleConfirm}
+                    dimmer
+                    size='mini'
                 />
                 {this.renderEditForm()}
             </Card>

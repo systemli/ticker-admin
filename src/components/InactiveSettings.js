@@ -115,10 +115,13 @@ export default class InactiveSettings extends React.Component {
 
     renderModal() {
         return (
-            <Modal trigger={<Button color='black' icon='edit' content='edit'
-                                    onClick={() => this.setState({modalOpen: true})}/>}
-                   dimmer='blurring' open={this.state.modalOpen} closeIcon
-                   onClose={() => this.setState({modalOpen: false})}
+            <Modal
+                trigger={<Button color='black' icon='edit' content='edit'
+                                 onClick={() => this.setState({modalOpen: true})}/>}
+                dimmer
+                open={this.state.modalOpen}
+                closeIcon
+                onClose={() => this.setState({modalOpen: false})}
             >
                 <Header>Edit Inactive Settings</Header>
                 <Modal.Content>

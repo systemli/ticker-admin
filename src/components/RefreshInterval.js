@@ -56,9 +56,12 @@ export default class RefreshInterval extends React.Component {
 
     renderModal() {
         return (
-            <Modal trigger={<Button color='black' icon='edit' content='edit'
-                                    onClick={() => this.setState({modalOpen: true})}/>}
-                   dimmer='blurring' open={this.state.modalOpen} closeIcon
+            <Modal
+                trigger={<Button color='black' icon='edit' content='edit'
+                                 onClick={() => this.setState({modalOpen: true})}/>}
+                dimmer
+                open={this.state.modalOpen}
+                closeIcon
                    onClose={() => this.setState({modalOpen: false})}
             >
                 <Header>Edit Refresh Interval</Header>
