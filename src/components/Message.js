@@ -1,8 +1,7 @@
 import React from "react";
-import {Card, Icon, Radio} from "semantic-ui-react";
+import {Card, Confirm, Icon} from "semantic-ui-react";
 import {Map, TileLayer, GeoJSON} from 'react-leaflet';
 import PropTypes from 'prop-types';
-
 import Moment from "react-moment";
 import {deleteMessage} from "../api/Message";
 
@@ -11,20 +10,11 @@ export default class Message extends React.Component {
         super(props);
 
         this.state = {
-            id: props.message.id,
-            ticker: props.message.ticker,
-            text: Message._replaceMagic(props.message.text),
-            geoInformation: JSON.parse(props.message.geo_information),
-            creationDate: props.message.creation_date,
-            tweetId: props.message.tweet_id || null,
-            tweetUser: props.message.tweet_user || null,
-            showMap: false
+            showDeleteConfirm: false,
         };
-        this._getText = this._getText.bind(this);
-        this._deleteMessage = this._deleteMessage.bind(this);
     }
 
-    static _replaceMagic(text) {
+    _replaceMagic(text) {
         return (text
             .replace(/(https?:\/\/([^\s]+))/g, '<a href="$1" target="_blank">$2</a>')
             .replace(/#(\S+)/g, '<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/search?q=%23$1">#$1</a>')
@@ -33,43 +23,20 @@ export default class Message extends React.Component {
             .replace(/(?:\r\n|\r|\n)/g, '<br/>'))
     }
 
-    _getText() {
-        return (
-            <p dangerouslySetInnerHTML={{__html: this.state.text}}/>
-        );
-    }
-
-    _deleteMessage(event) {
-        deleteMessage(this.state.ticker, this.state.id).then(() => {
-            this.props.loadMessages()
+    deleteMessage() {
+        deleteMessage(this.props.message.ticker.toString(), this.props.message.id.toString()).then(() => {
+            this.props.loadMessages();
         });
-
-        event.preventDefault();
     }
 
-    _renderMapToggle() {
-        if (this.state.geoInformation.features.length < 1) {
-            return null;
+    hasGeoInformation() {
+        let geoInformation = JSON.parse(this.props.message.geo_information);
+
+        if (typeof geoInformation.features === 'undefined') {
+            return false;
         }
 
-        return (
-            <Card.Content>
-                <Radio toggle label='Show map' onChange={(e, data) => this.setState({showMap: data.checked})}/>
-            </Card.Content>
-        );
-    }
-
-    _renderMap() {
-        if (this.state.geoInformation.features.length < 1 || !this.state.showMap) {
-            return null;
-        }
-
-        return (
-            <Map center={[0, 0]} zoom={1}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-                <GeoJSON data={this.state.geoInformation} onAdd={this.onGeoInformationAdded}/>
-            </Map>
-        );
+        return geoInformation.features.length >= 1;
     }
 
     onGeoInformationAdded(event) {
@@ -84,25 +51,58 @@ export default class Message extends React.Component {
         }
     }
 
-    render() {
-        let twitterIcon = (this.state.tweetId != null) ? (
-            <a href={`https://twitter.com/${this.state.tweetUser}/status/${this.state.tweetId}`} target='_blank'
-               rel='noopener noreferrer'><Icon
-                name='twitter'/></a>) : (<Icon name='twitter' disabled/>);
+    renderMap() {
+        if (!this.hasGeoInformation()) {
+            return null;
+        }
 
+        return (
+            <Map center={[0, 0]} zoom={1}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                <GeoJSON data={JSON.parse(this.props.message.geo_information)} onAdd={this.onGeoInformationAdded}/>
+            </Map>
+        );
+    }
+
+    renderTwitterIcon() {
+        if (this.props.message.tweet_id != null) {
+            return (
+                <a
+                    href={`https://twitter.com/${this.props.message.tweet_user}/status/${this.props.message.tweet_id}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                >
+                    <Icon name='twitter'/>
+                </a>
+            );
+        }
+
+        return (<Icon name='twitter' disabled/>);
+    }
+
+    render() {
         return (
             <Card fluid>
                 <Card.Content>
-                    <a onClick={this._deleteMessage}>
-                        <Icon fitted link color='grey' name='close' style={{float: 'right'}}/>
-                    </a>
-                    {this._getText()}
+                    <Icon
+                        fitted
+                        link
+                        color='grey'
+                        name='close'
+                        style={{float: 'right'}}
+                        onClick={() => this.setState({showDeleteConfirm: true})}
+                    />
+                    <Confirm
+                        onCancel={() => this.setState({showDeleteConfirm: false})}
+                        onConfirm={() => this.deleteMessage()}
+                        open={this.state.showDeleteConfirm}
+                    />
+                    <p dangerouslySetInnerHTML={{__html: this._replaceMagic(this.props.message.text)}}/>
                 </Card.Content>
-                {this._renderMapToggle()}
-                {this._renderMap()}
+                {this.renderMap()}
                 <Card.Content extra>
-                    {twitterIcon}
-                    <Moment fromNow>{this.state.creationDate}</Moment>
+                    {this.renderTwitterIcon()}
+                    <Moment fromNow>{this.props.message.creation_date}</Moment>
                 </Card.Content>
             </Card>
         );
