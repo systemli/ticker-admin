@@ -138,11 +138,16 @@ export default class TickerList extends React.Component {
 
         if (!tickers) {
             return (
-                <Message
-                    icon='info'
-                    header='Information'
-                    content='You are not able to see any tickers or no ticker is created yet. If you want to access a
-                        specific ticker and dont see them, contact us.'/>
+                <React.Fragment>
+                    <Message
+                        icon='info'
+                        header='Information'
+                        content='You are not able to see any tickers or no ticker is created yet. If you want to access a
+                        specific ticker and dont see them, contact us.'
+                    />
+                    {this.renderTickerForm()}
+                    {this.renderCreateButton()}
+                </React.Fragment>
             )
         }
 
