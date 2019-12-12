@@ -51,7 +51,7 @@ export function putTicker(data, id) {
  * @returns {Promise<any>}
  */
 export function putTickerTwitter(data, id) {
-    return AuthSingleton.getInstance().fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
+    return Auth.getInstance().fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
         body: JSON.stringify(data),
         method: 'PUT'
     });
@@ -62,7 +62,7 @@ export function putTickerTwitter(data, id) {
  * @param id
  */
 export function deleteTicker(id) {
-    return AuthSingleton.getInstance().fetch(`${ApiUrl}/admin/tickers/${id}`, {
+    return Auth.getInstance().fetch(`${ApiUrl}/admin/tickers/${id}`, {
         method: 'DELETE'
     });
 }
