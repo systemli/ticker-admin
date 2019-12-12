@@ -1,7 +1,9 @@
 import React from "react";
-import {Button, Form, Header, Icon, Input, Modal} from "semantic-ui-react";
+import {Button, Form, Header, Icon, Input, Message, Modal} from "semantic-ui-react";
 import {postTicker, putTicker} from "../api/Ticker";
 import PropTypes from 'prop-types';
+import LocationSearch from "./LocationSearch";
+import {Map, Marker, Popup, TileLayer} from "react-leaflet";
 
 export default class TickerForm extends React.Component {
     constructor(props) {
@@ -13,6 +15,10 @@ export default class TickerForm extends React.Component {
 
         this.state = {
             ticker: props.ticker,
+            location: {
+                lat: parseFloat(props.ticker.location.lat),
+                lon: parseFloat(props.ticker.location.lon),
+            },
             modalOpen: true,
         };
 
@@ -29,6 +35,10 @@ export default class TickerForm extends React.Component {
             information.twitter = undefined !== this.form.information.twitter ? this.form.information.twitter : this.props.ticker.information.twitter;
             information.facebook = undefined !== this.form.information.facebook ? this.form.information.facebook : this.props.ticker.information.facebook;
 
+            let location = {};
+            location.lat = undefined !== this.state.location.lat ? this.state.location.lat : this.props.ticker.location.lat;
+            location.lon = undefined !== this.state.location.lon ? this.state.location.lon : this.props.ticker.location.lon;
+
             let formData = {
                 title: this.form.title || this.props.ticker.title,
                 domain: this.form.domain || this.props.ticker.domain,
@@ -36,6 +46,7 @@ export default class TickerForm extends React.Component {
                 active: this.form.active !== undefined ? this.form.active : this.props.ticker.active,
                 prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.props.ticker.prepend_time,
                 information: information,
+                location: location,
             };
 
             if (null !== this.props.ticker.id) {
@@ -60,6 +71,61 @@ export default class TickerForm extends React.Component {
         if (undefined !== this.props.callback) {
             this.props.callback(this.state.ticker);
         }
+    }
+
+    resetLocation(e) {
+        this.setState({location: {lat: 0.0, lon: 0.0}});
+
+        e.preventDefault();
+    }
+
+    handleLocationResult(result) {
+        this.setState({location: {lat: parseFloat(result.lat), lon: parseFloat(result.lon)}});
+    }
+
+    renderLocation() {
+        let position = [52, 12];
+        let zoom = 6;
+        let marker = null;
+        let resetDisabled = true;
+
+        if (this.state.location.lat !== 0.0 && this.state.location.lon !== 0.0) {
+            position = [this.state.location.lat, this.state.location.lon];
+            zoom = 10;
+            resetDisabled = false;
+            marker = <Marker position={position}>
+                <Popup>
+                    <strong>Location</strong><br/>
+                    Latitude: {this.state.location.lat}<br/>
+                    Longitude: {this.state.location.lon}<br/>
+                </Popup>
+            </Marker>
+        }
+
+        return (
+            <React.Fragment>
+                <Header dividing>Location</Header>
+                <Message info size='small'>
+                    You can add a default location to the ticker. This will help you to have a pre selected
+                    location when you add a map to a message.
+                </Message>
+                <Form.Group widths='equal'>
+                    <Form.Field width='15'>
+                        <LocationSearch fluid callback={this.handleLocationResult.bind(this)}/>
+                    </Form.Field>
+                    <Form.Field width='1'>
+                        <Button icon color='red' onClick={this.resetLocation.bind(this)}
+                                disabled={resetDisabled}>
+                            <Icon name='delete'/>
+                        </Button>
+                    </Form.Field>
+                </Form.Group>
+                <Map center={position} zoom={zoom} style={{height: 200}}>
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                    {marker}
+                </Map>
+            </React.Fragment>
+        );
     }
 
     render() {
@@ -158,6 +224,7 @@ export default class TickerForm extends React.Component {
                                 </Input>
                             </Form.Input>
                         </Form.Group>
+                        {this.renderLocation()}
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>

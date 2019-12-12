@@ -52,6 +52,14 @@ export default class EditMapModal extends React.Component {
     }
 
     render() {
+        let position = [51, 12];
+        let zoom = 6;
+
+        if (this.props.position[0] !== 0 && this.props.position[1] !== 0) {
+            position = this.props.position;
+            zoom = 12;
+        }
+
         return (
             <Modal
                 closeIcon
@@ -62,8 +70,8 @@ export default class EditMapModal extends React.Component {
                 <Modal.Header>{this.renderHeadline()}</Modal.Header>
                 <Modal.Content style={{padding: 0}}>
                     <Map
-                        center={[52, 12]}
-                        zoom={6}
+                        center={position}
+                        zoom={zoom}
                         style={{height: 600}}
                     >
                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
@@ -103,4 +111,5 @@ EditMapModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    position: PropTypes.array.isRequired,
 };
