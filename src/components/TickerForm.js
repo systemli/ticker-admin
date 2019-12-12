@@ -4,6 +4,7 @@ import {postTicker, putTicker} from "../api/Ticker";
 import PropTypes from 'prop-types';
 import LocationSearch from "./LocationSearch";
 import {Map, Marker, Popup, TileLayer} from "react-leaflet";
+import {CommonUtils} from "../utils/common";
 
 export default class TickerForm extends React.Component {
     constructor(props) {
@@ -27,42 +28,44 @@ export default class TickerForm extends React.Component {
     }
 
     handleSubmit() {
-        if (Object.keys(this.form).length > 0) {
-            let information = {};
-            information.author = undefined !== this.form.information.author ? this.form.information.author : this.props.ticker.information.author;
-            information.url = undefined !== this.form.information.url ? this.form.information.url : this.props.ticker.information.url;
-            information.email = undefined !== this.form.information.email ? this.form.information.email : this.props.ticker.information.email;
-            information.twitter = undefined !== this.form.information.twitter ? this.form.information.twitter : this.props.ticker.information.twitter;
-            information.facebook = undefined !== this.form.information.facebook ? this.form.information.facebook : this.props.ticker.information.facebook;
-
-            let location = {};
-            location.lat = undefined !== this.state.location.lat ? this.state.location.lat : this.props.ticker.location.lat;
-            location.lon = undefined !== this.state.location.lon ? this.state.location.lon : this.props.ticker.location.lon;
-
-            let formData = {
-                title: this.form.title || this.props.ticker.title,
-                domain: this.form.domain || this.props.ticker.domain,
-                description: this.form.description || this.props.ticker.description,
-                active: this.form.active !== undefined ? this.form.active : this.props.ticker.active,
-                prepend_time: this.form.prepend_time !== undefined ? this.form.prepend_time : this.props.ticker.prepend_time,
-                information: information,
-                location: location,
-            };
-
-            if (null !== this.props.ticker.id) {
-                putTicker(formData, this.props.ticker.id).then(response => {
-                    this.setState({ticker: response.data.ticker});
-
-                    this.closeModal();
-                });
-            } else {
-                postTicker(formData).then(response => {
-                    this.setState({ticker: response.data.ticker});
-
-                    this.closeModal();
-                })
-            }
+        if (Object.keys(this.form).length <= 0) {
+            return
         }
+
+        let formData = CommonUtils.mapValueArray(
+            ['title', 'domain', 'description', 'active', 'prepend_time'],
+            this.form,
+            this.props.ticker
+        );
+
+        formData.information = CommonUtils.mapValueArray(
+            ['author', 'url', 'twitter', 'facebook'],
+            this.form.information,
+            this.props.ticker.information
+        );
+
+        formData.location = CommonUtils.mapValueArray(
+            ['lat', 'lon'],
+            this.state.location,
+            this.props.ticker.location
+        );
+
+        this.updateTicker(formData);
+    }
+
+    updateTicker(formData) {
+        let response;
+        if (null !== this.props.ticker.id) {
+            response = putTicker(formData, this.props.ticker.id);
+        } else {
+            response = postTicker(formData);
+        }
+
+        response.then(response => {
+            this.setState({ticker: response.data.ticker});
+
+            this.closeModal();
+        });
     }
 
     closeModal() {
