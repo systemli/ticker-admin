@@ -33,6 +33,18 @@ export default class Ticker {
             }
         }
 
+        if (undefined !== props.location) {
+            this.location = {
+                lat: undefined !== props.location.lat ? props.location.lat : 0.0,
+                lon: undefined !== props.location.lon ? props.location.lon : 0.0,
+            }
+        } else {
+            this.location = {
+                lat: 0.0,
+                lon: 0.0,
+            }
+        }
+
         if (undefined !== props.twitter) {
             this.twitter = {
                 active: undefined !== props.twitter.active ? props.twitter.name : false,

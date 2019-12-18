@@ -288,6 +288,12 @@ class TickerView extends React.Component {
     }
 
     renderEditMapModal() {
+        let position = [52,12];
+
+        if (undefined !== this.state.ticker.location) {
+            position = [this.state.ticker.location.lat, this.state.ticker.location.lon];
+        }
+
         return (
             <EditMapModal
                 geoInformation={this.state.geoInformation}
@@ -295,6 +301,7 @@ class TickerView extends React.Component {
                 open={this.state.showEditMapModal}
                 onSubmit={(geoInformation) => this.setState({showEditMapModal: false, geoInformation: geoInformation})}
                 onClose={() => this.setState({showEditMapModal: false})}
+                position={position}
             />
         )
     }
