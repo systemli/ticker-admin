@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Confirm, Icon} from "semantic-ui-react";
+import {Card, Confirm, Icon, Image} from "semantic-ui-react";
 import {Map, TileLayer, GeoJSON} from 'react-leaflet';
 import PropTypes from 'prop-types';
 import Moment from "react-moment";
@@ -64,6 +64,24 @@ export default class Message extends React.Component {
         );
     }
 
+    renderAttachments() {
+        const attachments = this.props.message.attachments;
+
+        if (attachments === null || attachments.length === 0) {
+            return null;
+        }
+
+        const images = attachments.map((image, key) =>
+            <Image key={key} src={image.url} rounded/>
+        );
+
+        return (
+            <Card.Content align='center'>
+                <Image.Group size='medium'>{images}</Image.Group>
+            </Card.Content>
+        )
+    }
+
     renderTwitterIcon() {
         if (this.props.message.tweet_id === "") {
             return (<Icon name='twitter' disabled/>);
@@ -100,6 +118,7 @@ export default class Message extends React.Component {
                     />
                     <p dangerouslySetInnerHTML={{__html: this._replaceMagic(this.props.message.text)}}/>
                 </Card.Content>
+                {this.renderAttachments()}
                 {this.renderMap()}
                 <Card.Content extra>
                     {this.renderTwitterIcon()}
@@ -119,6 +138,7 @@ Message.propTypes = {
         tweet_id: PropTypes.string,
         tweet_user: PropTypes.string,
         geo_information: PropTypes.string,
+        attachments: PropTypes.array,
     }),
     loadMessages: PropTypes.func.isRequired,
 };
