@@ -155,10 +155,15 @@ class AuthService {
      * @returns {Promise<Response>}
      */
     fetch(url, options) {
-        const headers = {
+        let headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         };
+
+        //With formData the Content-Type will be set automatically
+        if (options !== undefined && options.body instanceof FormData) {
+            headers = {};
+        }
 
         if (this.loggedIn()) {
             headers['Authorization'] = 'Bearer ' + this.getToken();

@@ -1,13 +1,11 @@
 import React from "react";
-import moment from "moment";
 import {
-    Button, Card, Container, Feed, Form, Grid,
-    Header, Icon, Label, Loader, Message as Error, Sticky
+    Button, Card, Container, Feed, Grid,
+    Header, Icon, Loader, Sticky
 } from "semantic-ui-react";
 import {getTicker, putTickerTwitter} from "../api/Ticker";
 import Ticker from "../components/Ticker";
-import EditMapModal from "../components/EditMapModal";
-import {getMessages, postMessage} from "../api/Message";
+import {getMessages} from "../api/Message";
 import Message from "../components/Message";
 import withAuth from "../components/withAuth";
 import Navigation from "./Navigation";
@@ -16,32 +14,21 @@ import {ApiUrl} from "../api/Api";
 import PropTypes from 'prop-types';
 import TickerUserList from "../components/TickerUserList";
 import TickerResetButton from "../components/TickerResetButton";
+import MessageForm from "../components/MessageForm";
 
 class TickerView extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            counter: 0,
-            counterColor: 'green',
-            counterLimit: this.counterLimit,
-            formError: false,
-            formErrorMessage: '',
             id: props.id,
             isConfigurationLoading: true,
             isMessagesLoading: true,
             isTwitterConnected: false,
             messages: [],
-            showError: false,
-            input: '',
             ticker: {},
-            showEditMapModal: false,
-            geoInformation: {},
         };
 
-        this.counterLimit = 280;
-
-        this._submitMessage = this._submitMessage.bind(this);
         this.loadMessages = this.loadMessages.bind(this);
         this.twitterConnect = this.twitterConnect.bind(this);
         this.twitterDisconnect = this.twitterDisconnect.bind(this);
@@ -56,33 +43,6 @@ class TickerView extends React.Component {
 
     handleContextRef(stickyContext) {
         this.setState({stickyContext})
-    }
-
-    handleInput(event, input) {
-        let color = 'green';
-        let message = '';
-        let error = false;
-
-        //TODO: Calculate length for Twitter (cutting links to 20 characters)
-        if (input.value.length > this.state.counterLimit) {
-            color = 'red';
-            message = `The message is too long. You must remove ${input.value.length - this.state.counterLimit} characters.`;
-            error = true;
-        } else if (input.value.length >= 260) {
-            color = 'orange';
-        } else if (input.value.length >= 220) {
-            color = 'yellow';
-        } else {
-            color = 'green';
-        }
-
-        this.setState({
-            input: input.value,
-            counter: input.value.length,
-            counterColor: color,
-            formError: error,
-            formErrorMessage: message,
-        });
     }
 
     twitterConnect(response) {
@@ -122,19 +82,12 @@ class TickerView extends React.Component {
     _loadTicker() {
         getTicker(this.state.id).then((response) => {
             if (response.data !== undefined && response.data.ticker !== undefined) {
-
                 let twitter = response.data.ticker.twitter;
-                let counterLimit = this.counterLimit;
-                if (response.data.ticker.prepend_time) {
-                    // 'xx:xx ' that format needs 6 characters
-                    counterLimit -= 'xx:xx '.length;
-                }
 
                 this.setState({
                     ticker: response.data.ticker,
                     isConfigurationLoading: false,
                     isTwitterConnected: twitter.connected,
-                    counterLimit: counterLimit,
                 });
             }
         });
@@ -234,25 +187,6 @@ class TickerView extends React.Component {
         }
     }
 
-    _submitMessage() {
-        if (this.state.input.length === 0 || this.state.input.length > this.state.counterLimit) {
-            return;
-        }
-
-        if (this.state.ticker.prepend_time) {
-            this.setState({input: moment().format('HH:mm') + ' ' + this.state.input});
-        }
-
-        postMessage(this.state.id, this.state.input, this.state.geoInformation).then(response => {
-            if (response.data !== undefined && response.data.message !== undefined) {
-                this.loadMessages();
-                this.setState({
-                    input: '', counter: 0, counterColor: 'green', geoInformation: {},
-                });
-            }
-        });
-    }
-
     loadMessages() {
         getMessages(this.state.id).then((response) => {
             if (response.data !== undefined && response.data.messages !== undefined) {
@@ -287,75 +221,6 @@ class TickerView extends React.Component {
         this.setState({ticker: ticker, messages: []});
     }
 
-    renderEditMapModal() {
-        let position = [52,12];
-
-        if (undefined !== this.state.ticker.location) {
-            position = [this.state.ticker.location.lat, this.state.ticker.location.lon];
-        }
-
-        return (
-            <EditMapModal
-                geoInformation={this.state.geoInformation}
-                key={this.state.messages.length} // force rerendering after message submitted
-                open={this.state.showEditMapModal}
-                onSubmit={(geoInformation) => this.setState({showEditMapModal: false, geoInformation: geoInformation})}
-                onClose={() => this.setState({showEditMapModal: false})}
-                position={position}
-            />
-        )
-    }
-
-    renderMessageForm() {
-        const state = this.state;
-
-        return (
-            <Form error={state.formError}>
-                <Form.Field>
-                    {this.renderEditMapModal()}
-                </Form.Field>
-                <Form.Field style={{display: 'none'}}>
-                    <Form.TextArea
-                        rows='3'
-                        value={JSON.stringify(state.geoInformation)}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <Form.TextArea
-                        placeholder='Write a message' rows='5'
-                        value={state.input}
-                        onChange={this.handleInput.bind(this)}
-                    />
-                </Form.Field>
-                <Error
-                    error
-                    icon='ban'
-                    hidden={!state.formError}
-                    header='Error'
-                    content={state.formErrorMessage}
-                />
-                <Button
-                    color='teal'
-                    content='Send'
-                    icon='send'
-                    disabled={state.formError}
-                    onClick={() => this._submitMessage()}
-                />
-                <Button
-                    color='orange'
-                    content={(this.state.geoInformation.type === 'FeatureCollection') ? 'Change Map' : 'Add Map'}
-                    icon={(this.state.geoInformation.type === 'FeatureCollection') ? 'map' : 'map outline'}
-                    toggle
-                    onClick={() => this.setState({showEditMapModal: true})}
-                />
-                <Label
-                    content={`${state.counter}/${state.counterLimit}`}
-                    color={state.counterColor} style={{float: 'right'}}
-                />
-            </Form>
-        );
-    }
-
     render() {
         const {stickyContext} = this.state;
 
@@ -369,7 +234,7 @@ class TickerView extends React.Component {
                             <Grid.Column width={10}>
                                 <div ref={this.handleContextRef}>
                                     <Header dividing>Messages</Header>
-                                    {this.renderMessageForm()}
+                                    <MessageForm ticker={this.state.ticker} callback={this.loadMessages}/>
                                     {this._renderMessages()}
                                 </div>
                             </Grid.Column>
