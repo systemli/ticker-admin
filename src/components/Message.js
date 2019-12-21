@@ -65,20 +65,21 @@ export default class Message extends React.Component {
     }
 
     renderTwitterIcon() {
-        if (this.props.message.tweet_id != null) {
-            return (
-                <a
-                    href={`https://twitter.com/${this.props.message.tweet_user}/status/${this.props.message.tweet_id}`}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                    <Icon name='twitter'/>
-                </a>
-            );
+        if (this.props.message.tweet_id === "") {
+            return (<Icon name='twitter' disabled/>);
         }
 
-        return (<Icon name='twitter' disabled/>);
+        return (
+            <a
+                href={`https://twitter.com/${this.props.message.tweet_user}/status/${this.props.message.tweet_id}`}
+                target='_blank'
+                rel='noopener noreferrer'
+            >
+                <Icon name='twitter'/>
+            </a>
+        );
     }
+
 
     render() {
         return (
