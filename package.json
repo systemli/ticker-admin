@@ -20,7 +20,7 @@
     "dotenv-webpack": "^1.7.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-react-app": "^2.1.0",
+    "eslint-config-react-app": "^3.0.8",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-flowtype": "^2.50.0",
     "eslint-plugin-import": "^2.17.3",
