@@ -4,6 +4,8 @@ import {Map, TileLayer, GeoJSON} from 'react-leaflet';
 import PropTypes from 'prop-types';
 import Moment from "react-moment";
 import {deleteMessage} from "../api/Message";
+import Lightbox from "react-image-lightbox";
+import 'react-image-lightbox/style.css';
 
 export default class Message extends React.Component {
     constructor(props) {
@@ -11,6 +13,8 @@ export default class Message extends React.Component {
 
         this.state = {
             showDeleteConfirm: false,
+            imageLightboxOpen: false,
+            imageIndex: 0,
         };
     }
 
@@ -66,17 +70,39 @@ export default class Message extends React.Component {
 
     renderAttachments() {
         const attachments = this.props.message.attachments;
+        const {imageLightboxOpen, imageIndex} = this.state;
 
         if (attachments === null || attachments.length === 0) {
             return null;
         }
 
         const images = attachments.map((image, key) =>
-            <Image key={key} src={image.url} rounded/>
+            <Image key={key} src={image.url} rounded
+                   style={{width: 200, height: 200, objectFit: 'cover'}}
+                   onClick={() => this.setState({imageLightboxOpen: true, imageIndex: key})}/>
         );
+        const urls = attachments.map(image => image.url);
 
         return (
             <Card.Content align='center'>
+                {imageLightboxOpen && (
+                    <Lightbox
+                        mainSrc={urls[imageIndex]}
+                        nextSrc={images[(imageIndex + 1) % images.length]}
+                        prevSrc={images[(imageIndex + images.length - 1) % images.length]}
+                        onCloseRequest={() => this.setState({imageLightboxOpen: false})}
+                        onMovePrevRequest={() =>
+                            this.setState({
+                                imageIndex: (imageIndex + urls.length - 1) % urls.length,
+                            })
+                        }
+                        onMoveNextRequest={() =>
+                            this.setState({
+                                imageIndex: (imageIndex + 1) % urls.length,
+                            })
+                        }
+                    />
+                )}
                 <Image.Group size='medium'>{images}</Image.Group>
             </Card.Content>
         )
