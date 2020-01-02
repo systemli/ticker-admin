@@ -1,6 +1,7 @@
 import L from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-draw/dist/leaflet.draw.css';
 
 // stupid hack so that leaflet's images work after going through webpack
 import marker from 'leaflet/dist/images/marker-icon.png';
