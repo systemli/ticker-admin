@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import {postMessage} from "../api/Message";
 import PropTypes from "prop-types";
-import {Button, Form, Image, Label, Message as Error} from "semantic-ui-react";
+import {Button, Form, Image, Label, Loader, Message as Error} from "semantic-ui-react";
 import {postUpload} from "../api/Upload";
 import EditMapModal from "./EditMapModal";
 
@@ -12,6 +12,7 @@ const initialState = {
     counterColor: 'green',
     geoInformation: {},
     attachments: [],
+    attachmentPreviews: 0,
     showEditMapModal: false,
     formError: false,
     formErrorMessage: '',
@@ -86,13 +87,32 @@ export default class MessageForm extends React.Component {
         for (let i = 0; i < e.target.files.length; i++) {
             formData.append("files", e.target.files[i]);
         }
+        this.setState({attachmentPreviews: e.target.files.length});
         formData.append("ticker", this.props.ticker.id);
 
         postUpload(formData).then(response => {
             const attachments = this.state.attachments;
-            this.setState({attachments: attachments.concat(response.data.uploads)});
+            this.setState({attachments: attachments.concat(response.data.uploads), attachmentPreviews: 0});
         });
 
+    }
+
+    renderAttachmentPreviews() {
+        if (this.state.attachmentPreviews === 0) {
+            return null;
+        }
+
+        let images = [];
+
+        for (let i = 0; i < this.state.attachmentPreviews; i++) {
+            images[i] = <div style={{display: 'inline-block', position: 'relative', width: 150, height: 150}}>
+                <Loader active/>
+            </div>
+        }
+
+        return (
+            <div>{images}</div>
+        )
     }
 
     renderAttachments() {
@@ -171,6 +191,7 @@ export default class MessageForm extends React.Component {
                     header='Error'
                     content={state.formErrorMessage}
                 />
+                {this.renderAttachmentPreviews()}
                 {this.renderAttachments()}
                 <Button
                     color='teal'
