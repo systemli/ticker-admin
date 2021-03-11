@@ -42,7 +42,7 @@
     "promise": "^8.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-dev-utils": "^10.2.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.1",
     "react-image-lightbox": "^5.1.1",
     "react-leaflet": "^2.6.3",
