@@ -16,13 +16,14 @@ export default class TickerForm extends React.Component {
 
         this.state = {
             ticker: props.ticker,
+            user: props.user,
             location: {
                 lat: parseFloat(props.ticker.location.lat),
                 lon: parseFloat(props.ticker.location.lon),
             },
             modalOpen: true,
         };
-
+        
         this.handleSubmit = this.handleSubmit.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
@@ -84,6 +85,29 @@ export default class TickerForm extends React.Component {
 
     handleLocationResult(result) {
         this.setState({location: {lat: parseFloat(result.lat), lon: parseFloat(result.lon)}});
+    }
+
+    renderDomain(){
+        if (this.state.user.is_super_admin) {
+            return (
+                <Form.Input
+                    label='Domain'
+                    name='domain'
+                    defaultValue={this.props.ticker.domain}
+                    onChange={(event, input) => this.form.domain = input.value}
+                    required
+                />
+            )       
+        }
+        return (
+            <Form.Input
+                label='Domain'
+                name='domain'
+                defaultValue={this.props.ticker.domain}
+                disabled={true}
+            />
+        )
+       
     }
 
     renderLocation() {
@@ -149,13 +173,7 @@ export default class TickerForm extends React.Component {
                                 onChange={(event, input) => this.form.title = input.value}
                                 required
                             />
-                            <Form.Input
-                                label='Domain'
-                                name='domain'
-                                defaultValue={this.props.ticker.domain}
-                                onChange={(event, input) => this.form.domain = input.value}
-                                required
-                            />
+                            {this.renderDomain()}
                         </Form.Group>
                         <Form.Checkbox
                             toggle
