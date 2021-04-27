@@ -78,7 +78,7 @@ export default class TickerList extends React.Component {
     renderTickerForm() {
         if (null !== this.state.activeTicker) {
             return (
-                <TickerForm ticker={this.state.activeTicker} callback={this.onEditClose}/>
+                <TickerForm ticker={this.state.activeTicker} user={this.state.user} callback={this.onEditClose}/>
             )
         }
 
