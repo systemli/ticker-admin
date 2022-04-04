@@ -172,6 +172,13 @@ export default class TickerForm extends React.Component {
                             onChange={(event, input) => this.form.description = input.value}
                             required
                         />
+                        <Form.Checkbox
+                            toggle
+                            label='Prepend Time'
+                            name='prepend_time'
+                            defaultChecked={this.props.ticker.prepend_time}
+                            onChange={(event, input) => this.form.prepend_time = input.checked}
+                        />
                         <Header dividing>Information</Header>
                         <Form.Group widths='equal'>
                             <Form.Input label='Author'>

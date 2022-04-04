@@ -18,8 +18,6 @@ const initialState = {
     formErrorMessage: '',
 };
 
-const counterLimit = 280;
-
 export default class MessageForm extends React.Component {
     constructor(props) {
         super(props);
@@ -29,15 +27,19 @@ export default class MessageForm extends React.Component {
         this.state = initialState;
     }
 
+    counterLimit() {
+        return this.props.ticker.prepend_time ? 274 : 280
+    }
+
     handleInput(event, input) {
         let color;
         let errorMessage = '';
         let error = false;
 
         //TODO: Calculate length for Twitter (cutting links to 20 characters)
-        if (input.value.length > counterLimit) {
+        if (input.value.length > this.counterLimit()) {
             color = 'red';
-            errorMessage = `The message is too long. You must remove ${input.value.length - counterLimit} characters.`;
+            errorMessage = `The message is too long. You must remove ${input.value.length - this.counterLimit()} characters.`;
             error = true;
         } else if (input.value.length >= 260) {
             color = 'orange';
@@ -60,7 +62,7 @@ export default class MessageForm extends React.Component {
         let message = this.state.message, id = this.props.ticker.id, geoInformation = this.state.geoInformation,
             attachments = [];
         const {length} = message;
-        if (length === 0 || length > counterLimit) {
+        if (length === 0 || length > this.counterLimit()) {
             return;
         }
 
@@ -221,7 +223,7 @@ export default class MessageForm extends React.Component {
                     onChange={this.uploadAttachment.bind(this)}
                 />
                 <Label
-                    content={`${state.counter}/${counterLimit}`}
+                    content={`${state.counter}/${this.counterLimit()}`}
                     color={state.counterColor} style={{float: 'right'}}
                 />
             </Form>
