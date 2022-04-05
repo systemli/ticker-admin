@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import {postMessage} from "../api/Message";
 import PropTypes from "prop-types";
 import {Button, Form, Image, Label, Loader, Message as Error} from "semantic-ui-react";
