@@ -70,10 +70,6 @@ export default class MessageForm extends React.Component {
             attachments = this.state.attachments.map((attachment) => attachment.id)
         }
 
-        if (this.props.ticker.prepend_time) {
-            message = moment().format('HH:mm') + ' ' + message;
-        }
-
         postMessage(id, message, geoInformation, attachments).then(response => {
             if (response.data !== undefined && response.data.message !== undefined) {
                 this.setState(initialState);
