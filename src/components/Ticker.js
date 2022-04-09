@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Confirm, Divider, Icon, Label, Popup} from 'semantic-ui-react';
+import {Button, Card, Confirm, Icon, Label} from 'semantic-ui-react';
 import {deleteTicker} from "../api/Ticker";
 import PropTypes from 'prop-types';
 import ReactMarkdown from "react-markdown";
@@ -108,15 +108,6 @@ export default class Ticker extends React.Component {
                     <Card.Description>
                         <ReactMarkdown source={this.props.ticker.description}/>
                     </Card.Description>
-                    <Card.Description>
-                        <Divider />
-                        <Icon color={this.props.ticker.prepend_time ? 'green' : 'gray'}
-                              name={this.props.ticker.prepend_time ? 'toggle on' : 'toggle off'}
-                        /> 
-                        Prepend Time
-                        <Popup content='This will prepend the time (in format 13:12) to the message' 
-                               trigger={<Button basic color='black' compact circular icon='info' size='tiny' style={{marginLeft: '.5em'}}/>}/>
-                    </Card.Description>
                 </Card.Content>
                 <Card.Content>
                     <Button.Group size='tiny' fluid compact>
@@ -147,7 +138,6 @@ Ticker.propTypes = {
         domain: PropTypes.string,
         description: PropTypes.string,
         active: PropTypes.bool,
-        prepend_time: PropTypes.bool,
         information: PropTypes.shape({
             author: PropTypes.string,
             url: PropTypes.string,
