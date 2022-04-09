@@ -13,7 +13,6 @@ export default class Ticker {
         this.domain = undefined !== props.domain ? props.domain : null;
         this.description = undefined !== props.description ? props.description : null;
         this.active = undefined !== props.active ? props.active : false;
-        this.prepend_time = undefined !== props.prepend_time ? props.prepend_time : false;
 
         if (undefined !== props.information) {
             this.information = {
@@ -69,7 +68,6 @@ Ticker.propTypes = {
     domain: PropTypes.string,
     description: PropTypes.string,
     active: PropTypes.bool,
-    prepend_time: PropTypes.bool,
     information: PropTypes.shape({
         author: PropTypes.string,
         url: PropTypes.string,
