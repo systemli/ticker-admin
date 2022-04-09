@@ -1,6 +1,6 @@
 import React from "react";
 import {Card, Confirm, Icon, Image} from "semantic-ui-react";
-import {Map, TileLayer, GeoJSON} from 'react-leaflet';
+import {MapContainer, TileLayer, GeoJSON} from 'react-leaflet';
 import PropTypes from 'prop-types';
 import Moment from "react-moment";
 import {deleteMessage} from "../api/Message";
@@ -61,10 +61,10 @@ export default class Message extends React.Component {
         }
 
         return (
-            <Map center={[0, 0]} zoom={1}>
+            <MapContainer center={[0, 0]} zoom={1}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                 <GeoJSON data={JSON.parse(this.props.message.geo_information)} onAdd={this.onGeoInformationAdded}/>
-            </Map>
+            </MapContainer>
         );
     }
 

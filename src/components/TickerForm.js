@@ -3,7 +3,7 @@ import {Button, Form, Header, Icon, Input, Message, Modal} from "semantic-ui-rea
 import {postTicker, putTicker} from "../api/Ticker";
 import PropTypes from 'prop-types';
 import LocationSearch from "./LocationSearch";
-import {Map, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import {CommonUtils} from "../utils/common";
 
 export default class TickerForm extends React.Component {
@@ -123,10 +123,10 @@ export default class TickerForm extends React.Component {
                         </Button>
                     </Form.Field>
                 </Form.Group>
-                <Map center={position} zoom={zoom} style={{height: 200}}>
+                <MapContainer center={position} zoom={zoom} style={{height: 200}}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                     {marker}
-                </Map>
+                </MapContainer>
             </React.Fragment>
         );
     }

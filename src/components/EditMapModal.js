@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import {Map, TileLayer, FeatureGroup} from 'react-leaflet';
+import {MapContainer, TileLayer, FeatureGroup} from 'react-leaflet';
 import L from "leaflet";
 import {EditControl} from 'react-leaflet-draw';
 import {Button, Modal} from "semantic-ui-react";
@@ -69,7 +69,7 @@ export default class EditMapModal extends React.Component {
             >
                 <Modal.Header>{this.renderHeadline()}</Modal.Header>
                 <Modal.Content style={{padding: 0}}>
-                    <Map
+                    <MapContainer
                         center={position}
                         zoom={zoom}
                         style={{height: 600}}
@@ -84,7 +84,7 @@ export default class EditMapModal extends React.Component {
                                 draw={{circle: false, circlemarker: false}}
                             />
                         </FeatureGroup>
-                    </Map>
+                    </MapContainer>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button.Group>
