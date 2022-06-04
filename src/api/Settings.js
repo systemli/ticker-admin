@@ -1,20 +1,20 @@
-import {ApiUrl} from "./Api";
-import AuthSingleton from "../components/AuthService";
+import { ApiUrl } from './Api'
+import AuthSingleton from '../components/AuthService'
 
-const Auth = AuthSingleton.getInstance();
+const Auth = AuthSingleton.getInstance()
 
 /**
  * @returns {Promise<Response>}
  */
 export function getInactiveSettings() {
-    return Auth.fetch(`${ApiUrl}/admin/settings/inactive_settings`);
+  return Auth.fetch(`${ApiUrl}/admin/settings/inactive_settings`)
 }
 
 /**
  * @returns {Promise<Response>}
  */
 export function getRefreshInterval() {
-    return Auth.fetch(`${ApiUrl}/admin/settings/refresh_interval`);
+  return Auth.fetch(`${ApiUrl}/admin/settings/refresh_interval`)
 }
 
 /**
@@ -22,10 +22,10 @@ export function getRefreshInterval() {
  * @returns {Promise<Response>}
  */
 export function putInactiveSettings(data) {
-    return Auth.fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
-        body: JSON.stringify(data),
-        method: 'PUT'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
+    body: JSON.stringify(data),
+    method: 'PUT',
+  })
 }
 
 /**
@@ -33,8 +33,8 @@ export function putInactiveSettings(data) {
  * @returns {Promise<Response>}
  */
 export function putRefreshInterval(data) {
-    return Auth.fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
-        body: JSON.stringify(data),
-        method: 'PUT'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
+    body: JSON.stringify(data),
+    method: 'PUT',
+  })
 }

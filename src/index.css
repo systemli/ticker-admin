@@ -1,14 +1,14 @@
 .ui.modal > .close {
-    top: 0.5rem;
-    right: 0.5rem;
-    color: #000;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #000;
 }
 
 .app {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .leaflet-container {
-    height: 400px;
-    z-index: 1;
+  height: 400px;
+  z-index: 1;
 }

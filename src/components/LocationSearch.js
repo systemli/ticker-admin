@@ -1,65 +1,75 @@
-import React from "react";
-import _ from "lodash";
-import {Search} from "semantic-ui-react";
-import PropTypes from 'prop-types';
+import React from 'react'
+import _ from 'lodash'
+import { Search } from 'semantic-ui-react'
+import PropTypes from 'prop-types'
 
-const initialState = {isLoading: false, results: [], value: ''};
+const initialState = { isLoading: false, results: [], value: '' }
 
 export default class LocationSearch extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props)
 
-        this.state = initialState;
+    this.state = initialState
+  }
+
+  handleResultSelect(e, { result }) {
+    this.setState({ value: result.title })
+
+    if (typeof this.props.callback === 'function') {
+      this.props.callback(result)
     }
+  }
 
-    handleResultSelect(e, {result}) {
-        this.setState({value: result.title});
+  handleSearchChange(e, { value }) {
+    this.setState({ isLoading: true, value })
 
-        if (typeof this.props.callback === 'function') {
-            this.props.callback(result);
-        }
-    }
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.setState(initialState)
 
-    handleSearchChange(e, {value}) {
-        this.setState({isLoading: true, value});
+      let language = navigator.language || navigator.userLanguage
+      fetch(
+        'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' +
+          value +
+          '&accept-language=' +
+          language
+      )
+        .then(response => response.json())
+        .then(response => {
+          let results = []
+          _.each(response, function (value) {
+            results.push({
+              title: value.display_name,
+              lat: value.lat,
+              lon: value.lon,
+            })
+          })
 
-        setTimeout(() => {
-            if (this.state.value.length < 1) return this.setState(initialState);
+          this.setState({ isLoading: false, results: results })
+        })
+    }, 300)
+  }
 
-            let language = navigator.language || navigator.userLanguage;
-            fetch('https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + value + '&accept-language=' + language)
-                .then((response) => response.json())
-                .then((response) => {
-                    let results = [];
-                    _.each(response, function (value) {
-                        results.push({title: value.display_name, lat: value.lat, lon: value.lon})
-                    });
+  render() {
+    const { isLoading, results, value } = this.state
+    const props = Object.assign({}, this.props, { callback: undefined })
 
-                    this.setState({isLoading: false, results: results});
-                });
-
-        }, 300);
-    }
-
-    render() {
-        const {isLoading, results, value} = this.state;
-        const props = Object.assign({}, this.props, {callback: undefined});
-
-        return (
-            <React.Fragment>
-                <Search
-                    loading={isLoading}
-                    results={results}
-                    value={value}
-                    onResultSelect={this.handleResultSelect.bind(this)}
-                    onSearchChange={_.debounce(this.handleSearchChange.bind(this), 500, {leading: true})}
-                    {...props}
-                />
-            </React.Fragment>
-        )
-    }
+    return (
+      <React.Fragment>
+        <Search
+          loading={isLoading}
+          results={results}
+          value={value}
+          onResultSelect={this.handleResultSelect.bind(this)}
+          onSearchChange={_.debounce(this.handleSearchChange.bind(this), 500, {
+            leading: true,
+          })}
+          {...props}
+        />
+      </React.Fragment>
+    )
+  }
 }
 
 LocationSearch.propTypes = {
-    callback: PropTypes.func.isRequired,
-};
+  callback: PropTypes.func.isRequired,
+}
