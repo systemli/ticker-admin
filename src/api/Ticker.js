@@ -1,13 +1,13 @@
-import {ApiUrl} from "./Api";
-import AuthSingleton from "../components/AuthService";
+import { ApiUrl } from './Api'
+import AuthSingleton from '../components/AuthService'
 
-const Auth = AuthSingleton.getInstance();
+const Auth = AuthSingleton.getInstance()
 
 /**
  * @returns {Promise<Response>}
  */
 export function getTickers() {
-    return Auth.fetch(`${ApiUrl}/admin/tickers`);
+  return Auth.fetch(`${ApiUrl}/admin/tickers`)
 }
 
 /**
@@ -16,7 +16,7 @@ export function getTickers() {
  * @returns {Promise<Response>}
  */
 export function getTicker(id) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`);
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`)
 }
 
 /**
@@ -25,10 +25,10 @@ export function getTicker(id) {
  * @returns {Promise<Response>}
  */
 export function postTicker(data) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers`, {
-        body: JSON.stringify(data),
-        method: 'POST'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/tickers`, {
+    body: JSON.stringify(data),
+    method: 'POST',
+  })
 }
 
 /**
@@ -38,10 +38,10 @@ export function postTicker(data) {
  * @returns {Promise<Response>}
  */
 export function putTicker(data, id) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
-        body: JSON.stringify(data),
-        method: 'PUT'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
+    body: JSON.stringify(data),
+    method: 'PUT',
+  })
 }
 
 /**
@@ -51,10 +51,10 @@ export function putTicker(data, id) {
  * @returns {Promise<any>}
  */
 export function putTickerTwitter(data, id) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
-        body: JSON.stringify(data),
-        method: 'PUT'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
+    body: JSON.stringify(data),
+    method: 'PUT',
+  })
 }
 
 /**
@@ -62,9 +62,9 @@ export function putTickerTwitter(data, id) {
  * @param id
  */
 export function deleteTicker(id) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
-        method: 'DELETE'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
+    method: 'DELETE',
+  })
 }
 
 /**
@@ -73,7 +73,7 @@ export function deleteTicker(id) {
  * @returns {Promise<Response>}
  */
 export function getTickerUsers(id) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users`);
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users`)
 }
 
 /**
@@ -82,10 +82,10 @@ export function getTickerUsers(id) {
  * @returns {Promise<Response>}
  */
 export function putTickerUser(id, ...users) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users`, {
-        body: JSON.stringify({"users": users}),
-        method: 'PUT'
-    })
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users`, {
+    body: JSON.stringify({ users: users }),
+    method: 'PUT',
+  })
 }
 
 /**
@@ -94,9 +94,9 @@ export function putTickerUser(id, ...users) {
  * @returns {Promise<Response>}
  */
 export function deleteTickerUser(id, userId) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users/${userId}`, {
-        method: 'DELETE'
-    })
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/users/${userId}`, {
+    method: 'DELETE',
+  })
 }
 
 /**
@@ -104,7 +104,7 @@ export function deleteTickerUser(id, userId) {
  * @returns {Promise<Response>}
  */
 export function putTickerReset(id) {
-    return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/reset`, {
-        method: 'PUT'
-    })
+  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/reset`, {
+    method: 'PUT',
+  })
 }

@@ -1,13 +1,13 @@
-import {ApiUrl} from "./Api";
-import AuthSingleton from "../components/AuthService";
+import { ApiUrl } from './Api'
+import AuthSingleton from '../components/AuthService'
 
-const Auth = AuthSingleton.getInstance();
+const Auth = AuthSingleton.getInstance()
 
 /**
  * @returns {Promise<Response>}
  */
 export function getUsers() {
-    return Auth.fetch(`${ApiUrl}/admin/users`);
+  return Auth.fetch(`${ApiUrl}/admin/users`)
 }
 
 /**
@@ -15,10 +15,10 @@ export function getUsers() {
  * @returns {Promise<Response>}
  */
 export function postUser(data) {
-    return Auth.fetch(`${ApiUrl}/admin/users`, {
-        body: JSON.stringify(data),
-        method: 'POST'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/users`, {
+    body: JSON.stringify(data),
+    method: 'POST',
+  })
 }
 
 /**
@@ -27,10 +27,10 @@ export function postUser(data) {
  * @returns {Promise<Response>}
  */
 export function putUser(data, id) {
-    return Auth.fetch(`${ApiUrl}/admin/users/${id}`, {
-        body: JSON.stringify(data),
-        method: 'PUT'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/users/${id}`, {
+    body: JSON.stringify(data),
+    method: 'PUT',
+  })
 }
 
 /**
@@ -38,7 +38,7 @@ export function putUser(data, id) {
  * @returns {Promise<Response>}
  */
 export function deleteUser(id) {
-    return Auth.fetch(`${ApiUrl}/admin/users/${id}`, {
-        method: 'DELETE'
-    });
+  return Auth.fetch(`${ApiUrl}/admin/users/${id}`, {
+    method: 'DELETE',
+  })
 }
