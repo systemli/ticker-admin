@@ -195,9 +195,9 @@ export default class InactiveSettings extends React.Component {
                 </List.Item>
                 <List.Item>
                   <List.Header>Description</List.Header>
-                  <ReactMarkdown
-                    source={this.state.inactiveSettings.description}
-                  />
+                  <ReactMarkdown>
+                    {this.state.inactiveSettings.description}
+                  </ReactMarkdown>
                 </List.Item>
               </List>
               <Header size="medium">Information</Header>

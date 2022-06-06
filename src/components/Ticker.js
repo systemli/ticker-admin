@@ -133,7 +133,7 @@ export default class Ticker extends React.Component {
             </a>
           </Card.Meta>
           <Card.Description>
-            <ReactMarkdown source={this.props.ticker.description} />
+            <ReactMarkdown>{this.props.ticker.description}</ReactMarkdown>
           </Card.Description>
         </Card.Content>
         <Card.Content>
