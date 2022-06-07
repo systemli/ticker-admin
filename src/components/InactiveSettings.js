@@ -54,37 +54,37 @@ export default class InactiveSettings extends React.Component {
 
   renderForm() {
     return (
-      <Form onSubmit={this.handleSubmit} id="editSetting">
+      <Form id="editSetting" onSubmit={this.handleSubmit}>
         <Form.Group widths="equal">
           <Form.Input
+            defaultValue={this.state.inactiveSettings.headline}
             label="Headline"
             name="headline"
-            defaultValue={this.state.inactiveSettings.headline}
             onChange={(event, input) => (this.form.headline = input.value)}
           />
           <Form.Input
+            defaultValue={this.state.inactiveSettings.sub_headline}
             label="Subheadline"
             name="sub_headline"
-            defaultValue={this.state.inactiveSettings.sub_headline}
             onChange={(event, input) => (this.form.sub_headline = input.value)}
           />
         </Form.Group>
         <Form.TextArea
+          defaultValue={this.state.inactiveSettings.description}
           label="Description"
           name="description"
-          rows="5"
-          defaultValue={this.state.inactiveSettings.description}
           onChange={(event, input) => (this.form.description = input.value)}
+          rows="5"
         />
         <Header dividing>Information</Header>
         <Form.Group widths="equal">
           <Form.Input label="Author">
             <Input
-              iconPosition="left"
-              placeholder="Author"
-              name="author"
               defaultValue={this.state.inactiveSettings.author}
+              iconPosition="left"
+              name="author"
               onChange={(event, input) => (this.form.author = input.value)}
+              placeholder="Author"
             >
               <Icon name="users" />
               <input />
@@ -92,9 +92,9 @@ export default class InactiveSettings extends React.Component {
           </Form.Input>
           <Form.Input label="Homepage">
             <Input
+              defaultValue={this.state.inactiveSettings.homepage}
               iconPosition="left"
               name="homepage"
-              defaultValue={this.state.inactiveSettings.homepage}
               onChange={(event, input) => (this.form.homepage = input.value)}
             >
               <Icon name="home" />
@@ -105,11 +105,11 @@ export default class InactiveSettings extends React.Component {
         <Form.Group widths="equal">
           <Form.Input label="Email">
             <Input
-              iconPosition="left"
-              placeholder="Email"
-              name="email"
               defaultValue={this.state.inactiveSettings.email}
+              iconPosition="left"
+              name="email"
               onChange={(event, input) => (this.form.email = input.value)}
+              placeholder="Email"
             >
               <Icon name="at" />
               <input />
@@ -117,9 +117,9 @@ export default class InactiveSettings extends React.Component {
           </Form.Input>
           <Form.Input label="Twitter">
             <Input
+              defaultValue={this.state.inactiveSettings.twitter}
               iconPosition="left"
               name="twitter"
-              defaultValue={this.state.inactiveSettings.twitter}
               onChange={(event, input) => (this.form.twitter = input.value)}
             >
               <Icon name="twitter" />
@@ -134,28 +134,28 @@ export default class InactiveSettings extends React.Component {
   renderModal() {
     return (
       <Modal
+        closeIcon
+        dimmer
+        onClose={() => this.setState({ modalOpen: false })}
+        open={this.state.modalOpen}
         trigger={
           <Button
             color="black"
-            icon="edit"
             content="edit"
+            icon="edit"
             onClick={() => this.setState({ modalOpen: true })}
           />
         }
-        dimmer
-        open={this.state.modalOpen}
-        closeIcon
-        onClose={() => this.setState({ modalOpen: false })}
       >
         <Header>Edit Inactive Settings</Header>
         <Modal.Content>{this.renderForm()}</Modal.Content>
         <Modal.Actions>
           <Button.Group>
             <Button
-              type="submit"
               color="green"
               content="Save"
               form="editSetting"
+              type="submit"
             />
             <Button.Or />
             <Button

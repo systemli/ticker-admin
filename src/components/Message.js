@@ -94,12 +94,12 @@ export default class Message extends React.Component {
     const images = attachments.map((image, key) => (
       <Image
         key={key}
-        src={image.url}
-        rounded
-        style={{ width: 200, height: 200, objectFit: 'cover' }}
         onClick={() =>
           this.setState({ imageLightboxOpen: true, imageIndex: key })
         }
+        rounded
+        src={image.url}
+        style={{ width: 200, height: 200, objectFit: 'cover' }}
       />
     ))
     const urls = attachments.map(image => image.url)
@@ -110,18 +110,18 @@ export default class Message extends React.Component {
           <Lightbox
             mainSrc={urls[imageIndex]}
             nextSrc={images[(imageIndex + 1) % images.length]}
-            prevSrc={images[(imageIndex + images.length - 1) % images.length]}
             onCloseRequest={() => this.setState({ imageLightboxOpen: false })}
-            onMovePrevRequest={() =>
-              this.setState({
-                imageIndex: (imageIndex + urls.length - 1) % urls.length,
-              })
-            }
             onMoveNextRequest={() =>
               this.setState({
                 imageIndex: (imageIndex + 1) % urls.length,
               })
             }
+            onMovePrevRequest={() =>
+              this.setState({
+                imageIndex: (imageIndex + urls.length - 1) % urls.length,
+              })
+            }
+            prevSrc={images[(imageIndex + images.length - 1) % images.length]}
           />
         )}
         <Image.Group size="medium">{images}</Image.Group>
@@ -131,14 +131,14 @@ export default class Message extends React.Component {
 
   renderTwitterIcon() {
     if (this.props.message.tweet_id === '') {
-      return <Icon name="twitter" disabled />
+      return <Icon disabled name="twitter" />
     }
 
     return (
       <a
         href={`https://twitter.com/${this.props.message.tweet_user}/status/${this.props.message.tweet_id}`}
-        target="_blank"
         rel="noopener noreferrer"
+        target="_blank"
       >
         <Icon name="twitter" />
       </a>
@@ -150,12 +150,12 @@ export default class Message extends React.Component {
       <Card fluid>
         <Card.Content>
           <Icon
+            color="grey"
             fitted
             link
-            color="grey"
             name="close"
-            style={{ float: 'right' }}
             onClick={() => this.setState({ showDeleteConfirm: true })}
+            style={{ float: 'right' }}
           />
           <Confirm
             onCancel={() => this.setState({ showDeleteConfirm: false })}

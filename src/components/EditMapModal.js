@@ -64,12 +64,12 @@ export default class EditMapModal extends React.Component {
       <Modal
         closeIcon
         dimmer
-        open={this.props.open}
         onClose={this.onClose.bind(this)}
+        open={this.props.open}
       >
         <Modal.Header>{this.renderHeadline()}</Modal.Header>
         <Modal.Content style={{ padding: 0 }}>
-          <Map center={position} zoom={zoom} style={{ height: 600 }}>
+          <Map center={position} style={{ height: 600 }} zoom={zoom}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <FeatureGroup
               ref={ref => {
@@ -77,9 +77,9 @@ export default class EditMapModal extends React.Component {
               }}
             >
               <EditControl
-                position="topright"
-                //TODO: repair this broken marker types
                 draw={{ circle: false, circlemarker: false }}
+                //TODO: repair this broken marker types
+                position="topright"
               />
             </FeatureGroup>
           </Map>

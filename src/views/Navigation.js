@@ -59,12 +59,12 @@ export default class Navigation extends React.Component {
 
   render() {
     return (
-      <Menu fixed="top" size="tiny" inverted>
+      <Menu fixed="top" inverted size="tiny">
         <Container>
           <Menu.Item>
             <Image
-              src={logo}
               spaced="right"
+              src={logo}
               style={{ position: 'absolute', right: 0 }}
             />
           </Menu.Item>

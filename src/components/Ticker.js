@@ -63,8 +63,8 @@ export default class Ticker extends React.Component {
       return (
         <Button
           color="teal"
-          icon="rocket"
           content="Use"
+          icon="rocket"
           onClick={() => {
             this.props.history.replace(`/ticker/${this.state.ticker.id}`)
           }}
@@ -77,8 +77,8 @@ export default class Ticker extends React.Component {
     return (
       <Button
         color={'black'}
-        icon={'edit'}
         content={'edit'}
+        icon={'edit'}
         onClick={this.editTicker}
       />
     )
@@ -89,8 +89,8 @@ export default class Ticker extends React.Component {
       return (
         <Button
           color="red"
-          icon="delete"
           content="Delete"
+          icon="delete"
           onClick={this.openDeleteModal}
         />
       )
@@ -103,7 +103,7 @@ export default class Ticker extends React.Component {
     }
 
     return (
-      <TickerForm ticker={this.props.ticker} callback={this.closeEditForm} />
+      <TickerForm callback={this.closeEditForm} ticker={this.props.ticker} />
     )
   }
 
@@ -125,9 +125,9 @@ export default class Ticker extends React.Component {
           </Card.Header>
           <Card.Meta>
             <a
-              target="_blank"
-              rel="noopener noreferrer"
               href={'https://' + this.props.ticker.domain}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               {this.props.ticker.domain}
             </a>
@@ -137,17 +137,17 @@ export default class Ticker extends React.Component {
           </Card.Description>
         </Card.Content>
         <Card.Content>
-          <Button.Group size="tiny" fluid compact>
+          <Button.Group compact fluid size="tiny">
             {this.renderUseButton()}
             {this.renderEditButton()}
             {this.renderDeleteButton()}
           </Button.Group>
         </Card.Content>
         <Confirm
-          open={this.state.confirmOpen}
+          dimmer
           onCancel={this.handleCancel}
           onConfirm={this.handleConfirm}
-          dimmer
+          open={this.state.confirmOpen}
           size="mini"
         />
         {this.renderEditForm()}

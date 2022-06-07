@@ -55,10 +55,10 @@ class TickerView extends React.Component {
     if (this.state.ticker.id !== undefined) {
       return (
         <Ticker
-          fluid
-          ticker={this.state.ticker}
           callback={this.updateTicker}
+          fluid
           history={this.props.history}
+          ticker={this.state.ticker}
         />
       )
     }
@@ -71,8 +71,8 @@ class TickerView extends React.Component {
           {this.state.messages.map(message => (
             <Message
               key={message.id}
-              message={message}
               loadMessages={this.loadMessages}
+              message={message}
             />
           ))}
         </Feed>
@@ -108,8 +108,8 @@ class TickerView extends React.Component {
         <React.Fragment>
           <Header dividing>Danger Zone</Header>
           <TickerResetButton
-            ticker={this.state.ticker}
             reset={this.reset.bind(this)}
+            ticker={this.state.ticker}
           />
         </React.Fragment>
       )
@@ -136,8 +136,8 @@ class TickerView extends React.Component {
               <Grid.Column width={10}>
                 <Header dividing>Messages</Header>
                 <MessageForm
-                  ticker={this.state.ticker}
                   callback={this.loadMessages}
+                  ticker={this.state.ticker}
                 />
                 {this._renderMessages()}
               </Grid.Column>
@@ -146,8 +146,8 @@ class TickerView extends React.Component {
                 {this._renderTicker()}
                 <Header dividing>Twitter</Header>
                 <TwitterCard
-                  ticker={this.state.ticker}
                   callback={ticker => this.setState({ ticker: ticker })}
+                  ticker={this.state.ticker}
                 />
                 {this.renderUsers()}
                 {this.renderDangerZone()}

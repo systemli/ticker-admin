@@ -33,13 +33,13 @@ class TickersDropdown extends React.Component {
 
     return (
       <Dropdown
+        defaultValue={this.props.defaultValue}
         fluid
         multiple
-        selection
+        onChange={this.props.onChange}
         options={options}
         placeholder={this.props.placeholder}
-        onChange={this.props.onChange}
-        defaultValue={this.props.defaultValue}
+        selection
       />
     )
   }
