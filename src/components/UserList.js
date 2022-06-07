@@ -78,39 +78,39 @@ export default class UserList extends React.Component {
 
   renderForm() {
     return (
-      <Form onSubmit={this.handleForm} id="userForm">
+      <Form id="userForm" onSubmit={this.handleForm}>
         <Form.Group widths="2">
           <Form.Input
-            required
+            defaultValue={this.state.editUser ? this.state.editUser.email : ''}
             label="Email"
             name="email"
-            defaultValue={this.state.editUser ? this.state.editUser.email : ''}
             onChange={(event, input) => (this.form.email = input.value)}
+            required
           />
         </Form.Group>
         <Form.Checkbox
-          toggle
-          label="Super Admin"
-          name="is_super_admin"
           defaultChecked={
             this.state.editUser ? this.state.editUser.is_super_admin : false
           }
+          label="Super Admin"
+          name="is_super_admin"
           onChange={(event, input) =>
             (this.form.is_super_admin = input.checked)
           }
+          toggle
         />
         <Form.Group widths="equal">
           <Form.Input
-            required={!this.state.editUser}
             label="Password"
             name="password"
-            type="password"
             onChange={(event, input) => (this.form.password = input.value)}
+            required={!this.state.editUser}
+            type="password"
           />
           <Form.Input
-            required={!this.state.editUser}
             label="Repeat Password"
             name="password"
+            required={!this.state.editUser}
             type="password"
             //TODO: check password
           />
@@ -139,11 +139,11 @@ export default class UserList extends React.Component {
       <Container>
         <Header>Permissions</Header>
         <TickersDropdown
-          placeholder="Select a Ticker"
           defaultValue={
             this.state.editUser ? this.state.editUser.tickers : undefined
           }
           onChange={(event, input) => (this.form.tickers = input.value)}
+          placeholder="Select a Ticker"
         />
       </Container>
     )
@@ -154,10 +154,10 @@ export default class UserList extends React.Component {
 
     return (
       <Modal
-        dimmer
-        open={this.state.showModal}
         closeIcon
+        dimmer
         onClose={() => this.setState({ showModal: false, editUser: undefined })}
+        open={this.state.showModal}
         size="small"
       >
         <Header>{isNew ? 'Create User' : 'Edit User'}</Header>
@@ -165,10 +165,10 @@ export default class UserList extends React.Component {
         <Modal.Actions>
           <Button.Group>
             <Button
-              type="submit"
               color="green"
               content={this.state.editUser ? 'Update' : 'Create'}
               form="userForm"
+              type="submit"
             />
             <Button.Or />
             <Button
@@ -185,10 +185,10 @@ export default class UserList extends React.Component {
   renderDeleteConfirm() {
     return (
       <Confirm
-        open={this.state.showDeleteConfirm}
+        dimmer
         onCancel={() => this.setState({ showDeleteConfirm: false })}
         onConfirm={this.handleDelete}
-        dimmer
+        open={this.state.showDeleteConfirm}
         size="mini"
       />
     )
@@ -227,22 +227,22 @@ export default class UserList extends React.Component {
                   </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>
-                    <Moment fromNow date={user.creation_date} />
+                    <Moment date={user.creation_date} fromNow />
                   </Table.Cell>
                   <Table.Cell textAlign="right">
                     <Button.Group size="small">
                       <Button
-                        icon="edit"
                         color="black"
                         content="Edit"
+                        icon="edit"
                         onClick={() => {
                           this.openModal(user)
                         }}
                       />
                       <Button
-                        icon="delete"
                         color="red"
                         content="Delete"
+                        icon="delete"
                         onClick={() => {
                           this.setState({
                             showDeleteConfirm: true,
@@ -268,11 +268,11 @@ export default class UserList extends React.Component {
                   floated="right"
                   icon
                   labelPosition="left"
-                  primary
-                  size="small"
                   onClick={() => {
                     this.openModal()
                   }}
+                  primary
+                  size="small"
                 >
                   <Icon name="user" /> Add User
                 </Button>

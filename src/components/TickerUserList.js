@@ -100,22 +100,22 @@ class TickerUserList extends React.Component {
   renderAddButton() {
     return (
       <Modal
-        trigger={
-          <Button
-            onClick={this.openUsersModal.bind(this)}
-            color="teal"
-            content="Add"
-            icon="add"
-            size="tiny"
-            compact
-          />
-        }
-        open={this.state.usersModalOpen}
-        onOpen={this.loadUsers.bind(this)}
-        onClose={this.closeUsersModal.bind(this)}
-        size="tiny"
         centered={false}
         closeIcon
+        onClose={this.closeUsersModal.bind(this)}
+        onOpen={this.loadUsers.bind(this)}
+        open={this.state.usersModalOpen}
+        size="tiny"
+        trigger={
+          <Button
+            color="teal"
+            compact
+            content="Add"
+            icon="add"
+            onClick={this.openUsersModal.bind(this)}
+            size="tiny"
+          />
+        }
       >
         <Modal.Header>Add a user</Modal.Header>
         <Modal.Content>
@@ -156,9 +156,9 @@ class TickerUserList extends React.Component {
   renderDeleteModal() {
     return (
       <Modal
-        size="mini"
-        open={this.state.deleteModalOpen}
         onClose={this.closeDeleteModal.bind(this)}
+        open={this.state.deleteModalOpen}
+        size="mini"
       >
         <Modal.Header>Revoke Access</Modal.Header>
         <Modal.Content>
@@ -169,11 +169,11 @@ class TickerUserList extends React.Component {
             No
           </Button>
           <Button
-            positive
+            content="Yes"
             icon="checkmark"
             labelPosition="right"
-            content="Yes"
             onClick={this.deleteUser.bind(this)}
+            positive
           />
         </Modal.Actions>
       </Modal>
@@ -185,11 +185,11 @@ class TickerUserList extends React.Component {
       <Button
         basic
         color="red"
-        icon="delete"
-        size="tiny"
-        content="Remove"
         compact
+        content="Remove"
+        icon="delete"
         onClick={this.openDeleteModal.bind(this, user)}
+        size="tiny"
       />
     )
   }
@@ -217,8 +217,8 @@ class TickerUserList extends React.Component {
               <List.Content floated="right">
                 <Button
                   color="teal"
-                  size="mini"
                   onClick={this.addUser.bind(this, user)}
+                  size="mini"
                 >
                   Add
                 </Button>

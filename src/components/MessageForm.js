@@ -140,22 +140,22 @@ export default class MessageForm extends React.Component {
     const images = attachments.map((image, key) => (
       <div key={key} style={{ display: 'inline-block', position: 'relative' }}>
         <Image
-          src={image.url}
           bordered
+          src={image.url}
           style={{ width: 150, height: 150, objectFit: 'cover' }}
         />
         <Button
-          icon="delete"
-          color="black"
-          size="mini"
           circular
+          color="black"
           compact
-          style={{ position: 'absolute', right: 5, top: 5 }}
+          icon="delete"
           onClick={() => {
             delete attachments[key]
 
             this.setState({ attachments: attachments })
           }}
+          size="mini"
+          style={{ position: 'absolute', right: 5, top: 5 }}
         />
       </div>
     ))
@@ -176,14 +176,14 @@ export default class MessageForm extends React.Component {
     return (
       <EditMapModal
         geoInformation={this.state.geoInformation}
-        open={this.state.showEditMapModal}
+        onClose={() => this.setState({ showEditMapModal: false })}
         onSubmit={geoInformation =>
           this.setState({
             showEditMapModal: false,
             geoInformation: geoInformation,
           })
         }
-        onClose={() => this.setState({ showEditMapModal: false })}
+        open={this.state.showEditMapModal}
         position={position}
       />
     )
@@ -203,26 +203,26 @@ export default class MessageForm extends React.Component {
         </Form.Field>
         <Form.Field>
           <Form.TextArea
+            onChange={this.handleInput.bind(this)}
             placeholder="Write a message"
             rows="5"
             value={state.message}
-            onChange={this.handleInput.bind(this)}
           />
         </Form.Field>
         <Error
-          error
-          icon="ban"
-          hidden={!state.formError}
-          header="Error"
           content={state.formErrorMessage}
+          error
+          header="Error"
+          hidden={!state.formError}
+          icon="ban"
         />
         {this.renderAttachmentPreviews()}
         {this.renderAttachments()}
         <Button
           color="teal"
           content="Send"
-          icon="send"
           disabled={state.formError}
+          icon="send"
           onClick={() => this.submitMessage()}
         />
         <Button
@@ -237,8 +237,8 @@ export default class MessageForm extends React.Component {
               ? 'map'
               : 'map outline'
           }
-          toggle
           onClick={() => this.setState({ showEditMapModal: true })}
+          toggle
         />
         <Button
           color="violet"
@@ -248,14 +248,14 @@ export default class MessageForm extends React.Component {
         />
         <input
           ref={this.fileInputRef}
-          type="file"
           hidden
           multiple
           onChange={this.uploadAttachment.bind(this)}
+          type="file"
         />
         <Label
-          content={`${state.counter}/${MESSAGE_LIMIT}`}
           color={state.counterColor}
+          content={`${state.counter}/${MESSAGE_LIMIT}`}
           style={{ float: 'right' }}
         />
       </Form>

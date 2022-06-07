@@ -65,7 +65,7 @@ export default class LoginView extends React.Component {
           <Grid centered>
             <Grid.Column computer={6} mobile={16}>
               <Grid.Row>
-                <Header size="huge" icon textAlign="center">
+                <Header icon size="huge" textAlign="center">
                   <Icon name="browser" size="small" />
                   <Header.Content>Login</Header.Content>
                 </Header>
@@ -75,27 +75,27 @@ export default class LoginView extends React.Component {
                   {this.renderError()}
                   <Form.Input>
                     <Input
-                      required
                       icon="user"
                       iconPosition="left"
                       name="email"
-                      type="text"
-                      placeholder="Email"
                       onChange={this.handleChange}
+                      placeholder="Email"
+                      required
+                      type="text"
                     ></Input>
                   </Form.Input>
                   <Form.Input>
                     <Input
-                      required
                       icon="lock"
                       iconPosition="left"
                       name="password"
-                      type="password"
-                      placeholder="Password"
                       onChange={this.handleChange}
+                      placeholder="Password"
+                      required
+                      type="password"
                     ></Input>
                   </Form.Input>
-                  <Button color="teal" type="submit" fluid>
+                  <Button color="teal" fluid type="submit">
                     Login
                   </Button>
                 </Form>

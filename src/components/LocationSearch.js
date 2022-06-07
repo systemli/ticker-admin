@@ -57,12 +57,12 @@ export default class LocationSearch extends React.Component {
       <React.Fragment>
         <Search
           loading={isLoading}
-          results={results}
-          value={value}
           onResultSelect={this.handleResultSelect.bind(this)}
           onSearchChange={_.debounce(this.handleSearchChange.bind(this), 500, {
             leading: true,
           })}
+          results={results}
+          value={value}
           {...props}
         />
       </React.Fragment>

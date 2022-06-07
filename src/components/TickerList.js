@@ -79,8 +79,8 @@ export default class TickerList extends React.Component {
     if (null !== this.state.activeTicker) {
       return (
         <TickerForm
-          ticker={this.state.activeTicker}
           callback={this.onEditClose}
+          ticker={this.state.activeTicker}
         />
       )
     }
@@ -95,13 +95,13 @@ export default class TickerList extends React.Component {
 
     return (
       <Button
-        labelPosition="left"
-        size="small"
-        floated="right"
-        content="Create Ticker"
-        icon="plus"
         color="green"
+        content="Create Ticker"
+        floated="right"
+        icon="plus"
+        labelPosition="left"
         onClick={this.createTicker}
+        size="small"
       />
     )
   }
@@ -113,11 +113,11 @@ export default class TickerList extends React.Component {
 
     return (
       <Button
-        ticker={ticker}
         color="red"
-        icon="delete"
         content="Delete"
+        icon="delete"
         onClick={this.deleteTicker}
+        ticker={ticker}
       />
     )
   }
@@ -128,9 +128,9 @@ export default class TickerList extends React.Component {
         <Table.Row key={ticker.id}>
           <Table.Cell collapsing>
             <Icon
-              size={'large'}
               color={ticker.active ? 'green' : 'red'}
               name={ticker.active ? 'toggle on' : 'toggle off'}
+              size={'large'}
             />
           </Table.Cell>
           <Table.Cell>{ticker.title}</Table.Cell>
@@ -138,18 +138,18 @@ export default class TickerList extends React.Component {
           <Table.Cell collapsing textAlign="right">
             <Button.Group size="small">
               <Button
-                ticker={ticker}
                 color="teal"
-                icon="rocket"
                 content="Use"
+                icon="rocket"
                 onClick={this.redirectToTicker.bind(this)}
+                ticker={ticker}
               />
               <Button
-                ticker={ticker}
                 color="black"
-                icon="edit"
                 content="Edit"
+                icon="edit"
                 onClick={this.editTicker}
+                ticker={ticker}
               />
               {this.renderDeleteButton(ticker)}
             </Button.Group>
@@ -166,10 +166,10 @@ export default class TickerList extends React.Component {
       return (
         <React.Fragment>
           <Message
-            icon="info"
-            header="Information"
             content="You are not able to see any tickers or no ticker is created yet. If you want to access a
                         specific ticker and dont see them, contact us."
+            header="Information"
+            icon="info"
           />
           {this.renderTickerForm()}
           {this.renderCreateButton()}
@@ -200,9 +200,9 @@ export default class TickerList extends React.Component {
         </Table>
         {this.renderTickerForm()}
         <Confirm
-          open={this.state.deleteConfirmOpen}
           onCancel={this.handleDeleteCancel}
           onConfirm={this.handleDeleteConfirm}
+          open={this.state.deleteConfirmOpen}
         />
       </React.Fragment>
     )

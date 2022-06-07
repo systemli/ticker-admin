@@ -130,22 +130,22 @@ export default class TickerForm extends React.Component {
         <Form.Group widths="equal">
           <Form.Field width="15">
             <LocationSearch
-              fluid
               callback={this.handleLocationResult.bind(this)}
+              fluid
             />
           </Form.Field>
           <Form.Field width="1">
             <Button
-              icon
               color="red"
-              onClick={this.resetLocation.bind(this)}
               disabled={resetDisabled}
+              icon
+              onClick={this.resetLocation.bind(this)}
             >
               <Icon name="delete" />
             </Button>
           </Form.Field>
         </Form.Group>
-        <Map center={position} zoom={zoom} style={{ height: 200 }}>
+        <Map center={position} style={{ height: 200 }} zoom={zoom}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {marker}
         </Map>
@@ -155,56 +155,56 @@ export default class TickerForm extends React.Component {
 
   render() {
     return (
-      <Modal closeIcon open={this.state.modalOpen} onClose={this.closeModal}>
+      <Modal closeIcon onClose={this.closeModal} open={this.state.modalOpen}>
         <Header>
           {null === this.props.ticker.id
             ? 'Create Ticker'
             : 'Edit ' + this.props.ticker.title}
         </Header>
         <Modal.Content>
-          <Form onSubmit={this.handleSubmit} id="editTicker">
+          <Form id="editTicker" onSubmit={this.handleSubmit}>
             <Form.Group widths="equal">
               <Form.Input
+                defaultValue={this.props.ticker.title}
                 label="Title"
                 name="title"
-                defaultValue={this.props.ticker.title}
                 onChange={(event, input) => (this.form.title = input.value)}
                 required
               />
               <Form.Input
+                defaultValue={this.props.ticker.domain}
                 label="Domain"
                 name="domain"
-                defaultValue={this.props.ticker.domain}
                 onChange={(event, input) => (this.form.domain = input.value)}
                 required
               />
             </Form.Group>
             <Form.Checkbox
-              toggle
+              defaultChecked={this.props.ticker.active}
               label="Active"
               name="active"
-              defaultChecked={this.props.ticker.active}
               onChange={(event, input) => (this.form.active = input.checked)}
+              toggle
             />
             <Form.TextArea
+              defaultValue={this.props.ticker.description}
               label="Description"
               name="description"
-              rows="5"
-              defaultValue={this.props.ticker.description}
               onChange={(event, input) => (this.form.description = input.value)}
               required
+              rows="5"
             />
             <Header dividing>Information</Header>
             <Form.Group widths="equal">
               <Form.Input label="Author">
                 <Input
-                  iconPosition="left"
-                  placeholder="Author"
-                  name="information.author"
                   defaultValue={this.props.ticker.information.author}
+                  iconPosition="left"
+                  name="information.author"
                   onChange={(event, input) =>
                     (this.form.information.author = input.value)
                   }
+                  placeholder="Author"
                 >
                   <Icon name="users" />
                   <input />
@@ -212,9 +212,9 @@ export default class TickerForm extends React.Component {
               </Form.Input>
               <Form.Input label="Homepage">
                 <Input
+                  defaultValue={this.props.ticker.information.url}
                   iconPosition="left"
                   name="information.url"
-                  defaultValue={this.props.ticker.information.url}
                   onChange={(event, input) =>
                     (this.form.information.url = input.value)
                   }
@@ -227,13 +227,13 @@ export default class TickerForm extends React.Component {
             <Form.Group widths="equal">
               <Form.Input label="Email">
                 <Input
-                  iconPosition="left"
-                  placeholder="Email"
-                  name="information.email"
                   defaultValue={this.props.ticker.information.email}
+                  iconPosition="left"
+                  name="information.email"
                   onChange={(event, input) =>
                     (this.form.information.email = input.value)
                   }
+                  placeholder="Email"
                 >
                   <Icon name="at" />
                   <input />
@@ -241,9 +241,9 @@ export default class TickerForm extends React.Component {
               </Form.Input>
               <Form.Input label="Twitter">
                 <Input
+                  defaultValue={this.props.ticker.information.twitter}
                   iconPosition="left"
                   name="information.twitter"
-                  defaultValue={this.props.ticker.information.twitter}
                   onChange={(event, input) =>
                     (this.form.information.twitter = input.value)
                   }
@@ -254,9 +254,9 @@ export default class TickerForm extends React.Component {
               </Form.Input>
               <Form.Input label="Facebook">
                 <Input
+                  defaultValue={this.props.ticker.information.facebook}
                   iconPosition="left"
                   name="information.facebook"
-                  defaultValue={this.props.ticker.information.facebook}
                   onChange={(event, input) =>
                     (this.form.information.facebook = input.value)
                   }
@@ -272,10 +272,10 @@ export default class TickerForm extends React.Component {
         <Modal.Actions>
           <Button.Group>
             <Button
-              type="submit"
               color="green"
               content={null === this.props.ticker.id ? 'Create' : 'Save'}
               form="editTicker"
+              type="submit"
             />
             <Button.Or />
             <Button color="red" content="Close" onClick={this.closeModal} />

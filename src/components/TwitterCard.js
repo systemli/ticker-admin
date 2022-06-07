@@ -73,9 +73,9 @@ export default class TwitterCard extends React.Component {
             </Card.Header>
             <Card.Meta>
               <a
-                target="_blank"
-                rel="noopener noreferrer"
                 href={'https://twitter.com/' + twitter.screen_name}
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 @{twitter.screen_name}
               </a>
@@ -83,7 +83,7 @@ export default class TwitterCard extends React.Component {
             <Card.Description>{twitter.description}</Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <Button.Group fluid size="tiny" compact>
+            <Button.Group compact fluid size="tiny">
               {toggleButton}
               <Button color="red" onClick={this.disconnect.bind(this)}>
                 <Icon name="delete" />
@@ -103,13 +103,13 @@ export default class TwitterCard extends React.Component {
           <Card.Content extra>
             <TwitterLogin
               className="ui button blue tiny compact"
-              showIcon={false}
               loginUrl={loginUrl}
-              requestTokenUrl={requestTokenUrl}
               onFailure={error => {
                 alert(error)
               }}
               onSuccess={this.connect.bind(this)}
+              requestTokenUrl={requestTokenUrl}
+              showIcon={false}
             >
               <Icon name="twitter" />
               Connect

@@ -34,11 +34,11 @@ const Ticker = ({ match }) => {
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={HomeView} />
-      <Route exact path="/login" component={LoginView} />
-      <Route path="/ticker/:id" component={Ticker} />
-      <Route path="/users" component={UsersView} />
-      <Route path="/settings" component={SettingsView} />
+      <Route component={HomeView} exact path="/" />
+      <Route component={LoginView} exact path="/login" />
+      <Route component={Ticker} path="/ticker/:id" />
+      <Route component={UsersView} path="/users" />
+      <Route component={SettingsView} path="/settings" />
     </Switch>
   </BrowserRouter>,
   document.getElementById('root')

@@ -24,8 +24,8 @@ class HomeView extends React.Component {
             <Grid.Row>
               <Grid.Column>
                 <TickerList
-                  user={this.props.user}
                   history={this.props.history}
+                  user={this.props.user}
                 />
               </Grid.Column>
             </Grid.Row>

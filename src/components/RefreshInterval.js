@@ -54,11 +54,11 @@ export default class RefreshInterval extends React.Component {
 
   renderForm() {
     return (
-      <Form onSubmit={this.handleSubmit} id="editSetting">
+      <Form id="editSetting" onSubmit={this.handleSubmit}>
         <Form.Input
+          defaultValue={this.state.refresh_interval}
           label="Interval"
           name="refresh_interval"
-          defaultValue={this.state.refresh_interval}
           onChange={(event, input) =>
             (this.form.refresh_interval = input.value)
           }
@@ -70,28 +70,28 @@ export default class RefreshInterval extends React.Component {
   renderModal() {
     return (
       <Modal
+        closeIcon
+        dimmer
+        onClose={() => this.setState({ modalOpen: false })}
+        open={this.state.modalOpen}
         trigger={
           <Button
             color="black"
-            icon="edit"
             content="edit"
+            icon="edit"
             onClick={() => this.setState({ modalOpen: true })}
           />
         }
-        dimmer
-        open={this.state.modalOpen}
-        closeIcon
-        onClose={() => this.setState({ modalOpen: false })}
       >
         <Header>Edit Refresh Interval</Header>
         <Modal.Content>{this.renderForm()}</Modal.Content>
         <Modal.Actions>
           <Button.Group>
             <Button
-              type="submit"
               color="green"
               content="Save"
               form="editSetting"
+              type="submit"
             />
             <Button.Or />
             <Button

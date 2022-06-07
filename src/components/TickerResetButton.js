@@ -34,16 +34,16 @@ class TickerResetButton extends React.Component {
     return (
       <React.Fragment>
         <Button
-          size="tiny"
-          negative
           icon
           labelPosition="left"
+          negative
           onClick={this.open.bind(this)}
+          size="tiny"
         >
           <Icon name="remove" />
           Reset
         </Button>
-        <Modal size="mini" open={this.state.open} onClose={this.close}>
+        <Modal onClose={this.close} open={this.state.open} size="mini">
           <Modal.Header>Reset Ticker</Modal.Header>
           <Modal.Content>
             <p>
@@ -59,11 +59,11 @@ class TickerResetButton extends React.Component {
               No
             </Button>
             <Button
-              positive
+              content="Yes"
               icon="checkmark"
               labelPosition="right"
-              content="Yes"
               onClick={this.reset.bind(this)}
+              positive
             />
           </Modal.Actions>
         </Modal>
