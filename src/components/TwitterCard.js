@@ -97,8 +97,8 @@ export default class TwitterCard extends React.Component {
       <Container>
         <Card fluid>
           <Card.Content>
-            You're currently not connected with Twitter. New messages will not
-            be published to your account.
+            You&lsquo;re currently not connected with Twitter. New messages will
+            not be published to your account.
           </Card.Content>
           <Card.Content extra>
             <TwitterLogin

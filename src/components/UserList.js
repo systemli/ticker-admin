@@ -129,7 +129,7 @@ export default class UserList extends React.Component {
         <Container>
           <Header>Permissions</Header>
           <Message info>
-            Admin Users don't need special permissions for Tickers.
+            Admin Users don&lsquo;t need special permissions for Tickers.
           </Message>
         </Container>
       )

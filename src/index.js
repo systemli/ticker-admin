@@ -11,20 +11,6 @@ import SettingsView from './views/SettingsView'
 import PropTypes from 'prop-types'
 import '../leaflet.config.js'
 
-/* Offline-plugin allows offline availability.
-Only loaded in prod environment (see webpack.prod.js)
-to allow hot reloading of webpack-dev-server */
-const runtime = require('offline-plugin/runtime')
-
-runtime.install({
-  onUpdating: () => {},
-  onUpdateReady: () => {
-    runtime.applyUpdate()
-  },
-  onUpdated: () => {},
-  onUpdateFailed: () => {},
-})
-
 const Ticker = ({ match }) => {
   let id = parseInt(match.params.id)
 
