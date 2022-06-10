@@ -73,7 +73,7 @@
     "webpack-dev-server": "^4.9.1",
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-merge": "^5.8.0",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
     "start": "webpack serve --config webpack.dev.config.ts",
