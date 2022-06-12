@@ -1,15 +1,15 @@
 import React, { FC } from 'react'
-import withAuth from '../components/withAuth'
 import { Container, Grid, Header } from 'semantic-ui-react'
 import Navigation from './Navigation'
-import UserList from '../components/UserList'
+import InactiveSettings from '../components/InactiveSettings'
+import RefreshInterval from '../components/RefreshInterval'
+import withAuth from '../components/withAuth'
 
 interface Props {
-  history: History
   user: any
 }
 
-const UsersView: FC<Props> = props => {
+const SettingsView: FC<Props> = props => {
   return (
     <Container>
       <Navigation user={props.user} />
@@ -17,12 +17,15 @@ const UsersView: FC<Props> = props => {
         <Grid>
           <Grid.Row>
             <Grid.Column>
-              <Header dividing>Users</Header>
+              <Header dividing>Settings</Header>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
+          <Grid.Row columns={4}>
             <Grid.Column>
-              <UserList />
+              <InactiveSettings />
+            </Grid.Column>
+            <Grid.Column>
+              <RefreshInterval />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -31,4 +34,4 @@ const UsersView: FC<Props> = props => {
   )
 }
 
-export default withAuth(UsersView)
+export default withAuth(SettingsView)
