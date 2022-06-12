@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 import HomeView from './views/HomeView'
@@ -17,16 +19,21 @@ const Ticker = ({ match }) => {
   return <TickerView id={id} />
 }
 
+const queryClient = new QueryClient()
+
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route component={HomeView} exact path="/" />
-      <Route component={LoginView} exact path="/login" />
-      <Route component={Ticker} path="/ticker/:id" />
-      <Route component={UsersView} path="/users" />
-      <Route component={SettingsView} path="/settings" />
-    </Switch>
-  </BrowserRouter>,
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <Switch>
+        <Route component={HomeView} exact path="/" />
+        <Route component={LoginView} exact path="/login" />
+        <Route component={Ticker} path="/ticker/:id" />
+        <Route component={UsersView} path="/users" />
+        <Route component={SettingsView} path="/settings" />
+      </Switch>
+    </BrowserRouter>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>,
   document.getElementById('root')
 )
 
