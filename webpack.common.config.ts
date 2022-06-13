@@ -5,7 +5,7 @@ import { Configuration, DefinePlugin } from 'webpack'
 dotenv.config()
 
 const baseConfig: Configuration = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   output: {
     publicPath: '/',
     filename: '[name].js?[contenthash]',
