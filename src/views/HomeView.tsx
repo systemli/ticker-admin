@@ -3,10 +3,11 @@ import { Container, Grid, Header } from 'semantic-ui-react'
 import withAuth from '../components/withAuth'
 import Navigation from './Navigation'
 import TickerList from '../components/TickerList'
+import { User } from '../api/User'
 
 interface Props {
   history: History
-  user: any
+  user: User
 }
 
 const HomeView: FC<Props> = props => {
@@ -22,7 +23,7 @@ const HomeView: FC<Props> = props => {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <TickerList history={props.history} user={props.user} />
+              <TickerList user={props.user} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

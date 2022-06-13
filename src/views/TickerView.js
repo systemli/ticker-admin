@@ -1,7 +1,6 @@
 import React from 'react'
 import { Container, Feed, Grid, Header, Loader } from 'semantic-ui-react'
 import { getTicker } from '../api/Ticker'
-import Ticker from '../components/Ticker'
 import { getMessages } from '../api/Message'
 import Message from '../components/Message'
 import withAuth from '../components/withAuth'
@@ -11,6 +10,7 @@ import TickerUserList from '../components/TickerUserList'
 import TickerResetButton from '../components/TickerResetButton'
 import MessageForm from '../components/MessageForm'
 import TwitterCard from '../components/TwitterCard'
+import TickerCard from '../components/TickerCard'
 
 class TickerView extends React.Component {
   constructor(props) {
@@ -53,14 +53,7 @@ class TickerView extends React.Component {
 
   _renderTicker() {
     if (this.state.ticker.id !== undefined) {
-      return (
-        <Ticker
-          callback={this.updateTicker}
-          fluid
-          history={this.props.history}
-          ticker={this.state.ticker}
-        />
-      )
+      return <TickerCard ticker={this.state.ticker} />
     }
   }
 

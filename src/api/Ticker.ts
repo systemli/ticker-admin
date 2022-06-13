@@ -4,14 +4,18 @@ import AuthSingleton from '../components/AuthService'
 const Auth = AuthSingleton.getInstance()
 
 interface TickersResponse {
-  data: TickersResponseData
+  data: {
+    tickers: Array<Ticker>
+  }
 }
 
-interface TickersResponseData {
-  tickers: Array<Ticker>
+interface TickerResponse {
+  data: {
+    ticker: Ticker
+  }
 }
 
-interface Ticker {
+export interface Ticker {
   id: number
   creation_date: Date
   domain: string
@@ -23,7 +27,7 @@ interface Ticker {
   location: TickerLocation
 }
 
-interface TickerInformation {
+export interface TickerInformation {
   author: string
   url: string
   email: string
@@ -31,12 +35,12 @@ interface TickerInformation {
   facebook: string
 }
 
-interface TickerTwitter {
+export interface TickerTwitter {
   active: boolean
   connected: boolean
 }
 
-interface TickerLocation {
+export interface TickerLocation {
   lat: number
   lon: number
 }
@@ -45,34 +49,18 @@ export function getTickers(): Promise<TickersResponse> {
   return Auth.fetch(`${ApiUrl}/admin/tickers`)
 }
 
-/**
- *
- * @param {string} id
- * @returns {Promise<Response>}
- */
-export function getTicker(id: number) {
+export function getTicker(id: number): Promise<TickerResponse> {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`)
 }
 
-/**
- *
- * @param {object} data
- * @returns {Promise<Response>}
- */
-export function postTicker(data: any) {
+export function postTicker(data: any): Promise<TickerResponse> {
   return Auth.fetch(`${ApiUrl}/admin/tickers`, {
     body: JSON.stringify(data),
     method: 'POST',
   })
 }
 
-/**
- *
- * @param {object} data
- * @param {string} id
- * @returns {Promise<Response>}
- */
-export function putTicker(data: any, id: number) {
+export function putTicker(data: any, id: number): Promise<TickerResponse> {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
     body: JSON.stringify(data),
     method: 'PUT',
@@ -92,10 +80,6 @@ export function putTickerTwitter(data: any, id: number) {
   })
 }
 
-/**
- *
- * @param id
- */
 export function deleteTicker(id: number) {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${id}`, {
     method: 'DELETE',
