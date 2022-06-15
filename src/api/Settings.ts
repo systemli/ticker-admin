@@ -4,7 +4,13 @@ import AuthSingleton from '../components/AuthService'
 const Auth = AuthSingleton.getInstance()
 
 interface InactiveSettingsResponseData {
-  setting: InactiveSetting
+  setting: Setting<InactiveSetting>
+}
+
+export interface Setting<T> {
+  id: number
+  name: string
+  value: T
 }
 
 export interface InactiveSetting {
@@ -18,7 +24,7 @@ export interface InactiveSetting {
 }
 
 interface RefreshIntervalResponseData {
-  setting: RefreshInterval
+  setting: Setting<string>
 }
 
 export interface RefreshInterval {
@@ -39,7 +45,7 @@ export function getRefreshInterval(): Promise<
   return Auth.fetch(`${ApiUrl}/admin/settings/refresh_interval`)
 }
 
-export function putInactiveSettings(data: any) {
+export function putInactiveSettings(data: InactiveSetting) {
   return Auth.fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
     body: JSON.stringify(data),
     method: 'PUT',

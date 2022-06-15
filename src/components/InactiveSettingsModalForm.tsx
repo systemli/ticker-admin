@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useState } from 'react'
 import { Button, Header, Modal } from 'semantic-ui-react'
-import { Setting } from '../api/Settings'
-import RefreshIntervalForm from './RefreshIntervalForm'
+import { InactiveSetting, Setting } from '../api/Settings'
+import InactiveSettingsForm from './InactiveSettingsForm'
 
 interface Props {
-  setting: Setting<string>
+  setting: Setting<InactiveSetting>
   trigger: React.ReactNode
 }
 
-const RefreshIntervalModalForm: FC<Props> = props => {
+const InactiveSettingsModalForm: FC<Props> = props => {
   const [open, setOpen] = useState<boolean>(false)
 
   const handleClose = useCallback(() => {
@@ -29,16 +29,16 @@ const RefreshIntervalModalForm: FC<Props> = props => {
       size="small"
       trigger={props.trigger}
     >
-      <Header>Edit Refresh Interval</Header>
+      <Header>Edit Inactive Settings</Header>
       <Modal.Content>
-        <RefreshIntervalForm callback={handleClose} setting={props.setting} />
+        <InactiveSettingsForm callback={handleClose} setting={props.setting} />
       </Modal.Content>
       <Modal.Actions>
         <Button.Group>
           <Button
             color="green"
             content="Update"
-            form="refreshIntervalForm"
+            form="inactiveSettingsForm"
             type="submit"
           />
           <Button.Or />
@@ -49,4 +49,4 @@ const RefreshIntervalModalForm: FC<Props> = props => {
   )
 }
 
-export default RefreshIntervalModalForm
+export default InactiveSettingsModalForm

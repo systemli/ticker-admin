@@ -2,10 +2,10 @@ import React, { FC, FormEvent, useCallback, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
 import { Form, InputOnChangeData } from 'semantic-ui-react'
-import { putRefreshInterval, RefreshInterval } from '../api/Settings'
+import { putRefreshInterval, Setting } from '../api/Settings'
 
 interface Props {
-  setting: RefreshInterval
+  setting: Setting<string>
   callback: () => void
 }
 
