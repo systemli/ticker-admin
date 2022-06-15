@@ -40,23 +40,8 @@ class AuthService {
     setInterval(() => this.refreshToken(), 60000)
   }
 
-  /**
-   * @param {string} username
-   * @param {string} password
-   * @returns {Promise<Response>}
-   */
-  login(username, password) {
-    return this.fetch(`${ApiUrl}/admin/login`, {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    }).then(response => {
-      this.setToken(response.token)
-
-      return Promise.resolve(response)
-    })
+  login(token) {
+    this.setToken(token)
   }
 
   /**

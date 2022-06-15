@@ -22,11 +22,6 @@ const TickerViewWrapper: FC = () => {
   return <TickerView id={tickerId} />
 }
 
-//TODO: Can be removed if LoginView is rewritten
-const LoginViewWrapper: FC = () => {
-  return <LoginView />
-}
-
 const App: FC = () => {
   const queryClient = new QueryClient()
 
@@ -35,7 +30,7 @@ const App: FC = () => {
       <BrowserRouter>
         <Switch>
           <Route component={HomeView} exact path="/" />
-          <Route component={LoginViewWrapper} exact path="/login" />
+          <Route component={LoginView} exact path="/login" />
           <Route component={TickerViewWrapper} path="/ticker/:tickerId" />
           <Route component={UsersView} path="/users" />
           <Route component={SettingsView} path="/settings" />
