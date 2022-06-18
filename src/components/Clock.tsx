@@ -9,8 +9,11 @@ const Clock: FC<Props> = props => {
   const [date, setDate] = useState(new Date())
 
   useEffect(() => {
-    setInterval(() => setDate(new Date()), 1000)
-  })
+    const interval = setInterval(() => {
+      setDate(new Date())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <React.Fragment>
