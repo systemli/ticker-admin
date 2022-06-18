@@ -2,9 +2,5 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+//TODO: Add <React.StrictMode> again, needs replacement for Semantic UI
+ReactDOM.render(<App />, document.getElementById('root'))
