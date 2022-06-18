@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: ['14', '16']
+        node-version: ["16", "18", "current"]
 
     steps:
       - name: Checkout
@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
