@@ -3,7 +3,6 @@ import { Dimmer, Feed, Loader } from 'semantic-ui-react'
 import { Ticker } from '../api/Ticker'
 import { getMessages } from '../api/Message'
 import Message from '../components/Message'
-import withAuth from '../components/withAuth'
 import { useQuery } from 'react-query'
 
 interface Props {
@@ -39,4 +38,4 @@ const MessageList: FC<Props> = ({ ticker }) => {
   )
 }
 
-export default withAuth(MessageList)
+export default MessageList

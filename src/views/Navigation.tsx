@@ -1,28 +1,22 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { Container, Dropdown, Image, Menu } from 'semantic-ui-react'
 import Clock from '../components/Clock'
-import AuthSingleton from '../components/AuthService'
 import logo from '../assets/logo.png'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import useAuth from '../components/useAuth'
 
-const Auth = AuthSingleton.getInstance()
-
-interface Props {
-  user: any
-}
-
-const Navigation: FC<Props> = props => {
-  const history = useHistory()
+const Navigation: FC = () => {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const location = useLocation()
 
   const userItem = (
-    <Dropdown item text={props.user.email}>
+    <Dropdown item text={user?.email}>
       <Dropdown.Menu>
         <Dropdown.Item
-          onClick={() => {
-            Auth.removeToken()
-            history.push('/login')
-          }}
+          onClick={useCallback(() => {
+            logout()
+          }, [logout])}
         >
           Logout
         </Dropdown.Item>
@@ -33,7 +27,7 @@ const Navigation: FC<Props> = props => {
   const usersItem = (
     <Menu.Item
       active={location.pathname === '/users'}
-      onClick={() => history.push('/users')}
+      onClick={useCallback(() => navigate('/users'), [navigate])}
     >
       <strong>Users</strong>
     </Menu.Item>
@@ -42,7 +36,7 @@ const Navigation: FC<Props> = props => {
   const settingsItem = (
     <Menu.Item
       active={location.pathname === '/settings'}
-      onClick={() => history.push('/settings')}
+      onClick={useCallback(() => navigate('/settings'), [navigate])}
     >
       <strong>Settings</strong>
     </Menu.Item>
@@ -60,17 +54,17 @@ const Navigation: FC<Props> = props => {
         </Menu.Item>
         <Menu.Item
           active={window.location.pathname === '/'}
-          onClick={() => history.push('/')}
+          onClick={useCallback(() => navigate('/'), [navigate])}
         >
           <strong>Home</strong>
         </Menu.Item>
-        {props.user?.is_super_admin ? usersItem : null}
-        {props.user?.is_super_admin ? settingsItem : null}
+        {user?.roles.includes('admin') ? usersItem : null}
+        {user?.roles.includes('admin') ? settingsItem : null}
         <Menu.Menu position="right">
           <Menu.Item>
             <Clock format="dddd, YY/MM/DD, HH:mm:ss" />
           </Menu.Item>
-          {props.user ? userItem : null}
+          {user ? userItem : null}
         </Menu.Menu>
       </Container>
     </Menu>

@@ -1,18 +1,18 @@
-import React, { FC } from 'react'
-import { useHistory } from 'react-router'
+import React, { FC, useCallback } from 'react'
+import { useNavigate } from 'react-router'
 import { Button, Icon, Table } from 'semantic-ui-react'
 import { Ticker } from '../api/Ticker'
-import { User } from '../api/User'
 import TickerModalDelete from './TickerModalDelete'
 import TickerModalForm from './TickerModalForm'
+import useAuth from './useAuth'
 
 interface Props {
   ticker: Ticker
-  user: User
 }
 
-const TickerListItem: FC<Props> = ({ ticker, user }: Props) => {
-  const history = useHistory()
+const TickerListItem: FC<Props> = ({ ticker }: Props) => {
+  const { user } = useAuth()
+  const navigate = useNavigate()
 
   return (
     <Table.Row key={ticker.id}>
@@ -31,14 +31,17 @@ const TickerListItem: FC<Props> = ({ ticker, user }: Props) => {
             color="teal"
             content="Use"
             icon="rocket"
-            onClick={() => history.push(`/ticker/${ticker.id}`)}
+            onClick={useCallback(
+              () => navigate(`/ticker/${ticker.id}`),
+              [navigate, ticker.id]
+            )}
             ticker={ticker}
           />
           <TickerModalForm
             ticker={ticker}
             trigger={<Button color="black" content="Edit" icon="edit" />}
           />
-          {user.is_super_admin ? (
+          {user?.roles.includes('admin') ? (
             <TickerModalDelete
               ticker={ticker}
               trigger={<Button color="red" content="Delete" icon="delete" />}

@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, useCallback, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router'
 import {
   Button,
   Container,
@@ -11,10 +11,7 @@ import {
   InputOnChangeData,
   Message,
 } from 'semantic-ui-react'
-import { login } from '../api/Auth'
-import AuthSingleton from '../components/AuthService'
-
-const Auth = AuthSingleton.getInstance()
+import useAuth from '../components/useAuth'
 
 interface FormValues {
   email: string
@@ -22,14 +19,9 @@ interface FormValues {
 }
 
 const LoginView: FC = () => {
-  const {
-    formState: { errors },
-    register,
-    handleSubmit,
-    setValue,
-    setError,
-  } = useForm<FormValues>()
-  const history = useHistory()
+  const { register, handleSubmit, setValue } = useForm<FormValues>()
+  const { login, error, user } = useAuth()
+  const navigate = useNavigate()
 
   const onChange = useCallback(
     (e: FormEvent, { name, value }: InputOnChangeData) => {
@@ -40,17 +32,10 @@ const LoginView: FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     login(data.email, data.password)
-      .then(response => {
-        Auth.login(response.token)
-        history.push('/')
-      })
-      .catch((error: Error) =>
-        setError('email', { type: 'custom', message: error.message })
-      )
   }
 
   useEffect(() => {
-    if (Auth.loggedIn()) history.replace('/')
+    if (user) navigate('/')
 
     register('email')
     register('password')
@@ -69,12 +54,8 @@ const LoginView: FC = () => {
             </Grid.Row>
             <Grid.Row>
               <Form onSubmit={handleSubmit(onSubmit)}>
-                {errors.email ? (
-                  <Message
-                    content={errors.email.message}
-                    negative
-                    size="small"
-                  />
+                {error ? (
+                  <Message content={error.message} negative size="small" />
                 ) : null}
                 <Form.Input
                   icon="user"
