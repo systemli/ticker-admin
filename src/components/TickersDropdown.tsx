@@ -6,12 +6,11 @@ import React, {
   useState,
 } from 'react'
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react'
-import withAuth from './withAuth'
 import { getTickers } from '../api/Ticker'
 
 interface Props {
   name: string
-  defaultValue: Array<number>
+  defaultValue?: Array<number>
   onChange: (event: SyntheticEvent, input: DropdownProps) => void
 }
 
@@ -55,4 +54,4 @@ const TickersDropdown: FC<Props> = props => {
   )
 }
 
-export default withAuth(TickersDropdown)
+export default TickersDropdown

@@ -2,11 +2,13 @@ import React, {
   ChangeEvent,
   FC,
   FormEvent,
+  SyntheticEvent,
   useCallback,
   useEffect,
 } from 'react'
 import {
   CheckboxProps,
+  DropdownProps,
   Form,
   Header,
   InputOnChangeData,
@@ -41,8 +43,12 @@ const UserForm: FC<Props> = props => {
 
   const onChange = useCallback(
     (
-      e: ChangeEvent | FormEvent,
-      { name, value, checked }: InputOnChangeData | CheckboxProps
+      e: ChangeEvent | FormEvent | SyntheticEvent,
+      {
+        name,
+        value,
+        checked,
+      }: InputOnChangeData | CheckboxProps | DropdownProps
     ) => {
       if (checked !== undefined) {
         setValue(name, checked)

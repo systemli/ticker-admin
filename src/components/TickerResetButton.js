@@ -1,5 +1,4 @@
 import React from 'react'
-import withAuth from './withAuth'
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { putTickerReset } from '../api/Ticker'
 import PropTypes from 'prop-types'
@@ -72,7 +71,7 @@ class TickerResetButton extends React.Component {
   }
 }
 
-export default withAuth(TickerResetButton)
+export default TickerResetButton
 
 TickerResetButton.propTypes = {
   ticker: PropTypes.object.isRequired,

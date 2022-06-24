@@ -1,28 +1,23 @@
 import React, { FC, useState } from 'react'
 import { Container, Grid, Header, Loader } from 'semantic-ui-react'
 import { getTicker, Ticker } from '../api/Ticker'
-import withAuth from '../components/withAuth'
 import Navigation from './Navigation'
 import TickerUserList from '../components/TickerUserList'
 import TickerResetButton from '../components/TickerResetButton'
 import MessageForm from '../components/MessageForm'
-import TwitterCard from '../components/TwitterCard'
 import { useQuery } from 'react-query'
 import TickerCard from '../components/TickerCard'
 import { useParams } from 'react-router-dom'
-import { User } from '../api/User'
 import MessageList from '../components/MessageList'
-
-interface Props {
-  user: User
-}
+import useAuth from '../components/useAuth'
 
 interface TickerViewParams {
   tickerId: string
 }
 
-const TickerView: FC<Props> = props => {
-  const { tickerId } = useParams<TickerViewParams>()
+const TickerView: FC = () => {
+  const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
+  const { user } = useAuth()
   const tickerIdNum = parseInt(tickerId)
 
   const [ticker, setTicker] = useState<Ticker>()
@@ -43,7 +38,7 @@ const TickerView: FC<Props> = props => {
   }
 
   const renderUsers = () => {
-    if (props.user?.is_super_admin) {
+    if (user?.roles.includes('admin')) {
       return (
         <React.Fragment>
           <Header dividing>Users</Header>
@@ -54,7 +49,7 @@ const TickerView: FC<Props> = props => {
   }
 
   const renderDangerZone = () => {
-    if (props.user?.is_super_admin) {
+    if (user?.roles.includes('admin')) {
       return (
         <React.Fragment>
           <Header dividing>Danger Zone</Header>
@@ -76,7 +71,7 @@ const TickerView: FC<Props> = props => {
 
   return (
     <Container>
-      <Navigation user={props.user} />
+      <Navigation />
       <Container className="app">
         <Grid columns={2}>
           <Grid.Row>
@@ -103,4 +98,4 @@ const TickerView: FC<Props> = props => {
   )
 }
 
-export default withAuth(TickerView)
+export default TickerView

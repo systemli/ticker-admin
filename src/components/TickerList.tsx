@@ -4,13 +4,10 @@ import { Button, Dimmer, Loader, Table } from 'semantic-ui-react'
 import TickerModalForm from './TickerModalForm'
 import { useQuery } from 'react-query'
 import TickerListItems from './TickerListItems'
-import { User } from '../api/User'
+import useAuth from './useAuth'
 
-interface Props {
-  user: User
-}
-
-const TickerList: FC<Props> = props => {
+const TickerList: FC = () => {
+  const { user } = useAuth()
   const { isLoading, error, data } = useQuery('tickers', getTickers, {
     refetchInterval: false,
   })
@@ -41,8 +38,8 @@ const TickerList: FC<Props> = props => {
             <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
-        <TickerListItems tickers={tickers} user={props.user} />
-        {props.user.is_super_admin ? (
+        <TickerListItems tickers={tickers} />
+        {user?.roles.includes('admin') ? (
           <Table.Footer fullWidth>
             <Table.Row>
               <Table.HeaderCell />

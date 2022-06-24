@@ -1,6 +1,3 @@
-import decode from 'jwt-decode'
-import { ApiUrl } from '../api/Api'
-
 /**
  * @type {{getInstance}}
  */
@@ -31,106 +28,7 @@ let AuthSingleton = (function () {
 class AuthService {
   constructor() {
     this.fetch = this.fetch.bind(this)
-    this.login = this.login.bind(this)
-    this.loggedIn = this.loggedIn.bind(this)
-    this.getProfile = this.getProfile.bind(this)
     this.checkResponse = this.checkResponse.bind(this)
-    this.refreshToken = this.refreshToken.bind(this)
-
-    setInterval(() => this.refreshToken(), 60000)
-  }
-
-  login(token) {
-    this.setToken(token)
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  loggedIn() {
-    const token = this.getToken()
-
-    return !!token && !this.isTokenExpired(token)
-  }
-
-  /**
-   * @param {string} token
-   * @returns {boolean}
-   */
-  isTokenExpired(token) {
-    try {
-      const decoded = decode(token)
-
-      return decoded.exp < Date.now() / 1000
-    } catch (err) {
-      return false
-    }
-  }
-
-  /**
-   * @param {string} token
-   */
-  setToken(token) {
-    localStorage.setItem('id_token', token)
-  }
-
-  /**
-   * @returns {string | null}
-   */
-  getToken() {
-    return localStorage.getItem('id_token')
-  }
-
-  /**
-   * @param {string} token
-   * @returns {number}
-   */
-  getTokenExpiration(token) {
-    if (null !== token) {
-      const decoded = decode(token)
-
-      return parseInt(decoded.exp, 10)
-    }
-
-    return 0
-  }
-
-  /**
-   * @returns {Promise<Response>|void}
-   */
-  refreshToken() {
-    if (!this.loggedIn()) {
-      return
-    }
-
-    let now = Date.now() / 1000
-    let expire = this.getTokenExpiration(this.getToken())
-    let limit = 600
-
-    if (now >= expire - limit) {
-      return this.fetch(`${ApiUrl}/admin/refresh_token`).then(response => {
-        if (response.token !== undefined) {
-          this.setToken(response.token)
-        }
-
-        return Promise.resolve(response)
-      })
-    }
-  }
-
-  /**
-   * @returns {void}
-   */
-  removeToken() {
-    localStorage.removeItem('id_token')
-    localStorage.removeItem('user')
-  }
-
-  /**
-   * @returns {object}
-   */
-  getProfile() {
-    return decode(this.getToken())
   }
 
   /**
@@ -149,9 +47,7 @@ class AuthService {
       headers = {}
     }
 
-    if (this.loggedIn()) {
-      headers['Authorization'] = 'Bearer ' + this.getToken()
-    }
+    headers['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 
     return fetch(url, { headers, ...options })
       .then(this.checkResponse)
@@ -168,8 +64,6 @@ class AuthService {
       return response
     } else {
       return response.json().then(data => {
-        console.log(response.status)
-        console.log(data)
         let error = new Error()
 
         error.message = data.error.message

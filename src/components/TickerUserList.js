@@ -2,7 +2,6 @@ import React from 'react'
 import { deleteTickerUser, getTickerUsers, putTickerUser } from '../api/Ticker'
 import PropTypes from 'prop-types'
 import { Button, Card, Icon, List, Message, Modal } from 'semantic-ui-react'
-import withAuth from './withAuth'
 import { getUsers } from '../api/User'
 
 class TickerUserList extends React.Component {
@@ -249,7 +248,7 @@ class TickerUserList extends React.Component {
   }
 }
 
-export default withAuth(TickerUserList)
+export default TickerUserList
 
 TickerUserList.propTypes = {
   id: PropTypes.number,

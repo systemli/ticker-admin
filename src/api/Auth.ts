@@ -24,7 +24,7 @@ export function login(
 
       return response.json()
     })
-    .catch(error => {
+    .catch(() => {
       throw new Error('Login failed')
     })
 }
