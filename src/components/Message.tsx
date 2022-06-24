@@ -1,39 +1,26 @@
 import React, { FC, useCallback, useState } from 'react'
-import { Card, Confirm, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react'
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import Moment from 'react-moment'
-import { deleteMessage, Message as MessageType } from '../api/Message'
+import { Message as MessageType } from '../api/Message'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
 import { replaceMagic } from '../lib/helper'
-import { useQueryClient } from 'react-query'
+import MessageModalDelete from './MessageModalDelete'
 
 interface Props {
   message: MessageType
 }
 
-const Message: FC<Props> = props => {
-  const queryClient = useQueryClient()
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
+const Message: FC<Props> = ({ message }) => {
   const [imageLightboxOpen, setImageLightboxOpen] = useState<boolean>(false)
   const [imageIndex, setImageIndex] = useState<number>(0)
 
-  const openDeleteConfirm = useCallback(() => setShowDeleteConfirm(true), [])
-  const closeDeleteConfirm = useCallback(() => setShowDeleteConfirm(false), [])
   const openImageLightbox = useCallback(() => setImageLightboxOpen(true), [])
   const closeImageLightbox = useCallback(() => setImageLightboxOpen(false), [])
 
-  const handleConfirm = useCallback(() => {
-    deleteMessage(
-      props.message.ticker.toString(),
-      props.message.id.toString()
-    ).finally(() => {
-      queryClient.invalidateQueries('messages')
-    })
-  }, [props.message.id, props.message.ticker, queryClient])
-
   const hasGeoInformation = () => {
-    const geoInformation = JSON.parse(props.message.geo_information)
+    const geoInformation = JSON.parse(message.geo_information)
 
     if (typeof geoInformation.features === 'undefined') {
       return false
@@ -66,7 +53,7 @@ const Message: FC<Props> = props => {
       <MapContainer center={[0, 0]} zoom={1}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <GeoJSON
-          data={JSON.parse(props.message.geo_information)}
+          data={JSON.parse(message.geo_information)}
           // onAdd={onGeoInformationAdded}
         />
       </MapContainer>
@@ -74,7 +61,7 @@ const Message: FC<Props> = props => {
   }
 
   const renderAttachments = () => {
-    const attachments = props.message.attachments
+    const attachments = message.attachments
 
     if (attachments === null || attachments.length === 0) {
       return null
@@ -116,13 +103,13 @@ const Message: FC<Props> = props => {
   }
 
   const renderTwitterIcon = () => {
-    if (props.message.tweet_id === '') {
+    if (message.tweet_id === '') {
       return <Icon disabled name="twitter" />
     }
 
     return (
       <a
-        href={`https://twitter.com/${props.message.tweet_user}/status/${props.message.tweet_id}`}
+        href={`https://twitter.com/${message.tweet_user}/status/${message.tweet_id}`}
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -134,22 +121,21 @@ const Message: FC<Props> = props => {
   return (
     <Card fluid>
       <Card.Content>
-        <Icon
-          color="grey"
-          fitted
-          link
-          name="close"
-          onClick={openDeleteConfirm}
-          style={{ float: 'right' }}
-        />
-        <Confirm
-          onCancel={closeDeleteConfirm}
-          onConfirm={handleConfirm}
-          open={showDeleteConfirm}
+        <MessageModalDelete
+          message={message}
+          trigger={
+            <Icon
+              color="grey"
+              fitted
+              link
+              name="close"
+              style={{ float: 'right' }}
+            />
+          }
         />
         <p
           dangerouslySetInnerHTML={{
-            __html: replaceMagic(props.message.text),
+            __html: replaceMagic(message.text),
           }}
         />
       </Card.Content>
@@ -157,7 +143,7 @@ const Message: FC<Props> = props => {
       {renderMap()}
       <Card.Content extra>
         {renderTwitterIcon()}
-        <Moment fromNow>{props.message.creation_date}</Moment>
+        <Moment fromNow>{message.creation_date}</Moment>
       </Card.Content>
     </Card>
   )

@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Container, Feed, Grid, Header, Loader } from 'semantic-ui-react'
 import { getTicker, Ticker } from '../api/Ticker'
-import { getMessages } from '../api/Message'
+import { getMessages, Message as MessageType } from '../api/Message'
 import Message from '../components/Message'
 import withAuth from '../components/withAuth'
 import Navigation from './Navigation'
@@ -11,41 +11,56 @@ import MessageForm from '../components/MessageForm'
 import TwitterCard from '../components/TwitterCard'
 import { useQuery } from 'react-query'
 import TickerCard from '../components/TickerCard'
+import { useParams } from 'react-router-dom'
+import { User } from '../api/User'
 
 interface Props {
-  // ticker id
-  id: number
-  // TODO: any
-  history: any
-  user: any
+  user: User
+}
+
+interface TickerViewParams {
+  tickerId: string
 }
 
 const TickerView: FC<Props> = props => {
+  const { tickerId } = useParams<TickerViewParams>()
+  const tickerIdNum = parseInt(tickerId)
+
   const [ticker, setTicker] = useState<Ticker>()
+  const [messages, setMessages] = useState<Array<MessageType>>([])
   const [isConfigurationLoading, setIsConfigurationLoading] =
     useState<boolean>(false)
-  const { isLoading, error, data } = useQuery(['messages', props.id], () =>
-    getMessages(props.id)
+
+  const { isLoading, error, data } = useQuery(
+    ['messages', tickerIdNum],
+    () => getMessages(tickerIdNum),
+    { refetchInterval: false }
   )
 
-  useEffect(() => {
-    loadTicker()
-  })
-
-  const loadTicker = () => {
-    getTicker(props.id).then(response => {
+  const loadTicker = useCallback(() => {
+    getTicker(tickerIdNum).then(response => {
       if (response.data?.ticker !== undefined) {
         setTicker(response.data.ticker)
         setIsConfigurationLoading(false)
       }
     })
-  }
+  }, [tickerIdNum])
+
+  useEffect(() => {
+    loadTicker()
+  }, [loadTicker])
+
+  useEffect(() => {
+    if (data?.data.messages !== undefined) {
+      setMessages(data?.data.messages)
+    }
+  }, [data?.data.messages])
 
   const renderMessages = () => {
-    if (data?.data.messages && data.data.messages.length > 0) {
+    if (messages.length > 0) {
       return (
         <Feed>
-          {data?.data.messages.map(message => (
+          {messages.map(message => (
             <Message key={message.id} message={message} />
           ))}
         </Feed>
@@ -58,7 +73,7 @@ const TickerView: FC<Props> = props => {
       return (
         <React.Fragment>
           <Header dividing>Users</Header>
-          <TickerUserList id={props.id} />
+          <TickerUserList id={tickerIdNum} />
         </React.Fragment>
       )
     }
@@ -76,7 +91,8 @@ const TickerView: FC<Props> = props => {
   }
 
   const reset = () => {
-    // this.setState({ ticker: ticker, messages: [] })
+    setTicker(ticker)
+    setMessages([])
   }
 
   const renderTicker = () => {
