@@ -29,7 +29,14 @@ interface FormValues {
 export const MESSAGE_LIMIT = 280
 
 const MessageForm: FC<Props> = ({ ticker }) => {
-  const { handleSubmit, register, setValue, watch } = useForm<FormValues>()
+  const {
+    formState: { isSubmitSuccessful },
+    handleSubmit,
+    register,
+    reset,
+    setValue,
+    watch,
+  } = useForm<FormValues>()
   const queryClient = useQueryClient()
   const watchMessage = watch('message', '')
 
@@ -58,6 +65,12 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   }
 
   useEffect(() => {
+    reset({
+      message: '',
+    })
+  }, [isSubmitSuccessful, reset])
+
+  useEffect(() => {
     register('message')
   })
 
@@ -67,11 +80,11 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     <Form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
       <Form.Field>
         <Form.TextArea
-          defaultValue=""
           name="message"
           onChange={onChange}
           placeholder="Write a message"
           rows="5"
+          value={watchMessage}
         />
       </Form.Field>
       <Error
