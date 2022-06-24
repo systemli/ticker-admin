@@ -1,8 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
-import { Container, Feed, Grid, Header, Loader } from 'semantic-ui-react'
+import React, { FC, useState } from 'react'
+import { Container, Grid, Header, Loader } from 'semantic-ui-react'
 import { getTicker, Ticker } from '../api/Ticker'
-import { getMessages, Message as MessageType } from '../api/Message'
-import Message from '../components/Message'
 import withAuth from '../components/withAuth'
 import Navigation from './Navigation'
 import TickerUserList from '../components/TickerUserList'
@@ -13,6 +11,7 @@ import { useQuery } from 'react-query'
 import TickerCard from '../components/TickerCard'
 import { useParams } from 'react-router-dom'
 import { User } from '../api/User'
+import MessageList from '../components/MessageList'
 
 interface Props {
   user: User
@@ -27,45 +26,20 @@ const TickerView: FC<Props> = props => {
   const tickerIdNum = parseInt(tickerId)
 
   const [ticker, setTicker] = useState<Ticker>()
-  const [messages, setMessages] = useState<Array<MessageType>>([])
-  const [isConfigurationLoading, setIsConfigurationLoading] =
-    useState<boolean>(false)
 
   const { isLoading, error, data } = useQuery(
-    ['messages', tickerIdNum],
-    () => getMessages(tickerIdNum),
+    ['ticker', tickerIdNum],
+    () => getTicker(tickerIdNum),
     { refetchInterval: false }
   )
 
-  const loadTicker = useCallback(() => {
-    getTicker(tickerIdNum).then(response => {
-      if (response.data?.ticker !== undefined) {
-        setTicker(response.data.ticker)
-        setIsConfigurationLoading(false)
-      }
-    })
-  }, [tickerIdNum])
+  if (isLoading) {
+    return <Loader size="large" />
+  }
 
-  useEffect(() => {
-    loadTicker()
-  }, [loadTicker])
-
-  useEffect(() => {
-    if (data?.data.messages !== undefined) {
-      setMessages(data?.data.messages)
-    }
-  }, [data?.data.messages])
-
-  const renderMessages = () => {
-    if (messages.length > 0) {
-      return (
-        <Feed>
-          {messages.map(message => (
-            <Message key={message.id} message={message} />
-          ))}
-        </Feed>
-      )
-    }
+  if (error || data === undefined) {
+    //TODO: Generic Error View
+    return <React.Fragment>Error occured</React.Fragment>
   }
 
   const renderUsers = () => {
@@ -92,7 +66,6 @@ const TickerView: FC<Props> = props => {
 
   const reset = () => {
     setTicker(ticker)
-    setMessages([])
   }
 
   const renderTicker = () => {
@@ -105,16 +78,12 @@ const TickerView: FC<Props> = props => {
     <Container>
       <Navigation user={props.user} />
       <Container className="app">
-        <Loader active={isConfigurationLoading || isLoading} size="large" />
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column width={10}>
               <Header dividing>Messages</Header>
-              {/* <MessageForm
-                callback={this.loadMessages}
-                ticker={this.state.ticker}
-              /> */}
-              {renderMessages()}
+              <MessageForm ticker={data.data.ticker} />
+              <MessageList ticker={data.data.ticker} />
             </Grid.Column>
             <Grid.Column width={6}>
               <Header dividing>Configuration</Header>
