@@ -12,7 +12,7 @@
     "leaflet": "^1.6.0",
     "leaflet-draw": "^1.0.4",
     "lodash": "^4.17.21",
-    "moment": "^2.24.0",
+    "moment": "^2.29.3",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-hook-form": "^7.32.0",
