@@ -1,14 +1,14 @@
-import { ApiUrl } from './Api'
+import { ApiUrl, Response } from './Api'
 import AuthSingleton from '../components/AuthService'
 
 const Auth = AuthSingleton.getInstance()
 
-interface MessagesResponse {
-  data: MessagesResponseData
-}
-
 interface MessagesResponseData {
   messages: Array<Message>
+}
+
+interface MessageResponseData {
+  message: Message
 }
 
 export interface Message {
@@ -23,7 +23,9 @@ export interface Message {
   attachments: any[]
 }
 
-export function getMessages(ticker: number): Promise<MessagesResponse> {
+export function getMessages(
+  ticker: number
+): Promise<Response<MessagesResponseData>> {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`)
 }
 
@@ -33,7 +35,7 @@ export function postMessage(
   text: string,
   geoInformation: any,
   attachments: any[]
-): Promise<Response> {
+): Promise<Response<MessageResponseData>> {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
     body: JSON.stringify({
       text: text,
@@ -47,7 +49,7 @@ export function postMessage(
 export function deleteMessage(
   ticker: string,
   message: string
-): Promise<Response> {
+): Promise<Response<any>> {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages/${message}`, {
     method: 'DELETE',
   })
