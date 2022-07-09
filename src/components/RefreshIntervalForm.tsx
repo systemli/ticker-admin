@@ -2,7 +2,8 @@ import React, { FC, FormEvent, useCallback, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
 import { Form, InputOnChangeData } from 'semantic-ui-react'
-import { putRefreshInterval, Setting } from '../api/Settings'
+import { Setting, useSettingsApi } from '../api/Settings'
+import useAuth from './useAuth'
 
 interface Props {
   setting: Setting<string>
@@ -20,6 +21,8 @@ const RefreshIntervalForm: FC<Props> = props => {
       refresh_interval: parseInt(setting.value, 10),
     },
   })
+  const { token } = useAuth()
+  const { putRefreshInterval } = useSettingsApi(token)
   const queryClient = useQueryClient()
 
   const onChange = useCallback(

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { getTickers } from '../api/Ticker'
+import { useTickerApi } from '../api/Ticker'
 import { Button, Dimmer, Loader, Table } from 'semantic-ui-react'
 import TickerModalForm from './TickerModalForm'
 import { useQuery } from 'react-query'
@@ -7,7 +7,8 @@ import TickerListItems from './TickerListItems'
 import useAuth from './useAuth'
 
 const TickerList: FC = () => {
-  const { user } = useAuth()
+  const { token, user } = useAuth()
+  const { getTickers } = useTickerApi(token)
   const { isLoading, error, data } = useQuery('tickers', getTickers, {
     refetchInterval: false,
   })

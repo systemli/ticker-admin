@@ -10,10 +10,13 @@ import {
   List,
   Loader,
 } from 'semantic-ui-react'
-import { getInactiveSettings } from '../api/Settings'
+import { useSettingsApi } from '../api/Settings'
 import InactiveSettingsModalForm from './InactiveSettingsModalForm'
+import useAuth from './useAuth'
 
 const InactiveSettingsCard: FC = () => {
+  const { token } = useAuth()
+  const { getInactiveSettings } = useSettingsApi(token)
   const { isLoading, error, data } = useQuery(
     'inactive_settings',
     getInactiveSettings,

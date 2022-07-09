@@ -1,15 +1,18 @@
 import React, { FC } from 'react'
 import { Dimmer, Feed, Loader } from 'semantic-ui-react'
 import { Ticker } from '../api/Ticker'
-import { getMessages } from '../api/Message'
+import { useMessageApi } from '../api/Message'
 import Message from '../components/Message'
 import { useQuery } from 'react-query'
+import useAuth from './useAuth'
 
 interface Props {
   ticker: Ticker
 }
 
 const MessageList: FC<Props> = ({ ticker }) => {
+  const { token } = useAuth()
+  const { getMessages } = useMessageApi(token)
   const { isLoading, error, data } = useQuery(
     ['messages', ticker.id],
     () => getMessages(ticker.id),

@@ -1,7 +1,4 @@
 import { ApiUrl, Response } from './Api'
-import AuthSingleton from '../components/AuthService'
-
-const Auth = AuthSingleton.getInstance()
 
 interface MessagesResponseData {
   messages: Array<Message>
@@ -23,34 +20,48 @@ export interface Message {
   attachments: any[]
 }
 
-export function getMessages(
-  ticker: number
-): Promise<Response<MessagesResponseData>> {
-  return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`)
-}
+export function useMessageApi(token: string) {
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  }
 
-// TODO: any
-export function postMessage(
-  ticker: string,
-  text: string,
-  geoInformation: any,
-  attachments: any[]
-): Promise<Response<MessageResponseData>> {
-  return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
-    body: JSON.stringify({
-      text: text,
-      geo_information: geoInformation,
-      attachments: attachments,
-    }),
-    method: 'POST',
-  })
-}
+  const getMessages = (
+    ticker: number
+  ): Promise<Response<MessagesResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
+      headers: headers,
+    }).then(response => response.json())
+  }
 
-export function deleteMessage(
-  ticker: string,
-  message: string
-): Promise<Response<any>> {
-  return Auth.fetch(`${ApiUrl}/admin/tickers/${ticker}/messages/${message}`, {
-    method: 'DELETE',
-  })
+  // TODO: any
+  const postMessage = (
+    ticker: string,
+    text: string,
+    geoInformation: any,
+    attachments: any[]
+  ): Promise<Response<MessageResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
+      headers: headers,
+      body: JSON.stringify({
+        text: text,
+        geo_information: geoInformation,
+        attachments: attachments,
+      }),
+      method: 'post',
+    }).then(response => response.json())
+  }
+
+  const deleteMessage = (
+    ticker: string,
+    message: string
+  ): Promise<Response<any>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages/${message}`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
+  }
+
+  return { deleteMessage, getMessages, postMessage }
 }

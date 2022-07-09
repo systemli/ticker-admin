@@ -1,10 +1,13 @@
 import React, { FC } from 'react'
 import { useQuery } from 'react-query'
 import { Button, Card, Dimmer, Icon, List, Loader } from 'semantic-ui-react'
-import { getRefreshInterval } from '../api/Settings'
+import { useSettingsApi } from '../api/Settings'
 import RefreshIntervalModalForm from './RefreshIntervalModalForm'
+import useAuth from './useAuth'
 
 const RefreshIntervalCard: FC = () => {
+  const { token } = useAuth()
+  const { getRefreshInterval } = useSettingsApi(token)
   const { isLoading, error, data } = useQuery(
     'refresh_interval_setting',
     getRefreshInterval,

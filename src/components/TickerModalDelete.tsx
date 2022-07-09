@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Confirm } from 'semantic-ui-react'
-import { deleteTicker, Ticker } from '../api/Ticker'
+import { Ticker, useTickerApi } from '../api/Ticker'
+import useAuth from './useAuth'
 
 interface Props {
   ticker: Ticker
@@ -10,6 +11,8 @@ interface Props {
 
 const TickerModalDelete: FC<Props> = props => {
   const [open, setOpen] = useState<boolean>(false)
+  const { token } = useAuth()
+  const { deleteTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
   const ticker = props.ticker
 
@@ -18,10 +21,10 @@ const TickerModalDelete: FC<Props> = props => {
   }, [])
 
   const handleConfirm = useCallback(() => {
-    deleteTicker(ticker.id).finally(() => {
+    deleteTicker(ticker).finally(() => {
       queryClient.invalidateQueries('tickers')
     })
-  }, [ticker, queryClient])
+  }, [deleteTicker, ticker, queryClient])
 
   const handleOpen = useCallback(() => {
     setOpen(true)

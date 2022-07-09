@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Button, Container, Grid, Header, Loader } from 'semantic-ui-react'
-import { getTicker } from '../api/Ticker'
+import { useTickerApi } from '../api/Ticker'
 import Navigation from './Navigation'
 import MessageForm from '../components/MessageForm'
 import { useQuery } from 'react-query'
@@ -16,6 +16,8 @@ interface TickerViewParams {
 }
 
 const TickerView: FC = () => {
+  const { token } = useAuth()
+  const { getTicker } = useTickerApi(token)
   const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
   const { user } = useAuth()
   const tickerIdNum = parseInt(tickerId)

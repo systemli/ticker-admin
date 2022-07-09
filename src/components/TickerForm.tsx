@@ -14,9 +14,10 @@ import {
   InputOnChangeData,
   TextAreaProps,
 } from 'semantic-ui-react'
-import { postTicker, putTicker, Ticker } from '../api/Ticker'
+import { Ticker, useTickerApi } from '../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
+import useAuth from './useAuth'
 
 interface Props {
   ticker?: Ticker
@@ -54,6 +55,8 @@ const TickerForm: FC<Props> = props => {
       },
     },
   })
+  const { token } = useAuth()
+  const { postTicker, putTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
 
   const onChange = useCallback(
