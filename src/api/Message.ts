@@ -53,14 +53,14 @@ export function useMessageApi(token: string) {
     }).then(response => response.json())
   }
 
-  const deleteMessage = (
-    ticker: string,
-    message: string
-  ): Promise<Response<any>> => {
-    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages/${message}`, {
-      headers: headers,
-      method: 'delete',
-    }).then(response => response.json())
+  const deleteMessage = (message: Message): Promise<Response<any>> => {
+    return fetch(
+      `${ApiUrl}/admin/tickers/${message.ticker}/messages/${message.id}`,
+      {
+        headers: headers,
+        method: 'delete',
+      }
+    ).then(response => response.json())
   }
 
   return { deleteMessage, getMessages, postMessage }

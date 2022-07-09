@@ -14,18 +14,21 @@ const MessageModalDelete: FC<Props> = props => {
   const { deleteMessage } = useMessageApi(token)
   const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
-  const tickerId = props.message.ticker.toString()
-  const messageId = props.message.id.toString()
+  const message = props.message
 
   const handleCancel = useCallback(() => {
     setOpen(false)
   }, [])
 
   const handleConfirm = useCallback(() => {
-    deleteMessage(tickerId, messageId).finally(() => {
-      queryClient.invalidateQueries(['messages', tickerId])
-    })
-  }, [deleteMessage, tickerId, messageId, queryClient])
+    deleteMessage(message)
+      .then(() => {
+        queryClient.invalidateQueries(['messages', message.ticker])
+      })
+      .finally(() => {
+        setOpen(false)
+      })
+  }, [deleteMessage, message, queryClient])
 
   const handleOpen = useCallback(() => {
     setOpen(true)
