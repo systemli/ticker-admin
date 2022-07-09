@@ -13,7 +13,8 @@ import {
   InputOnChangeData,
   TextAreaProps,
 } from 'semantic-ui-react'
-import { InactiveSetting, putInactiveSettings, Setting } from '../api/Settings'
+import { InactiveSetting, Setting, useSettingsApi } from '../api/Settings'
+import useAuth from './useAuth'
 
 interface Props {
   setting: Setting<InactiveSetting>
@@ -43,6 +44,8 @@ const InactiveSettingsForm: FC<Props> = props => {
       twitter: setting.value.twitter,
     },
   })
+  const { token } = useAuth()
+  const { putInactiveSettings } = useSettingsApi(token)
   const queryClient = useQueryClient()
 
   const onChange = useCallback(

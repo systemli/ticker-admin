@@ -6,7 +6,8 @@ import React, {
   useState,
 } from 'react'
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react'
-import { getTickers } from '../api/Ticker'
+import { useTickerApi } from '../api/Ticker'
+import useAuth from './useAuth'
 
 interface Props {
   name: string
@@ -16,6 +17,8 @@ interface Props {
 
 const TickersDropdown: FC<Props> = props => {
   const [options, setOptions] = useState<DropdownItemProps[]>([])
+  const { token } = useAuth()
+  const { getTickers } = useTickerApi(token)
 
   const onChange = useCallback(
     (event: SyntheticEvent, input: DropdownProps) => {
@@ -38,7 +41,7 @@ const TickersDropdown: FC<Props> = props => {
         })
         setOptions(availableOptions)
       })
-  }, [])
+  }, [getTickers])
 
   return (
     <Dropdown

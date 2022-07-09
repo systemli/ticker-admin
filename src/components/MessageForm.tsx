@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { postMessage } from '../api/Message'
+import { useMessageApi } from '../api/Message'
 import {
   Button,
   Form,
@@ -17,6 +17,7 @@ import { Ticker } from '../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
 import MessageFormCounter from './MessageFormCounter'
+import useAuth from './useAuth'
 
 interface Props {
   ticker: Ticker
@@ -37,6 +38,8 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     setValue,
     watch,
   } = useForm<FormValues>()
+  const { token } = useAuth()
+  const { postMessage } = useMessageApi(token)
   const queryClient = useQueryClient()
   const watchMessage = watch('message', '')
 

@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Confirm } from 'semantic-ui-react'
-import { deleteMessage, Message } from '../api/Message'
+import { Message, useMessageApi } from '../api/Message'
+import useAuth from './useAuth'
 
 interface Props {
   message: Message
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const MessageModalDelete: FC<Props> = props => {
+  const { token } = useAuth()
+  const { deleteMessage } = useMessageApi(token)
   const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
   const tickerId = props.message.ticker.toString()
@@ -22,7 +25,7 @@ const MessageModalDelete: FC<Props> = props => {
     deleteMessage(tickerId, messageId).finally(() => {
       queryClient.invalidateQueries(['messages', tickerId])
     })
-  }, [tickerId, messageId, queryClient])
+  }, [deleteMessage, tickerId, messageId, queryClient])
 
   const handleOpen = useCallback(() => {
     setOpen(true)
