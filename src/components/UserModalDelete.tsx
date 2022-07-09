@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Confirm } from 'semantic-ui-react'
-import { deleteUser, User } from '../api/User'
+import { User, useUserApi } from '../api/User'
+import useAuth from './useAuth'
 
 interface Props {
   user: User
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const UserModalDelete: FC<Props> = props => {
+  const { token } = useAuth()
+  const { deleteUser } = useUserApi(token!)
   const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
   const user = props.user
@@ -20,8 +23,9 @@ const UserModalDelete: FC<Props> = props => {
   const handleConfirm = useCallback(() => {
     deleteUser(user).finally(() => {
       queryClient.invalidateQueries('users')
+      setOpen(false)
     })
-  }, [user, queryClient])
+  }, [deleteUser, user, queryClient])
 
   const handleOpen = useCallback(() => {
     setOpen(true)

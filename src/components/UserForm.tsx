@@ -14,9 +14,10 @@ import {
   InputOnChangeData,
 } from 'semantic-ui-react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { postUser, putUser, User } from '../api/User'
+import { User, useUserApi } from '../api/User'
 import { useQueryClient } from 'react-query'
 import TickersDropdown from './TickersDropdown'
+import useAuth from './useAuth'
 
 interface Props {
   user?: User
@@ -33,6 +34,8 @@ interface FormValues {
 
 const UserForm: FC<Props> = props => {
   const user = props.user
+  const { token } = useAuth()
+  const { postUser, putUser } = useUserApi(token!)
   const { handleSubmit, register, setValue } = useForm<FormValues>({
     defaultValues: {
       email: user?.email,
