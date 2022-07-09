@@ -1,15 +1,14 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Container, Grid, Header, Loader } from 'semantic-ui-react'
-import { getTicker, Ticker } from '../api/Ticker'
+import { getTicker } from '../api/Ticker'
 import Navigation from './Navigation'
-import TickerUserList from '../components/TickerUserList'
-import TickerResetButton from '../components/TickerResetButton'
 import MessageForm from '../components/MessageForm'
 import { useQuery } from 'react-query'
 import TickerCard from '../components/TickerCard'
 import { useParams } from 'react-router-dom'
 import MessageList from '../components/MessageList'
 import useAuth from '../components/useAuth'
+import TickerUsersCard from '../components/TickerUserCard'
 
 interface TickerViewParams {
   tickerId: string
@@ -19,8 +18,6 @@ const TickerView: FC = () => {
   const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
   const { user } = useAuth()
   const tickerIdNum = parseInt(tickerId)
-
-  const [ticker, setTicker] = useState<Ticker>()
 
   const { isLoading, error, data } = useQuery(
     ['ticker', tickerIdNum],
@@ -37,12 +34,14 @@ const TickerView: FC = () => {
     return <React.Fragment>Error occured</React.Fragment>
   }
 
+  const ticker = data.data.ticker
+
   const renderUsers = () => {
     if (user?.roles.includes('admin')) {
       return (
         <React.Fragment>
           <Header dividing>Users</Header>
-          <TickerUserList id={tickerIdNum} />
+          <TickerUsersCard ticker={ticker!} />
         </React.Fragment>
       )
     }
@@ -53,14 +52,9 @@ const TickerView: FC = () => {
       return (
         <React.Fragment>
           <Header dividing>Danger Zone</Header>
-          <TickerResetButton reset={reset} ticker={ticker} />
         </React.Fragment>
       )
     }
-  }
-
-  const reset = () => {
-    setTicker(ticker)
   }
 
   const renderTicker = () => {

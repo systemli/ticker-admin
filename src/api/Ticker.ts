@@ -1,5 +1,6 @@
-import { ApiUrl } from './Api'
+import { ApiUrl, Response } from './Api'
 import AuthSingleton from '../components/AuthService'
+import { User } from './User'
 
 const Auth = AuthSingleton.getInstance()
 
@@ -13,6 +14,10 @@ interface TickerResponse {
   data: {
     ticker: Ticker
   }
+}
+
+interface TickerUsersResponseData {
+  users: Array<User>
 }
 
 export interface Ticker {
@@ -126,4 +131,43 @@ export function putTickerReset(id: number) {
   return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/reset`, {
     method: 'PUT',
   })
+}
+
+export function useTickerApi(token: string) {
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  }
+
+  const getTickerUsers = (
+    ticker: Ticker
+  ): Promise<Response<TickerUsersResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users`, {
+      headers: headers,
+    }).then(response => response.json())
+  }
+
+  const deleteTickerUser = (
+    ticker: Ticker,
+    user: User
+  ): Promise<Response<any>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users/${user.id}`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
+  }
+
+  const putTickerUsers = (
+    ticker: Ticker,
+    users: number[]
+  ): Promise<Response<TickerUsersResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users`, {
+      headers: headers,
+      method: 'put',
+      body: JSON.stringify({ users: users }),
+    }).then(response => response.json())
+  }
+
+  return { deleteTickerUser, getTickerUsers, putTickerUsers }
 }
