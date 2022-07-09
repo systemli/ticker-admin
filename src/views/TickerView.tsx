@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Container, Grid, Header, Loader } from 'semantic-ui-react'
+import { Button, Container, Grid, Header, Loader } from 'semantic-ui-react'
 import { getTicker } from '../api/Ticker'
 import Navigation from './Navigation'
 import MessageForm from '../components/MessageForm'
@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 import MessageList from '../components/MessageList'
 import useAuth from '../components/useAuth'
 import TickerUsersCard from '../components/TickerUserCard'
+import TickerResetModal from '../components/TickerResetModal'
 
 interface TickerViewParams {
   tickerId: string
@@ -41,17 +42,7 @@ const TickerView: FC = () => {
       return (
         <React.Fragment>
           <Header dividing>Users</Header>
-          <TickerUsersCard ticker={ticker!} />
-        </React.Fragment>
-      )
-    }
-  }
-
-  const renderDangerZone = () => {
-    if (user?.roles.includes('admin')) {
-      return (
-        <React.Fragment>
-          <Header dividing>Danger Zone</Header>
+          <TickerUsersCard ticker={ticker} />
         </React.Fragment>
       )
     }
@@ -71,8 +62,8 @@ const TickerView: FC = () => {
           <Grid.Row>
             <Grid.Column width={10}>
               <Header dividing>Messages</Header>
-              <MessageForm ticker={data.data.ticker} />
-              <MessageList ticker={data.data.ticker} />
+              <MessageForm ticker={ticker} />
+              <MessageList ticker={ticker} />
             </Grid.Column>
             <Grid.Column width={6}>
               <Header dividing>Configuration</Header>
@@ -83,7 +74,23 @@ const TickerView: FC = () => {
                 ticker={ticker}
               /> */}
               {renderUsers()}
-              {renderDangerZone()}
+              {user?.roles.includes('admin') && (
+                <React.Fragment>
+                  <Header dividing>Danger Zone</Header>
+                  <TickerResetModal
+                    ticker={ticker}
+                    trigger={
+                      <Button
+                        content="Reset"
+                        icon="remove"
+                        labelPosition="left"
+                        negative
+                        size="tiny"
+                      />
+                    }
+                  />
+                </React.Fragment>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid>

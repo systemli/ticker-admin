@@ -60,7 +60,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     postMessage(ticker.id.toString(), data.message, null, []).finally(() => {
-      queryClient.invalidateQueries('messages')
+      queryClient.invalidateQueries(['messages', ticker.id])
     })
   }
 

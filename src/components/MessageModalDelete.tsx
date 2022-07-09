@@ -20,7 +20,7 @@ const MessageModalDelete: FC<Props> = props => {
 
   const handleConfirm = useCallback(() => {
     deleteMessage(tickerId, messageId).finally(() => {
-      queryClient.invalidateQueries('messages')
+      queryClient.invalidateQueries(['messages', tickerId])
     })
   }, [tickerId, messageId, queryClient])
 

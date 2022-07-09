@@ -123,16 +123,6 @@ export function deleteTickerUser(id: number, userId: number) {
   })
 }
 
-/**
- * @param id
- * @returns {Promise<Response>}
- */
-export function putTickerReset(id: number) {
-  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/reset`, {
-    method: 'PUT',
-  })
-}
-
 export function useTickerApi(token: string) {
   const headers = {
     Accept: 'application/json',
@@ -169,5 +159,14 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  return { deleteTickerUser, getTickerUsers, putTickerUsers }
+  const putTickerReset = (
+    ticker: Ticker
+  ): Promise<Response<TickerResponse>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/reset`, {
+      headers: headers,
+      method: 'put',
+    }).then(response => response.json())
+  }
+
+  return { deleteTickerUser, getTickerUsers, putTickerUsers, putTickerReset }
 }
