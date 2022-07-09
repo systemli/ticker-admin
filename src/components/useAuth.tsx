@@ -22,7 +22,7 @@ interface User {
 
 interface IAuthContext {
   user?: User
-  token?: string
+  token: string
   error?: Error
   login: (email: string, password: string) => void
   logout: () => void
@@ -36,7 +36,7 @@ export function AuthProvider({
   children: ReactNode
 }): JSX.Element {
   const [user, setUser] = useState<User>()
-  const [token, setToken] = useState<string>()
+  const [token, setToken] = useState<string>('')
   const [error, setError] = useState<Error>()
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true)
@@ -50,7 +50,7 @@ export function AuthProvider({
   useEffect(() => {
     const token = localStorage.getItem('token')
 
-    if (token === null) {
+    if (token === null || token == '') {
       setLoadingInitial(false)
       return
     }
@@ -88,7 +88,7 @@ export function AuthProvider({
   const logout = useCallback(() => {
     localStorage.removeItem('token')
     setUser(undefined)
-    setToken(undefined)
+    setToken('')
     navigate('/login')
   }, [navigate])
 

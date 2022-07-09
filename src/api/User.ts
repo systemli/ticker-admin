@@ -1,7 +1,4 @@
 import { ApiUrl, Response } from './Api'
-import AuthSingleton from '../components/AuthService'
-
-const Auth = AuthSingleton.getInstance()
 
 export interface UsersResponseData {
   users: Array<User>
@@ -26,33 +23,44 @@ export interface UserData {
   password?: string
 }
 
-export function getUsers(): Promise<Response<UsersResponseData>> {
-  return Auth.fetch(`${ApiUrl}/admin/users`)
-}
+export function useUserApi(token: string) {
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  }
 
-export function getUser(id: number): Promise<Response<UserResponseData>> {
-  return Auth.fetch(`${ApiUrl}/admin/users/${id}`)
-}
+  const getUsers = (): Promise<Response<UsersResponseData>> => {
+    return fetch(`${ApiUrl}/admin/users`, { headers: headers }).then(response =>
+      response.json()
+    )
+  }
 
-export function postUser(data: UserData): Promise<Response<UserResponseData>> {
-  return Auth.fetch(`${ApiUrl}/admin/users`, {
-    body: JSON.stringify(data),
-    method: 'post',
-  })
-}
+  const putUser = (
+    data: UserData,
+    user: User
+  ): Promise<Response<UserResponseData>> => {
+    return fetch(`${ApiUrl}/admin/users/${user.id}`, {
+      body: JSON.stringify(data),
+      method: 'put',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+    }).then(response => response.json())
+  }
 
-export function putUser(
-  data: UserData,
-  user: User
-): Promise<Response<UserResponseData>> {
-  return Auth.fetch(`${ApiUrl}/admin/users/${user.id}`, {
-    body: JSON.stringify(data),
-    method: 'put',
-  })
-}
+  const postUser = (data: UserData): Promise<Response<UserResponseData>> => {
+    return fetch(`${ApiUrl}/admin/users`, {
+      body: JSON.stringify(data),
+      headers: headers,
+      method: 'post',
+    }).then(response => response.json())
+  }
 
-export function deleteUser(user: User): Promise<Response<any>> {
-  return Auth.fetch(`${ApiUrl}/admin/users/${user.id}`, {
-    method: 'delete',
-  })
+  const deleteUser = (user: User): Promise<Response<any>> => {
+    return fetch(`${ApiUrl}/admin/users/${user.id}`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
+  }
+
+  return { getUsers, putUser, postUser, deleteUser }
 }

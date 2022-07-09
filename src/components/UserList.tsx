@@ -1,11 +1,14 @@
 import React, { FC } from 'react'
 import { Button, Dimmer, Loader, Table } from 'semantic-ui-react'
-import { getUsers } from '../api/User'
 import { useQuery } from 'react-query'
 import UserListItems from './UserListItems'
 import UserModalForm from './UserModalForm'
+import useAuth from './useAuth'
+import { useUserApi } from '../api/User'
 
 const UserList: FC = () => {
+  const { token } = useAuth()
+  const { getUsers } = useUserApi(token)
   const { isLoading, error, data } = useQuery('users', getUsers, {
     refetchInterval: false,
   })
