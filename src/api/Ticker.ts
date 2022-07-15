@@ -36,21 +36,23 @@ export interface TickerInformation {
 export interface TickerTwitter {
   active: boolean
   connected: boolean
+  name: string
+  screen_name: string
+  description: string
+  image_url: string
+}
+
+export interface TickerTwitterFormData {
+  active: boolean
+  disconnect: boolean
+  token: string
+  secret: string
 }
 
 export interface TickerLocation {
   lat: number
   lon: number
 }
-
-/*
-export function putTickerTwitter(data: any, id: number) {
-  return Auth.fetch(`${ApiUrl}/admin/tickers/${id}/twitter`, {
-    body: JSON.stringify(data),
-    method: 'PUT',
-  })
-}
-*/
 
 export function useTickerApi(token: string) {
   const headers = {
@@ -135,6 +137,14 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
+  const putTickerTwitter = (data: TickerTwitterFormData, ticker: Ticker) => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/twitter`, {
+      headers: headers,
+      body: JSON.stringify(data),
+      method: 'put',
+    }).then(response => response.json())
+  }
+
   return {
     deleteTicker,
     deleteTickerUser,
@@ -145,5 +155,6 @@ export function useTickerApi(token: string) {
     putTicker,
     putTickerUsers,
     putTickerReset,
+    putTickerTwitter,
   }
 }

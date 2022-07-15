@@ -29,7 +29,6 @@ const TickerResetModal: FC<Props> = props => {
         queryClient.invalidateQueries(['messages', props.ticker.id])
         queryClient.invalidateQueries(['tickerUsers', props.ticker.id])
         queryClient.invalidateQueries(['ticker', props.ticker.id])
-        // TODO: twitter
       })
       .finally(() => {
         setOpen(false)

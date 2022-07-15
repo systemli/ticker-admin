@@ -10,6 +10,7 @@ import MessageList from '../components/MessageList'
 import useAuth from '../components/useAuth'
 import TickerUsersCard from '../components/TickerUserCard'
 import TickerResetModal from '../components/TickerResetModal'
+import TwitterCard from '../components/TwitterCard'
 
 interface TickerViewParams {
   tickerId: string
@@ -71,10 +72,7 @@ const TickerView: FC = () => {
               <Header dividing>Configuration</Header>
               {renderTicker()}
               <Header dividing>Twitter</Header>
-              {/* <TwitterCard
-                callback={ticker => setTicker(ticker)}
-                ticker={ticker}
-              /> */}
+              <TwitterCard ticker={ticker} />
               {renderUsers()}
               {user?.roles.includes('admin') && (
                 <React.Fragment>
