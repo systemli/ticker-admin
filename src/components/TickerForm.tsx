@@ -6,18 +6,21 @@ import React, {
   useEffect,
 } from 'react'
 import {
+  Button,
   CheckboxProps,
   Form,
   Header,
   Icon,
   Input,
   InputOnChangeData,
+  Message,
   TextAreaProps,
 } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
 import useAuth from './useAuth'
+import LocationSearch, { Result } from './LocationSearch'
 
 interface Props {
   ticker?: Ticker
@@ -36,6 +39,10 @@ interface FormValues {
     twitter: string
     facebook: string
   }
+  location: {
+    lat: number
+    lon: number
+  }
 }
 
 const TickerForm: FC<Props> = props => {
@@ -53,11 +60,33 @@ const TickerForm: FC<Props> = props => {
         twitter: ticker?.information.twitter,
         facebook: ticker?.information.facebook,
       },
+      location: {
+        lat: ticker?.location.lat,
+        lon: ticker?.location.lon,
+      },
     },
   })
   const { token } = useAuth()
   const { postTicker, putTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
+
+  const onLocationChange = useCallback(
+    (result: Result) => {
+      setValue('location.lat', result.lat)
+      setValue('location.lon', result.lon)
+    },
+    [setValue]
+  )
+
+  const onLoctionReset = useCallback(
+    (e: React.MouseEvent) => {
+      setValue('location.lat', 0)
+      setValue('location.lon', 0)
+
+      e.preventDefault()
+    },
+    [setValue]
+  )
 
   const onChange = useCallback(
     (
@@ -92,15 +121,8 @@ const TickerForm: FC<Props> = props => {
   }
 
   useEffect(() => {
-    register('title')
-    register('domain')
-    register('active')
-    register('description')
-    register('information.author')
-    register('information.email')
-    register('information.url')
-    register('information.twitter')
-    register('information.facebook')
+    register('location.lat', { valueAsNumber: true })
+    register('location.lon', { valueAsNumber: true })
   })
 
   return (
@@ -198,6 +220,27 @@ const TickerForm: FC<Props> = props => {
           </Input>
         </Form.Input>
       </Form.Group>
+      <Header dividing>Location</Header>
+      <Message info size="small">
+        You can add a default location to the ticker. This will help you to have
+        a pre-selected location when you add a map to a message. <br />
+        Current Location: {ticker?.location.lat.toPrecision(2)},
+        {ticker?.location.lon.toPrecision(2)}
+      </Message>
+      <Form.Group widths="equal">
+        <Form.Field width="15">
+          <LocationSearch callback={onLocationChange} />
+        </Form.Field>
+        <Form.Field width="1">
+          <Button
+            color="red"
+            disabled={ticker?.location.lat === 0 && ticker.location.lon === 0}
+            icon="delete"
+            onClick={onLoctionReset}
+          />
+        </Form.Field>
+      </Form.Group>
+      {/* TODO: Add Map for the current selected location */}
     </Form>
   )
 }
