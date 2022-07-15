@@ -21,6 +21,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
 import useAuth from './useAuth'
 import LocationSearch, { Result } from './LocationSearch'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 
 interface Props {
   ticker?: Ticker
@@ -47,7 +48,7 @@ interface FormValues {
 
 const TickerForm: FC<Props> = props => {
   const ticker = props.ticker
-  const { handleSubmit, register, setValue } = useForm<FormValues>({
+  const { handleSubmit, register, setValue, watch } = useForm<FormValues>({
     defaultValues: {
       title: ticker?.title,
       domain: ticker?.domain,
@@ -124,6 +125,8 @@ const TickerForm: FC<Props> = props => {
     register('location.lat', { valueAsNumber: true })
     register('location.lon', { valueAsNumber: true })
   })
+
+  const position = watch('location')
 
   return (
     <Form id="editTicker" onSubmit={handleSubmit(onSubmit)}>
@@ -224,8 +227,7 @@ const TickerForm: FC<Props> = props => {
       <Message info size="small">
         You can add a default location to the ticker. This will help you to have
         a pre-selected location when you add a map to a message. <br />
-        Current Location: {ticker?.location.lat.toPrecision(2)},
-        {ticker?.location.lon.toPrecision(2)}
+        Current Location: {position.lat.toFixed(2)},{position.lon.toFixed(2)}
       </Message>
       <Form.Group widths="equal">
         <Form.Field width="15">
@@ -240,7 +242,17 @@ const TickerForm: FC<Props> = props => {
           />
         </Form.Field>
       </Form.Group>
-      {/* TODO: Add Map for the current selected location */}
+      {position.lat !== 0 && position.lon !== 0 ? (
+        <MapContainer
+          center={[position.lat, position.lon]}
+          scrollWheelZoom={false}
+          style={{ height: 200 }}
+          zoom={10}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Marker position={[position.lat, position.lon]} />
+        </MapContainer>
+      ) : null}
     </Form>
   )
 }
