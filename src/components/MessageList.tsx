@@ -35,7 +35,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
   return (
     <Feed>
       {data.data.messages.map(message => (
-        <Message key={message.id} message={message} />
+        <Message key={message.id} message={message} ticker={ticker} />
       ))}
     </Feed>
   )
