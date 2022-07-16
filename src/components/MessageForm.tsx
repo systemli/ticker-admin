@@ -21,6 +21,8 @@ import useAuth from './useAuth'
 import { Upload } from '../api/Upload'
 import MessageAttachmentsButton from './MessageAttachmentsButton'
 import MessageAttachmentsPreview from './MessageAttachmentsPreview'
+import MessageMapModal from './MessageMapModal'
+import { FeatureCollection, Geometry } from 'geojson'
 
 interface Props {
   ticker: Ticker
@@ -45,6 +47,11 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const queryClient = useQueryClient()
   const watchMessage = watch('message', '')
   const [attachments, setAttachments] = useState<Upload[]>([])
+  const emptyMap: FeatureCollection<Geometry, any> = {
+    type: 'FeatureCollection',
+    features: [],
+  }
+  const [map, setMap] = useState<FeatureCollection<Geometry, any>>(emptyMap)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const onUpload = useCallback(
@@ -65,6 +72,13 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       )
     },
     [attachments]
+  )
+
+  const onMapUpdate = useCallback(
+    (featureGroups: FeatureCollection<Geometry, any>) => {
+      setMap(featureGroups)
+    },
+    []
   )
 
   const onChange = useCallback(
@@ -88,7 +102,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       return upload.id
     })
 
-    postMessage(ticker.id.toString(), data.message, null, uploads).finally(
+    postMessage(ticker.id.toString(), data.message, map, uploads).finally(
       () => {
         queryClient.invalidateQueries(['messages', ticker.id])
         setAttachments([])
@@ -101,8 +115,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       message: '',
     })
   }, [isSubmitSuccessful, reset])
-
-  // TODO: map
 
   return (
     <Form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
@@ -135,6 +147,14 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         type="submit"
       />
       <MessageAttachmentsButton onUpload={onUpload} ticker={ticker} />
+      <MessageMapModal
+        callback={onMapUpdate}
+        map={map}
+        ticker={ticker}
+        trigger={
+          <Button color="orange" content="Add Map" toggle type="button" />
+        }
+      />
       <MessageFormCounter letterCount={watchMessage?.length || 0} />
     </Form>
   )
