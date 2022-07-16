@@ -4,7 +4,7 @@ interface UploadeResponseData {
   uploads: Array<Upload>
 }
 
-interface Upload {
+export interface Upload {
   id: number
   uuid: string
   creation_date: Date
@@ -12,11 +12,10 @@ interface Upload {
   content_type: string
 }
 
-export function useMessageApi(token: string) {
+export function useUploadApi(token: string) {
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
   }
 
   const postUpload = (

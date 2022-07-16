@@ -18,6 +18,9 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from 'react-query'
 import MessageFormCounter from './MessageFormCounter'
 import useAuth from './useAuth'
+import { Upload } from '../api/Upload'
+import MessageAttachmentsButton from './MessageAttachmentsButton'
+import MessageAttachmentsPreview from './MessageAttachmentsPreview'
 
 interface Props {
   ticker: Ticker
@@ -33,7 +36,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const {
     formState: { isSubmitSuccessful },
     handleSubmit,
-    register,
     reset,
     setValue,
     watch,
@@ -42,8 +44,28 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const { postMessage } = useMessageApi(token)
   const queryClient = useQueryClient()
   const watchMessage = watch('message', '')
-
+  const [attachments, setAttachments] = useState<Upload[]>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const onUpload = useCallback(
+    (uploads: Upload[]) => {
+      setAttachments(attachments.concat(uploads))
+    },
+    [attachments]
+  )
+
+  const onUploadDelete = useCallback(
+    (upload: Upload) => {
+      setAttachments(
+        attachments.filter((attachment: Upload) => {
+          if (attachment.id !== upload.id) {
+            return true
+          }
+        })
+      )
+    },
+    [attachments]
+  )
 
   const onChange = useCallback(
     (e: ChangeEvent | FormEvent, { name, value }: TextAreaProps) => {
@@ -62,9 +84,16 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   )
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    postMessage(ticker.id.toString(), data.message, null, []).finally(() => {
-      queryClient.invalidateQueries(['messages', ticker.id])
+    const uploads = attachments.map(upload => {
+      return upload.id
     })
+
+    postMessage(ticker.id.toString(), data.message, null, uploads).finally(
+      () => {
+        queryClient.invalidateQueries(['messages', ticker.id])
+        setAttachments([])
+      }
+    )
   }
 
   useEffect(() => {
@@ -73,11 +102,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     })
   }, [isSubmitSuccessful, reset])
 
-  useEffect(() => {
-    register('message')
-  })
-
-  // TODO: attachments + map
+  // TODO: map
 
   return (
     <Form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
@@ -97,6 +122,10 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         icon="ban"
         negative
       />
+      <MessageAttachmentsPreview
+        attachments={attachments}
+        onDelete={onUploadDelete}
+      />
       <Button
         color="teal"
         content="Send"
@@ -105,6 +134,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         icon="send"
         type="submit"
       />
+      <MessageAttachmentsButton onUpload={onUpload} ticker={ticker} />
       <MessageFormCounter letterCount={watchMessage?.length || 0} />
     </Form>
   )
