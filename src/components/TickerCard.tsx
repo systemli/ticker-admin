@@ -38,10 +38,10 @@ const TickerCard: FC<Props> = props => {
         </Card.Description>
       </Card.Content>
       <Card.Content>
-        <Button.Group compact fluid size="tiny">
+        <Button.Group compact size="tiny">
           <TickerModalForm
             ticker={props.ticker}
-            trigger={<Button color="black" content="edit" icon="edit" />}
+            trigger={<Button color="black" content="Edit" icon="edit" />}
           />
         </Button.Group>
       </Card.Content>
