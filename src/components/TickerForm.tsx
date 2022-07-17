@@ -111,6 +111,7 @@ const TickerForm: FC<Props> = props => {
     if (ticker) {
       putTicker(data, ticker.id).finally(() => {
         queryClient.invalidateQueries('tickers')
+        queryClient.invalidateQueries(['ticker', ticker.id])
         props.callback()
       })
     } else {
