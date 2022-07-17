@@ -1,6 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, { createRoot } from 'react-dom/client'
 import App from './App'
 
-//TODO: Add <React.StrictMode> again, needs replacement for Semantic UI
-ReactDOM.render(<App />, document.getElementById('root'))
+const container = document.getElementById('root')
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(container!)
+root.render(<App />)
