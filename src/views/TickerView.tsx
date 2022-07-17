@@ -40,23 +40,6 @@ const TickerView: FC = () => {
 
   const ticker = data.data.ticker
 
-  const renderUsers = () => {
-    if (user?.roles.includes('admin')) {
-      return (
-        <React.Fragment>
-          <Header dividing>Users</Header>
-          <TickerUsersCard ticker={ticker} />
-        </React.Fragment>
-      )
-    }
-  }
-
-  const renderTicker = () => {
-    if (ticker !== undefined) {
-      return <TickerCard ticker={ticker} />
-    }
-  }
-
   return (
     <Container>
       <Navigation />
@@ -70,12 +53,13 @@ const TickerView: FC = () => {
             </Grid.Column>
             <Grid.Column width={6}>
               <Header dividing>Configuration</Header>
-              {renderTicker()}
+              {ticker !== undefined && <TickerCard ticker={ticker} />}
               <Header dividing>Twitter</Header>
               <TwitterCard ticker={ticker} />
-              {renderUsers()}
               {user?.roles.includes('admin') && (
                 <React.Fragment>
+                  <Header dividing>Users</Header>
+                  <TickerUsersCard ticker={ticker} />
                   <Header dividing>Danger Zone</Header>
                   <TickerResetModal
                     ticker={ticker}
