@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@semantic-ui-react/css-patch": "^1.0.0",
-    "history": "^4.9.0",
+    "history": "^5.3.0",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.8.0",
     "leaflet-draw": "^1.0.4",
