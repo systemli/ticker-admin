@@ -11,6 +11,7 @@ import useAuth from '../components/useAuth'
 import TickerUsersCard from '../components/TickerUserCard'
 import TickerResetModal from '../components/TickerResetModal'
 import TwitterCard from '../components/TwitterCard'
+import TelegramCard from '../components/TelegramCard'
 
 interface TickerViewParams {
   tickerId: string
@@ -56,6 +57,8 @@ const TickerView: FC = () => {
               {ticker !== undefined && <TickerCard ticker={ticker} />}
               <Header dividing>Twitter</Header>
               <TwitterCard ticker={ticker} />
+              <Header dividing>Telegram</Header>
+              <TelegramCard ticker={ticker} />
               {user?.roles.includes('admin') && (
                 <React.Fragment>
                   <Header dividing>Users</Header>
