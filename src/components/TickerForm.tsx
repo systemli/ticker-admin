@@ -62,8 +62,8 @@ const TickerForm: FC<Props> = props => {
         facebook: ticker?.information.facebook,
       },
       location: {
-        lat: ticker?.location.lat,
-        lon: ticker?.location.lon,
+        lat: ticker?.location.lat || 0,
+        lon: ticker?.location.lon || 0,
       },
     },
   })
