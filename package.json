@@ -46,7 +46,7 @@
     "css-loader": "^6.7.1",
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
-    "dotenv-expand": "^5.1.0",
+    "dotenv-expand": "^8.0.3",
     "dotenv-webpack": "^7.1.0",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
