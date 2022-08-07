@@ -62,7 +62,7 @@
     "eslint-webpack-plugin": "^3.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "postcss": "^8.4.12",
+    "postcss": "^8.4.16",
     "postcss-loader": "^7.0.1",
     "postcss-remove-google-fonts": "^1.2.0",
     "prettier": "^2.7.1",
