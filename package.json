@@ -26,7 +26,7 @@
     "react-twitter-auth": "0.0.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.5",
+    "@babel/core": "^7.18.10",
     "@babel/plugin-transform-runtime": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.18.6",
@@ -44,7 +44,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
-    "cssnano": "^5.1.12",
+    "cssnano": "^5.1.13",
     "dotenv": "^16.0.1",
     "dotenv-expand": "^8.0.3",
     "dotenv-webpack": "^8.0.0",
@@ -62,7 +62,7 @@
     "eslint-webpack-plugin": "^3.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "postcss": "^8.4.12",
+    "postcss": "^8.4.16",
     "postcss-loader": "^7.0.1",
     "postcss-remove-google-fonts": "^1.2.0",
     "prettier": "^2.7.1",
