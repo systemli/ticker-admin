@@ -1285,10 +1285,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.4.tgz#0c8b74c50f29ee44f423f7416829c0bf8bb5eb27"
   integrity sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA==
 
-"@semantic-ui-react/css-patch@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@semantic-ui-react/css-patch/-/css-patch-1.0.0.tgz#903637479eca4010749e81f15b91dfd5f019b08d"
-  integrity sha512-TV1+dyQ7dlqZ0spteDjGLVuHBix7T2OAsAdX0En1mWLxr9fYWnHAz9cbwKVoKPh+W/A46CSB8T4q0IoDPP8rlQ==
+"@semantic-ui-react/css-patch@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@semantic-ui-react/css-patch/-/css-patch-1.1.2.tgz#e0a57367e526e97659979732023f0e1db3e4049d"
+  integrity sha512-yRv//h2+aGrOAFWp4Dv6mKDG+9KOjF1ko0tOs1Yhm42quHtMwSerMISePYb5X91U+viYKQwV8yj/6UKxFtwhVg==
   dependencies:
     chalk "^3.0.0"
     log-symbols "^3.0.0"
