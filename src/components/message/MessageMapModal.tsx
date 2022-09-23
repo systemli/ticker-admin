@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import L, { FeatureGroup as FG, latLng } from 'leaflet'
+import L, { FeatureGroup as FG, latLng, LeafletEvent } from 'leaflet'
 import { FeatureGroup, GeoJSON, MapContainer, TileLayer } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
 import { Button, Modal } from 'semantic-ui-react'
@@ -41,6 +41,24 @@ const MessageMapModal: FC<Props> = props => {
     setOpen(false)
   }, [featureGroup, props])
 
+  const onDataAdd = (event: LeafletEvent) => {
+    const leafletLayer = event.target
+    const features = Object.values(leafletLayer._layers)
+
+    if (
+      features.length === 1 &&
+      // type is currently not defined
+      // @ts-ignore
+      features[0].feature.geometry.type === 'Point'
+    ) {
+      // @ts-ignore
+      const coords = features[0].feature.geometry.coordinates
+      leafletLayer._map.setView([coords[1], coords[0]], 13)
+    } else if (features.length > 1) {
+      leafletLayer._map.fitBounds(leafletLayer.getBounds())
+    }
+  }
+
   return (
     <Modal
       closeIcon
@@ -54,7 +72,12 @@ const MessageMapModal: FC<Props> = props => {
       <Modal.Content style={{ padding: 0 }}>
         <MapContainer center={position} style={{ height: 600 }} zoom={zoom}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <GeoJSON data={props.map} />
+          <GeoJSON
+            data={props.map}
+            eventHandlers={{
+              add: onDataAdd,
+            }}
+          />
           <FeatureGroup ref={onFeatureGroupUpdate}>
             <EditControl
               draw={{ circle: false, circlemarker: false }}

@@ -26,7 +26,7 @@ const MessageMap: FC<Props> = ({ message, ticker }) => {
     return null
   }
 
-  const handleDataAdd = (event: LeafletEvent) => {
+  const onDataAdd = (event: LeafletEvent) => {
     const leafletLayer = event.target
     const features = Object.values(leafletLayer._layers)
 
@@ -50,7 +50,7 @@ const MessageMap: FC<Props> = ({ message, ticker }) => {
       <GeoJSON
         data={JSON.parse(message.geo_information)}
         eventHandlers={{
-          add: handleDataAdd,
+          add: onDataAdd,
         }}
       />
     </MapContainer>
