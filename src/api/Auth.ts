@@ -19,7 +19,6 @@ export function login(
     body: JSON.stringify({ username, password }),
   })
     .then(response => {
-      if (response.status === 401) throw new Error('Authentication failed')
       if (!response.ok) throw new Error('Login failed')
 
       return response.json()
