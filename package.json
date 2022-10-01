@@ -22,7 +22,7 @@
     "react-markdown": "^8.0.3",
     "react-moment": "^1.1.2",
     "react-query": "^3.39.2",
-    "react-router": "^6.3.0",
+    "react-router": "^6.4.1",
     "react-router-dom": "^6.3.0",
     "react-twitter-auth": "0.0.13"
   },
