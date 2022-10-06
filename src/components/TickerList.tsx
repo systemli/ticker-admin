@@ -1,32 +1,16 @@
 import React, { FC } from 'react'
-import { useTickerApi } from '../api/Ticker'
-import { Button, Dimmer, Loader, Table } from 'semantic-ui-react'
+import { Ticker } from '../api/Ticker'
+import { Button, Table } from 'semantic-ui-react'
 import TickerModalForm from './TickerModalForm'
-import { useQuery } from 'react-query'
 import TickerListItems from './TickerListItems'
 import useAuth from './useAuth'
 
-const TickerList: FC = () => {
-  const { token, user } = useAuth()
-  const { getTickers } = useTickerApi(token)
-  const { isLoading, error, data } = useQuery('tickers', getTickers, {
-    refetchInterval: false,
-  })
+interface Props {
+  tickers: Ticker[]
+}
 
-  if (isLoading) {
-    return (
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
-      </Dimmer>
-    )
-  }
-
-  if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
-  }
-
-  const tickers = data.data.tickers
+const TickerList: FC<Props> = props => {
+  const { user } = useAuth()
 
   return (
     <React.Fragment>
@@ -39,7 +23,7 @@ const TickerList: FC = () => {
             <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
-        <TickerListItems tickers={tickers} />
+        <TickerListItems tickers={props.tickers} />
         {user?.roles.includes('admin') ? (
           <Table.Footer fullWidth>
             <Table.Row>
