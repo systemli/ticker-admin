@@ -39,6 +39,7 @@ interface FormValues {
     url: string
     twitter: string
     facebook: string
+    telegram: string
   }
   location: {
     lat: number
@@ -60,6 +61,7 @@ const TickerForm: FC<Props> = props => {
         url: ticker?.information.url,
         twitter: ticker?.information.twitter,
         facebook: ticker?.information.facebook,
+        telegram: ticker?.information.telegram,
       },
       location: {
         lat: ticker?.location.lat || 0,
@@ -187,8 +189,6 @@ const TickerForm: FC<Props> = props => {
             <input />
           </Input>
         </Form.Input>
-      </Form.Group>
-      <Form.Group widths="equal">
         <Form.Input label="Email">
           <Input
             defaultValue={ticker ? ticker.information.email : ''}
@@ -201,6 +201,8 @@ const TickerForm: FC<Props> = props => {
             <input />
           </Input>
         </Form.Input>
+      </Form.Group>
+      <Form.Group widths="equal">
         <Form.Input label="Twitter">
           <Input
             defaultValue={ticker ? ticker.information.twitter : ''}
@@ -220,6 +222,17 @@ const TickerForm: FC<Props> = props => {
             onChange={onChange}
           >
             <Icon name="facebook" />
+            <input />
+          </Input>
+        </Form.Input>
+        <Form.Input label="Telegram">
+          <Input
+            defaultValue={ticker ? ticker.information.telegram : ''}
+            iconPosition="left"
+            name="information.telegram"
+            onChange={onChange}
+          >
+            <Icon name="telegram" />
             <input />
           </Input>
         </Form.Input>
