@@ -32,6 +32,7 @@ export interface TickerInformation {
   email: string
   twitter: string
   facebook: string
+  telegram: string
 }
 
 export interface TickerTelegram {
