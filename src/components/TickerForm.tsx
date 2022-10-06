@@ -69,7 +69,7 @@ const TickerForm: FC<Props> = props => {
       },
     },
   })
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   const { postTicker, putTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
 
@@ -143,6 +143,7 @@ const TickerForm: FC<Props> = props => {
         />
         <Form.Input
           defaultValue={ticker ? ticker.domain : ''}
+          disabled={user?.roles.includes('user')}
           label="Domain"
           name="domain"
           onChange={onChange}
