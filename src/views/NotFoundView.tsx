@@ -1,15 +1,12 @@
 import React, { FC } from 'react'
-import { Container, Message } from 'semantic-ui-react'
-import Navigation from './Navigation'
+import { Message } from 'semantic-ui-react'
+import Layout from './Layout'
 
 const NotFoundView: FC = () => {
   return (
-    <Container>
-      <Navigation />
-      <Container className="app">
-        <Message>Not Found</Message>
-      </Container>
-    </Container>
+    <Layout>
+      <Message>Not Found</Message>
+    </Layout>
   )
 }
 
