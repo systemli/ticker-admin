@@ -143,7 +143,7 @@ const TickerForm: FC<Props> = props => {
         />
         <Form.Input
           defaultValue={ticker ? ticker.domain : ''}
-          disabled={user?.roles.includes('user')}
+          disabled={!user?.roles.includes('admin')}
           label="Domain"
           name="domain"
           onChange={onChange}
