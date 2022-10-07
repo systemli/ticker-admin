@@ -68,7 +68,11 @@ const HomeView: FC = () => {
   }
 
   if (tickers.length === 1 && !user?.roles.includes('admin')) {
-    return <Ticker ticker={tickers[0]} />
+    return (
+      <Layout>
+        <Ticker ticker={tickers[0]} />
+      </Layout>
+    )
   }
 
   return (
