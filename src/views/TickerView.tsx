@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import useAuth from '../components/useAuth'
 import Ticker from '../components/Ticker'
+import Layout from './Layout'
 
 interface TickerViewParams {
   tickerId: string
@@ -33,7 +34,11 @@ const TickerView: FC = () => {
 
   const ticker = data.data.ticker
 
-  return <Ticker ticker={ticker} />
+  return (
+    <Layout>
+      <Ticker ticker={ticker} />
+    </Layout>
+  )
 }
 
 export default TickerView

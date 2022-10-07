@@ -1,20 +1,19 @@
 import React, { FC } from 'react'
 import {
   Button,
-  Container,
   Dimmer,
   Grid,
   Header,
   Loader,
   Message,
 } from 'semantic-ui-react'
-import Navigation from './Navigation'
 import TickerList from '../components/TickerList'
 import useAuth from '../components/useAuth'
 import { useTickerApi } from '../api/Ticker'
 import { useQuery } from 'react-query'
 import Ticker from '../components/Ticker'
 import TickerModalForm from '../components/TickerModalForm'
+import Layout from './Layout'
 
 const HomeView: FC = () => {
   const { token, user } = useAuth()
@@ -40,34 +39,31 @@ const HomeView: FC = () => {
 
   if (tickers.length === 0 && user?.roles.includes('admin')) {
     return (
-      <Container>
-        <Navigation />
-        <Container className="app">
-          <Grid centered>
-            <Grid.Row>
-              <Grid.Column width={6}>
-                <Message info>
-                  <Message.Header>Welcome!</Message.Header>
-                  <p>You need to create a your first ticker.</p>
-                  <p>
-                    <TickerModalForm
-                      trigger={
-                        <Button
-                          color="green"
-                          content="Create"
-                          icon="plus"
-                          labelPosition="left"
-                          size="small"
-                        />
-                      }
-                    />
-                  </p>
-                </Message>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Container>
-      </Container>
+      <Layout>
+        <Grid centered>
+          <Grid.Row>
+            <Grid.Column width={6}>
+              <Message info>
+                <Message.Header>Welcome!</Message.Header>
+                <p>You need to create a your first ticker.</p>
+                <p>
+                  <TickerModalForm
+                    trigger={
+                      <Button
+                        color="green"
+                        content="Create"
+                        icon="plus"
+                        labelPosition="left"
+                        size="small"
+                      />
+                    }
+                  />
+                </p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Layout>
     )
   }
 
@@ -76,23 +72,20 @@ const HomeView: FC = () => {
   }
 
   return (
-    <Container>
-      <Navigation />
-      <Container className="app">
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              <Header dividing>Available Configurations</Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <TickerList tickers={tickers} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
-    </Container>
+    <Layout>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column>
+            <Header dividing>Available Configurations</Header>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <TickerList tickers={tickers} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Layout>
   )
 }
 

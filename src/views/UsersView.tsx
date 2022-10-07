@@ -1,27 +1,24 @@
 import React, { FC } from 'react'
-import { Container, Grid, Header } from 'semantic-ui-react'
-import Navigation from './Navigation'
+import { Grid, Header } from 'semantic-ui-react'
 import UserList from '../components/UserList'
+import Layout from './Layout'
 
 const UsersView: FC = () => {
   return (
-    <Container>
-      <Navigation />
-      <Container className="app">
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              <Header dividing>Users</Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <UserList />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
-    </Container>
+    <Layout>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column>
+            <Header dividing>Users</Header>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <UserList />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Layout>
   )
 }
 
