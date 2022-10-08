@@ -4,7 +4,7 @@ import { useTickerApi } from '../api/Ticker'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import useAuth from '../components/useAuth'
-import Ticker from '../components/Ticker'
+import Ticker from '../components/ticker/Ticker'
 import Layout from './Layout'
 import ErrorView from './ErrorView'
 

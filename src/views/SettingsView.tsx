@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Grid, Header } from 'semantic-ui-react'
-import RefreshIntervalCard from '../components/RefreshIntervalCard'
-import InactiveSettingsCard from '../components/InactiveSettingsCard'
+import RefreshIntervalCard from '../components/settings/RefreshIntervalCard'
+import InactiveSettingsCard from '../components/settings/InactiveSettingsCard'
 import Layout from './Layout'
 
 const SettingsView: FC = () => {
