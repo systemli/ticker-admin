@@ -5,6 +5,7 @@ import UserListItems from './UserListItems'
 import UserModalForm from './UserModalForm'
 import useAuth from './useAuth'
 import { useUserApi } from '../api/User'
+import ErrorView from '../views/ErrorView'
 
 const UserList: FC = () => {
   const { token } = useAuth()
@@ -22,8 +23,7 @@ const UserList: FC = () => {
   }
 
   if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
+    return <ErrorView>Unable to fetch users from server.</ErrorView>
   }
 
   const users = data.data.users

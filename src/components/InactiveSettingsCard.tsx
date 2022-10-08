@@ -11,6 +11,7 @@ import {
   Loader,
 } from 'semantic-ui-react'
 import { useSettingsApi } from '../api/Settings'
+import ErrorView from '../views/ErrorView'
 import InactiveSettingsModalForm from './InactiveSettingsModalForm'
 import useAuth from './useAuth'
 
@@ -34,8 +35,7 @@ const InactiveSettingsCard: FC = () => {
   }
 
   if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
+    return <ErrorView>Unable to fetch inactive settings from server.</ErrorView>
   }
 
   const setting = data.data.setting

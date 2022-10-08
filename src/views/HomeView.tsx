@@ -14,6 +14,7 @@ import { useQuery } from 'react-query'
 import Ticker from '../components/Ticker'
 import TickerModalForm from '../components/TickerModalForm'
 import Layout from './Layout'
+import ErrorView from './ErrorView'
 
 const HomeView: FC = () => {
   const { token, user } = useAuth()
@@ -31,8 +32,11 @@ const HomeView: FC = () => {
   }
 
   if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
+    return (
+      <Layout>
+        <ErrorView>Unable to fetch tickers from server.</ErrorView>
+      </Layout>
+    )
   }
 
   const tickers = data.data.tickers
