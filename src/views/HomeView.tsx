@@ -11,10 +11,10 @@ import TickerList from '../components/TickerList'
 import useAuth from '../components/useAuth'
 import { useTickerApi } from '../api/Ticker'
 import { useQuery } from '@tanstack/react-query'
-import Ticker from '../components/Ticker'
 import TickerModalForm from '../components/TickerModalForm'
 import Layout from './Layout'
 import ErrorView from './ErrorView'
+import { Navigate } from 'react-router'
 
 const HomeView: FC = () => {
   const { token, user } = useAuth()
@@ -72,11 +72,7 @@ const HomeView: FC = () => {
   }
 
   if (tickers.length === 1 && !user?.roles.includes('admin')) {
-    return (
-      <Layout>
-        <Ticker ticker={tickers[0]} />
-      </Layout>
-    )
+    return <Navigate replace to={`/ticker/${tickers[0].id}`} />
   }
 
   return (
