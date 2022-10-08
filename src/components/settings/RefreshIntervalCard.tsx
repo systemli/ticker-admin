@@ -11,10 +11,7 @@ const RefreshIntervalCard: FC = () => {
   const { getRefreshInterval } = useSettingsApi(token)
   const { isLoading, error, data } = useQuery(
     ['refresh_interval_setting'],
-    getRefreshInterval,
-    {
-      refetchInterval: false,
-    }
+    getRefreshInterval
   )
 
   if (isLoading) {

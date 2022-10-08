@@ -20,10 +20,7 @@ const InactiveSettingsCard: FC = () => {
   const { getInactiveSettings } = useSettingsApi(token)
   const { isLoading, error, data } = useQuery(
     ['inactive_settings'],
-    getInactiveSettings,
-    {
-      refetchInterval: false,
-    }
+    getInactiveSettings
   )
 
   if (isLoading) {

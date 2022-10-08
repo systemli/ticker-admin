@@ -18,10 +18,8 @@ const TickerView: FC = () => {
   const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
   const tickerIdNum = parseInt(tickerId)
 
-  const { isLoading, error, data } = useQuery(
-    ['ticker', tickerIdNum],
-    () => getTicker(tickerIdNum),
-    { refetchInterval: false }
+  const { isLoading, error, data } = useQuery(['ticker', tickerIdNum], () =>
+    getTicker(tickerIdNum)
   )
 
   if (isLoading) {
