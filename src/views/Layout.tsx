@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Container } from 'semantic-ui-react'
-import Navigation from './Navigation'
+import Navigation from '../components/navigation/Navigation'
 
 interface Props {
   children: React.ReactNode

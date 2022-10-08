@@ -7,11 +7,11 @@ import {
   Loader,
   Message,
 } from 'semantic-ui-react'
-import TickerList from '../components/TickerList'
+import TickerList from '../components/ticker/TickerList'
 import useAuth from '../components/useAuth'
 import { useTickerApi } from '../api/Ticker'
 import { useQuery } from '@tanstack/react-query'
-import TickerModalForm from '../components/TickerModalForm'
+import TickerModalForm from '../components/ticker/TickerModalForm'
 import Layout from './Layout'
 import ErrorView from './ErrorView'
 import { Navigate } from 'react-router'

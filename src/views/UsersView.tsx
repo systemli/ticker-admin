@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Grid, Header } from 'semantic-ui-react'
-import UserList from '../components/UserList'
+import UserList from '../components/user/UserList'
 import Layout from './Layout'
 
 const UsersView: FC = () => {
