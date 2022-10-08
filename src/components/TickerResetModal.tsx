@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react'
 import { Button, Modal } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../api/Ticker'
 import useAuth from './useAuth'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
   ticker: Ticker

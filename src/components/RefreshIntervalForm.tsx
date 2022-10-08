@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, useCallback, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Form, InputOnChangeData } from 'semantic-ui-react'
 import { Setting, useSettingsApi } from '../api/Settings'
 import useAuth from './useAuth'
@@ -34,7 +34,7 @@ const RefreshIntervalForm: FC<Props> = props => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     putRefreshInterval(data.refresh_interval)
-      .then(() => queryClient.invalidateQueries('refresh_interval_setting'))
+      .then(() => queryClient.invalidateQueries(['refresh_interval_setting']))
       .finally(() => props.callback())
   }
 

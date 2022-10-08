@@ -3,7 +3,7 @@ import { Dimmer, Feed, Loader } from 'semantic-ui-react'
 import { Ticker } from '../api/Ticker'
 import { useMessageApi } from '../api/Message'
 import Message from '../components/Message'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import useAuth from './useAuth'
 
 interface Props {

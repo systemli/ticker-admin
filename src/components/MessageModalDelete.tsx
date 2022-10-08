@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Confirm } from 'semantic-ui-react'
 import { Message, useMessageApi } from '../api/Message'
 import useAuth from './useAuth'

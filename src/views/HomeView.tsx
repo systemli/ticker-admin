@@ -10,7 +10,7 @@ import {
 import TickerList from '../components/TickerList'
 import useAuth from '../components/useAuth'
 import { useTickerApi } from '../api/Ticker'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import Ticker from '../components/Ticker'
 import TickerModalForm from '../components/TickerModalForm'
 import Layout from './Layout'
@@ -19,7 +19,7 @@ import ErrorView from './ErrorView'
 const HomeView: FC = () => {
   const { token, user } = useAuth()
   const { getTickers } = useTickerApi(token)
-  const { isLoading, error, data } = useQuery('tickers', getTickers, {
+  const { isLoading, error, data } = useQuery(['tickers'], getTickers, {
     refetchInterval: false,
   })
 

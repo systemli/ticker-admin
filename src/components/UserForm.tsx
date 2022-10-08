@@ -15,7 +15,7 @@ import {
 } from 'semantic-ui-react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { User, useUserApi } from '../api/User'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import TickersDropdown from './TickersDropdown'
 import useAuth from './useAuth'
 
@@ -72,12 +72,12 @@ const UserForm: FC<Props> = props => {
 
     if (user) {
       putUser(formData, user).finally(() => {
-        queryClient.invalidateQueries('users')
+        queryClient.invalidateQueries(['users'])
         props.callback()
       })
     } else {
       postUser(formData).finally(() => {
-        queryClient.invalidateQueries('users')
+        queryClient.invalidateQueries(['users'])
         props.callback()
       })
     }

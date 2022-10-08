@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Form,
   Header,
@@ -60,7 +60,7 @@ const InactiveSettingsForm: FC<Props> = props => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     putInactiveSettings(data)
-      .then(() => queryClient.invalidateQueries('inactive_settings'))
+      .then(() => queryClient.invalidateQueries(['inactive_settings']))
       .finally(() => props.callback())
   }
 

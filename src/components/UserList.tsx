@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Button, Dimmer, Loader, Table } from 'semantic-ui-react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import UserListItems from './UserListItems'
 import UserModalForm from './UserModalForm'
 import useAuth from './useAuth'
@@ -10,7 +10,7 @@ import ErrorView from '../views/ErrorView'
 const UserList: FC = () => {
   const { token } = useAuth()
   const { getUsers } = useUserApi(token)
-  const { isLoading, error, data } = useQuery('users', getUsers, {
+  const { isLoading, error, data } = useQuery(['users'], getUsers, {
     refetchInterval: false,
   })
 

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import {
   Button,
   Card,
@@ -19,7 +19,7 @@ const InactiveSettingsCard: FC = () => {
   const { token } = useAuth()
   const { getInactiveSettings } = useSettingsApi(token)
   const { isLoading, error, data } = useQuery(
-    'inactive_settings',
+    ['inactive_settings'],
     getInactiveSettings,
     {
       refetchInterval: false,

@@ -15,7 +15,7 @@ import {
 } from 'semantic-ui-react'
 import { Ticker } from '../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import MessageFormCounter from './MessageFormCounter'
 import useAuth from './useAuth'
 import { Upload } from '../api/Upload'
