@@ -13,10 +13,8 @@ interface Props {
 const MessageList: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
   const { getMessages } = useMessageApi(token)
-  const { isLoading, error, data } = useQuery(
-    ['messages', ticker.id],
-    () => getMessages(ticker.id),
-    { refetchInterval: false }
+  const { isLoading, error, data } = useQuery(['messages', ticker.id], () =>
+    getMessages(ticker.id)
   )
 
   if (isLoading) {

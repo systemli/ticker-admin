@@ -19,9 +19,7 @@ import { Navigate } from 'react-router'
 const HomeView: FC = () => {
   const { token, user } = useAuth()
   const { getTickers } = useTickerApi(token)
-  const { isLoading, error, data } = useQuery(['tickers'], getTickers, {
-    refetchInterval: false,
-  })
+  const { isLoading, error, data } = useQuery(['tickers'], getTickers)
 
   if (isLoading) {
     return (

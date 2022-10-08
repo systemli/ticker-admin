@@ -10,9 +10,7 @@ import ErrorView from '../../views/ErrorView'
 const UserList: FC = () => {
   const { token } = useAuth()
   const { getUsers } = useUserApi(token)
-  const { isLoading, error, data } = useQuery(['users'], getUsers, {
-    refetchInterval: false,
-  })
+  const { isLoading, error, data } = useQuery(['users'], getUsers)
 
   if (isLoading) {
     return (

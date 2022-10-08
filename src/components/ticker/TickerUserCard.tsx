@@ -17,9 +17,6 @@ const TickerUsersCard: FC<Props> = props => {
     ['tickerUsers', props.ticker.id],
     () => {
       return getTickerUsers(props.ticker)
-    },
-    {
-      refetchInterval: false,
     }
   )
 

@@ -16,7 +16,9 @@ import '../leaflet.config.js'
 import { FeatureProvider } from './components/useFeature'
 
 const App: FC = () => {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { staleTime: 60 * 1000 } },
+  })
 
   return (
     <QueryClientProvider client={queryClient}>
