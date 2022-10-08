@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { useQuery } from 'react-query'
 import { Button, Card, Dimmer, Icon, List, Loader } from 'semantic-ui-react'
 import { useSettingsApi } from '../api/Settings'
+import ErrorView from '../views/ErrorView'
 import RefreshIntervalModalForm from './RefreshIntervalModalForm'
 import useAuth from './useAuth'
 
@@ -25,8 +26,11 @@ const RefreshIntervalCard: FC = () => {
   }
 
   if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
+    return (
+      <ErrorView>
+        Unable to fetch refresh interval setting from server.
+      </ErrorView>
+    )
   }
 
   const setting = data.data.setting

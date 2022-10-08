@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import useAuth from '../components/useAuth'
 import Ticker from '../components/Ticker'
 import Layout from './Layout'
+import ErrorView from './ErrorView'
 
 interface TickerViewParams {
   tickerId: string
@@ -28,8 +29,7 @@ const TickerView: FC = () => {
   }
 
   if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
+    return <ErrorView>Unable to fetch the ticker from server.</ErrorView>
   }
 
   const ticker = data.data.ticker
