@@ -13,6 +13,7 @@ import NotFoundView from './views/NotFoundView'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 import '../leaflet.config.js'
+import { FeatureProvider } from './components/useFeature'
 
 const App: FC = () => {
   const queryClient = new QueryClient()
@@ -21,28 +22,30 @@ const App: FC = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route
-              element={<ProtectedRoute outlet={<HomeView />} role="user" />}
-              path="/"
-            />
-            <Route
-              element={<ProtectedRoute outlet={<TickerView />} role="user" />}
-              path="/ticker/:tickerId"
-            />
-            <Route
-              element={<ProtectedRoute outlet={<UsersView />} role="admin" />}
-              path="/users"
-            />
-            <Route
-              element={
-                <ProtectedRoute outlet={<SettingsView />} role="admin" />
-              }
-              path="/settings"
-            />
-            <Route element={<LoginView />} path="/login" />
-            <Route element={<NotFoundView />} path="*" />
-          </Routes>
+          <FeatureProvider>
+            <Routes>
+              <Route
+                element={<ProtectedRoute outlet={<HomeView />} role="user" />}
+                path="/"
+              />
+              <Route
+                element={<ProtectedRoute outlet={<TickerView />} role="user" />}
+                path="/ticker/:tickerId"
+              />
+              <Route
+                element={<ProtectedRoute outlet={<UsersView />} role="admin" />}
+                path="/users"
+              />
+              <Route
+                element={
+                  <ProtectedRoute outlet={<SettingsView />} role="admin" />
+                }
+                path="/settings"
+              />
+              <Route element={<LoginView />} path="/login" />
+              <Route element={<NotFoundView />} path="*" />
+            </Routes>
+          </FeatureProvider>
         </AuthProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />

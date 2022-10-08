@@ -9,6 +9,7 @@ import TickerUsersCard from '../components/TickerUserCard'
 import TickerResetModal from '../components/TickerResetModal'
 import TwitterCard from '../components/TwitterCard'
 import TelegramCard from '../components/TelegramCard'
+import useFeature from './useFeature'
 
 interface Props {
   ticker: Model
@@ -17,6 +18,7 @@ interface Props {
 const Ticker: FC<Props> = props => {
   const { user } = useAuth()
   const ticker = props.ticker
+  const { telegram_enabled, twitter_enabled } = useFeature()
 
   return (
     <Grid columns={2}>
@@ -29,10 +31,19 @@ const Ticker: FC<Props> = props => {
         <Grid.Column width={6}>
           <Header dividing>Configuration</Header>
           <TickerCard ticker={ticker} />
-          <Header dividing>Twitter</Header>
-          <TwitterCard ticker={ticker} />
-          <Header dividing>Telegram</Header>
-          <TelegramCard ticker={ticker} />
+          {twitter_enabled && (
+            <>
+              <Header dividing>Twitter</Header>
+              <TwitterCard ticker={ticker} />
+            </>
+          )}
+
+          {telegram_enabled && (
+            <>
+              <Header dividing>Telegram</Header>
+              <TelegramCard ticker={ticker} />
+            </>
+          )}
           {user?.roles.includes('admin') && (
             <React.Fragment>
               <Header dividing>Users</Header>
