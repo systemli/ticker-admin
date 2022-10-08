@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Confirm } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../api/Ticker'
 import useAuth from './useAuth'
@@ -22,7 +22,7 @@ const TickerModalDelete: FC<Props> = props => {
 
   const handleConfirm = useCallback(() => {
     deleteTicker(ticker).finally(() => {
-      queryClient.invalidateQueries('tickers')
+      queryClient.invalidateQueries(['tickers'])
     })
   }, [deleteTicker, ticker, queryClient])
 

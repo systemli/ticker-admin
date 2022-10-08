@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Button, Card, Dimmer, Loader } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../api/Ticker'
 import TickerUserList from './TickerUserList'

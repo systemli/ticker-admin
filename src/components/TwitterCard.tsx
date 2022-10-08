@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import TwitterLogin from 'react-twitter-auth'
 import { Button, Card, Container, Icon } from 'semantic-ui-react'
 import { ApiUrl } from '../api/Api'

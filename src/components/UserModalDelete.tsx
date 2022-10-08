@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Confirm } from 'semantic-ui-react'
 import { User, useUserApi } from '../api/User'
 import useAuth from './useAuth'
@@ -22,7 +22,7 @@ const UserModalDelete: FC<Props> = props => {
 
   const handleConfirm = useCallback(() => {
     deleteUser(user).finally(() => {
-      queryClient.invalidateQueries('users')
+      queryClient.invalidateQueries(['users'])
       setOpen(false)
     })
   }, [deleteUser, user, queryClient])

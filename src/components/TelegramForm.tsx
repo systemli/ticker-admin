@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, FormEvent, useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   CheckboxProps,
   Form,

@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Dropdown, DropdownProps, Form } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../api/Ticker'
 import { User, useUserApi } from '../api/User'
@@ -26,7 +26,10 @@ const TickerUserAddForm: FC<Props> = props => {
   const { token } = useAuth()
   const { getUsers } = useUserApi(token)
   const { putTickerUsers } = useTickerApi(token)
-  const { isLoading, data, error } = useQuery('tickerUsersAvailable', getUsers)
+  const { isLoading, data, error } = useQuery(
+    ['tickerUsersAvailable'],
+    getUsers
+  )
   const { handleSubmit, register, setValue } = useForm<FormValues>()
   const queryClient = useQueryClient()
 

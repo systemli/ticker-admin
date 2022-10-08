@@ -18,7 +18,7 @@ import {
 } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import useAuth from './useAuth'
 import LocationSearch, { Result } from './LocationSearch'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
@@ -112,13 +112,13 @@ const TickerForm: FC<Props> = props => {
   const onSubmit: SubmitHandler<FormValues> = data => {
     if (ticker) {
       putTicker(data, ticker.id).finally(() => {
-        queryClient.invalidateQueries('tickers')
+        queryClient.invalidateQueries(['tickers'])
         queryClient.invalidateQueries(['ticker', ticker.id])
         props.callback()
       })
     } else {
       postTicker(data).finally(() => {
-        queryClient.invalidateQueries('tickers')
+        queryClient.invalidateQueries(['tickers'])
         props.callback()
       })
     }

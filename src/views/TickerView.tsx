@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Loader } from 'semantic-ui-react'
 import { useTickerApi } from '../api/Ticker'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import useAuth from '../components/useAuth'
 import Ticker from '../components/Ticker'
