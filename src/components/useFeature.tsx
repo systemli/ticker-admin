@@ -27,11 +27,13 @@ export function FeatureProvider({
   const { getFeatures } = useFeatureApi(token)
 
   useEffect(() => {
-    getFeatures().then(response => {
-      setFeatures(response.data.features)
-
-      setLoadingInitial(false)
-    })
+    getFeatures()
+      .then(response => {
+        setFeatures(response.data.features)
+      })
+      .finally(() => {
+        setLoadingInitial(false)
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
