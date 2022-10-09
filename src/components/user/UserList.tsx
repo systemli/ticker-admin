@@ -20,7 +20,7 @@ const UserList: FC = () => {
     )
   }
 
-  if (error || data === undefined) {
+  if (error || data === undefined || data.status === 'error') {
     return <ErrorView>Unable to fetch users from server.</ErrorView>
   }
 

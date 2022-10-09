@@ -31,7 +31,7 @@ const InactiveSettingsCard: FC = () => {
     )
   }
 
-  if (error || data === undefined) {
+  if (error || data === undefined || data.status === 'error') {
     return <ErrorView>Unable to fetch inactive settings from server.</ErrorView>
   }
 
