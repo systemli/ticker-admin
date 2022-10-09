@@ -55,7 +55,14 @@ export function AuthProvider({
       return
     }
 
-    const user = decode(token) as User
+    let user: User
+    try {
+      user = decode(token) as User
+    } catch (error) {
+      setError(error)
+      setLoadingInitial(false)
+      return
+    }
     const now = Math.floor(new Date().getTime() / 1000)
 
     if (user.exp > now) {

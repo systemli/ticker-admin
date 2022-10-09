@@ -29,7 +29,7 @@ const HomeView: FC = () => {
     )
   }
 
-  if (error || data === undefined) {
+  if (error || data === undefined || data.status === 'error') {
     return (
       <Layout>
         <ErrorView>Unable to fetch tickers from server.</ErrorView>

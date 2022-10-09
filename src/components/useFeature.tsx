@@ -27,15 +27,22 @@ export function FeatureProvider({
   const { getFeatures } = useFeatureApi(token)
 
   useEffect(() => {
+    if (token === '') {
+      setLoadingInitial(false)
+      return
+    }
+
     getFeatures()
       .then(response => {
-        setFeatures(response.data.features)
+        if (response.status === 'success') {
+          setFeatures(response.data.features)
+        }
       })
       .finally(() => {
         setLoadingInitial(false)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [token])
 
   const memoedValue = useMemo(
     () => ({

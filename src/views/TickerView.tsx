@@ -26,7 +26,7 @@ const TickerView: FC = () => {
     return <Loader size="large" />
   }
 
-  if (error || data === undefined) {
+  if (error || data === undefined || data.status === 'error') {
     return <ErrorView>Unable to fetch the ticker from server.</ErrorView>
   }
 
