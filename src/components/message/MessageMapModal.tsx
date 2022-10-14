@@ -1,10 +1,11 @@
 import React, { FC, useCallback, useState } from 'react'
-import L, { FeatureGroup as FG, latLng, LeafletEvent } from 'leaflet'
+import L, { FeatureGroup as FG, latLng } from 'leaflet'
 import { FeatureGroup, GeoJSON, MapContainer, TileLayer } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
 import { Button, Modal } from 'semantic-ui-react'
 import { FeatureCollection, Geometry } from 'geojson'
 import { Ticker } from '../../api/Ticker'
+import { leafletOnDataAddFitToBounds } from '../../lib/leafletFitBoundsHelper'
 
 interface Props {
   callback: (features: FeatureCollection<Geometry, any>) => void
@@ -41,24 +42,6 @@ const MessageMapModal: FC<Props> = props => {
     setOpen(false)
   }, [featureGroup, props])
 
-  const onDataAdd = (event: LeafletEvent) => {
-    const leafletLayer = event.target
-    const features = Object.values(leafletLayer._layers)
-
-    if (
-      features.length === 1 &&
-      // type is currently not defined
-      // @ts-ignore
-      features[0].feature.geometry.type === 'Point'
-    ) {
-      // @ts-ignore
-      const coords = features[0].feature.geometry.coordinates
-      leafletLayer._map.setView([coords[1], coords[0]], 13)
-    } else if (features.length > 1) {
-      leafletLayer._map.fitBounds(leafletLayer.getBounds())
-    }
-  }
-
   return (
     <Modal
       closeIcon
@@ -75,7 +58,7 @@ const MessageMapModal: FC<Props> = props => {
           <GeoJSON
             data={props.map}
             eventHandlers={{
-              add: onDataAdd,
+              add: leafletOnDataAddFitToBounds,
             }}
           />
           <FeatureGroup ref={onFeatureGroupUpdate}>
