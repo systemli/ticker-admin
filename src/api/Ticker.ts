@@ -21,6 +21,7 @@ export interface Ticker {
   description: string
   active: boolean
   information: TickerInformation
+  mastodon: TickerMastodon
   twitter: TickerTwitter
   telegram: TickerTelegram
   location: TickerLocation
@@ -53,6 +54,24 @@ export interface TickerTwitter {
   screen_name: string
   description: string
   image_url: string
+}
+
+export interface TickerMastodon {
+  active: boolean
+  connected: boolean
+  name: string
+  server: string
+  screen_name: string
+  description: string
+  image_url: string
+}
+
+export interface TickerMastodonFormData {
+  active: boolean
+  server?: string
+  token?: string
+  secret?: string
+  access_token?: string
 }
 
 export interface TickerTwitterFormData {
@@ -150,6 +169,26 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
+  const putTickerMastodon = (
+    data: TickerMastodonFormData,
+    ticker: Ticker
+  ): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/mastodon`, {
+      headers: headers,
+      body: JSON.stringify(data),
+      method: 'put',
+    }).then(response => response.json())
+  }
+
+  const deleteTickerMastodon = (
+    ticker: Ticker
+  ): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/mastodon`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
+  }
+
   const putTickerTwitter = (data: TickerTwitterFormData, ticker: Ticker) => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/twitter`, {
       headers: headers,
@@ -179,6 +218,8 @@ export function useTickerApi(token: string) {
     putTicker,
     putTickerUsers,
     putTickerReset,
+    putTickerMastodon,
+    deleteTickerMastodon,
     putTickerTwitter,
     putTickerTelegram,
   }

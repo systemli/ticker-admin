@@ -10,6 +10,7 @@ import TickerResetModal from './TickerResetModal'
 import TwitterCard from './TwitterCard'
 import TelegramCard from './TelegramCard'
 import useFeature from '../useFeature'
+import MastodonCard from './MastodonCard'
 
 interface Props {
   ticker: Model
@@ -31,6 +32,8 @@ const Ticker: FC<Props> = props => {
         <Grid.Column width={6}>
           <Header dividing>Configuration</Header>
           <TickerCard ticker={ticker} />
+          <Header dividing>Mastodon</Header>
+          <MastodonCard ticker={ticker} />
           {twitter_enabled && (
             <>
               <Header dividing>Twitter</Header>
