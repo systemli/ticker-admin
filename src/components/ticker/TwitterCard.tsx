@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import TwitterLogin from 'react-twitter-auth'
-import { Button, Card, Container, Icon } from 'semantic-ui-react'
+import { Button, Card, Container, Icon, Image } from 'semantic-ui-react'
 import { ApiUrl } from '../../api/Api'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
@@ -18,7 +18,7 @@ interface TwitterAuthResponseData {
 const TwitterCard: FC<Props> = ({ ticker }) => {
   const queryClient = useQueryClient()
   const { token } = useAuth()
-  const { putTickerTwitter } = useTickerApi(token)
+  const { deleteTickerTwitter, putTickerTwitter } = useTickerApi(token)
 
   const twitter = ticker.twitter || {}
   const requestTokenUrl = `${ApiUrl}/admin/auth/twitter/request_token?callback=${encodeURI(
@@ -26,38 +26,35 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
   )}`
   const loginUrl = `${ApiUrl}/admin/auth/twitter`
 
-  const updateTickerTwitter = useCallback(
-    (active: boolean, token = '', secret = '', disconnect = false) => {
-      const formData = {
-        active,
-        disconnect,
-        token,
-        secret,
-      }
+  const handleToggle = useCallback(() => {
+    putTickerTwitter({ active: !twitter.active }, ticker).finally(() =>
+      queryClient.invalidateQueries(['ticker', ticker.id])
+    )
+  }, [putTickerTwitter, twitter.active, ticker, queryClient])
 
-      putTickerTwitter(formData, ticker).then(() =>
-        queryClient.invalidateQueries(['ticker', ticker.id])
-      )
-    },
-    [ticker, putTickerTwitter, queryClient]
-  )
-
-  const toggleActive = useCallback(() => {
-    updateTickerTwitter(!twitter.active)
-  }, [twitter.active, updateTickerTwitter])
-
-  const connect = useCallback(
+  const handleConnect = useCallback(
     (response: any) => {
       response.json().then((data: TwitterAuthResponseData) => {
-        updateTickerTwitter(true, data.access_token, data.access_secret)
+        putTickerTwitter(
+          {
+            active: true,
+            token: data.access_token,
+            secret: data.access_secret,
+          },
+          ticker
+        ).finally(() => {
+          queryClient.invalidateQueries(['ticker', ticker.id])
+        })
       })
     },
-    [updateTickerTwitter]
+    [putTickerTwitter, queryClient, ticker]
   )
 
-  const disconnect = useCallback(() => {
-    updateTickerTwitter(false, '', '', true)
-  }, [updateTickerTwitter])
+  const handleDisconnect = useCallback(() => {
+    deleteTickerTwitter(ticker).finally(() => {
+      queryClient.invalidateQueries(['ticker', ticker.id])
+    })
+  }, [deleteTickerTwitter, queryClient, ticker])
 
   const alertError = useCallback((error: string) => {
     alert(error)
@@ -67,6 +64,9 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
     <Container>
       <Card fluid>
         <Card.Content>
+          {twitter.image_url != '' && (
+            <Image floated="right" size="mini" src={twitter.image_url} />
+          )}
           <Card.Header>
             <Icon
               color={twitter.active ? 'green' : 'red'}
@@ -92,21 +92,21 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
                 color="yellow"
                 content="Disable"
                 icon="pause"
-                onClick={toggleActive}
+                onClick={handleToggle}
               />
             ) : (
               <Button
                 color="green"
                 content="Enable"
                 icon="play"
-                onClick={toggleActive}
+                onClick={handleToggle}
               />
             )}
             <Button
               color="red"
               content="Disconnect"
               icon="delete"
-              onClick={disconnect}
+              onClick={handleDisconnect}
             />
           </Button.Group>
         </Card.Content>
@@ -125,7 +125,7 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
             className="ui button blue tiny compact"
             loginUrl={loginUrl}
             onFailure={alertError}
-            onSuccess={connect}
+            onSuccess={handleConnect}
             requestTokenUrl={requestTokenUrl}
             showIcon={false}
           >
