@@ -38,13 +38,14 @@ export interface TickerInformation {
 
 export interface TickerTelegram {
   active: boolean
+  connected: boolean
   bot_username: string
   channel_name: string
 }
 
 export interface TickerTelegramFormData {
   active: boolean
-  channel_name: string
+  channel_name?: string
 }
 
 export interface TickerTwitter {
@@ -76,9 +77,8 @@ export interface TickerMastodonFormData {
 
 export interface TickerTwitterFormData {
   active: boolean
-  disconnect: boolean
-  token: string
-  secret: string
+  token?: string
+  secret?: string
 }
 
 export interface TickerLocation {
@@ -197,6 +197,15 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
+  const deleteTickerTwitter = (
+    ticker: Ticker
+  ): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/twitter`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
+  }
+
   const putTickerTelegram = (
     data: TickerTelegramFormData,
     ticker: Ticker
@@ -205,6 +214,15 @@ export function useTickerApi(token: string) {
       headers: headers,
       body: JSON.stringify(data),
       method: 'put',
+    }).then(response => response.json())
+  }
+
+  const deleteTickerTelegram = (
+    ticker: Ticker
+  ): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/telegram`, {
+      headers: headers,
+      method: 'delete',
     }).then(response => response.json())
   }
 
@@ -221,6 +239,8 @@ export function useTickerApi(token: string) {
     putTickerMastodon,
     deleteTickerMastodon,
     putTickerTwitter,
+    deleteTickerTwitter,
     putTickerTelegram,
+    deleteTickerTelegram,
   }
 }

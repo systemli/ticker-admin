@@ -1,6 +1,8 @@
-import React, { FC } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import React, { FC, useCallback } from 'react'
 import { Button, Card, Container, Icon } from 'semantic-ui-react'
-import { Ticker } from '../../api/Ticker'
+import { Ticker, useTickerApi } from '../../api/Ticker'
+import useAuth from '../useAuth'
 import TelegramModalForm from './TelegramModalForm'
 
 interface Props {
@@ -8,9 +10,25 @@ interface Props {
 }
 
 const TelegramCard: FC<Props> = ({ ticker }) => {
+  const { token } = useAuth()
+  const { deleteTickerTelegram, putTickerTelegram } = useTickerApi(token)
+  const queryClient = useQueryClient()
+
   const telegram = ticker.telegram
 
-  return telegram.active ? (
+  const handleToggle = useCallback(() => {
+    putTickerTelegram({ active: !telegram.active }, ticker).finally(() =>
+      queryClient.invalidateQueries(['ticker', ticker.id])
+    )
+  }, [putTickerTelegram, queryClient, telegram.active, ticker])
+
+  const handleDisconnect = useCallback(() => {
+    deleteTickerTelegram(ticker).finally(() => {
+      queryClient.invalidateQueries(['ticker', ticker.id])
+    })
+  }, [deleteTickerTelegram, queryClient, ticker])
+
+  return telegram.connected ? (
     <Container>
       <Card fluid>
         <Card.Content>
@@ -21,18 +39,29 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
           <Card.Meta>Bot: {telegram.bot_username}</Card.Meta>
         </Card.Content>
         <Card.Content extra>
-          <TelegramModalForm
-            ticker={ticker}
-            trigger={
+          <Button.Group compact size="tiny">
+            {telegram.active ? (
               <Button
-                color="blue"
-                compact
-                content="Configure"
-                icon="telegram"
-                size="tiny"
+                color="yellow"
+                content="Disable"
+                icon="pause"
+                onClick={handleToggle}
               />
-            }
-          />
+            ) : (
+              <Button
+                color="green"
+                content="Enable"
+                icon="play"
+                onClick={handleToggle}
+              />
+            )}
+            <Button
+              color="red"
+              content="Disconnect"
+              icon="delete"
+              onClick={handleDisconnect}
+            />
+          </Button.Group>
         </Card.Content>
       </Card>
     </Container>
