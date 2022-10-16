@@ -5,6 +5,7 @@ import { EditControl } from 'react-leaflet-draw'
 import { Button, Modal } from 'semantic-ui-react'
 import { FeatureCollection, Geometry } from 'geojson'
 import { Ticker } from '../../api/Ticker'
+import { leafletOnDataAddFitToBounds } from '../../lib/leafletFitBoundsHelper'
 
 interface Props {
   callback: (features: FeatureCollection<Geometry, any>) => void
@@ -54,7 +55,12 @@ const MessageMapModal: FC<Props> = props => {
       <Modal.Content style={{ padding: 0 }}>
         <MapContainer center={position} style={{ height: 600 }} zoom={zoom}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <GeoJSON data={props.map} />
+          <GeoJSON
+            data={props.map}
+            eventHandlers={{
+              add: leafletOnDataAddFitToBounds,
+            }}
+          />
           <FeatureGroup ref={onFeatureGroupUpdate}>
             <EditControl
               draw={{ circle: false, circlemarker: false }}

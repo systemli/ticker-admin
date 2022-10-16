@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet'
 import { Message } from '../../api/Message'
 import { Ticker } from '../../api/Ticker'
+import { leafletOnDataAddFitToBounds } from '../../lib/leafletFitBoundsHelper'
 
 interface Props {
   message: Message
@@ -29,7 +30,12 @@ const MessageMap: FC<Props> = ({ message, ticker }) => {
   return (
     <MapContainer center={position} scrollWheelZoom={false} zoom={7}>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <GeoJSON data={JSON.parse(message.geo_information)} />
+      <GeoJSON
+        data={JSON.parse(message.geo_information)}
+        eventHandlers={{
+          add: leafletOnDataAddFitToBounds,
+        }}
+      />
     </MapContainer>
   )
 }

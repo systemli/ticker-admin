@@ -1,4 +1,4 @@
-import { replaceMagic } from './helper'
+import { replaceMagic } from './replaceLinksHelper'
 
 describe('helper', function () {
   test('replace links', function () {
