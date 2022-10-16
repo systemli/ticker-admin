@@ -70,7 +70,7 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
       <Card fluid>
         <Card.Content>
           You are currently not connected to Telegram. New messages will not be
-          published to your channel.
+          published to your channel and old messages can not be deleted anymore.
         </Card.Content>
         <Card.Content extra>
           <TelegramModalForm
