@@ -8,6 +8,7 @@ import { replaceMagic } from '../../lib/replaceLinksHelper'
 import MessageModalDelete from './MessageModalDelete'
 import MessageMap from './MessageMap'
 import { Ticker } from '../../api/Ticker'
+import MastodonIcon from './mastodon_icon.png'
 
 interface Props {
   message: MessageType
@@ -20,6 +21,52 @@ const Message: FC<Props> = ({ message, ticker }) => {
 
   const openImageLightbox = useCallback(() => setImageLightboxOpen(true), [])
   const closeImageLightbox = useCallback(() => setImageLightboxOpen(false), [])
+
+  const twitterIcon = useCallback(() => {
+    if (message.twitter_url) {
+      return (
+        <a href={message.twitter_url} rel="noopener noreferrer" target="_blank">
+          <Icon name="twitter" />
+        </a>
+      )
+    }
+
+    return null
+  }, [message.twitter_url])
+
+  const telegramIcon = useCallback(() => {
+    if (message.telegram_url) {
+      return (
+        <a
+          href={message.telegram_url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <Icon name="telegram" />
+        </a>
+      )
+    }
+
+    return null
+  }, [message.telegram_url])
+
+  const mastodonIcon = useCallback(() => {
+    if (message.mastodon_url) {
+      return (
+        <a
+          href={message.mastodon_url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <Icon>
+            <Image src={MastodonIcon} />
+          </Icon>
+        </a>
+      )
+    }
+
+    return null
+  }, [message.mastodon_url])
 
   const renderAttachments = () => {
     const attachments = message.attachments
@@ -63,22 +110,6 @@ const Message: FC<Props> = ({ message, ticker }) => {
     )
   }
 
-  const renderTwitterIcon = () => {
-    if (message.tweet_id === '') {
-      return <Icon disabled name="twitter" />
-    }
-
-    return (
-      <a
-        href={`https://twitter.com/${message.tweet_user}/status/${message.tweet_id}`}
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <Icon name="twitter" />
-      </a>
-    )
-  }
-
   return (
     <Card fluid>
       <Card.Content>
@@ -103,7 +134,9 @@ const Message: FC<Props> = ({ message, ticker }) => {
       {renderAttachments()}
       <MessageMap message={message} ticker={ticker} />
       <Card.Content extra>
-        {renderTwitterIcon()}
+        {twitterIcon()}
+        {telegramIcon()}
+        {mastodonIcon()}
         <Moment fromNow>{message.creation_date}</Moment>
       </Card.Content>
     </Card>

@@ -13,8 +13,9 @@ export interface Message {
   ticker: number
   text: string
   creation_date: Date
-  tweet_id: string
-  tweet_user: string
+  twitter_url?: string
+  telegram_url?: string
+  mastodon_url?: string
   geo_information: string
   // TODO
   attachments: any[]
