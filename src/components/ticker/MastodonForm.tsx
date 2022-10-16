@@ -1,7 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query'
 import React, { ChangeEvent, FC, FormEvent, useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { CheckboxProps, Form, InputOnChangeData } from 'semantic-ui-react'
+import {
+  CheckboxProps,
+  Form,
+  InputOnChangeData,
+  Message,
+} from 'semantic-ui-react'
 import { Ticker, TickerMastodonFormData, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 
@@ -45,6 +50,15 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
 
   return (
     <Form id="configureMastodon" onSubmit={handleSubmit(onSubmit)}>
+      <Message info>
+        <Message.Header>Information</Message.Header>
+        <Message.Content>
+          You need to create a Application for Ticker in Mastodon. Go to your
+          profile settings in Mastodon. You find a menu point {`"`}Developer
+          {`"`} where you need to create an Application. After saving you see
+          the required secrets and tokens.
+        </Message.Content>
+      </Message>
       <Form.Checkbox
         defaultChecked={mastodon.active}
         label="Active"
