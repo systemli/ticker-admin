@@ -58,6 +58,9 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
           {`"`} where you need to create an Application. After saving you see
           the required secrets and tokens.
         </Message.Content>
+        <Message.Content>
+          Required Scopes: <code>read write write:media write:statuses</code>
+        </Message.Content>
       </Message>
       <Form.Checkbox
         defaultChecked={mastodon.active}
