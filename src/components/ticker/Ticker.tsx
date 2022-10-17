@@ -11,6 +11,13 @@ import TwitterCard from './TwitterCard'
 import TelegramCard from './TelegramCard'
 import useFeature from '../useFeature'
 import MastodonCard from './MastodonCard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faMastodon,
+  faTelegram,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons'
+import { faGear, faRadiation, faUsers } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Model
@@ -30,28 +37,40 @@ const Ticker: FC<Props> = props => {
           <MessageList ticker={ticker} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <Header dividing>Configuration</Header>
+          <Header dividing>
+            <FontAwesomeIcon icon={faGear} /> Settings
+          </Header>
           <TickerCard ticker={ticker} />
-          <Header dividing>Mastodon</Header>
+          <Header dividing>
+            <FontAwesomeIcon icon={faMastodon} /> Mastodon
+          </Header>
           <MastodonCard ticker={ticker} />
           {twitter_enabled && (
             <>
-              <Header dividing>Twitter</Header>
+              <Header dividing>
+                <FontAwesomeIcon icon={faTwitter} /> Twitter
+              </Header>
               <TwitterCard ticker={ticker} />
             </>
           )}
 
           {telegram_enabled && (
             <>
-              <Header dividing>Telegram</Header>
+              <Header dividing>
+                <FontAwesomeIcon icon={faTelegram} /> Telegram
+              </Header>
               <TelegramCard ticker={ticker} />
             </>
           )}
           {user?.roles.includes('admin') && (
             <React.Fragment>
-              <Header dividing>Users</Header>
+              <Header dividing>
+                <FontAwesomeIcon icon={faUsers} /> Users
+              </Header>
               <TickerUsersCard ticker={ticker} />
-              <Header dividing>Danger Zone</Header>
+              <Header dividing>
+                <FontAwesomeIcon icon={faRadiation} /> Danger Zone
+              </Header>
               <TickerResetModal
                 ticker={ticker}
                 trigger={

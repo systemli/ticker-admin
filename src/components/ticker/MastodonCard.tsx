@@ -1,3 +1,5 @@
+import { faMastodon } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useQueryClient } from '@tanstack/react-query'
 import React, { FC, useCallback } from 'react'
 import { Button, Card, Container, Icon, Image } from 'semantic-ui-react'
@@ -96,7 +98,11 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
                 color="blue"
                 compact
                 content="Configure"
-                icon="server"
+                icon={
+                  <Icon>
+                    <FontAwesomeIcon icon={faMastodon} />
+                  </Icon>
+                }
                 size="tiny"
               />
             }

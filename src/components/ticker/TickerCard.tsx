@@ -3,6 +3,8 @@ import { Button, Card, Icon, Label } from 'semantic-ui-react'
 import ReactMarkdown from 'react-markdown'
 import TickerModalForm from './TickerModalForm'
 import { Ticker } from '../../api/Ticker'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGear } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -41,7 +43,17 @@ const TickerCard: FC<Props> = props => {
         <Button.Group compact size="tiny">
           <TickerModalForm
             ticker={props.ticker}
-            trigger={<Button color="black" content="Edit" icon="edit" />}
+            trigger={
+              <Button
+                color="black"
+                content="Configure"
+                icon={
+                  <Icon>
+                    <FontAwesomeIcon icon={faGear} />
+                  </Icon>
+                }
+              />
+            }
           />
         </Button.Group>
       </Card.Content>

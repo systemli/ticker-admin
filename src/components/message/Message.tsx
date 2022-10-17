@@ -8,7 +8,12 @@ import { replaceMagic } from '../../lib/replaceLinksHelper'
 import MessageModalDelete from './MessageModalDelete'
 import MessageMap from './MessageMap'
 import { Ticker } from '../../api/Ticker'
-import MastodonIcon from './mastodon_icon.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faMastodon,
+  faTelegram,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons'
 
 interface Props {
   message: MessageType
@@ -26,7 +31,9 @@ const Message: FC<Props> = ({ message, ticker }) => {
     if (message.twitter_url) {
       return (
         <a href={message.twitter_url} rel="noopener noreferrer" target="_blank">
-          <Icon name="twitter" />
+          <Icon>
+            <FontAwesomeIcon icon={faTwitter} />
+          </Icon>
         </a>
       )
     }
@@ -42,7 +49,9 @@ const Message: FC<Props> = ({ message, ticker }) => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <Icon name="telegram" />
+          <Icon>
+            <FontAwesomeIcon icon={faTelegram} />
+          </Icon>
         </a>
       )
     }
@@ -59,7 +68,7 @@ const Message: FC<Props> = ({ message, ticker }) => {
           target="_blank"
         >
           <Icon>
-            <Image src={MastodonIcon} />
+            <FontAwesomeIcon icon={faMastodon} />
           </Icon>
         </a>
       )
