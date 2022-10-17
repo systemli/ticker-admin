@@ -1,3 +1,5 @@
+import { faTelegram } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useQueryClient } from '@tanstack/react-query'
 import React, { FC, useCallback } from 'react'
 import { Button, Card, Container, Icon } from 'semantic-ui-react'
@@ -80,7 +82,11 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
                 color="blue"
                 compact
                 content="Configure"
-                icon="telegram"
+                icon={
+                  <Icon>
+                    <FontAwesomeIcon icon={faTelegram} />
+                  </Icon>
+                }
                 size="tiny"
               />
             }

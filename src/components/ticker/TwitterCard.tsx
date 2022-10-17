@@ -5,6 +5,8 @@ import { Button, Card, Container, Icon, Image } from 'semantic-ui-react'
 import { ApiUrl } from '../../api/Api'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -129,7 +131,9 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
             requestTokenUrl={requestTokenUrl}
             showIcon={false}
           >
-            <Icon name="twitter" />
+            <Icon>
+              <FontAwesomeIcon icon={faTwitter} />
+            </Icon>
             Connect
           </TwitterLogin>
         </Card.Content>
