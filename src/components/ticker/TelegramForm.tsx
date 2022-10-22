@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FC, FormEvent, useCallback } from 'react'
+import React, {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  useCallback,
+  useEffect,
+} from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -24,13 +30,24 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   const telegram = ticker.telegram
   const { token } = useAuth()
   const { putTickerTelegram } = useTickerApi(token)
-  const { handleSubmit, setValue } = useForm<FormValues>({
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    setValue,
+  } = useForm<FormValues>({
     defaultValues: {
       active: telegram.active,
       channel_name: telegram.channel_name,
     },
   })
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    register('channel_name', {
+      pattern: { value: /@\w+/i, message: 'The Channel must start with an @' },
+    })
+  }, [register])
 
   const onChange = useCallback(
     (
@@ -71,6 +88,11 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
       />
       <Form.Input
         defaultValue={telegram.channel_name}
+        error={
+          errors?.channel_name?.message
+            ? { content: errors?.channel_name?.message, pointer: 'bottom' }
+            : null
+        }
         label="Channel"
         name="channel_name"
         onChange={onChange}
