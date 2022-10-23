@@ -59,7 +59,7 @@ export function AuthProvider({
     try {
       user = decode(token) as User
     } catch (error) {
-      setError(error)
+      setError(error as Error)
       setLoadingInitial(false)
       return
     }
