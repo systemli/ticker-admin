@@ -10,8 +10,6 @@ import TickerView from './views/TickerView'
 import UsersView from './views/UsersView'
 import ProtectedRoute from './components/ProtectedRoute'
 import NotFoundView from './views/NotFoundView'
-import 'semantic-ui-css/semantic.min.css'
-import './index.css'
 import '../leaflet.config.js'
 import { FeatureProvider } from './components/useFeature'
 
