@@ -17,5 +17,6 @@ const config: Config.InitialOptions = {
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/(?!react-markdown/)'],
   setupFilesAfterEnv: ['./jest-setup.ts'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}'],
 }
 export default config
