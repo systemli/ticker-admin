@@ -43,7 +43,11 @@ const LoginView: FC = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Box sx={{ mb: 2, textAlign: 'center' }}>
-            <img alt="Systemli Logo" src={logo} />
+            <img
+              alt="Systemli Logo"
+              src={logo}
+              style={{ marginLeft: 'auto', marginRight: 'auto' }}
+            />
             <Typography component="h4" sx={{ mt: 1 }} variant="h4">
               Ticker Login
             </Typography>

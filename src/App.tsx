@@ -10,8 +10,9 @@ import TickerView from './views/TickerView'
 import UsersView from './views/UsersView'
 import ProtectedRoute from './components/ProtectedRoute'
 import NotFoundView from './views/NotFoundView'
-import '../leaflet.config.js'
 import { FeatureProvider } from './components/useFeature'
+import ThemeProvider from './theme/ThemeProvider'
+import '../leaflet.config.js'
 
 const App: FC = () => {
   const queryClient = new QueryClient({
@@ -19,37 +20,43 @@ const App: FC = () => {
   })
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <FeatureProvider>
-            <Routes>
-              <Route
-                element={<ProtectedRoute outlet={<HomeView />} role="user" />}
-                path="/"
-              />
-              <Route
-                element={<ProtectedRoute outlet={<TickerView />} role="user" />}
-                path="/ticker/:tickerId"
-              />
-              <Route
-                element={<ProtectedRoute outlet={<UsersView />} role="admin" />}
-                path="/users"
-              />
-              <Route
-                element={
-                  <ProtectedRoute outlet={<SettingsView />} role="admin" />
-                }
-                path="/settings"
-              />
-              <Route element={<LoginView />} path="/login" />
-              <Route element={<NotFoundView />} path="*" />
-            </Routes>
-          </FeatureProvider>
-        </AuthProvider>
-      </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <FeatureProvider>
+              <Routes>
+                <Route
+                  element={<ProtectedRoute outlet={<HomeView />} role="user" />}
+                  path="/"
+                />
+                <Route
+                  element={
+                    <ProtectedRoute outlet={<TickerView />} role="user" />
+                  }
+                  path="/ticker/:tickerId"
+                />
+                <Route
+                  element={
+                    <ProtectedRoute outlet={<UsersView />} role="admin" />
+                  }
+                  path="/users"
+                />
+                <Route
+                  element={
+                    <ProtectedRoute outlet={<SettingsView />} role="admin" />
+                  }
+                  path="/settings"
+                />
+                <Route element={<LoginView />} path="/login" />
+                <Route element={<NotFoundView />} path="*" />
+              </Routes>
+            </FeatureProvider>
+          </AuthProvider>
+        </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }
 
