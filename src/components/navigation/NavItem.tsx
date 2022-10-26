@@ -16,15 +16,15 @@ const NavItem: FC<Props> = ({ active, icon, title, to }) => {
         size="large"
         sx={{
           mx: 1,
-          px: 4,
+          px: { xs: 0, md: 4 },
           backgroundColor: active ? colors.blue[50] : colors.grey[100],
           borderRadius: 4,
           color: colors.common['black'],
           fontSize: '1rem',
         }}
       >
-        <Box sx={{ mr: 1 }}>{icon}</Box>
-        {title}
+        <Box sx={{ mr: { sx: 0, md: 1 } }}>{icon}</Box>
+        <Box sx={{ display: { xs: 'none', md: 'inherit' } }}>{title}</Box>
       </Button>
     </Link>
   )
