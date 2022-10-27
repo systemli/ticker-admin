@@ -51,7 +51,9 @@ const Layout: FC<Props> = ({ children }) => {
           <UserDropdown />
         </Box>
       </Nav>
-      <Container fixed>{children}</Container>
+      <Container fixed sx={{ mb: 4 }}>
+        {children}
+      </Container>
     </>
   )
 }
