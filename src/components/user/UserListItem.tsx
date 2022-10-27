@@ -55,7 +55,7 @@ const UserListItem: FC<Props> = ({ user }) => {
         <Moment date={user.creation_date} fromNow />
       </TableCell>
       <TableCell align="right">
-        <IconButton onClick={handleMenu} size="large">
+        <IconButton data-testid="usermenu" onClick={handleMenu} size="large">
           <MoreVert />
         </IconButton>
         <Popover
@@ -76,6 +76,7 @@ const UserListItem: FC<Props> = ({ user }) => {
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <MenuItem
+            data-testid="usermenu-edit"
             onClick={() => {
               handleClose()
               setFormModalOpen(true)
@@ -85,6 +86,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             <Typography sx={{ ml: 2 }}>Edit</Typography>
           </MenuItem>
           <MenuItem
+            data-testid="usermenu-delete"
             onClick={() => {
               handleClose()
               setDeleteModalOpen(true)
