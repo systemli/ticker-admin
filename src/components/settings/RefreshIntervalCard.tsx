@@ -40,7 +40,7 @@ const RefreshIntervalCard: FC = () => {
 
   if (error || data === undefined || data.status === 'error') {
     return (
-      <ErrorView>
+      <ErrorView queryKey={['refresh_interval_setting']}>
         Unable to fetch refresh interval setting from server.
       </ErrorView>
     )

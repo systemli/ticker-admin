@@ -23,7 +23,11 @@ const UserList: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return <ErrorView>Unable to fetch users from server.</ErrorView>
+    return (
+      <ErrorView queryKey={['users']}>
+        Unable to fetch users from server.
+      </ErrorView>
+    )
   }
 
   const users = data.data.users

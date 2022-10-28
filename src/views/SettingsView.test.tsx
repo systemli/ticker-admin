@@ -118,4 +118,18 @@ describe('SettingsView', function () {
 
     expect(refreshIntervalDialogTitle).not.toBeVisible()
   })
+
+  test('settings could not fetched', async function () {
+    fetchMock.mockReject(new Error('network error'))
+    setup()
+
+    const loaders = screen.getAllByText(/loading/i)
+    expect(loaders).toHaveLength(2)
+    loaders.forEach(loader => {
+      expect(loader).toBeInTheDocument()
+    })
+    expect(
+      await screen.findByText('Oh no! An error occured')
+    ).toBeInTheDocument()
+  })
 })

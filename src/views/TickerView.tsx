@@ -27,7 +27,11 @@ const TickerView: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return <ErrorView>Unable to fetch the ticker from server.</ErrorView>
+    return (
+      <ErrorView queryKey={['ticker', tickerIdNum]}>
+        Unable to fetch the ticker from server.
+      </ErrorView>
+    )
   }
 
   const ticker = data.data.ticker
