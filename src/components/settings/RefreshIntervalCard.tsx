@@ -59,7 +59,7 @@ const RefreshIntervalCard: FC = () => {
           <Typography component="h3" variant="h5">
             Refresh Interval
           </Typography>
-          <Button onClick={handleFormOpen}>
+          <Button data-testid="refreshinterval-edit" onClick={handleFormOpen}>
             <FontAwesomeIcon icon={faPencil} />
             <Typography sx={{ ml: 1 }}>Edit</Typography>
           </Button>
