@@ -36,35 +36,35 @@ const TickerList: FC = () => {
 
   const tickers = data.data.tickers
 
-  if (tickers.length === 0 && user?.roles.includes('admin')) {
-    return (
-      <Card>
-        <CardContent>
-          <Typography component="h2" variant="h4">
-            Welcome!
-          </Typography>
-          <Typography sx={{ mt: 2 }} variant="body1">
-            There are no tickers yet. To start with a ticker, create one.
-          </Typography>
-        </CardContent>
-      </Card>
-    )
-  }
-
-  if (tickers.length === 0 && !user?.roles.includes('admin')) {
-    return (
-      <Card>
-        <CardContent>
-          <Typography component="h2" variant="h4">
-            Oh no! Something unexpected happened
-          </Typography>
-          <Typography sx={{ mt: 2 }} variant="body1">
-            Currently there are no tickers for you. Contact your administrator
-            if that should be different.
-          </Typography>
-        </CardContent>
-      </Card>
-    )
+  if (tickers.length === 0) {
+    if (user?.roles.includes('admin')) {
+      return (
+        <Card>
+          <CardContent>
+            <Typography component="h2" variant="h4">
+              Welcome!
+            </Typography>
+            <Typography sx={{ mt: 2 }} variant="body1">
+              There are no tickers yet. To start with a ticker, create one.
+            </Typography>
+          </CardContent>
+        </Card>
+      )
+    } else {
+      return (
+        <Card>
+          <CardContent>
+            <Typography component="h2" variant="h4">
+              Oh no! Something unexpected happened
+            </Typography>
+            <Typography sx={{ mt: 2 }} variant="body1">
+              Currently there are no tickers for you. Contact your administrator
+              if that should be different.
+            </Typography>
+          </CardContent>
+        </Card>
+      )
+    }
   }
 
   if (tickers.length === 1 && !user?.roles.includes('admin')) {

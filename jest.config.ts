@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
   testEnvironment: 'jsdom',
   preset: 'ts-jest',
   moduleNameMapper: {
-    'react-markdown': '<rootDir>/src/__mocks_/react-markdown.js',
+    'react-leaflet': '<rootDir>/src/__mocks__/react-leaflet.tsx',
     '^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
   },
@@ -15,7 +15,7 @@ const config: Config.InitialOptions = {
     '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!react-markdown/)'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!react-leaflet)'],
   setupFilesAfterEnv: ['./jest-setup.ts'],
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
 }
