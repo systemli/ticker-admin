@@ -21,7 +21,7 @@
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.38.0",
+    "react-hook-form": "^7.40.0",
     "react-image-lightbox": "^5.1.4",
     "react-leaflet": "^4.1.0",
     "react-leaflet-draw": "^0.20.1",
