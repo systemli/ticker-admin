@@ -6,6 +6,7 @@ import MessageList from '../message/MessageList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -14,6 +15,7 @@ import {
   Typography,
 } from '@mui/material'
 import TickerModalForm from './TickerModalForm'
+import TickerDangerZoneCard from './TickerDangerZoneCard'
 
 interface Props {
   ticker: Model
@@ -60,6 +62,9 @@ const Ticker: FC<Props> = ({ ticker }) => {
         xs={12}
       >
         <TickerCard ticker={ticker} />
+        <Box sx={{ mt: 2 }}>
+          <TickerDangerZoneCard ticker={ticker} />
+        </Box>
       </Grid>
       <Grid container item md={8} rowSpacing={2} xs={12}>
         <Grid item xs={12}>

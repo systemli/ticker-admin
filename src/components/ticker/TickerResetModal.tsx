@@ -1,50 +1,60 @@
-import React, { FC, useCallback, useState } from 'react'
-import { Button, Modal } from 'semantic-ui-react'
+import React, { FC, useCallback } from 'react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 import { useQueryClient } from '@tanstack/react-query'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material'
+import { Close } from '@mui/icons-material'
 
 interface Props {
+  onClose: () => void
+  open: boolean
   ticker: Ticker
-  trigger: React.ReactNode
 }
 
-const TickerResetModal: FC<Props> = props => {
-  const [open, setOpen] = useState<boolean>(false)
+const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
   const { token } = useAuth()
   const { putTickerReset } = useTickerApi(token)
   const queryClient = useQueryClient()
 
-  const handleCancel = useCallback(() => {
-    setOpen(false)
-  }, [])
-
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
+  const handleClose = () => {
+    onClose()
+  }
 
   const handleReset = useCallback(() => {
-    putTickerReset(props.ticker)
+    putTickerReset(ticker)
       .then(() => {
-        queryClient.invalidateQueries(['messages', props.ticker.id])
-        queryClient.invalidateQueries(['tickerUsers', props.ticker.id])
-        queryClient.invalidateQueries(['ticker', props.ticker.id])
+        queryClient.invalidateQueries(['messages', ticker.id])
+        queryClient.invalidateQueries(['tickerUsers', ticker.id])
+        queryClient.invalidateQueries(['ticker', ticker.id])
       })
       .finally(() => {
-        setOpen(false)
+        onClose()
       })
-  }, [props.ticker, putTickerReset, queryClient])
+  }, [onClose, putTickerReset, queryClient, ticker])
 
   return (
-    <Modal
-      onClose={handleCancel}
-      onOpen={handleOpen}
-      open={open}
-      size="mini"
-      trigger={props.trigger}
-    >
-      <Modal.Header>Reset Ticker</Modal.Header>
-      <Modal.Content>
+    <Dialog open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Reset Ticker
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
         <p>
           <strong>Are you sure you want to reset the ticker?</strong>
         </p>
@@ -52,20 +62,16 @@ const TickerResetModal: FC<Props> = props => {
           This will remove all messages, descriptions, the connection to twitter
           and disable the ticker.
         </p>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={handleCancel}>
-          No
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" onClick={handleReset} variant="contained">
+          Reset
         </Button>
-        <Button
-          content="Yes"
-          icon="checkmark"
-          labelPosition="right"
-          onClick={handleReset}
-          positive
-        />
-      </Modal.Actions>
-    </Modal>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 
