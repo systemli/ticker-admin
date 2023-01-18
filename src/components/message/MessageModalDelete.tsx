@@ -1,49 +1,65 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Confirm } from 'semantic-ui-react'
 import { Message, useMessageApi } from '../../api/Message'
 import useAuth from '../useAuth'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material'
+import { Close } from '@mui/icons-material'
 
 interface Props {
+  onClose: () => void
+  open: boolean
   message: Message
-  trigger: React.ReactNode
 }
-
-const MessageModalDelete: FC<Props> = props => {
+const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
   const { token } = useAuth()
   const { deleteMessage } = useMessageApi(token)
-  const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
-  const message = props.message
 
-  const handleCancel = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const handleClose = () => {
+    onClose()
+  }
 
-  const handleConfirm = useCallback(() => {
-    deleteMessage(message)
-      .then(() => {
-        queryClient.invalidateQueries(['messages', message.ticker])
-      })
-      .finally(() => {
-        setOpen(false)
-      })
-  }, [deleteMessage, message, queryClient])
-
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
+  const handleDelete = useCallback(() => {
+    deleteMessage(message).then(() => {
+      queryClient.invalidateQueries(['messages', message.ticker])
+      onClose()
+    })
+  }, [deleteMessage, message, onClose, queryClient])
 
   return (
-    <Confirm
-      dimmer
-      onCancel={handleCancel}
-      onConfirm={handleConfirm}
-      onOpen={handleOpen}
-      open={open}
-      size="mini"
-      trigger={props.trigger}
-    />
+    <Dialog open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Delete Message
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
+        Are you sure to delete the message? This action cannot be undone.
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" onClick={handleDelete} variant="contained">
+          Delete
+        </Button>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

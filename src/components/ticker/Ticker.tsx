@@ -70,11 +70,7 @@ const Ticker: FC<Props> = ({ ticker }) => {
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <MessageList ticker={ticker} />
-            </CardContent>
-          </Card>
+          <MessageList ticker={ticker} />
         </Grid>
       </Grid>
     </Grid>
