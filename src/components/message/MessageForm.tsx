@@ -1,28 +1,29 @@
-import React, {
-  ChangeEvent,
-  FC,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useMessageApi } from '../../api/Message'
-import {
-  Button,
-  Form,
-  Message as Error,
-  TextAreaProps,
-} from 'semantic-ui-react'
 import { Ticker } from '../../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import MessageFormCounter from './MessageFormCounter'
 import useAuth from '../useAuth'
 import { Upload } from '../../api/Upload'
-import MessageAttachmentsButton from './MessageAttachmentsButton'
-import MessageAttachmentsPreview from './MessageAttachmentsPreview'
+import UploadButton from './UploadButton'
+import AttachmentsPreview from './AttachmentsPreview'
 import MessageMapModal from './MessageMapModal'
 import { FeatureCollection, Geometry } from 'geojson'
+import {
+  Box,
+  Button,
+  FormGroup,
+  IconButton,
+  Stack,
+  TextField,
+} from '@mui/material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faMapLocationDot,
+  faPaperPlane,
+} from '@fortawesome/free-solid-svg-icons'
+import palette from '../../theme/palette'
 
 interface Props {
   ticker: Ticker
@@ -36,23 +37,23 @@ export const MESSAGE_LIMIT = 280
 
 const MessageForm: FC<Props> = ({ ticker }) => {
   const {
-    formState: { isSubmitSuccessful },
+    formState: { isSubmitSuccessful, errors },
     handleSubmit,
     reset,
-    setValue,
+    register,
     watch,
-  } = useForm<FormValues>()
+  } = useForm<FormValues>({ mode: 'onSubmit' })
   const { token } = useAuth()
   const { postMessage } = useMessageApi(token)
   const queryClient = useQueryClient()
-  const watchMessage = watch('message', '')
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [attachments, setAttachments] = useState<Upload[]>([])
+  const [mapDialogOpen, setMapDialogOpen] = useState<boolean>(false)
   const emptyMap: FeatureCollection<Geometry, any> = {
     type: 'FeatureCollection',
     features: [],
   }
   const [map, setMap] = useState<FeatureCollection<Geometry, any>>(emptyMap)
-  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const onUpload = useCallback(
     (uploads: Upload[]) => {
@@ -81,23 +82,8 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     []
   )
 
-  const onChange = useCallback(
-    (e: ChangeEvent | FormEvent, { name, value }: TextAreaProps) => {
-      setValue(name, value)
-      if (watchMessage?.length > MESSAGE_LIMIT) {
-        setErrorMessage(
-          `The message is too long. You must remove ${
-            watchMessage?.length - MESSAGE_LIMIT
-          } characters.`
-        )
-      } else if (errorMessage !== '') {
-        setErrorMessage('')
-      }
-    },
-    [errorMessage, setValue, watchMessage?.length]
-  )
-
   const onSubmit: SubmitHandler<FormValues> = data => {
+    setIsSubmitting(true)
     const uploads = attachments.map(upload => {
       return upload.id
     })
@@ -106,6 +92,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       () => {
         queryClient.invalidateQueries(['messages', ticker.id])
         setAttachments([])
+        setIsSubmitting(false)
       }
     )
   }
@@ -116,47 +103,66 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     })
   }, [isSubmitSuccessful, reset])
 
+  const message = watch('message')
+
   return (
-    <Form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
-      <Form.Field>
-        <Form.TextArea
-          name="message"
-          onChange={onChange}
+    <form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
+      <FormGroup sx={{ mb: 1 }}>
+        <TextField
+          {...register('message', {
+            required: true,
+            maxLength: MESSAGE_LIMIT,
+          })}
+          color={errors.message ? 'error' : 'primary'}
+          error={!!errors.message}
+          helperText={
+            errors.message?.type === 'maxLength'
+              ? 'The message is too long.'
+              : errors.message?.type === 'required'
+              ? 'The message is required.'
+              : null
+          }
+          multiline
           placeholder="Write a message"
-          rows="5"
-          value={watchMessage}
+          rows="3"
         />
-      </Form.Field>
-      <Error
-        content={errorMessage}
-        header="Error"
-        hidden={!errorMessage}
-        icon="ban"
-        negative
-      />
-      <MessageAttachmentsPreview
-        attachments={attachments}
-        onDelete={onUploadDelete}
-      />
-      <Button
-        color="teal"
-        content="Send"
-        disabled={errorMessage !== '' || watchMessage === ''}
-        form="sendMessage"
-        icon="send"
-        type="submit"
-      />
-      <MessageAttachmentsButton onUpload={onUpload} ticker={ticker} />
-      <MessageMapModal
-        callback={onMapUpdate}
-        map={map}
-        ticker={ticker}
-        trigger={
-          <Button color="orange" content="Add Map" toggle type="button" />
-        }
-      />
-      <MessageFormCounter letterCount={watchMessage?.length || 0} />
-    </Form>
+      </FormGroup>
+      <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Box>
+          <Button
+            disabled={isSubmitting}
+            startIcon={<FontAwesomeIcon icon={faPaperPlane} />}
+            sx={{ mr: 1 }}
+            type="submit"
+            variant="outlined"
+          >
+            Send
+          </Button>
+          <UploadButton onUpload={onUpload} ticker={ticker} />
+          <IconButton component="span" onClick={() => setMapDialogOpen(true)}>
+            <FontAwesomeIcon
+              color={palette.primary['main']}
+              icon={faMapLocationDot}
+              size="xs"
+            />
+          </IconButton>
+          <MessageMapModal
+            map={map}
+            onChange={onMapUpdate}
+            onClose={() => setMapDialogOpen(false)}
+            open={mapDialogOpen}
+            ticker={ticker}
+          />
+        </Box>
+        <MessageFormCounter letterCount={message?.length || 0} />
+      </Stack>
+      <Box>
+        <AttachmentsPreview
+          attachments={attachments}
+          onDelete={onUploadDelete}
+        />
+      </Box>
+    </form>
   )
 }
 
