@@ -38,6 +38,7 @@ const Message: FC<Props> = ({ message, ticker }) => {
           dangerouslySetInnerHTML={{
             __html: replaceMagic(message.text),
           }}
+          style={{ paddingRight: theme.spacing(6) }}
         />
         <MessageAttachements message={message} />
         <MessageMap message={message} ticker={ticker} />
