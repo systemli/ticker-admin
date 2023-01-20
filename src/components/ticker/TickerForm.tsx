@@ -8,6 +8,7 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Alert,
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -17,6 +18,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material'
 import {
   faComputerMouse,
@@ -78,6 +80,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
   const { token } = useAuth()
   const { postTicker, putTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
+  const theme = useTheme()
 
   const onLocationChange = useCallback(
     (result: Result) => {
@@ -306,6 +309,22 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
             </MapContainer>
           </Grid>
         ) : null}
+      </Grid>
+      <Grid item textAlign="right" xs={12}>
+        <Box sx={{ pt: theme.spacing(2) }}>
+          <Button
+            color="primary"
+            form="tickerForm"
+            sx={{ mr: theme.spacing(1) }}
+            type="submit"
+            variant="contained"
+          >
+            Save
+          </Button>
+          <Button color="secondary" onClick={() => callback()}>
+            Close
+          </Button>
+        </Box>
       </Grid>
     </form>
   )

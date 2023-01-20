@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useQueryClient } from '@tanstack/react-query'
@@ -14,6 +14,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
+import { faBan, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -22,6 +23,8 @@ interface Props {
 const MastodonCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
   const { deleteTickerMastodon, putTickerMastodon } = useTickerApi(token)
+  const [open, setOpen] = useState<boolean>(false)
+
   const queryClient = useQueryClient()
 
   const mastodon = ticker.mastodon
@@ -48,22 +51,7 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     </a>
   )
 
-  return mastodon.connected ? (
-    <Box>
-      <Stack>
-        <Typography component="h5" variant="h5">
-          Mastodon
-        </Typography>
-        <Button
-          size="small"
-          startIcon={<FontAwesomeIcon icon={faMastodon} />}
-          variant="outlined"
-        >
-          Configure
-        </Button>
-      </Stack>
-    </Box>
-  ) : (
+  return (
     <Card>
       <CardContent>
         <Stack
@@ -72,22 +60,57 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
           justifyContent="space-between"
         >
           <Typography component="h5" variant="h5">
-            Mastodon
+            <FontAwesomeIcon icon={faMastodon} /> Mastodon
           </Typography>
-          <Button
-            size="small"
-            startIcon={<FontAwesomeIcon icon={faMastodon} />}
-            variant="outlined"
-          >
+          <Button onClick={() => setOpen(true)} size="small" variant="outlined">
             Configure
           </Button>
         </Stack>
-        <Typography component="p" variant="body2">
-          You are currently not connected to Mastodon. New messages will not be
-          published to your account and old messages can not be deleted anymore.
-        </Typography>
+        {mastodon.connected ? (
+          <Box>
+            <Typography variant="body2">
+              You are connected to Mastodon.
+            </Typography>
+            <Typography variant="body2">Profile: {profileLink}</Typography>
+          </Box>
+        ) : (
+          <Typography component="p" variant="body2">
+            You are currently not connected to Mastodon. New messages will not
+            be published to your account and old messages can not be deleted
+            anymore.
+          </Typography>
+        )}
       </CardContent>
-      <CardActions></CardActions>
+      {mastodon.connected ? (
+        <CardActions>
+          {mastodon.active ? (
+            <Button
+              onClick={handleToggle}
+              startIcon={<FontAwesomeIcon icon={faPause} />}
+            >
+              Disable
+            </Button>
+          ) : (
+            <Button
+              onClick={handleToggle}
+              startIcon={<FontAwesomeIcon icon={faPlay} />}
+            >
+              Enable
+            </Button>
+          )}
+          <Button
+            onClick={handleDisconnect}
+            startIcon={<FontAwesomeIcon icon={faBan} />}
+          >
+            Disconnect
+          </Button>
+        </CardActions>
+      ) : null}
+      <MastodonModalForm
+        onClose={() => setOpen(false)}
+        open={open}
+        ticker={ticker}
+      />
     </Card>
   )
 }

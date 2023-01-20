@@ -1,16 +1,18 @@
 import { Close } from '@mui/icons-material'
 import {
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
   Stack,
+  Tab,
+  Tabs,
 } from '@mui/material'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Ticker } from '../../api/Ticker'
+import TabPanel from '../common/TabPanel'
 import TickerForm from './TickerForm'
+import TickerSocialConnections from './TickerSocialConnections'
 
 interface Props {
   onClose: () => void
@@ -19,8 +21,14 @@ interface Props {
 }
 
 const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
+  const [tabValue, setTabValue] = useState<number>(0)
+
   const handleClose = () => {
     onClose()
+  }
+
+  const handleTabChange = (e: React.SyntheticEvent, value: number) => {
+    setTabValue(value)
   }
 
   return (
@@ -31,28 +39,26 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
           direction="row"
           justifyContent="space-between"
         >
-          {ticker ? 'Update Ticker' : 'Create Ticker'}
+          {ticker ? 'Configure Ticker' : 'Create Ticker'}
           <IconButton onClick={handleClose}>
             <Close />
           </IconButton>
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <TickerForm callback={handleClose} id="tickerForm" ticker={ticker} />
+        <Tabs onChange={handleTabChange} value={tabValue}>
+          <Tab label="General" />
+          <Tab label="Social Connections" />
+        </Tabs>
+        <TabPanel index={0} value={tabValue}>
+          <TickerForm callback={handleClose} id="tickerForm" ticker={ticker} />
+        </TabPanel>
+        {ticker ? (
+          <TabPanel index={1} value={tabValue}>
+            <TickerSocialConnections ticker={ticker} />
+          </TabPanel>
+        ) : null}
       </DialogContent>
-      <DialogActions>
-        <Button
-          color="primary"
-          form="tickerForm"
-          type="submit"
-          variant="contained"
-        >
-          Save
-        </Button>
-        <Button color="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </DialogActions>
     </Dialog>
   )
 }
