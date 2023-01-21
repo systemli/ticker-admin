@@ -16,10 +16,10 @@ const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
   return user?.roles.includes('admin') ? (
     <Card>
       <CardContent>
-        <Typography component="h5" variant="h5">
+        <Typography component="h5" sx={{ mb: 2 }} variant="h5">
           <FontAwesomeIcon icon={faBiohazard} /> Danger Zone
         </Typography>
-        <Box sx={{ mt: 2 }}>
+        <Box>
           <Button
             color="error"
             onClick={() => setResetOpen(true)}

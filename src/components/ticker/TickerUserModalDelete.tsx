@@ -1,47 +1,68 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Confirm } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import { User } from '../../api/User'
 import useAuth from '../useAuth'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material'
+import { Close } from '@mui/icons-material'
 
 interface Props {
   ticker: Ticker
   user: User
-  trigger: React.ReactNode
+  open: boolean
+  onClose: () => void
 }
 
-const TickerUserModalDelete: FC<Props> = ({ ticker, trigger, user }) => {
+const TickerUserModalDelete: FC<Props> = ({ open, onClose, ticker, user }) => {
   const { token } = useAuth()
   const { deleteTickerUser } = useTickerApi(token)
-  const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
 
-  const handleCancel = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const handleClose = () => {
+    onClose()
+  }
 
-  const handleConfirm = useCallback(() => {
+  const handleDelete = useCallback(() => {
     deleteTickerUser(ticker, user).finally(() => {
       queryClient.invalidateQueries(['tickerUsers', ticker.id])
-      setOpen(false)
+      onClose()
     })
-  }, [deleteTickerUser, ticker, user, queryClient])
-
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
+  }, [deleteTickerUser, ticker, user, queryClient, onClose])
 
   return (
-    <Confirm
-      dimmer
-      onCancel={handleCancel}
-      onConfirm={handleConfirm}
-      onOpen={handleOpen}
-      open={open}
-      size="mini"
-      trigger={trigger}
-    />
+    <Dialog maxWidth="md" open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Delete User from Ticker
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
+        Are you sure to remove <strong>{user.email}</strong> from this ticker?
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" onClick={handleDelete} variant="contained">
+          Delete
+        </Button>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

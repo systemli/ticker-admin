@@ -1,29 +1,29 @@
+import { MenuList, Typography } from '@mui/material'
 import React, { FC } from 'react'
-import { List } from 'semantic-ui-react'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
 import TickerUsersListItem from './TickerUserListItem'
 
 interface Props {
   ticker: Ticker
-  users: User[] | null
+  users: User[]
 }
 
-const TickerUserList: FC<Props> = props => {
-  if (props.users === null || props.users.length === 0) {
+const TickerUserList: FC<Props> = ({ ticker, users }) => {
+  if (users.length === 0) {
     return (
-      <React.Fragment>
+      <Typography variant="body2">
         There are no users granted access this ticker.
-      </React.Fragment>
+      </Typography>
     )
   }
 
   return (
-    <List divided relaxed verticalAlign="middle">
-      {props.users.map(user => (
-        <TickerUsersListItem key={user.id} ticker={props.ticker} user={user} />
+    <MenuList>
+      {users.map(user => (
+        <TickerUsersListItem key={user.id} ticker={ticker} user={user} />
       ))}
-    </List>
+    </MenuList>
   )
 }
 

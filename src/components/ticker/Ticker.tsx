@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import TickerModalForm from './TickerModalForm'
 import TickerDangerZoneCard from './TickerDangerZoneCard'
+import TickerUsersCard from './TickerUsersCard'
 
 interface Props {
   ticker: Model
@@ -62,6 +63,9 @@ const Ticker: FC<Props> = ({ ticker }) => {
         xs={12}
       >
         <TickerCard ticker={ticker} />
+        <Box sx={{ mt: 2 }}>
+          <TickerUsersCard ticker={ticker} />
+        </Box>
         <Box sx={{ mt: 2 }}>
           <TickerDangerZoneCard ticker={ticker} />
         </Box>
