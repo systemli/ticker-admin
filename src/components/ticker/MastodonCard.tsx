@@ -11,10 +11,16 @@ import {
   Card,
   CardActions,
   CardContent,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material'
-import { faBan, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
+import {
+  faBan,
+  faGear,
+  faPause,
+  faPlay,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -62,10 +68,17 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faMastodon} /> Mastodon
           </Typography>
-          <Button onClick={() => setOpen(true)} size="small" variant="outlined">
+          <Button
+            onClick={() => setOpen(true)}
+            size="small"
+            startIcon={<FontAwesomeIcon icon={faGear} />}
+          >
             Configure
           </Button>
         </Stack>
+      </CardContent>
+      <Divider variant="middle" />
+      <CardContent>
         {mastodon.connected ? (
           <Box>
             <Typography variant="body2">

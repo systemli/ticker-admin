@@ -12,6 +12,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Divider,
   Icon,
   Stack,
   Typography,
@@ -101,6 +102,9 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
             </TwitterLogin>
           ) : null}
         </Stack>
+      </CardContent>
+      <Divider variant="middle" />
+      <CardContent>
         {twitter.connected ? (
           <Box>
             <Typography>
@@ -115,11 +119,11 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
             <Typography>{twitter.description}</Typography>
           </Box>
         ) : (
-          <>
+          <Typography variant="body2">
             You are currently not connected to Twitter. New messages will not be
             published to your account and old messages can not be deleted
             anymore.
-          </>
+          </Typography>
         )}
       </CardContent>
       {twitter.connected ? (

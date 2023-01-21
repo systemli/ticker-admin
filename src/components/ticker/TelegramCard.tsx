@@ -1,5 +1,10 @@
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
-import { faBan, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
+import {
+  faBan,
+  faGear,
+  faPause,
+  faPlay,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Box,
@@ -7,6 +12,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material'
@@ -51,10 +57,17 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faTelegram} /> Telegram
           </Typography>
-          <Button onClick={() => setOpen(true)} size="small" variant="outlined">
+          <Button
+            onClick={() => setOpen(true)}
+            size="small"
+            startIcon={<FontAwesomeIcon icon={faGear} />}
+          >
             Configure
           </Button>
         </Stack>
+      </CardContent>
+      <Divider variant="middle" />
+      <CardContent>
         {telegram.connected ? (
           <Box>
             <Typography variant="body2">
