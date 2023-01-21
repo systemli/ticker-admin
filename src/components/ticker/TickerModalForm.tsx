@@ -48,7 +48,7 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
       <DialogContent>
         <Tabs onChange={handleTabChange} value={tabValue}>
           <Tab label="General" />
-          <Tab label="Social Connections" />
+          <Tab disabled={ticker ? false : true} label="Social Connections" />
         </Tabs>
         <TabPanel index={0} value={tabValue}>
           <TickerForm callback={handleClose} id="tickerForm" ticker={ticker} />
