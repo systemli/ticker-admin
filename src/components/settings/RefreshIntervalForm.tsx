@@ -3,8 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { Setting, useSettingsApi } from '../../api/Settings'
 import useAuth from '../useAuth'
-import { FormGroup, TextField } from '@mui/material'
-import { Grid } from 'semantic-ui-react'
+import { FormGroup, Grid, TextField } from '@mui/material'
 
 interface Props {
   name: string
