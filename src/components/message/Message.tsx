@@ -19,7 +19,7 @@ const Message: FC<Props> = ({ message, ticker }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
 
   return (
-    <Card sx={{ mt: 2 }}>
+    <Card sx={{ mb: 2 }}>
       <CardContent>
         <IconButton
           onClick={() => {

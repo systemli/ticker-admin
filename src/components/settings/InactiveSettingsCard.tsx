@@ -60,9 +60,13 @@ const InactiveSettingsCard: FC = () => {
           <Typography component="h3" variant="h5">
             Inactive Settings
           </Typography>
-          <Button data-testid="inactivesetting-edit" onClick={handleFormOpen}>
-            <FontAwesomeIcon icon={faPencil} />
-            <Typography sx={{ ml: 1 }}>Edit</Typography>
+          <Button
+            data-testid="inactivesetting-edit"
+            onClick={handleFormOpen}
+            size="small"
+            startIcon={<FontAwesomeIcon icon={faPencil} />}
+          >
+            Edit
           </Button>
         </Stack>
         <Typography color="GrayText" component="span" variant="body2">

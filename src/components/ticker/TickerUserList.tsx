@@ -12,7 +12,7 @@ interface Props {
 const TickerUserList: FC<Props> = ({ ticker, users }) => {
   if (users.length === 0) {
     return (
-      <Typography variant="body2">
+      <Typography sx={{ my: 2 }}>
         There are no users granted access this ticker.
       </Typography>
     )
