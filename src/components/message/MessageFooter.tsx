@@ -5,7 +5,7 @@ import {
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Link, Stack, Typography, useTheme } from '@mui/material'
 import React, { FC } from 'react'
 import Moment from 'react-moment'
 import { Message } from '../../api/Message'
@@ -36,10 +36,17 @@ interface IconProps {
 }
 
 const Icon: FC<IconProps> = ({ url, icon }) => {
+  const theme = useTheme()
+
   return url ? (
-    <a href={url} rel="noopener noreferrer" target="_blank">
+    <Link
+      href={url}
+      rel="noopener noreferrer"
+      style={{ marginLeft: theme.spacing(1) }}
+      target="_blank"
+    >
       <FontAwesomeIcon icon={icon} />
-    </a>
+    </Link>
   ) : null
 }
 

@@ -14,6 +14,7 @@ import {
   CardContent,
   Divider,
   Icon,
+  Link,
   Stack,
   Typography,
 } from '@mui/material'
@@ -73,6 +74,16 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
     alert(error)
   }, [])
 
+  const profileLink = (
+    <Link
+      href={'https://twitter.com/' + twitter.screen_name}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      @{twitter.screen_name}
+    </Link>
+  )
+
   return (
     <Card>
       <CardContent>
@@ -107,16 +118,10 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         {twitter.connected ? (
           <Box>
-            <Typography>
-              <a
-                href={'https://twitter.com/' + twitter.screen_name}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                @{twitter.screen_name}
-              </a>
+            <Typography variant="body2">
+              You are connected with Twitter.
             </Typography>
-            <Typography>{twitter.description}</Typography>
+            <Typography variant="body2">Your Profile: {profileLink}</Typography>
           </Box>
         ) : (
           <Typography variant="body2">

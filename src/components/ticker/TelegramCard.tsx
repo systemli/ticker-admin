@@ -13,6 +13,7 @@ import {
   CardActions,
   CardContent,
   Divider,
+  Link,
   Stack,
   Typography,
 } from '@mui/material'
@@ -46,6 +47,16 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     })
   }, [deleteTickerTelegram, queryClient, ticker])
 
+  const channelLink = (
+    <Link
+      href={`https://t.me/${telegram.channel_name}`}
+      rel="noreferrer"
+      target="_blank"
+    >
+      {telegram.channel_name}
+    </Link>
+  )
+
   return (
     <Card>
       <CardContent>
@@ -71,13 +82,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
         {telegram.connected ? (
           <Box>
             <Typography variant="body2">
-              You are connected to Telegram.
+              You are connected with Telegram.
             </Typography>
             <Typography variant="body2">
-              Your Channel: {telegram.channel_name}
-            </Typography>
-            <Typography variant="body2">
-              Bot: {telegram.bot_username}
+              Your Channel: {channelLink} (Bot: {telegram.bot_username})
             </Typography>
           </Box>
         ) : (

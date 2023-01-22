@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Box, Card, CardContent, Link, Typography } from '@mui/material'
 import { Ticker } from '../../api/Ticker'
 import NamedListItem from '../common/NamedListItem'
 import SocialConnectionChip from './SocialConnectionChip'
@@ -46,13 +46,13 @@ const TickerCard: FC<Props> = ({ ticker }) => {
               icon={faLink}
               style={{ width: 16, paddingRight: 2 }}
             />
-            <a
+            <Link
               href={'https://' + ticker.domain}
               rel="noreferrer"
               target="_blank"
             >
               {ticker.domain}
-            </a>
+            </Link>
           </Typography>
         </NamedListItem>
         <NamedListItem title="Social Connections">

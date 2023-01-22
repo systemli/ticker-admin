@@ -12,6 +12,7 @@ import {
   CardActions,
   CardContent,
   Divider,
+  Link,
   Stack,
   Typography,
 } from '@mui/material'
@@ -48,13 +49,13 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
   }, [mastodon.active, putTickerMastodon, queryClient, ticker])
 
   const profileLink = (
-    <a
+    <Link
       href={mastodon.server + '/web/@' + mastodon.name}
       rel="noreferrer"
       target="_blank"
     >
       @{mastodon.name}@{mastodon.server.replace(/^https?:\/\//, '')}
-    </a>
+    </Link>
   )
 
   return (
@@ -82,9 +83,9 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
         {mastodon.connected ? (
           <Box>
             <Typography variant="body2">
-              You are connected to Mastodon.
+              You are connected with Mastodon.
             </Typography>
-            <Typography variant="body2">Profile: {profileLink}</Typography>
+            <Typography variant="body2">Your Profile: {profileLink}</Typography>
           </Box>
         ) : (
           <Typography component="p" variant="body2">
