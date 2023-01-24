@@ -2,13 +2,13 @@ import React, { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import TickerUserList from './TickerUserList'
-import TickerAddUserModal from './TickerAddUserModal'
 import useAuth from '../useAuth'
 import Loader from '../Loader'
 import ErrorView from '../../views/ErrorView'
 import { Button, Card, CardContent, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faShieldDog, faUsers } from '@fortawesome/free-solid-svg-icons'
+import TickerUsersModal from './TickerUsersModal'
 
 interface Props {
   ticker: Ticker
@@ -52,12 +52,12 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
         <TickerUserList ticker={ticker} users={users} />
         <Button
           onClick={() => setFormOpen(true)}
-          startIcon={<FontAwesomeIcon icon={faPlus} />}
+          startIcon={<FontAwesomeIcon icon={faShieldDog} />}
           variant="outlined"
         >
-          Add Users
+          Manage Users
         </Button>
-        <TickerAddUserModal
+        <TickerUsersModal
           onClose={() => setFormOpen(false)}
           open={formOpen}
           ticker={ticker}

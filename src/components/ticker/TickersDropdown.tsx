@@ -9,6 +9,7 @@ import {
   Select,
   SelectChangeEvent,
   SxProps,
+  useTheme,
 } from '@mui/material'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
@@ -25,6 +26,7 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
   const [tickers, setTickers] = useState<Array<number>>(defaultValue)
   const { token } = useAuth()
   const { getTickers } = useTickerApi(token)
+  const theme = useTheme()
 
   const handleChange = (event: SelectChangeEvent<typeof tickers>) => {
     if (typeof event.target.value !== 'string') {
@@ -50,10 +52,32 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
     return (
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
         {selectedTickers.map(ticker => (
-          <Chip key={ticker.id} label={ticker.title} />
+          <Chip
+            key={ticker.id}
+            label={ticker.title}
+            onDelete={() => {
+              const reduced = tickers.filter(id => {
+                return id !== ticker.id
+              })
+              setTickers(reduced)
+              onChange(reduced)
+            }}
+            onMouseDown={e => {
+              e.stopPropagation()
+            }}
+          />
         ))}
       </Box>
     )
+  }
+
+  const getStyle = (value: number, tickers: number[]) => {
+    return {
+      fontWeight:
+        tickers.indexOf(value) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    }
   }
 
   return (
@@ -72,6 +96,7 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
           <MenuItem
             key={ticker.id}
             selected={tickers.includes(ticker.id)}
+            style={getStyle(ticker.id, tickers)}
             value={ticker.id}
           >
             {ticker.title}

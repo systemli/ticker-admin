@@ -11,7 +11,7 @@ import {
 import React, { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
-import TickerAddUserForm from './TickerAddUserForm'
+import TickerUsersForm from './TickerUsersForm'
 
 interface Props {
   onClose: () => void
@@ -20,35 +20,37 @@ interface Props {
   users: User[]
 }
 
-const TickerAddUserModal: FC<Props> = ({ onClose, open, ticker, users }) => {
+const TickerUsersModal: FC<Props> = ({ onClose, open, ticker, users }) => {
   const handleClose = () => {
     onClose()
   }
 
   return (
-    <Dialog open={open}>
+    <Dialog fullWidth maxWidth="md" open={open}>
       <DialogTitle>
         <Stack
           alignItems="center"
           direction="row"
           justifyContent="space-between"
         >
-          Add Users
+          Manage User Access
           <IconButton onClick={handleClose}>
             <Close />
           </IconButton>
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <TickerAddUserForm
+        <TickerUsersForm
+          defaultValue={users.map(user => {
+            return user.id
+          })}
           onSubmit={handleClose}
           ticker={ticker}
-          users={users}
         />
       </DialogContent>
       <DialogActions>
         <Button form="tickerUsersForm" type="submit">
-          Add
+          Save
         </Button>
 
         <Button onClick={handleClose}>Close</Button>
@@ -57,4 +59,4 @@ const TickerAddUserModal: FC<Props> = ({ onClose, open, ticker, users }) => {
   )
 }
 
-export default TickerAddUserModal
+export default TickerUsersModal
