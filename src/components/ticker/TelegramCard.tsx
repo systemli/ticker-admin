@@ -89,11 +89,11 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
             </Typography>
           </Box>
         ) : (
-          <>
+          <Typography variant="body2">
             You are currently not connected to Telegram. New messages will not
             be published to your channel and old messages can not be deleted
             anymore.
-          </>
+          </Typography>
         )}
       </CardContent>
       {telegram.connected ? (
