@@ -1,6 +1,8 @@
 import { Close } from '@mui/icons-material'
 import {
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -59,6 +61,21 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
           </TabPanel>
         ) : null}
       </DialogContent>
+      <DialogActions>
+        {tabValue === 0 ? (
+          <Button
+            color="primary"
+            form="tickerForm"
+            type="submit"
+            variant="contained"
+          >
+            Save
+          </Button>
+        ) : null}
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
     </Dialog>
   )
 }
