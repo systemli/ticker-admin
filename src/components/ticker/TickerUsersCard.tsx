@@ -15,7 +15,7 @@ interface Props {
 }
 
 const TickerUsersCard: FC<Props> = ({ ticker }) => {
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   const { getTickerUsers } = useTickerApi(token)
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { isLoading, error, data } = useQuery(
@@ -39,7 +39,7 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
 
   const users = data.data.users
 
-  return (
+  return user?.roles.includes('admin') ? (
     <Card>
       <CardContent>
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
@@ -65,7 +65,7 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
         />
       </CardContent>
     </Card>
-  )
+  ) : null
 }
 
 export default TickerUsersCard
