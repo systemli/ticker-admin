@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import useAuth from '../components/useAuth'
 import logo from '../assets/logo.png'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FormValues {
   email: string
@@ -23,13 +24,19 @@ const LoginView: FC = () => {
   const { getValues, handleSubmit, register, reset } = useForm<FormValues>()
   const { login, error, user } = useAuth()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = ({ email, password }) => {
     login(email, password)
   }
 
   useEffect(() => {
-    if (user) navigate('/')
+    if (user) {
+      navigate('/')
+    } else {
+      // We want to ensure logged out users will not have any caches stored
+      queryClient.invalidateQueries()
+    }
   })
 
   useEffect(() => {
