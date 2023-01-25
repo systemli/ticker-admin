@@ -1,45 +1,65 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Confirm } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material'
+import { Close } from '@mui/icons-material'
 
 interface Props {
+  onClose: () => void
+  open: boolean
   ticker: Ticker
-  trigger: React.ReactNode
 }
 
-const TickerModalDelete: FC<Props> = props => {
-  const [open, setOpen] = useState<boolean>(false)
+const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   const { token } = useAuth()
   const { deleteTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
-  const ticker = props.ticker
 
-  const handleCancel = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const handleClose = () => {
+    onClose()
+  }
 
-  const handleConfirm = useCallback(() => {
+  const handleDelete = useCallback(() => {
     deleteTicker(ticker).finally(() => {
       queryClient.invalidateQueries(['tickers'])
     })
   }, [deleteTicker, ticker, queryClient])
 
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
-
   return (
-    <Confirm
-      dimmer
-      onCancel={handleCancel}
-      onConfirm={handleConfirm}
-      onOpen={handleOpen}
-      open={open}
-      size="mini"
-      trigger={props.trigger}
-    />
+    <Dialog maxWidth="md" open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Delete Ticker
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
+        Are you sure to delete the ticker? This action cannot be undone.
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" onClick={handleDelete} variant="contained">
+          Delete
+        </Button>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

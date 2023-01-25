@@ -1,17 +1,19 @@
-import React, { FC, FormEvent, useCallback, useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
 import {
+  Alert,
+  Box,
   Button,
   Container,
-  Form,
   Grid,
-  Header,
-  Icon,
-  InputOnChangeData,
-  Message,
-} from 'semantic-ui-react'
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material'
+import React, { FC, useEffect } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 import useAuth from '../components/useAuth'
+import logo from '../assets/logo.png'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FormValues {
   email: string
@@ -19,70 +21,86 @@ interface FormValues {
 }
 
 const LoginView: FC = () => {
-  const { register, handleSubmit, setValue } = useForm<FormValues>()
+  const { getValues, handleSubmit, register, reset } = useForm<FormValues>()
   const { login, error, user } = useAuth()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  const onChange = useCallback(
-    (e: FormEvent, { name, value }: InputOnChangeData) => {
-      setValue(name, value)
-    },
-    [setValue]
-  )
-
-  const onSubmit: SubmitHandler<FormValues> = data => {
-    login(data.email, data.password)
+  const onSubmit: SubmitHandler<FormValues> = ({ email, password }) => {
+    login(email, password)
   }
 
   useEffect(() => {
-    if (user) navigate('/')
-
-    register('email')
-    register('password')
+    if (user) {
+      navigate('/')
+    } else {
+      // We want to ensure logged out users will not have any caches stored
+      queryClient.invalidateQueries()
+    }
   })
 
+  useEffect(() => {
+    if (error) {
+      reset({ email: getValues('email'), password: '' })
+    }
+  }, [error, getValues, reset])
+
   return (
-    <Container>
-      <Container className="app">
-        <Grid centered>
-          <Grid.Column computer={6} mobile={16}>
-            <Grid.Row>
-              <Header icon size="huge" textAlign="center">
-                <Icon name="browser" size="small" />
-                <Header.Content>Login</Header.Content>
-              </Header>
-            </Grid.Row>
-            <Grid.Row>
-              <Form onSubmit={handleSubmit(onSubmit)}>
-                {error ? (
-                  <Message content={error.message} negative size="small" />
-                ) : null}
-                <Form.Input
-                  icon="user"
-                  iconPosition="left"
-                  name="email"
-                  onChange={onChange}
-                  placeholder="Email"
-                  required
-                  type="text"
-                />
-                <Form.Input
-                  icon="lock"
-                  iconPosition="left"
-                  name="password"
-                  onChange={onChange}
-                  placeholder="Password"
-                  required
-                  type="password"
-                />
-                <Button color="teal" fluid type="submit">
-                  Login
-                </Button>
-              </Form>
-            </Grid.Row>
-          </Grid.Column>
+    <Container fixed maxWidth="sm" sx={{ mt: 5 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Box sx={{ mb: 2, textAlign: 'center' }}>
+            <img
+              alt="Systemli Logo"
+              src={logo}
+              style={{ marginLeft: 'auto', marginRight: 'auto' }}
+            />
+            <Typography component="h4" sx={{ mt: 1 }} variant="h4">
+              Ticker Login
+            </Typography>
+          </Box>
         </Grid>
-      </Container>
+        <Grid item xs={12}>
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {error ? (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                  {error.message}
+                </Alert>
+              ) : null}
+              <TextField
+                {...register('email')}
+                autoFocus
+                data-testid="email"
+                fullWidth
+                label="E-Mail"
+                required
+                sx={{ my: 1 }}
+                type="email"
+              />
+              <TextField
+                {...register('password')}
+                data-testid="password"
+                fullWidth
+                label="Password"
+                required
+                sx={{ my: 1 }}
+                type="password"
+              />
+              <Button
+                data-testid="submit"
+                fullWidth
+                size="large"
+                sx={{ my: 1 }}
+                type="submit"
+                variant="contained"
+              >
+                Login
+              </Button>
+            </form>
+          </Paper>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

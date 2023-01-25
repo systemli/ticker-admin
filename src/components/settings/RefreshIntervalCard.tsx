@@ -1,12 +1,24 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Button, Card, Dimmer, Icon, List, Loader } from 'semantic-ui-react'
 import { useSettingsApi } from '../../api/Settings'
 import ErrorView from '../../views/ErrorView'
-import RefreshIntervalModalForm from './RefreshIntervalModalForm'
 import useAuth from '../useAuth'
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import Loader from '../Loader'
+import RefreshIntervalModalForm from './RefreshIntervalModalForm'
 
 const RefreshIntervalCard: FC = () => {
+  const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
   const { getRefreshInterval } = useSettingsApi(token)
   const { isLoading, error, data } = useQuery(
@@ -14,17 +26,21 @@ const RefreshIntervalCard: FC = () => {
     getRefreshInterval
   )
 
+  const handleFormOpen = () => {
+    setFormOpen(true)
+  }
+
+  const handleFormClose = () => {
+    setFormOpen(false)
+  }
+
   if (isLoading) {
-    return (
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
-      </Dimmer>
-    )
+    return <Loader />
   }
 
   if (error || data === undefined || data.status === 'error') {
     return (
-      <ErrorView>
+      <ErrorView queryKey={['refresh_interval_setting']}>
         Unable to fetch refresh interval setting from server.
       </ErrorView>
     )
@@ -34,31 +50,42 @@ const RefreshIntervalCard: FC = () => {
 
   return (
     <Card>
-      <Card.Content>
-        <Card.Header>
-          <Icon name="refresh" />
-          Refresh Interval
-        </Card.Header>
-        <Card.Meta>
-          These setting configures the reload interval for the frontend
-        </Card.Meta>
-      </Card.Content>
-      <Card.Content>
-        <Card.Description>
-          <List>
-            <List.Item>
-              <List.Icon name="rocket" />
-              <List.Content>{setting.value} ms</List.Content>
-            </List.Item>
-          </List>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content>
+      <CardContent>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          <Typography component="h3" variant="h5">
+            Refresh Interval
+          </Typography>
+          <Button
+            data-testid="refreshinterval-edit"
+            onClick={handleFormOpen}
+            size="small"
+            startIcon={<FontAwesomeIcon icon={faPencil} />}
+          >
+            Edit
+          </Button>
+        </Stack>
+        <Typography color="GrayText" component="span" variant="body2">
+          These settings have affect for inactive or non-configured tickers.
+        </Typography>
+      </CardContent>
+      <Divider variant="middle" />
+      <CardContent>
+        <Box sx={{ mb: 1 }}>
+          <Typography color="GrayText" component="span" variant="body2">
+            Refresh Interval
+          </Typography>
+          <Typography>{setting.value} ms</Typography>
+        </Box>
         <RefreshIntervalModalForm
+          onClose={handleFormClose}
+          open={formOpen}
           setting={setting}
-          trigger={<Button color="black" content="edit" icon="edit" />}
         />
-      </Card.Content>
+      </CardContent>
     </Card>
   )
 }

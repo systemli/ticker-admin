@@ -1,51 +1,63 @@
-import React, { FC, useCallback, useState } from 'react'
-import { Button, Header, Modal } from 'semantic-ui-react'
+import { Close } from '@mui/icons-material'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from '@mui/material'
+import { Stack } from '@mui/system'
+import React, { FC } from 'react'
 import { Setting } from '../../api/Settings'
 import RefreshIntervalForm from './RefreshIntervalForm'
 
 interface Props {
+  open: boolean
+  onClose: () => void
   setting: Setting<string>
-  trigger: React.ReactNode
 }
 
-const RefreshIntervalModalForm: FC<Props> = props => {
-  const [open, setOpen] = useState<boolean>(false)
-
-  const handleClose = useCallback(() => {
-    setOpen(false)
-  }, [])
-
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
+const RefreshIntervalModalForm: FC<Props> = ({ open, onClose, setting }) => {
+  const handleClose = () => {
+    onClose()
+  }
 
   return (
-    <Modal
-      closeIcon
-      dimmer
-      onClose={handleClose}
-      onOpen={handleOpen}
-      open={open}
-      size="small"
-      trigger={props.trigger}
-    >
-      <Header>Edit Refresh Interval</Header>
-      <Modal.Content>
-        <RefreshIntervalForm callback={handleClose} setting={props.setting} />
-      </Modal.Content>
-      <Modal.Actions>
-        <Button.Group>
-          <Button
-            color="green"
-            content="Update"
-            form="refreshIntervalForm"
-            type="submit"
-          />
-          <Button.Or />
-          <Button color="red" content="Close" onClick={handleClose} />
-        </Button.Group>
-      </Modal.Actions>
-    </Modal>
+    <Dialog fullWidth maxWidth="md" open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Edit Refresh Interval
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
+        <RefreshIntervalForm
+          callback={handleClose}
+          name="refreshIntervalForm"
+          setting={setting}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          color="primary"
+          form="refreshIntervalForm"
+          type="submit"
+          variant="contained"
+        >
+          Save
+        </Button>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

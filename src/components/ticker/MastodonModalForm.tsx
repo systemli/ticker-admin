@@ -1,54 +1,59 @@
-import React, { FC, useCallback, useState } from 'react'
-import { Button, Modal } from 'semantic-ui-react'
+import React, { FC } from 'react'
+import { Close } from '@mui/icons-material'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material'
 import { Ticker } from '../../api/Ticker'
 import MastodonForm from './MastodonForm'
 
 interface Props {
+  onClose: () => void
+  open: boolean
   ticker: Ticker
-  trigger: React.ReactNode
 }
 
-const MastodonModalForm: FC<Props> = ({ ticker, trigger }) => {
-  const [open, setOpen] = useState<boolean>(false)
-
-  const handleClose = useCallback(() => {
-    setOpen(false)
-  }, [])
-
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
+const MastodonModalForm: FC<Props> = ({ onClose, open, ticker }) => {
+  const handleClose = () => {
+    onClose()
+  }
 
   return (
-    <Modal
-      closeIcon
-      onClose={handleClose}
-      onOpen={handleOpen}
-      open={open}
-      trigger={trigger}
-    >
-      <Modal.Header>Configure Mastodon</Modal.Header>
-      <Modal.Content>
+    <Dialog open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Configure Mastodon
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
         <MastodonForm callback={handleClose} ticker={ticker} />
-      </Modal.Content>
-      <Modal.Actions>
-        <Button.Group>
-          <Button
-            color="green"
-            content="Save"
-            form="configureMastodon"
-            type="submit"
-          />
-          <Button.Or />
-          <Button
-            color="red"
-            content="Close"
-            onClick={handleClose}
-            type="button"
-          />
-        </Button.Group>
-      </Modal.Actions>
-    </Modal>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          color="secondary"
+          form="configureMastodon"
+          type="submit"
+          variant="contained"
+        >
+          Save
+        </Button>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

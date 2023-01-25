@@ -1,5 +1,6 @@
+import { ChipPropsColorOverrides, Chip } from '@mui/material'
+import { OverridableStringUnion } from '@mui/types'
 import React, { FC, useEffect, useState } from 'react'
-import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import { MESSAGE_LIMIT } from './MessageForm'
 
 interface Props {
@@ -7,26 +8,38 @@ interface Props {
 }
 
 const MessageFormCounter: FC<Props> = ({ letterCount }) => {
-  const [color, setColor] = useState<SemanticCOLORS>('green')
+  const [color, setColor] =
+    useState<
+      OverridableStringUnion<
+        | 'default'
+        | 'primary'
+        | 'secondary'
+        | 'error'
+        | 'info'
+        | 'success'
+        | 'warning',
+        ChipPropsColorOverrides
+      >
+    >('default')
 
-  //TODO: Calculate length for Twitter (cutting links to 20 characters)
   useEffect(() => {
     if (letterCount > MESSAGE_LIMIT) {
-      setColor('red')
-    } else if (letterCount >= 260) {
-      setColor('orange')
-    } else if (letterCount >= 220) {
-      setColor('yellow')
+      setColor('error')
+    } else if (letterCount >= 240) {
+      setColor('warning')
+    } else if (letterCount === 0) {
+      setColor('default')
     } else {
-      setColor('green')
+      setColor('success')
     }
   }, [letterCount])
 
   return (
-    <Label
+    <Chip
       color={color}
-      content={`${letterCount}/${MESSAGE_LIMIT}`}
-      style={{ float: 'right' }}
+      label={`${letterCount}/${MESSAGE_LIMIT}`}
+      size="small"
+      variant="outlined"
     />
   )
 }

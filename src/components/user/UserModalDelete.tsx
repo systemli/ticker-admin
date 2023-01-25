@@ -1,46 +1,66 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Confirm } from 'semantic-ui-react'
 import { User, useUserApi } from '../../api/User'
 import useAuth from '../useAuth'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material'
+import { Close } from '@mui/icons-material'
 
 interface Props {
+  onClose: () => void
+  open: boolean
   user: User
-  trigger: React.ReactNode
 }
 
-const UserModalDelete: FC<Props> = props => {
+const UserModalDelete: FC<Props> = ({ onClose, open, user }) => {
   const { token } = useAuth()
   const { deleteUser } = useUserApi(token)
-  const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
-  const user = props.user
 
-  const handleCancel = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const handleClose = () => {
+    onClose()
+  }
 
-  const handleConfirm = useCallback(() => {
+  const handleDelete = useCallback(() => {
     deleteUser(user).finally(() => {
       queryClient.invalidateQueries(['users'])
-      setOpen(false)
+      onClose()
     })
-  }, [deleteUser, user, queryClient])
-
-  const handleOpen = useCallback(() => {
-    setOpen(true)
-  }, [])
+  }, [deleteUser, user, queryClient, onClose])
 
   return (
-    <Confirm
-      dimmer
-      onCancel={handleCancel}
-      onConfirm={handleConfirm}
-      onOpen={handleOpen}
-      open={open}
-      size="mini"
-      trigger={props.trigger}
-    />
+    <Dialog maxWidth="md" open={open}>
+      <DialogTitle>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          Delete User
+          <IconButton onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
+      <DialogContent>
+        Are you sure to delete the user? This action cannot be undone.
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" onClick={handleDelete} variant="contained">
+          Delete
+        </Button>
+        <Button color="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

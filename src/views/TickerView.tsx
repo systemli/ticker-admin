@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { Loader } from 'semantic-ui-react'
 import { useTickerApi } from '../api/Ticker'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
@@ -7,6 +6,7 @@ import useAuth from '../components/useAuth'
 import Ticker from '../components/ticker/Ticker'
 import Layout from './Layout'
 import ErrorView from './ErrorView'
+import Loader from '../components/Loader'
 
 interface TickerViewParams {
   tickerId: string
@@ -23,11 +23,15 @@ const TickerView: FC = () => {
   )
 
   if (isLoading) {
-    return <Loader size="large" />
+    return <Loader />
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return <ErrorView>Unable to fetch the ticker from server.</ErrorView>
+    return (
+      <ErrorView queryKey={['ticker', tickerIdNum]}>
+        Unable to fetch the ticker from server.
+      </ErrorView>
+    )
   }
 
   const ticker = data.data.ticker

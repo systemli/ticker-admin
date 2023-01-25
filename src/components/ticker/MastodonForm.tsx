@@ -1,12 +1,14 @@
-import { useQueryClient } from '@tanstack/react-query'
-import React, { ChangeEvent, FC, FormEvent, useCallback } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import {
-  CheckboxProps,
-  Form,
-  InputOnChangeData,
-  Message,
-} from 'semantic-ui-react'
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  TextField,
+  Typography,
+} from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
+import React, { FC } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { Ticker, TickerMastodonFormData, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 
@@ -19,27 +21,13 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
   const mastodon = ticker.mastodon
   const { token } = useAuth()
   const { putTickerMastodon } = useTickerApi(token)
-  const { handleSubmit, setValue } = useForm<TickerMastodonFormData>({
+  const { handleSubmit, register } = useForm<TickerMastodonFormData>({
     defaultValues: {
       active: mastodon.active,
       server: mastodon.server,
     },
   })
   const queryClient = useQueryClient()
-
-  const onChange = useCallback(
-    (
-      e: ChangeEvent | FormEvent,
-      { name, value, checked }: InputOnChangeData | CheckboxProps
-    ) => {
-      if (checked !== undefined) {
-        setValue(name, checked)
-      } else {
-        setValue(name, value)
-      }
-    },
-    [setValue]
-  )
 
   const onSubmit: SubmitHandler<TickerMastodonFormData> = data => {
     putTickerMastodon(data, ticker).finally(() => {
@@ -49,56 +37,73 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
   }
 
   return (
-    <Form id="configureMastodon" onSubmit={handleSubmit(onSubmit)}>
-      <Message info>
-        <Message.Header>Information</Message.Header>
-        <Message.Content>
-          You need to create a Application for Ticker in Mastodon. Go to your
-          profile settings in Mastodon. You find a menu point {`"`}Developer
-          {`"`} where you need to create an Application. After saving you see
-          the required secrets and tokens.
-        </Message.Content>
-        <Message.Content>
-          Required Scopes: <code>read write write:media write:statuses</code>
-        </Message.Content>
-      </Message>
-      <Form.Checkbox
-        defaultChecked={mastodon.active}
-        label="Active"
-        name="active"
-        onChange={onChange}
-        toggle
-      />
-      <Form.Input
-        defaultValue={mastodon.server}
-        label="Server"
-        name="server"
-        onChange={onChange}
-        placeholder="https://mastodon.social"
-        required
-      />
-      <Form.Input
-        label="Token"
-        name="token"
-        onChange={onChange}
-        required
-        type="password"
-      />
-      <Form.Input
-        label="Secret"
-        name="secret"
-        onChange={onChange}
-        required
-        type="password"
-      />
-      <Form.Input
-        label="Access Token"
-        name="access_token"
-        onChange={onChange}
-        required
-        type="password"
-      />
-    </Form>
+    <form id="configureMastodon" onSubmit={handleSubmit(onSubmit)}>
+      <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
+        <Grid item xs={12}>
+          <Typography>
+            You need to create a Application for Ticker in Mastodon. Go to your
+            profile settings in Mastodon. You find a menu point {`"`}Developer
+            {`"`} where you need to create an Application. After saving you see
+            the required secrets and tokens. Required Scopes:{' '}
+            <code>read write write:media write:statuses</code>
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  {...register('active')}
+                  defaultChecked={ticker.mastodon.active}
+                />
+              }
+              label="Active"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <TextField
+              {...register('server')}
+              defaultValue={ticker.mastodon.server}
+              label="Server"
+              placeholder="https://mastodon.social"
+              required
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <TextField
+              {...register('token')}
+              label="Token"
+              required
+              type="password"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <TextField
+              {...register('secret')}
+              label="Secret"
+              required
+              type="password"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <TextField
+              {...register('access_token')}
+              label="Access Token"
+              required
+              type="password"
+            />
+          </FormGroup>
+        </Grid>
+      </Grid>
+    </form>
   )
 }
 

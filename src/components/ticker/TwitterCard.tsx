@@ -1,12 +1,24 @@
 import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import TwitterLogin from 'react-twitter-auth'
-import { Button, Card, Container, Icon, Image } from 'semantic-ui-react'
 import { ApiUrl } from '../../api/Api'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Icon,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material'
+import { faBan, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -18,9 +30,9 @@ interface TwitterAuthResponseData {
 }
 
 const TwitterCard: FC<Props> = ({ ticker }) => {
-  const queryClient = useQueryClient()
   const { token } = useAuth()
   const { deleteTickerTwitter, putTickerTwitter } = useTickerApi(token)
+  const queryClient = useQueryClient()
 
   const twitter = ticker.twitter || {}
   const requestTokenUrl = `${ApiUrl}/admin/auth/twitter/request_token?callback=${encodeURI(
@@ -62,83 +74,89 @@ const TwitterCard: FC<Props> = ({ ticker }) => {
     alert(error)
   }, [])
 
-  return twitter.connected ? (
-    <Container>
-      <Card fluid>
-        <Card.Content>
-          {twitter.image_url != '' && (
-            <Image floated="right" size="mini" src={twitter.image_url} />
-          )}
-          <Card.Header>
-            <Icon
-              color={twitter.active ? 'green' : 'red'}
-              name={twitter.active ? 'toggle on' : 'toggle off'}
-            />
-            {twitter.name}
-          </Card.Header>
-          <Card.Meta>
-            <a
-              href={'https://twitter.com/' + twitter.screen_name}
-              rel="noopener noreferrer"
-              target="_blank"
+  const profileLink = (
+    <Link
+      href={'https://twitter.com/' + twitter.screen_name}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      @{twitter.screen_name}
+    </Link>
+  )
+
+  return (
+    <Card>
+      <CardContent>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          <Typography component="h5" variant="h5">
+            <FontAwesomeIcon icon={faTwitter} /> Twitter
+          </Typography>
+          {twitter.connected === false ? (
+            //TODO: Reimplement and remove the dependency
+            <TwitterLogin
+              // @ts-ignore
+              loginUrl={loginUrl}
+              onFailure={alertError}
+              onSuccess={handleConnect}
+              requestTokenUrl={requestTokenUrl}
+              showIcon={false}
+              text="Connect"
             >
-              @{twitter.screen_name}
-            </a>
-          </Card.Meta>
-          <Card.Description>{twitter.description}</Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <Button.Group compact size="tiny">
-            {twitter.active ? (
-              <Button
-                color="yellow"
-                content="Disable"
-                icon="pause"
-                onClick={handleToggle}
-              />
-            ) : (
-              <Button
-                color="green"
-                content="Enable"
-                icon="play"
-                onClick={handleToggle}
-              />
-            )}
+              <Icon>
+                <FontAwesomeIcon icon={faTwitter} />
+              </Icon>
+              Connect
+            </TwitterLogin>
+          ) : null}
+        </Stack>
+      </CardContent>
+      <Divider variant="middle" />
+      <CardContent>
+        {twitter.connected ? (
+          <Box>
+            <Typography variant="body2">
+              You are connected with Twitter.
+            </Typography>
+            <Typography variant="body2">Your Profile: {profileLink}</Typography>
+          </Box>
+        ) : (
+          <Typography variant="body2">
+            You are currently not connected to Twitter. New messages will not be
+            published to your account and old messages can not be deleted
+            anymore.
+          </Typography>
+        )}
+      </CardContent>
+      {twitter.connected ? (
+        <CardActions>
+          {twitter.active ? (
             <Button
-              color="red"
-              content="Disconnect"
-              icon="delete"
-              onClick={handleDisconnect}
-            />
-          </Button.Group>
-        </Card.Content>
-      </Card>
-    </Container>
-  ) : (
-    <Container>
-      <Card fluid>
-        <Card.Content>
-          You are currently not connected to Twitter. New messages will not be
-          published to your account and old messages can not be deleted anymore.
-        </Card.Content>
-        <Card.Content extra>
-          <TwitterLogin
-            // @ts-ignore
-            className="ui button blue tiny compact"
-            loginUrl={loginUrl}
-            onFailure={alertError}
-            onSuccess={handleConnect}
-            requestTokenUrl={requestTokenUrl}
-            showIcon={false}
+              onClick={handleToggle}
+              startIcon={<FontAwesomeIcon icon={faPause} />}
+            >
+              Disable
+            </Button>
+          ) : (
+            <Button
+              onClick={handleToggle}
+              startIcon={<FontAwesomeIcon icon={faPlay} />}
+            >
+              Enable
+            </Button>
+          )}
+          <Button
+            onClick={handleDisconnect}
+            startIcon={<FontAwesomeIcon icon={faBan} />}
           >
-            <Icon>
-              <FontAwesomeIcon icon={faTwitter} />
-            </Icon>
-            Connect
-          </TwitterLogin>
-        </Card.Content>
-      </Card>
-    </Container>
+            Disconnect
+          </Button>
+        </CardActions>
+      ) : null}
+    </Card>
   )
 }
 

@@ -1,62 +1,77 @@
 import React, { FC } from 'react'
-import { Button, Card, Icon, Label } from 'semantic-ui-react'
-import ReactMarkdown from 'react-markdown'
-import TickerModalForm from './TickerModalForm'
+import { Box, Card, CardContent, Link, Typography } from '@mui/material'
 import { Ticker } from '../../api/Ticker'
+import NamedListItem from '../common/NamedListItem'
+import SocialConnectionChip from './SocialConnectionChip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCheck,
+  faHeading,
+  faLink,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
 }
 
-const TickerCard: FC<Props> = props => {
+const TickerCard: FC<Props> = ({ ticker }) => {
   return (
-    <Card fluid>
-      <Card.Content>
-        <Card.Header>
-          <Icon
-            color={props.ticker.active ? 'green' : 'red'}
-            name={props.ticker.active ? 'toggle on' : 'toggle off'}
-          />
-          {props.ticker.title}
-          <Label
-            content={props.ticker.id}
-            size="mini"
-            style={{ float: 'right' }}
-          />
-        </Card.Header>
-        <Card.Meta>
-          <a
-            href={'https://' + props.ticker.domain}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {props.ticker.domain}
-          </a>
-        </Card.Meta>
-        <Card.Description>
-          <ReactMarkdown>{props.ticker.description}</ReactMarkdown>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content>
-        <Button.Group compact size="tiny">
-          <TickerModalForm
-            ticker={props.ticker}
-            trigger={
-              <Button
-                color="black"
-                content="Configure"
-                icon={
-                  <Icon>
-                    <FontAwesomeIcon icon={faGear} />
-                  </Icon>
-                }
-              />
-            }
-          />
-        </Button.Group>
-      </Card.Content>
+    <Card>
+      <CardContent>
+        <NamedListItem title="Title">
+          <Typography>
+            <FontAwesomeIcon
+              color="GrayText"
+              icon={faHeading}
+              style={{ width: 16, paddingRight: 2 }}
+            />
+            {ticker.title}
+          </Typography>
+        </NamedListItem>
+        <NamedListItem title="Status">
+          <Typography>
+            <FontAwesomeIcon
+              color="GrayText"
+              icon={ticker.active ? faCheck : faXmark}
+              style={{ width: 16, paddingRight: 2 }}
+            />
+            {ticker.active ? 'Active' : 'Inactive'}
+          </Typography>
+        </NamedListItem>
+        <NamedListItem title="Domain">
+          <Typography>
+            <FontAwesomeIcon
+              color="GrayText"
+              icon={faLink}
+              style={{ width: 16, paddingRight: 2 }}
+            />
+            <Link
+              href={'https://' + ticker.domain}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {ticker.domain}
+            </Link>
+          </Typography>
+        </NamedListItem>
+        <NamedListItem title="Social Connections">
+          <Box>
+            <SocialConnectionChip
+              active={ticker.mastodon.active}
+              label="Mastodon"
+            />
+            <SocialConnectionChip
+              active={ticker.twitter.active}
+              label="Twitter"
+            />
+            <SocialConnectionChip
+              active={ticker.telegram.active}
+              label="Telegram"
+            />
+          </Box>
+        </NamedListItem>
+      </CardContent>
     </Card>
   )
 }

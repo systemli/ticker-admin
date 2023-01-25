@@ -1,11 +1,27 @@
+import React, { FC, useCallback, useState } from 'react'
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { FC, useCallback } from 'react'
-import { Button, Card, Container, Icon, Image } from 'semantic-ui-react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 import MastodonModalForm from './MastodonModalForm'
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material'
+import {
+  faBan,
+  faGear,
+  faPause,
+  faPlay,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -14,6 +30,8 @@ interface Props {
 const MastodonCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
   const { deleteTickerMastodon, putTickerMastodon } = useTickerApi(token)
+  const [open, setOpen] = useState<boolean>(false)
+
   const queryClient = useQueryClient()
 
   const mastodon = ticker.mastodon
@@ -31,85 +49,83 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
   }, [mastodon.active, putTickerMastodon, queryClient, ticker])
 
   const profileLink = (
-    <a
+    <Link
       href={mastodon.server + '/web/@' + mastodon.name}
       rel="noreferrer"
       target="_blank"
     >
       @{mastodon.name}@{mastodon.server.replace(/^https?:\/\//, '')}
-    </a>
+    </Link>
   )
 
-  return mastodon.connected ? (
-    <Container>
-      <Card fluid>
-        <Card.Content>
-          {mastodon.image_url != '' && (
-            <Image floated="right" size="mini" src={mastodon.image_url} />
-          )}
-          <Card.Header>
-            <Icon
-              color={mastodon.active ? 'green' : 'red'}
-              name={mastodon.active ? 'toggle on' : 'toggle off'}
-            />
-            {mastodon.screen_name}
-          </Card.Header>
-          <Card.Meta>{profileLink}</Card.Meta>
-        </Card.Content>
-        <Card.Content extra>
-          <Button.Group compact size="tiny">
-            {mastodon.active ? (
-              <Button
-                color="yellow"
-                content="Disable"
-                icon="pause"
-                onClick={handleToggle}
-              />
-            ) : (
-              <Button
-                color="green"
-                content="Enable"
-                icon="play"
-                onClick={handleToggle}
-              />
-            )}
+  return (
+    <Card>
+      <CardContent>
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+        >
+          <Typography component="h5" variant="h5">
+            <FontAwesomeIcon icon={faMastodon} /> Mastodon
+          </Typography>
+          <Button
+            onClick={() => setOpen(true)}
+            size="small"
+            startIcon={<FontAwesomeIcon icon={faGear} />}
+          >
+            Configure
+          </Button>
+        </Stack>
+      </CardContent>
+      <Divider variant="middle" />
+      <CardContent>
+        {mastodon.connected ? (
+          <Box>
+            <Typography variant="body2">
+              You are connected with Mastodon.
+            </Typography>
+            <Typography variant="body2">Your Profile: {profileLink}</Typography>
+          </Box>
+        ) : (
+          <Typography component="p" variant="body2">
+            You are currently not connected to Mastodon. New messages will not
+            be published to your account and old messages can not be deleted
+            anymore.
+          </Typography>
+        )}
+      </CardContent>
+      {mastodon.connected ? (
+        <CardActions>
+          {mastodon.active ? (
             <Button
-              color="red"
-              content="Disconnect"
-              icon="delete"
-              onClick={handleDisconnect}
-            />
-          </Button.Group>
-        </Card.Content>
-      </Card>
-    </Container>
-  ) : (
-    <Container>
-      <Card fluid>
-        <Card.Content>
-          You are currently not connected to Mastodon. New messages will not be
-          published to your account and old messages can not be deleted anymore.
-        </Card.Content>
-        <Card.Content extra>
-          <MastodonModalForm
-            ticker={ticker}
-            trigger={
-              <Button
-                color="blue"
-                compact
-                content="Configure"
-                icon={
-                  <Icon>
-                    <FontAwesomeIcon icon={faMastodon} />
-                  </Icon>
-                }
-                size="tiny"
-              />
-            }
-          />
-        </Card.Content>
-      </Card>
-    </Container>
+              onClick={handleToggle}
+              startIcon={<FontAwesomeIcon icon={faPause} />}
+            >
+              Disable
+            </Button>
+          ) : (
+            <Button
+              onClick={handleToggle}
+              startIcon={<FontAwesomeIcon icon={faPlay} />}
+            >
+              Enable
+            </Button>
+          )}
+          <Button
+            onClick={handleDisconnect}
+            startIcon={<FontAwesomeIcon icon={faBan} />}
+          >
+            Disconnect
+          </Button>
+        </CardActions>
+      ) : null}
+      <MastodonModalForm
+        onClose={() => setOpen(false)}
+        open={open}
+        ticker={ticker}
+      />
+    </Card>
   )
 }
 

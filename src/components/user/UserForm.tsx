@@ -1,25 +1,21 @@
-import React, {
-  ChangeEvent,
-  FC,
-  FormEvent,
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-} from 'react'
-import {
-  CheckboxProps,
-  DropdownProps,
-  Form,
-  Header,
-  InputOnChangeData,
-} from 'semantic-ui-react'
+import React, { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { User, useUserApi } from '../../api/User'
 import { useQueryClient } from '@tanstack/react-query'
-import TickersDropdown from '../ticker/TickersDropdown'
 import useAuth from '../useAuth'
+import {
+  FormControlLabel,
+  Checkbox,
+  FormGroup,
+  TextField,
+  Typography,
+  Grid,
+  Divider,
+} from '@mui/material'
+import TickersDropdown from '../ticker/TickersDropdown'
 
 interface Props {
+  id: string
   user?: User
   callback: () => void
 }
@@ -32,35 +28,25 @@ interface FormValues {
   tickers: Array<number>
 }
 
-const UserForm: FC<Props> = props => {
-  const user = props.user
+const UserForm: FC<Props> = ({ id, user, callback }) => {
   const { token } = useAuth()
   const { postUser, putUser } = useUserApi(token)
-  const { handleSubmit, register, setValue } = useForm<FormValues>({
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+  } = useForm<FormValues>({
     defaultValues: {
       email: user?.email,
       is_super_admin: user?.is_super_admin,
+      tickers: user?.tickers,
     },
   })
   const queryClient = useQueryClient()
-
-  const onChange = useCallback(
-    (
-      e: ChangeEvent | FormEvent | SyntheticEvent,
-      {
-        name,
-        value,
-        checked,
-      }: InputOnChangeData | CheckboxProps | DropdownProps
-    ) => {
-      if (checked !== undefined) {
-        setValue(name, checked)
-      } else {
-        setValue(name, value)
-      }
-    },
-    [setValue]
-  )
+  const isSuperAdminChecked = watch('is_super_admin')
+  const password = watch('password', '')
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     const formData = {
@@ -73,67 +59,98 @@ const UserForm: FC<Props> = props => {
     if (user) {
       putUser(formData, user).finally(() => {
         queryClient.invalidateQueries(['users'])
-        props.callback()
+        callback()
       })
     } else {
       postUser(formData).finally(() => {
         queryClient.invalidateQueries(['users'])
-        props.callback()
+        callback()
       })
     }
   }
 
   useEffect(() => {
-    register('email')
-    register('is_super_admin')
-    register('password')
-    register('password_validate')
     register('tickers')
   })
 
   return (
-    <Form id="userForm" onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group widths="2">
-        <Form.Input
-          defaultValue={user ? user.email : ''}
-          label="Email"
-          name="email"
-          onChange={onChange}
-          required
-        />
-      </Form.Group>
-      <Form.Checkbox
-        defaultChecked={user ? user.is_super_admin : false}
-        label="Super Admin"
-        name="is_super_admin"
-        onChange={onChange}
-        toggle
-      />
-      <Form.Group widths="equal">
-        <Form.Input
-          label="Password"
-          name="password"
-          onChange={onChange}
-          type="password"
-        />
-        <Form.Input
-          label="Repeat Password"
-          name="password_validate"
-          onChange={onChange}
-          type="password"
-        />
-      </Form.Group>
-      {!user?.is_super_admin ? (
-        <>
-          <Header>Permissions</Header>
-          <TickersDropdown
-            defaultValue={user?.tickers}
-            name="tickers"
-            onChange={onChange}
-          />
-        </>
-      ) : null}
-    </Form>
+    <form id={id} onSubmit={handleSubmit(onSubmit)}>
+      <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
+        <Grid item md={6} xs={12}>
+          <FormGroup>
+            <TextField
+              error={errors.email !== undefined}
+              margin="normal"
+              {...register('email')}
+              defaultValue={user ? user.email : ''}
+              label="E-Mail"
+              name="email"
+              required
+              type="email"
+            />
+          </FormGroup>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  {...register('is_super_admin')}
+                  defaultChecked={user?.is_super_admin}
+                />
+              }
+              label="Super Admin"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <FormGroup>
+            <TextField
+              error={errors.password !== undefined}
+              margin="normal"
+              {...register('password', {
+                minLength: {
+                  value: 8,
+                  message: 'Password must have at least 8 characters',
+                },
+              })}
+              helperText={errors.password?.message}
+              label="Password"
+              name="password"
+              required={!user}
+              type="password"
+            />
+            <TextField
+              error={errors.password_validate !== undefined}
+              margin="dense"
+              {...register('password_validate', {
+                validate: value =>
+                  value === password || 'The passwords do not match',
+              })}
+              helperText={errors.password_validate?.message}
+              label="Repeat Password"
+              name="password_validate"
+              required={!user}
+              type="password"
+            />
+          </FormGroup>
+        </Grid>
+        {!isSuperAdminChecked ? (
+          <Grid item xs={12}>
+            <Divider />
+            <Typography component="h6" sx={{ my: 1 }} variant="h6">
+              Permissions
+            </Typography>
+            <TickersDropdown
+              defaultValue={user?.tickers || []}
+              name="tickers"
+              onChange={tickers => {
+                setValue('tickers', tickers)
+              }}
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+        ) : null}
+      </Grid>
+    </form>
   )
 }
 

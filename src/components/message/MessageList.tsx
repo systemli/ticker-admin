@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
-import { Dimmer, Feed, Loader } from 'semantic-ui-react'
+import { useQuery } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
 import { useMessageApi } from '../../api/Message'
 import Message from './Message'
-import { useQuery } from '@tanstack/react-query'
 import useAuth from '../useAuth'
+import ErrorView from '../../views/ErrorView'
+import Loader from '../Loader'
 
 interface Props {
   ticker: Ticker
@@ -18,24 +19,23 @@ const MessageList: FC<Props> = ({ ticker }) => {
   )
 
   if (isLoading) {
-    return (
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
-      </Dimmer>
-    )
+    return <Loader />
   }
 
   if (error || data === undefined) {
-    //TODO: Generic Error View
-    return <React.Fragment>Error occured</React.Fragment>
+    return (
+      <ErrorView queryKey={['messages', ticker.id]}>
+        Unable to fetch messages from server.
+      </ErrorView>
+    )
   }
 
   return (
-    <Feed>
+    <>
       {data.data.messages.map(message => (
         <Message key={message.id} message={message} ticker={ticker} />
       ))}
-    </Feed>
+    </>
   )
 }
 
