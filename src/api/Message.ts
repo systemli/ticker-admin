@@ -29,9 +29,22 @@ export function useMessageApi(token: string) {
   }
 
   const getMessages = (
-    ticker: number
+    ticker: number,
+    before?: number,
+    after?: number,
+    limit = 10
   ): Promise<Response<MessagesResponseData>> => {
-    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
+    let params = `limit=${limit}`
+
+    if (before) {
+      params += `&before=${before}`
+    }
+
+    if (after) {
+      params += `&after=${after}`
+    }
+
+    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages?${params}`, {
       headers: headers,
     }).then(response => response.json())
   }

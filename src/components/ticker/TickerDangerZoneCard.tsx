@@ -4,16 +4,14 @@ import { Ticker } from '../../api/Ticker'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBiohazard, faTrash } from '@fortawesome/free-solid-svg-icons'
 import TickerResetModal from './TickerResetModal'
-import useAuth from '../useAuth'
 
 interface Props {
   ticker: Ticker
 }
 const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
-  const { user } = useAuth()
   const [resetOpen, setResetOpen] = useState<boolean>(false)
 
-  return user?.roles.includes('admin') ? (
+  return (
     <Card>
       <CardContent>
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
@@ -36,7 +34,7 @@ const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
         </Box>
       </CardContent>
     </Card>
-  ) : null
+  )
 }
 
 export default TickerDangerZoneCard
