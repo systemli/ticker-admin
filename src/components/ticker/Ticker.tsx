@@ -17,12 +17,14 @@ import {
 import TickerModalForm from './TickerModalForm'
 import TickerDangerZoneCard from './TickerDangerZoneCard'
 import TickerUsersCard from './TickerUsersCard'
+import useAuth from '../useAuth'
 
 interface Props {
   ticker: Model
 }
 
 const Ticker: FC<Props> = ({ ticker }) => {
+  const { user } = useAuth()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
 
   return (
@@ -63,12 +65,16 @@ const Ticker: FC<Props> = ({ ticker }) => {
         xs={12}
       >
         <TickerCard ticker={ticker} />
-        <Box sx={{ mt: 2 }}>
-          <TickerUsersCard ticker={ticker} />
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <TickerDangerZoneCard ticker={ticker} />
-        </Box>
+        {user?.roles.includes('admin') ? (
+          <>
+            <Box sx={{ mt: 2 }}>
+              <TickerUsersCard ticker={ticker} />
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <TickerDangerZoneCard ticker={ticker} />
+            </Box>
+          </>
+        ) : null}
       </Grid>
       <Grid container item md={8} rowSpacing={2} xs={12}>
         <Grid item xs={12}>
