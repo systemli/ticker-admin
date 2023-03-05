@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Navigate, RouteProps } from 'react-router'
 import useAuth, { Roles } from './useAuth'
 
-interface Props extends RouteProps {
+type Props = RouteProps & {
   role: Roles
   outlet: JSX.Element
 }
