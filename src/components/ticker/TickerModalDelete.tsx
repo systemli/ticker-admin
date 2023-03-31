@@ -2,16 +2,7 @@ import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-} from '@mui/material'
-import { Close } from '@mui/icons-material'
+import Modal from '../common/Modal'
 
 interface Props {
   onClose: () => void
@@ -24,10 +15,6 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   const { deleteTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
 
-  const handleClose = () => {
-    onClose()
-  }
-
   const handleDelete = useCallback(() => {
     deleteTicker(ticker).finally(() => {
       queryClient.invalidateQueries(['tickers'])
@@ -35,31 +22,15 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   }, [deleteTicker, ticker, queryClient])
 
   return (
-    <Dialog maxWidth="md" open={open}>
-      <DialogTitle>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-        >
-          Delete Ticker
-          <IconButton onClick={handleClose}>
-            <Close />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
-      <DialogContent>
-        Are you sure to delete the ticker? This action cannot be undone.
-      </DialogContent>
-      <DialogActions>
-        <Button color="error" onClick={handleDelete} variant="contained">
-          Delete
-        </Button>
-        <Button color="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <Modal
+      dangerActionButtonText="Delete"
+      onClose={onClose}
+      onDangerAction={handleDelete}
+      open={open}
+      title="Delete Ticker"
+    >
+      Are you sure to delete the ticker? This action cannot be undone.
+    </Modal>
   )
 }
 
