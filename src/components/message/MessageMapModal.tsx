@@ -5,16 +5,7 @@ import { EditControl } from 'react-leaflet-draw'
 import { FeatureCollection, Geometry } from 'geojson'
 import { Ticker } from '../../api/Ticker'
 import { leafletOnDataAddFitToBounds } from '../../lib/leafletFitBoundsHelper'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-} from '@mui/material'
-import { Close } from '@mui/icons-material'
+import Modal from '../common/Modal'
 
 interface Props {
   open: boolean
@@ -35,10 +26,6 @@ const MessageMapModal: FC<Props> = ({
   const position = latLng(ticker.location.lat, ticker.location.lon)
   const zoom = 7
 
-  const handleClose = () => {
-    onClose()
-  }
-
   const onFeatureGroupUpdate = (ref: FG) => {
     if (ref !== null) {
       setFeatureGroup(ref)
@@ -54,52 +41,32 @@ const MessageMapModal: FC<Props> = ({
   }
 
   return (
-    <Dialog fullWidth maxWidth="md" open={open}>
-      <DialogTitle>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-        >
-          Edit Map
-          <IconButton onClick={handleClose}>
-            <Close />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
-      <DialogContent sx={{ px: 0 }}>
-        <MapContainer center={position} style={{ height: 600 }} zoom={zoom}>
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <GeoJSON
-            data={map}
-            eventHandlers={{
-              add: leafletOnDataAddFitToBounds,
-            }}
+    <Modal
+      dialogContentSx={{ px: 0 }}
+      fullWidth={true}
+      onClose={onClose}
+      onSubmitAction={handleChange}
+      open={open}
+      submitForm="inactiveSettingForm"
+      title="Edit Map"
+    >
+      <MapContainer center={position} style={{ height: 600 }} zoom={zoom}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <GeoJSON
+          data={map}
+          eventHandlers={{
+            add: leafletOnDataAddFitToBounds,
+          }}
+        />
+        <FeatureGroup ref={onFeatureGroupUpdate}>
+          <EditControl
+            draw={{ circle: false, circlemarker: false }}
+            edit={{ featureGroup: featureGroup }}
+            position="topright"
           />
-          <FeatureGroup ref={onFeatureGroupUpdate}>
-            <EditControl
-              draw={{ circle: false, circlemarker: false }}
-              edit={{ featureGroup: featureGroup }}
-              position="topright"
-            />
-          </FeatureGroup>
-        </MapContainer>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color="primary"
-          form="inactiveSettingForm"
-          onClick={handleChange}
-          type="submit"
-          variant="contained"
-        >
-          Save
-        </Button>
-        <Button color="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </FeatureGroup>
+      </MapContainer>
+    </Modal>
   )
 }
 

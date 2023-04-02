@@ -2,16 +2,7 @@ import React, { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Message, useMessageApi } from '../../api/Message'
 import useAuth from '../useAuth'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-} from '@mui/material'
-import { Close } from '@mui/icons-material'
+import Modal from '../common/Modal'
 
 interface Props {
   onClose: () => void
@@ -23,10 +14,6 @@ const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
   const { deleteMessage } = useMessageApi(token)
   const queryClient = useQueryClient()
 
-  const handleClose = () => {
-    onClose()
-  }
-
   const handleDelete = useCallback(() => {
     deleteMessage(message).then(() => {
       queryClient.invalidateQueries(['messages', message.ticker])
@@ -35,31 +22,16 @@ const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
   }, [deleteMessage, message, onClose, queryClient])
 
   return (
-    <Dialog open={open}>
-      <DialogTitle>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-        >
-          Delete Message
-          <IconButton onClick={handleClose}>
-            <Close />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
-      <DialogContent>
-        Are you sure to delete the message? This action cannot be undone.
-      </DialogContent>
-      <DialogActions>
-        <Button color="error" onClick={handleDelete} variant="contained">
-          Delete
-        </Button>
-        <Button color="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <Modal
+      dangerActionButtonText="Delete"
+      maxWidth="sm"
+      onClose={onClose}
+      onDangerAction={handleDelete}
+      open={open}
+      title="Delete Message"
+    >
+      Are you sure to delete the message? This action cannot be undone.
+    </Modal>
   )
 }
 
