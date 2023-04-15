@@ -12,7 +12,6 @@ import useAuth from './useAuth'
 const FeatureContext = createContext<Features>({} as Features)
 
 const initalState: Features = {
-  twitter_enabled: false,
   telegram_enabled: false,
 }
 
@@ -46,7 +45,6 @@ export function FeatureProvider({
 
   const memoedValue = useMemo(
     () => ({
-      twitter_enabled: features.twitter_enabled,
       telegram_enabled: features.telegram_enabled,
     }),
     [features]

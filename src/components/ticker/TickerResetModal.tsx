@@ -38,10 +38,7 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
       <p>
         <strong>Are you sure you want to reset the ticker?</strong>
       </p>
-      <p>
-        This will remove all messages, descriptions, the connection to twitter
-        and disable the ticker.
-      </p>
+      <p>This will remove all messages, descriptions and disable the ticker.</p>
     </Modal>
   )
 }

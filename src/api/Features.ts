@@ -5,7 +5,6 @@ interface FeaturesResponseData {
 }
 
 export interface Features {
-  twitter_enabled: boolean
   telegram_enabled: boolean
 }
 

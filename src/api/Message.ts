@@ -13,7 +13,6 @@ export interface Message {
   ticker: number
   text: string
   creation_date: Date
-  twitter_url?: string
   telegram_url?: string
   mastodon_url?: string
   geo_information: string
