@@ -1,9 +1,5 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import {
-  faMastodon,
-  faTelegram,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons'
+import { faMastodon, faTelegram } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Link, Stack, Typography, useTheme } from '@mui/material'
 import React, { FC } from 'react'
@@ -22,7 +18,6 @@ const MessageFooter: FC<Props> = ({ message }) => {
         </Typography>
       </Box>
       <Box>
-        <Icon icon={faTwitter} url={message.twitter_url} />
         <Icon icon={faTelegram} url={message.telegram_url} />
         <Icon icon={faMastodon} url={message.mastodon_url} />
       </Box>

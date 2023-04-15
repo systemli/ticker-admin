@@ -62,10 +62,6 @@ const TickerCard: FC<Props> = ({ ticker }) => {
               label="Mastodon"
             />
             <SocialConnectionChip
-              active={ticker.twitter.active}
-              label="Twitter"
-            />
-            <SocialConnectionChip
               active={ticker.telegram.active}
               label="Telegram"
             />
