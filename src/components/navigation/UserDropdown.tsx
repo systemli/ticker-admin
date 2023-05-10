@@ -2,8 +2,10 @@ import React, { FC, useCallback, useState } from 'react'
 import { AccountCircle } from '@mui/icons-material'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import useAuth from '../useAuth'
+import UserChangePasswordModalForm from '../user/UserChangePasswordModalForm'
 
 const UserDropdown: FC = () => {
+  const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
 
@@ -42,8 +44,18 @@ const UserDropdown: FC = () => {
         <MenuItem disabled divider>
           {user?.email}
         </MenuItem>
+        <MenuItem
+          divider
+          onClick={() => {
+            handleClose()
+            setFormModalOpen(true)
+          }}
+        >
+          Change Password
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
+      <UserChangePasswordModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} />
     </>
   )
 }

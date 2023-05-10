@@ -23,6 +23,11 @@ export interface UserData {
   password?: string
 }
 
+export interface MeData {
+  password: string
+  newPassword: string
+}
+
 export function useUserApi(token: string) {
   const headers = {
     Accept: 'application/json',
@@ -57,5 +62,13 @@ export function useUserApi(token: string) {
     }).then(response => response.json())
   }
 
-  return { getUsers, putUser, postUser, deleteUser }
+  const putMe = (data: MeData): Promise<Response<UserResponseData>> => {
+    return fetch(`${ApiUrl}/admin/users/me`, {
+      body: JSON.stringify(data),
+      headers: headers,
+      method: 'put',
+    }).then(response => response.json())
+  }
+
+  return { getUsers, putUser, postUser, deleteUser, putMe }
 }
