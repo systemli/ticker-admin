@@ -55,7 +55,7 @@
     "@webpack-cli/serve": "^1.7.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^9.1.0",
-    "css-loader": "^6.7.1",
+    "css-loader": "^6.8.1",
     "cssnano": "^6.0.1",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",
