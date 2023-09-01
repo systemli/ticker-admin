@@ -30,7 +30,7 @@
     "react-leaflet-draw": "^0.20.1",
     "react-markdown": "^8.0.3",
     "react-moment": "^1.1.2",
-    "react-router": "^6.8.2",
+    "react-router": "^6.15.0",
     "react-router-dom": "^6.11.0"
   },
   "devDependencies": {
