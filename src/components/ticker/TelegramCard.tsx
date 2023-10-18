@@ -31,8 +31,8 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
   }, [deleteTickerTelegram, queryClient, ticker])
 
   const channelLink = (
-    <Link href={`https://t.me/${telegram.channel_name}`} rel="noreferrer" target="_blank">
-      {telegram.channel_name}
+    <Link href={`https://t.me/${telegram.channelName}`} rel="noreferrer" target="_blank">
+      {telegram.channelName}
     </Link>
   )
 
@@ -54,7 +54,7 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
           <Box>
             <Typography variant="body2">You are connected with Telegram.</Typography>
             <Typography variant="body2">
-              Your Channel: {channelLink} (Bot: {telegram.bot_username})
+              Your Channel: {channelLink} (Bot: {telegram.botUsername})
             </Typography>
           </Box>
         ) : (

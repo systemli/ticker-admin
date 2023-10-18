@@ -1,24 +1,24 @@
 import React, { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
-import { Setting, useSettingsApi } from '../../api/Settings'
+import { RefreshIntervalSetting, Setting, useSettingsApi } from '../../api/Settings'
 import useAuth from '../useAuth'
 import { FormGroup, Grid, TextField } from '@mui/material'
 
 interface Props {
   name: string
-  setting: Setting<string>
+  setting: Setting<RefreshIntervalSetting>
   callback: () => void
 }
 
 interface FormValues {
-  refresh_interval: number
+  refreshInterval: number
 }
 
 const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
-      refresh_interval: parseInt(setting.value, 10),
+      refreshInterval: parseInt(setting.value.refreshInterval, 10),
     },
   })
   const { token } = useAuth()
@@ -26,7 +26,7 @@ const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putRefreshInterval(data.refresh_interval)
+    putRefreshInterval(data.refreshInterval)
       .then(() => queryClient.invalidateQueries(['refresh_interval_setting']))
       .finally(() => callback())
   }
@@ -38,10 +38,9 @@ const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
           <FormGroup>
             <TextField
               margin="dense"
-              {...register('refresh_interval', { valueAsNumber: true })}
-              defaultValue={setting.value}
+              {...register('refreshInterval', { valueAsNumber: true })}
+              defaultValue={setting.value.refreshInterval}
               label="Interval"
-              name="refresh_interval"
               required
               type="number"
             />

@@ -12,7 +12,7 @@ interface Props {
 
 interface FormValues {
   active: boolean
-  channel_name: string
+  channelName: string
 }
 
 const TelegramForm: FC<Props> = ({ callback, ticker }) => {
@@ -22,7 +22,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
       active: telegram.active,
-      channel_name: telegram.channel_name,
+      channelName: telegram.channelName,
     },
   })
   const queryClient = useQueryClient()
@@ -48,13 +48,13 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
         <Grid item xs={12}>
           <FormGroup>
             <TextField
-              {...register('channel_name', {
+              {...register('channelName', {
                 pattern: {
                   value: /@\w+/i,
                   message: 'The Channel must start with an @',
                 },
               })}
-              defaultValue={telegram.channel_name}
+              defaultValue={telegram.channelName}
               label="Channel"
               required
             />

@@ -42,9 +42,9 @@ describe('UsersView', function () {
           users: [
             {
               id: 1,
-              creation_date: new Date(),
+              createdAt: new Date(),
               email: 'admin@systemli.org',
-              is_super_admin: true,
+              isSuperAdmin: true,
             },
           ],
         },
@@ -99,9 +99,9 @@ describe('UsersView', function () {
           users: [
             {
               id: 1,
-              creation_date: new Date(),
+              createdAt: new Date(),
               email: 'admin@systemli.org',
-              is_super_admin: true,
+              isSuperAdmin: true,
             },
           ],
         },

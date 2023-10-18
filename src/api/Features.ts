@@ -5,7 +5,7 @@ interface FeaturesResponseData {
 }
 
 export interface Features {
-  telegram_enabled: boolean
+  telegramEnabled: boolean
 }
 
 export function useFeatureApi(token: string) {

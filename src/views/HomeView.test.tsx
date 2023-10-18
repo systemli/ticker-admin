@@ -34,7 +34,7 @@ describe('HomeView', function () {
       tickers: [
         {
           id: 1,
-          creation_date: new Date(),
+          createdAt: new Date(),
           domain: 'localhost',
           title: 'title',
           description: 'description',

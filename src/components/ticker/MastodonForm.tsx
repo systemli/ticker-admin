@@ -61,7 +61,7 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <TextField {...register('access_token')} label="Access Token" required type="password" />
+            <TextField {...register('accessToken')} label="Access Token" required type="password" />
           </FormGroup>
         </Grid>
       </Grid>

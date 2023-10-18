@@ -45,7 +45,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
       .then(users =>
         setOptions(
           users.filter(user => {
-            return !user.is_super_admin
+            return !user.isSuperAdmin
           })
         )
       )

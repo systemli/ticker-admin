@@ -14,7 +14,7 @@ interface Props {
 
 interface FormValues {
   email: string
-  is_super_admin: boolean
+  isSuperAdmin: boolean
   password: string
   password_validate: string
   tickers: Array<number>
@@ -32,18 +32,18 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
   } = useForm<FormValues>({
     defaultValues: {
       email: user?.email,
-      is_super_admin: user?.is_super_admin,
+      isSuperAdmin: user?.isSuperAdmin,
       tickers: user?.tickers,
     },
   })
   const queryClient = useQueryClient()
-  const isSuperAdminChecked = watch('is_super_admin')
+  const isSuperAdminChecked = watch('isSuperAdmin')
   const password = watch('password', '')
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     const formData = {
       email: data.email,
-      is_super_admin: data.is_super_admin,
+      isSuperAdmin: data.isSuperAdmin,
       password: data.password,
       tickers: data.tickers,
     }
@@ -82,7 +82,7 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
             />
           </FormGroup>
           <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('is_super_admin')} defaultChecked={user?.is_super_admin} />} label="Super Admin" />
+            <FormControlLabel control={<Checkbox {...register('isSuperAdmin')} defaultChecked={user?.isSuperAdmin} />} label="Super Admin" />
           </FormGroup>
         </Grid>
         <Grid item md={6} xs={12}>
