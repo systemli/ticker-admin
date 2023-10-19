@@ -84,18 +84,13 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const getTickerUsers = (
-    ticker: Ticker
-  ): Promise<Response<TickerUsersResponseData>> => {
+  const getTickerUsers = (ticker: Ticker): Promise<Response<TickerUsersResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users`, {
       headers: headers,
     }).then(response => response.json())
   }
 
-  const deleteTickerUser = (
-    ticker: Ticker,
-    user: User
-  ): Promise<Response<any>> => {
+  const deleteTickerUser = (ticker: Ticker, user: User): Promise<Response<any>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users/${user.id}`, {
       headers: headers,
       method: 'delete',
@@ -103,15 +98,11 @@ export function useTickerApi(token: string) {
   }
 
   const getTickers = (): Promise<Response<TickersResponseData>> => {
-    return fetch(`${ApiUrl}/admin/tickers`, { headers: headers }).then(
-      response => response.json()
-    )
+    return fetch(`${ApiUrl}/admin/tickers`, { headers: headers }).then(response => response.json())
   }
 
   const getTicker = (id: number): Promise<Response<TickerResponseData>> => {
-    return fetch(`${ApiUrl}/admin/tickers/${id}`, { headers: headers }).then(
-      response => response.json()
-    )
+    return fetch(`${ApiUrl}/admin/tickers/${id}`, { headers: headers }).then(response => response.json())
   }
 
   const postTicker = (data: any): Promise<Response<TickerResponseData>> => {
@@ -122,10 +113,7 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const putTicker = (
-    data: any,
-    id: number
-  ): Promise<Response<TickerResponseData>> => {
+  const putTicker = (data: any, id: number): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${id}`, {
       headers: headers,
       body: JSON.stringify(data),
@@ -133,10 +121,7 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const putTickerUsers = (
-    ticker: Ticker,
-    users: number[]
-  ): Promise<Response<TickerUsersResponseData>> => {
+  const putTickerUsers = (ticker: Ticker, users: number[]): Promise<Response<TickerUsersResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users`, {
       headers: headers,
       method: 'put',
@@ -144,19 +129,14 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const putTickerReset = (
-    ticker: Ticker
-  ): Promise<Response<TickerResponseData>> => {
+  const putTickerReset = (ticker: Ticker): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/reset`, {
       headers: headers,
       method: 'put',
     }).then(response => response.json())
   }
 
-  const putTickerMastodon = (
-    data: TickerMastodonFormData,
-    ticker: Ticker
-  ): Promise<Response<TickerResponseData>> => {
+  const putTickerMastodon = (data: TickerMastodonFormData, ticker: Ticker): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/mastodon`, {
       headers: headers,
       body: JSON.stringify(data),
@@ -164,19 +144,14 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const deleteTickerMastodon = (
-    ticker: Ticker
-  ): Promise<Response<TickerResponseData>> => {
+  const deleteTickerMastodon = (ticker: Ticker): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/mastodon`, {
       headers: headers,
       method: 'delete',
     }).then(response => response.json())
   }
 
-  const putTickerTelegram = (
-    data: TickerTelegramFormData,
-    ticker: Ticker
-  ): Promise<Response<TickerResponseData>> => {
+  const putTickerTelegram = (data: TickerTelegramFormData, ticker: Ticker): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/telegram`, {
       headers: headers,
       body: JSON.stringify(data),
@@ -184,9 +159,7 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const deleteTickerTelegram = (
-    ticker: Ticker
-  ): Promise<Response<TickerResponseData>> => {
+  const deleteTickerTelegram = (ticker: Ticker): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/telegram`, {
       headers: headers,
       method: 'delete',

@@ -28,13 +28,7 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
   }, [onClose, putTickerReset, queryClient, ticker])
 
   return (
-    <Modal
-      dangerActionButtonText="Reset"
-      onClose={onClose}
-      onDangerAction={handleReset}
-      open={open}
-      title="Reset Ticker"
-    >
+    <Modal dangerActionButtonText="Reset" onClose={onClose} onDangerAction={handleReset} open={open} title="Reset Ticker">
       <p>
         <strong>Are you sure you want to reset the ticker?</strong>
       </p>

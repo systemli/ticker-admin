@@ -11,13 +11,7 @@ interface Props {
 
 const MastodonModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   return (
-    <Modal
-      maxWidth="sm"
-      onClose={onClose}
-      open={open}
-      submitForm="configureMastodon"
-      title="Configure Mastodon"
-    >
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureMastodon" title="Configure Mastodon">
       <MastodonForm callback={onClose} ticker={ticker} />
     </Modal>
   )

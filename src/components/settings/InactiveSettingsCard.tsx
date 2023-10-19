@@ -4,15 +4,7 @@ import { useSettingsApi } from '../../api/Settings'
 import ErrorView from '../../views/ErrorView'
 import useAuth from '../useAuth'
 import Loader from '../Loader'
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  Grid,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
@@ -22,10 +14,7 @@ const InactiveSettingsCard: FC = () => {
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
   const { getInactiveSettings } = useSettingsApi(token)
-  const { isLoading, error, data } = useQuery(
-    ['inactive_settings'],
-    getInactiveSettings
-  )
+  const { isLoading, error, data } = useQuery(['inactive_settings'], getInactiveSettings)
 
   const handleFormOpen = () => {
     setFormOpen(true)
@@ -40,11 +29,7 @@ const InactiveSettingsCard: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return (
-      <ErrorView queryKey={['inactive_settings']}>
-        Unable to fetch inactive settings from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['inactive_settings']}>Unable to fetch inactive settings from server.</ErrorView>
   }
 
   const setting = data.data.setting
@@ -52,20 +37,11 @@ const InactiveSettingsCard: FC = () => {
   return (
     <Card>
       <CardContent>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-        >
+        <Stack alignItems="center" direction="row" justifyContent="space-between">
           <Typography component="h3" variant="h5">
             Inactive Settings
           </Typography>
-          <Button
-            data-testid="inactivesetting-edit"
-            onClick={handleFormOpen}
-            size="small"
-            startIcon={<FontAwesomeIcon icon={faPencil} />}
-          >
+          <Button data-testid="inactivesetting-edit" onClick={handleFormOpen} size="small" startIcon={<FontAwesomeIcon icon={faPencil} />}>
             Edit
           </Button>
         </Stack>
@@ -127,11 +103,7 @@ const InactiveSettingsCard: FC = () => {
             </Box>
           </Grid>
         </Grid>
-        <InactiveSettingsModalForm
-          onClose={handleFormClose}
-          open={formOpen}
-          setting={setting}
-        />
+        <InactiveSettingsModalForm onClose={handleFormClose} open={formOpen} setting={setting} />
       </CardContent>
     </Card>
   )

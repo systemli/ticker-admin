@@ -31,15 +31,10 @@ export function useUserApi(token: string) {
   }
 
   const getUsers = (): Promise<Response<UsersResponseData>> => {
-    return fetch(`${ApiUrl}/admin/users`, { headers: headers }).then(response =>
-      response.json()
-    )
+    return fetch(`${ApiUrl}/admin/users`, { headers: headers }).then(response => response.json())
   }
 
-  const putUser = (
-    data: UserData,
-    user: User
-  ): Promise<Response<UserResponseData>> => {
+  const putUser = (data: UserData, user: User): Promise<Response<UserResponseData>> => {
     return fetch(`${ApiUrl}/admin/users/${user.id}`, {
       body: JSON.stringify(data),
       method: 'put',

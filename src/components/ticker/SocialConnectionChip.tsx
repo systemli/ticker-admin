@@ -11,13 +11,7 @@ interface Props {
 const SocialConnectionChip: FC<Props> = ({ active, label }) => {
   return (
     <>
-      <Chip
-        avatar={<FontAwesomeIcon icon={active ? faCheck : faXmark} />}
-        label={label}
-        size="small"
-        sx={{ mr: 1 }}
-        variant="outlined"
-      />
+      <Chip avatar={<FontAwesomeIcon icon={active ? faCheck : faXmark} />} label={label} size="small" sx={{ mr: 1 }} variant="outlined" />
     </>
   )
 }

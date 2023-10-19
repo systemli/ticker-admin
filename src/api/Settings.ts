@@ -37,25 +37,19 @@ export function useSettingsApi(token: string) {
     'Content-Type': 'application/json',
   }
 
-  const getInactiveSettings = (): Promise<
-    Response<InactiveSettingsResponseData>
-  > => {
+  const getInactiveSettings = (): Promise<Response<InactiveSettingsResponseData>> => {
     return fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
       headers: headers,
     }).then(response => response.json())
   }
 
-  const getRefreshInterval = (): Promise<
-    Response<RefreshIntervalResponseData>
-  > => {
+  const getRefreshInterval = (): Promise<Response<RefreshIntervalResponseData>> => {
     return fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
       headers: headers,
     }).then(response => response.json())
   }
 
-  const putRefreshInterval = (
-    refreshInterval: number
-  ): Promise<Response<RefreshIntervalResponseData>> => {
+  const putRefreshInterval = (refreshInterval: number): Promise<Response<RefreshIntervalResponseData>> => {
     return fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
       headers: headers,
       body: JSON.stringify({ refresh_interval: refreshInterval }),
@@ -63,9 +57,7 @@ export function useSettingsApi(token: string) {
     }).then(response => response.json())
   }
 
-  const putInactiveSettings = (
-    data: InactiveSetting
-  ): Promise<Response<InactiveSettingsResponseData>> => {
+  const putInactiveSettings = (data: InactiveSetting): Promise<Response<InactiveSettingsResponseData>> => {
     return fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
       headers: headers,
       body: JSON.stringify(data),

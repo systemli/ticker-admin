@@ -1,12 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { login as loginApi } from '../api/Auth'
 import { useLocation, useNavigate } from 'react-router'
 import decode from 'jwt-decode'
@@ -30,11 +22,7 @@ interface IAuthContext {
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext)
 
-export function AuthProvider({
-  children,
-}: {
-  children: ReactNode
-}): JSX.Element {
+export function AuthProvider({ children }: { children: ReactNode }): JSX.Element {
   const [user, setUser] = useState<User>()
   const [token, setToken] = useState<string>('')
   const [error, setError] = useState<Error>()
@@ -111,11 +99,7 @@ export function AuthProvider({
     [user, token, loading, error, login, logout]
   )
 
-  return (
-    <AuthContext.Provider value={memoedValue}>
-      {!loadingInitial && children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={memoedValue}>{!loadingInitial && children}</AuthContext.Provider>
 }
 
 export default function useAuth() {

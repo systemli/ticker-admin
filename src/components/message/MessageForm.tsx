@@ -10,19 +10,9 @@ import UploadButton from './UploadButton'
 import AttachmentsPreview from './AttachmentsPreview'
 import MessageMapModal from './MessageMapModal'
 import { FeatureCollection, Geometry } from 'geojson'
-import {
-  Box,
-  Button,
-  FormGroup,
-  IconButton,
-  Stack,
-  TextField,
-} from '@mui/material'
+import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faMapLocationDot,
-  faPaperPlane,
-} from '@fortawesome/free-solid-svg-icons'
+import { faMapLocationDot, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import palette from '../../theme/palette'
 
 interface Props {
@@ -75,12 +65,9 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     [attachments]
   )
 
-  const onMapUpdate = useCallback(
-    (featureGroups: FeatureCollection<Geometry, any>) => {
-      setMap(featureGroups)
-    },
-    []
-  )
+  const onMapUpdate = useCallback((featureGroups: FeatureCollection<Geometry, any>) => {
+    setMap(featureGroups)
+  }, [])
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     setIsSubmitting(true)
@@ -88,13 +75,11 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       return upload.id
     })
 
-    postMessage(ticker.id.toString(), data.message, map, uploads).finally(
-      () => {
-        queryClient.invalidateQueries(['messages', ticker.id])
-        setAttachments([])
-        setIsSubmitting(false)
-      }
-    )
+    postMessage(ticker.id.toString(), data.message, map, uploads).finally(() => {
+      queryClient.invalidateQueries(['messages', ticker.id])
+      setAttachments([])
+      setIsSubmitting(false)
+    })
   }
 
   useEffect(() => {
@@ -116,11 +101,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
           color={errors.message ? 'error' : 'primary'}
           error={!!errors.message}
           helperText={
-            errors.message?.type === 'maxLength'
-              ? 'The message is too long.'
-              : errors.message?.type === 'required'
-              ? 'The message is required.'
-              : null
+            errors.message?.type === 'maxLength' ? 'The message is too long.' : errors.message?.type === 'required' ? 'The message is required.' : null
           }
           multiline
           placeholder="Write a message"
@@ -129,38 +110,19 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       </FormGroup>
       <Stack alignItems="center" direction="row" justifyContent="space-between">
         <Box>
-          <Button
-            disabled={isSubmitting}
-            startIcon={<FontAwesomeIcon icon={faPaperPlane} />}
-            sx={{ mr: 1 }}
-            type="submit"
-            variant="outlined"
-          >
+          <Button disabled={isSubmitting} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
             Send
           </Button>
           <UploadButton onUpload={onUpload} ticker={ticker} />
           <IconButton component="span" onClick={() => setMapDialogOpen(true)}>
-            <FontAwesomeIcon
-              color={palette.primary['main']}
-              icon={faMapLocationDot}
-              size="xs"
-            />
+            <FontAwesomeIcon color={palette.primary['main']} icon={faMapLocationDot} size="xs" />
           </IconButton>
-          <MessageMapModal
-            map={map}
-            onChange={onMapUpdate}
-            onClose={() => setMapDialogOpen(false)}
-            open={mapDialogOpen}
-            ticker={ticker}
-          />
+          <MessageMapModal map={map} onChange={onMapUpdate} onClose={() => setMapDialogOpen(false)} open={mapDialogOpen} ticker={ticker} />
         </Box>
         <MessageFormCounter letterCount={message?.length || 0} />
       </Stack>
       <Box>
-        <AttachmentsPreview
-          attachments={attachments}
-          onDelete={onUploadDelete}
-        />
+        <AttachmentsPreview attachments={attachments} onDelete={onUploadDelete} />
       </Box>
     </form>
   )

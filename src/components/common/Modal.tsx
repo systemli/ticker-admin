@@ -1,15 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import {
-  Breakpoint,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-  SxProps,
-} from '@mui/material'
+import { Breakpoint, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, SxProps } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
 interface Props {
@@ -42,11 +32,7 @@ const Modal: FC<Props> = ({
   return (
     <Dialog fullWidth={fullWidth} maxWidth={maxWidth} open={open}>
       <DialogTitle>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-        >
+        <Stack alignItems="center" direction="row" justifyContent="space-between">
           {title}
           <IconButton onClick={onClose}>
             <Close />
@@ -56,13 +42,7 @@ const Modal: FC<Props> = ({
       <DialogContent sx={dialogContentSx}>{children}</DialogContent>
       <DialogActions>
         {submitForm && (
-          <Button
-            color="primary"
-            form={submitForm}
-            onClick={onSubmitAction}
-            type="submit"
-            variant="contained"
-          >
+          <Button color="primary" form={submitForm} onClick={onSubmitAction} type="submit" variant="contained">
             Save
           </Button>
         )}

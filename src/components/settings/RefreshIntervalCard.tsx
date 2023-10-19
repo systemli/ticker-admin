@@ -3,15 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useSettingsApi } from '../../api/Settings'
 import ErrorView from '../../views/ErrorView'
 import useAuth from '../useAuth'
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import Loader from '../Loader'
@@ -21,10 +13,7 @@ const RefreshIntervalCard: FC = () => {
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
   const { getRefreshInterval } = useSettingsApi(token)
-  const { isLoading, error, data } = useQuery(
-    ['refresh_interval_setting'],
-    getRefreshInterval
-  )
+  const { isLoading, error, data } = useQuery(['refresh_interval_setting'], getRefreshInterval)
 
   const handleFormOpen = () => {
     setFormOpen(true)
@@ -39,11 +28,7 @@ const RefreshIntervalCard: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return (
-      <ErrorView queryKey={['refresh_interval_setting']}>
-        Unable to fetch refresh interval setting from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['refresh_interval_setting']}>Unable to fetch refresh interval setting from server.</ErrorView>
   }
 
   const setting = data.data.setting
@@ -51,20 +36,11 @@ const RefreshIntervalCard: FC = () => {
   return (
     <Card>
       <CardContent>
-        <Stack
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-        >
+        <Stack alignItems="center" direction="row" justifyContent="space-between">
           <Typography component="h3" variant="h5">
             Refresh Interval
           </Typography>
-          <Button
-            data-testid="refreshinterval-edit"
-            onClick={handleFormOpen}
-            size="small"
-            startIcon={<FontAwesomeIcon icon={faPencil} />}
-          >
+          <Button data-testid="refreshinterval-edit" onClick={handleFormOpen} size="small" startIcon={<FontAwesomeIcon icon={faPencil} />}>
             Edit
           </Button>
         </Stack>
@@ -80,11 +56,7 @@ const RefreshIntervalCard: FC = () => {
           </Typography>
           <Typography>{setting.value} ms</Typography>
         </Box>
-        <RefreshIntervalModalForm
-          onClose={handleFormClose}
-          open={formOpen}
-          setting={setting}
-        />
+        <RefreshIntervalModalForm onClose={handleFormClose} open={formOpen} setting={setting} />
       </CardContent>
     </Card>
   )

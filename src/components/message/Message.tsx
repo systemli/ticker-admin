@@ -29,11 +29,7 @@ const Message: FC<Props> = ({ message, ticker }) => {
         >
           <Close />
         </IconButton>
-        <MessageModalDelete
-          message={message}
-          onClose={() => setDeleteModalOpen(false)}
-          open={deleteModalOpen}
-        />
+        <MessageModalDelete message={message} onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} />
         <p
           dangerouslySetInnerHTML={{
             __html: replaceMagic(message.text),

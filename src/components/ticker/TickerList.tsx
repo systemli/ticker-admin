@@ -6,16 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import Loader from '../Loader'
 import ErrorView from '../../views/ErrorView'
 import { Navigate } from 'react-router'
-import {
-  Card,
-  CardContent,
-  Table,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material'
+import { Card, CardContent, Table, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 
 const TickerList: FC = () => {
   const { token, user } = useAuth()
@@ -27,11 +18,7 @@ const TickerList: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return (
-      <ErrorView queryKey={['tickers']}>
-        Unable to fetch tickers from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['tickers']}>Unable to fetch tickers from server.</ErrorView>
   }
 
   const tickers = data.data.tickers
@@ -58,8 +45,7 @@ const TickerList: FC = () => {
               Oh no! Something unexpected happened
             </Typography>
             <Typography sx={{ mt: 2 }} variant="body1">
-              Currently there are no tickers for you. Contact your administrator
-              if that should be different.
+              Currently there are no tickers for you. Contact your administrator if that should be different.
             </Typography>
           </CardContent>
         </Card>

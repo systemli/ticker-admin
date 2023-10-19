@@ -18,23 +18,16 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
   const { getTickerUsers } = useTickerApi(token)
   const [formOpen, setFormOpen] = useState<boolean>(false)
-  const { isLoading, error, data } = useQuery(
-    ['tickerUsers', ticker.id],
-    () => {
-      return getTickerUsers(ticker)
-    }
-  )
+  const { isLoading, error, data } = useQuery(['tickerUsers', ticker.id], () => {
+    return getTickerUsers(ticker)
+  })
 
   if (isLoading) {
     return <Loader />
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return (
-      <ErrorView queryKey={['tickerUsers', ticker.id]}>
-        Unable to fetch users from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['tickerUsers', ticker.id]}>Unable to fetch users from server.</ErrorView>
   }
 
   const users = data.data.users
@@ -45,24 +38,12 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
           <FontAwesomeIcon icon={faUsers} /> Users
         </Typography>
-        <Typography variant="body2">
-          List of all granted users to this ticker. Only Admins can manage this
-          list.
-        </Typography>
+        <Typography variant="body2">List of all granted users to this ticker. Only Admins can manage this list.</Typography>
         <TickerUserList ticker={ticker} users={users} />
-        <Button
-          onClick={() => setFormOpen(true)}
-          startIcon={<FontAwesomeIcon icon={faShieldDog} />}
-          variant="outlined"
-        >
+        <Button onClick={() => setFormOpen(true)} startIcon={<FontAwesomeIcon icon={faShieldDog} />} variant="outlined">
           Manage Users
         </Button>
-        <TickerUsersModal
-          onClose={() => setFormOpen(false)}
-          open={formOpen}
-          ticker={ticker}
-          users={users}
-        />
+        <TickerUsersModal onClose={() => setFormOpen(false)} open={formOpen} ticker={ticker} users={users} />
       </CardContent>
     </Card>
   )

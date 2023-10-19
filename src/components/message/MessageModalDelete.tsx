@@ -22,14 +22,7 @@ const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
   }, [deleteMessage, message, onClose, queryClient])
 
   return (
-    <Modal
-      dangerActionButtonText="Delete"
-      maxWidth="sm"
-      onClose={onClose}
-      onDangerAction={handleDelete}
-      open={open}
-      title="Delete Message"
-    >
+    <Modal dangerActionButtonText="Delete" maxWidth="sm" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete Message">
       Are you sure to delete the message? This action cannot be undone.
     </Modal>
   )

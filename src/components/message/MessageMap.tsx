@@ -28,12 +28,7 @@ const MessageMap: FC<Props> = ({ message, ticker }) => {
   }
 
   return (
-    <MapContainer
-      center={position}
-      scrollWheelZoom={false}
-      style={{ height: 300 }}
-      zoom={7}
-    >
+    <MapContainer center={position} scrollWheelZoom={false} style={{ height: 300 }} zoom={7}>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <GeoJSON
         data={JSON.parse(message.geo_information)}

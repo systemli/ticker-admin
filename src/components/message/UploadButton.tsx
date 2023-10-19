@@ -40,11 +40,7 @@ const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
   return (
     <React.Fragment>
       <IconButton onClick={refClick} sx={{ mr: 1 }}>
-        <FontAwesomeIcon
-          color={palette.primary['main']}
-          icon={faImages}
-          size="xs"
-        />
+        <FontAwesomeIcon color={palette.primary['main']} icon={faImages} size="xs" />
       </IconButton>
       <input ref={ref} hidden multiple onChange={handleUpload} type="file" />
     </React.Fragment>

@@ -6,10 +6,7 @@ interface LoginResponse {
   token: string
 }
 
-export function login(
-  username: string,
-  password: string
-): Promise<LoginResponse> {
+export function login(username: string, password: string): Promise<LoginResponse> {
   return fetch(`${ApiUrl}/admin/login`, {
     headers: {
       Accept: 'application/json',

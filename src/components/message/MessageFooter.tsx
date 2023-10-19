@@ -34,12 +34,7 @@ const Icon: FC<IconProps> = ({ url, icon }) => {
   const theme = useTheme()
 
   return url ? (
-    <Link
-      href={url}
-      rel="noopener noreferrer"
-      style={{ marginLeft: theme.spacing(1) }}
-      target="_blank"
-    >
+    <Link href={url} rel="noopener noreferrer" style={{ marginLeft: theme.spacing(1) }} target="_blank">
       <FontAwesomeIcon icon={icon} />
     </Link>
   ) : null

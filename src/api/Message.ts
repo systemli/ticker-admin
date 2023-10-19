@@ -27,12 +27,7 @@ export function useMessageApi(token: string) {
     'Content-Type': 'application/json',
   }
 
-  const getMessages = (
-    ticker: number,
-    before?: number,
-    after?: number,
-    limit = 10
-  ): Promise<Response<MessagesResponseData>> => {
+  const getMessages = (ticker: number, before?: number, after?: number, limit = 10): Promise<Response<MessagesResponseData>> => {
     let params = `limit=${limit}`
 
     if (before) {
@@ -49,12 +44,7 @@ export function useMessageApi(token: string) {
   }
 
   // TODO: any
-  const postMessage = (
-    ticker: string,
-    text: string,
-    geoInformation: any,
-    attachments: any[]
-  ): Promise<Response<MessageResponseData>> => {
+  const postMessage = (ticker: string, text: string, geoInformation: any, attachments: any[]): Promise<Response<MessageResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
       headers: headers,
       body: JSON.stringify({
@@ -67,13 +57,10 @@ export function useMessageApi(token: string) {
   }
 
   const deleteMessage = (message: Message): Promise<Response<any>> => {
-    return fetch(
-      `${ApiUrl}/admin/tickers/${message.ticker}/messages/${message.id}`,
-      {
-        headers: headers,
-        method: 'delete',
-      }
-    ).then(response => response.json())
+    return fetch(`${ApiUrl}/admin/tickers/${message.ticker}/messages/${message.id}`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
   }
 
   return { deleteMessage, getMessages, postMessage }

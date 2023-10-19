@@ -29,21 +29,12 @@ function setup() {
 
 describe('LoginView', function () {
   test('login successful', async function () {
-    const jwt = sign(
-      { id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] },
-      'secret'
-    )
-    jest
-      .spyOn(api, 'login')
-      .mockResolvedValue({ code: 200, token: jwt, expire: new Date() })
+    const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
+    jest.spyOn(api, 'login').mockResolvedValue({ code: 200, token: jwt, expire: new Date() })
     setup()
 
-    const email = screen
-      .getByTestId('email')
-      .querySelector('input') as HTMLInputElement
-    const password = screen
-      .getByTestId('password')
-      .querySelector('input') as HTMLInputElement
+    const email = screen.getByTestId('email').querySelector('input') as HTMLInputElement
+    const password = screen.getByTestId('password').querySelector('input') as HTMLInputElement
     const submit = screen.getByTestId('submit') as HTMLElement
 
     expect(email).toBeInTheDocument()
@@ -61,12 +52,8 @@ describe('LoginView', function () {
     jest.spyOn(api, 'login').mockRejectedValue(new Error('Login failed'))
     setup()
 
-    const email = screen
-      .getByTestId('email')
-      .querySelector('input') as HTMLInputElement
-    const password = screen
-      .getByTestId('password')
-      .querySelector('input') as HTMLInputElement
+    const email = screen.getByTestId('email').querySelector('input') as HTMLInputElement
+    const password = screen.getByTestId('password').querySelector('input') as HTMLInputElement
     const submit = screen.getByTestId('submit') as HTMLElement
 
     expect(email).toBeInTheDocument()

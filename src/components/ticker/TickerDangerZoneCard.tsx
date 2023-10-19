@@ -18,19 +18,10 @@ const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
           <FontAwesomeIcon icon={faBiohazard} /> Danger Zone
         </Typography>
         <Box>
-          <Button
-            color="error"
-            onClick={() => setResetOpen(true)}
-            startIcon={<FontAwesomeIcon icon={faTrash} />}
-            variant="outlined"
-          >
+          <Button color="error" onClick={() => setResetOpen(true)} startIcon={<FontAwesomeIcon icon={faTrash} />} variant="outlined">
             Reset Ticker
           </Button>
-          <TickerResetModal
-            onClose={() => setResetOpen(false)}
-            open={resetOpen}
-            ticker={ticker}
-          />
+          <TickerResetModal onClose={() => setResetOpen(false)} open={resetOpen} ticker={ticker} />
         </Box>
       </CardContent>
     </Card>

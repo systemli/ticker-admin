@@ -46,12 +46,8 @@ const MessageAttachements: FC<Props> = ({ message }) => {
           mainSrc={urls[imageIndex]}
           nextSrc={urls[(imageIndex + 1) % urls.length]}
           onCloseRequest={closeImageLightbox}
-          onMoveNextRequest={() =>
-            setImageIndex((imageIndex + 1) % urls.length)
-          }
-          onMovePrevRequest={() =>
-            setImageIndex((imageIndex + urls.length - 1) % urls.length)
-          }
+          onMoveNextRequest={() => setImageIndex((imageIndex + 1) % urls.length)}
+          onMovePrevRequest={() => setImageIndex((imageIndex + urls.length - 1) % urls.length)}
           prevSrc={urls[(imageIndex + urls.length - 1) % urls.length]}
         />
       )}

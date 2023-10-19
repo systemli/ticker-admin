@@ -2,24 +2,10 @@ import React, { FC, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Ticker } from '../../api/Ticker'
 import useAuth from '../useAuth'
-import {
-  colors,
-  IconButton,
-  MenuItem,
-  Popover,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@mui/material'
+import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
 import { MoreVert } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCheck,
-  faHandPointer,
-  faPencil,
-  faTrash,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faHandPointer, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import TickerModalDelete from './TickerModalDelete'
 import TickerModalForm from './TickerModalForm'
 
@@ -49,11 +35,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
   return (
     <TableRow hover style={{ cursor: 'pointer' }}>
       <TableCell align="center" onClick={handleUse} padding="none" size="small">
-        {ticker.active ? (
-          <FontAwesomeIcon icon={faCheck} />
-        ) : (
-          <FontAwesomeIcon icon={faXmark} />
-        )}
+        {ticker.active ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
       </TableCell>
       <TableCell onClick={handleUse}>{ticker.title}</TableCell>
       <TableCell onClick={handleUse}>{ticker.domain}</TableCell>
@@ -111,16 +93,8 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
             </>
           ) : null}
         </Popover>
-        <TickerModalForm
-          onClose={() => setFormModalOpen(false)}
-          open={formModalOpen}
-          ticker={ticker}
-        />
-        <TickerModalDelete
-          onClose={() => setDeleteModalOpen(false)}
-          open={deleteModalOpen}
-          ticker={ticker}
-        />
+        <TickerModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} ticker={ticker} />
+        <TickerModalDelete onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} ticker={ticker} />
       </TableCell>
     </TableRow>
   )

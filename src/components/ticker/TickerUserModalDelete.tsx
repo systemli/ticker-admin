@@ -25,13 +25,7 @@ const TickerUserModalDelete: FC<Props> = ({ open, onClose, ticker, user }) => {
   }, [deleteTickerUser, ticker, user, queryClient, onClose])
 
   return (
-    <Modal
-      dangerActionButtonText="Delete"
-      onClose={onClose}
-      onDangerAction={handleDelete}
-      open={open}
-      title="Delete User from Ticker"
-    >
+    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete User from Ticker">
       Are you sure to remove <strong>{user.email}</strong> from this ticker?
     </Modal>
   )

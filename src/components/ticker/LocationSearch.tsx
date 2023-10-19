@@ -14,12 +14,8 @@ export interface Result {
   lon: number
 }
 
-async function api(
-  value: string,
-  signal: AbortSignal
-): Promise<SearchResult[]> {
-  const url =
-    'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + value
+async function api(value: string, signal: AbortSignal): Promise<SearchResult[]> {
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + value
 
   return fetch(url, { signal }).then(res => res.json())
 }
@@ -48,10 +44,7 @@ const LocationSearch: FC<Props> = ({ callback }) => {
       })
   }
 
-  const handleChange = (
-    event: React.SyntheticEvent,
-    value: SearchResult | null
-  ) => {
+  const handleChange = (event: React.SyntheticEvent, value: SearchResult | null) => {
     if (value) {
       callback({ title: value?.display_name, lat: value?.lat, lon: value?.lon })
     }
@@ -64,9 +57,7 @@ const LocationSearch: FC<Props> = ({ callback }) => {
       onChange={handleChange}
       onInputChange={handleInputChange}
       options={options}
-      renderInput={params => (
-        <TextField {...params} label="Location" variant="outlined" />
-      )}
+      renderInput={params => <TextField {...params} label="Location" variant="outlined" />}
     />
   )
 }

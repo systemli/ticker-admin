@@ -4,13 +4,7 @@ import UserListItems from './UserListItems'
 import useAuth from '../useAuth'
 import { useUserApi } from '../../api/User'
 import ErrorView from '../../views/ErrorView'
-import {
-  Table,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material'
+import { Table, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import Loader from '../Loader'
 
 const UserList: FC = () => {
@@ -23,11 +17,7 @@ const UserList: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return (
-      <ErrorView queryKey={['users']}>
-        Unable to fetch users from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['users']}>Unable to fetch users from server.</ErrorView>
   }
 
   const users = data.data.users
@@ -46,11 +36,7 @@ const UserList: FC = () => {
             <TableCell align="left" size="medium">
               E-Mail
             </TableCell>
-            <TableCell
-              align="left"
-              size="small"
-              sx={{ display: { xs: 'none', md: 'table-cell' } }}
-            >
+            <TableCell align="left" size="small" sx={{ display: { xs: 'none', md: 'table-cell' } }}>
               Creation Time
             </TableCell>
             <TableCell />
