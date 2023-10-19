@@ -15,7 +15,7 @@ interface TickerUsersResponseData {
 
 export interface Ticker {
   id: number
-  creation_date: Date
+  createdAt: Date
   domain: string
   title: string
   description: string
@@ -38,13 +38,13 @@ export interface TickerInformation {
 export interface TickerTelegram {
   active: boolean
   connected: boolean
-  bot_username: string
-  channel_name: string
+  botUsername: string
+  channelName: string
 }
 
 export interface TickerTelegramFormData {
   active: boolean
-  channel_name?: string
+  channelName?: string
 }
 
 export interface TickerMastodon {
@@ -54,7 +54,7 @@ export interface TickerMastodon {
   server: string
   screen_name: string
   description: string
-  image_url: string
+  imageUrl: string
 }
 
 export interface TickerMastodonFormData {
@@ -62,7 +62,7 @@ export interface TickerMastodonFormData {
   server?: string
   token?: string
   secret?: string
-  access_token?: string
+  accessToken?: string
 }
 
 export interface TickerLocation {

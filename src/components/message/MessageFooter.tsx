@@ -14,12 +14,12 @@ const MessageFooter: FC<Props> = ({ message }) => {
     <Stack alignItems="center" direction="row" justifyContent="space-between">
       <Box>
         <Typography variant="caption">
-          <Moment fromNow>{message.creation_date}</Moment>
+          <Moment fromNow>{message.createdAt}</Moment>
         </Typography>
       </Box>
       <Box>
-        <Icon icon={faTelegram} url={message.telegram_url} />
-        <Icon icon={faMastodon} url={message.mastodon_url} />
+        <Icon icon={faTelegram} url={message.telegramUrl} />
+        <Icon icon={faMastodon} url={message.mastodonUrl} />
       </Box>
     </Stack>
   )

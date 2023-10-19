@@ -10,16 +10,16 @@ export interface UserResponseData {
 
 export interface User {
   id: number
-  creation_date: Date
+  createdAt: Date
   email: string
   role: string
-  is_super_admin: boolean
+  isSuperAdmin: boolean
   tickers?: Array<number>
 }
 
 export interface UserData {
   email: string
-  is_super_admin: boolean
+  isSuperAdmin: boolean
   password?: string
 }
 

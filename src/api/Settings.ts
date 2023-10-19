@@ -4,6 +4,10 @@ interface InactiveSettingsResponseData {
   setting: Setting<InactiveSetting>
 }
 
+interface RefreshIntervalResponseData {
+  setting: Setting<RefreshIntervalSetting>
+}
+
 export interface Setting<T> {
   id: number
   name: string
@@ -12,7 +16,7 @@ export interface Setting<T> {
 
 export interface InactiveSetting {
   headline: string
-  sub_headline: string
+  subHeadline: string
   description: string
   author: string
   email: string
@@ -20,8 +24,8 @@ export interface InactiveSetting {
   twitter: string
 }
 
-interface RefreshIntervalResponseData {
-  setting: Setting<string>
+export interface RefreshIntervalSetting {
+  refreshInterval: string
 }
 
 export interface RefreshInterval {
@@ -52,7 +56,7 @@ export function useSettingsApi(token: string) {
   const putRefreshInterval = (refreshInterval: number): Promise<Response<RefreshIntervalResponseData>> => {
     return fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
       headers: headers,
-      body: JSON.stringify({ refresh_interval: refreshInterval }),
+      body: JSON.stringify({ refreshInterval: refreshInterval }),
       method: 'put',
     }).then(response => response.json())
   }

@@ -14,7 +14,7 @@ const MessageMap: FC<Props> = ({ message, ticker }) => {
   const position = latLng(ticker.location.lat, ticker.location.lon)
 
   const hasGeoInformation = () => {
-    const geoInformation = JSON.parse(message.geo_information)
+    const geoInformation = JSON.parse(message.geoInformation)
 
     if (typeof geoInformation.features === 'undefined') {
       return false
@@ -31,7 +31,7 @@ const MessageMap: FC<Props> = ({ message, ticker }) => {
     <MapContainer center={position} scrollWheelZoom={false} style={{ height: 300 }} zoom={7}>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <GeoJSON
-        data={JSON.parse(message.geo_information)}
+        data={JSON.parse(message.geoInformation)}
         eventHandlers={{
           add: leafletOnDataAddFitToBounds,
         }}

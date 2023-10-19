@@ -54,7 +54,7 @@ const RefreshIntervalCard: FC = () => {
           <Typography color="GrayText" component="span" variant="body2">
             Refresh Interval
           </Typography>
-          <Typography>{setting.value} ms</Typography>
+          <Typography>{setting.value.refreshInterval} ms</Typography>
         </Box>
         <RefreshIntervalModalForm onClose={handleFormClose} open={formOpen} setting={setting} />
       </CardContent>

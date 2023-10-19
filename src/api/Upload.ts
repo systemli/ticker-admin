@@ -7,7 +7,7 @@ interface UploadeResponseData {
 export interface Upload {
   id: number
   uuid: string
-  creation_date: Date
+  createdAt: Date
   url: string
   content_type: string
 }

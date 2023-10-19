@@ -31,11 +31,11 @@ const UserListItem: FC<Props> = ({ user }) => {
         {user.id}
       </TableCell>
       <TableCell align="center" padding="none">
-        {user.is_super_admin ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
+        {user.isSuperAdmin ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
       </TableCell>
       <TableCell>{user.email}</TableCell>
       <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-        <Moment date={user.creation_date} fromNow />
+        <Moment date={user.createdAt} fromNow />
       </TableCell>
       <TableCell align="right">
         <IconButton data-testid="usermenu" onClick={handleMenu} size="large">

@@ -12,10 +12,10 @@ export interface Message {
   id: number
   ticker: number
   text: string
-  creation_date: Date
-  telegram_url?: string
-  mastodon_url?: string
-  geo_information: string
+  createdAt: Date
+  telegramUrl?: string
+  mastodonUrl?: string
+  geoInformation: string
   // TODO
   attachments: any[]
 }

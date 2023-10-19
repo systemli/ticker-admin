@@ -61,7 +61,7 @@ const InactiveSettingsCard: FC = () => {
           <Typography color="GrayText" component="span" variant="body2">
             Subheadline
           </Typography>
-          <Typography>{setting.value.sub_headline}</Typography>
+          <Typography>{setting.value.subHeadline}</Typography>
         </Box>
         <Box sx={{ mb: 1 }}>
           <Typography color="GrayText" component="span" variant="body2">

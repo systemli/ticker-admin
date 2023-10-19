@@ -13,7 +13,7 @@ interface Props {
 
 interface FormValues {
   headline: string
-  sub_headline: string
+  subHeadline: string
   description: string
   author: string
   email: string
@@ -25,7 +25,7 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
       headline: setting.value.headline,
-      sub_headline: setting.value.sub_headline,
+      subHeadline: setting.value.subHeadline,
       description: setting.value.description,
       author: setting.value.author,
       email: setting.value.email,
@@ -53,14 +53,7 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormGroup>
-            <TextField
-              margin="dense"
-              {...register('sub_headline')}
-              defaultValue={setting.value.sub_headline}
-              label="Subheadline"
-              name="sub_headline"
-              required
-            />
+            <TextField margin="dense" {...register('subHeadline')} defaultValue={setting.value.subHeadline} label="Subheadline" required />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
@@ -72,7 +65,6 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
               {...register('description')}
               defaultValue={setting.value.description}
               label="Description"
-              name="description"
               required
             />
           </FormGroup>

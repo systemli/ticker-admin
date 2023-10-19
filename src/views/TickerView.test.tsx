@@ -22,7 +22,7 @@ describe('TickerView', function () {
     data: {
       ticker: {
         id: 1,
-        creation_time: new Date(),
+        createdAt: new Date(),
         domain: 'localhost',
         title: 'Ticker Title',
         description: 'Description',
@@ -42,8 +42,8 @@ describe('TickerView', function () {
           id: 1,
           ticker: 1,
           text: 'Message',
-          creation_time: new Date(),
-          geo_information: '{"type":"FeatureCollection","features":[]}',
+          createdAt: new Date(),
+          geoInformation: '{"type":"FeatureCollection","features":[]}',
           attachments: [],
         },
       ],
@@ -102,7 +102,6 @@ describe('TickerView', function () {
 
     // Loader for the Messages
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    screen.debug()
     expect(await screen.findByText('Message')).toBeInTheDocument()
   })
 })
