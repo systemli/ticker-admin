@@ -2,7 +2,7 @@
   "name": "ticker-admin",
   "scripts": {
     "start": "webpack serve --config webpack.dev.config.ts",
-    "test": "jest",
+    "test": "jest --silent --maxWorkers 2",
     "build": "webpack --config webpack.prod.config.ts"
   },
   "dependencies": {
