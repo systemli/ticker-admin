@@ -4,17 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import { User, useUserApi } from '../../api/User'
 import useAuth from '../useAuth'
-import {
-  Box,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  useTheme,
-} from '@mui/material'
+import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, useTheme } from '@mui/material'
 
 interface Props {
   ticker: Ticker
@@ -90,10 +80,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
 
   const getStyle = (value: number, users: number[]) => {
     return {
-      fontWeight:
-        users.indexOf(value) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
+      fontWeight: users.indexOf(value) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
     }
   }
 
@@ -101,22 +88,9 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
     <form id="tickerUsersForm" onSubmit={handleSubmit(updateTickerUsers)}>
       <FormControl sx={{ width: '100%', mt: 1 }}>
         <InputLabel>Users</InputLabel>
-        <Select
-          input={<OutlinedInput label="Users" />}
-          label="Users"
-          multiple
-          name="users"
-          onChange={handleChange}
-          renderValue={renderValue}
-          value={users}
-        >
+        <Select input={<OutlinedInput label="Users" />} label="Users" multiple name="users" onChange={handleChange} renderValue={renderValue} value={users}>
           {options.map(user => (
-            <MenuItem
-              key={user.id}
-              selected={users.includes(user.id)}
-              style={getStyle(user.id, users)}
-              value={user.id}
-            >
+            <MenuItem key={user.id} selected={users.includes(user.id)} style={getStyle(user.id, users)} value={user.id}>
               {user.email}
             </MenuItem>
           ))}

@@ -11,18 +11,8 @@ interface Props {
 
 const RefreshIntervalModalForm: FC<Props> = ({ open, onClose, setting }) => {
   return (
-    <Modal
-      fullWidth={true}
-      onClose={onClose}
-      open={open}
-      submitForm="refreshIntervalForm"
-      title="Edit Refresh Interval"
-    >
-      <RefreshIntervalForm
-        callback={onClose}
-        name="refreshIntervalForm"
-        setting={setting}
-      />
+    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="refreshIntervalForm" title="Edit Refresh Interval">
+      <RefreshIntervalForm callback={onClose} name="refreshIntervalForm" setting={setting} />
     </Modal>
   )
 }

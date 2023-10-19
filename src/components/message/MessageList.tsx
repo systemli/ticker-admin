@@ -20,14 +20,11 @@ const MessageList: FC<Props> = ({ ticker }) => {
     return getMessages(ticker.id, pageParam)
   }
 
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } =
-    useInfiniteQuery(['messages', ticker.id], fetchMessages, {
-      getNextPageParam: lastPage => {
-        return lastPage.data.messages.length === 10
-          ? lastPage.data.messages.slice(-1).pop()?.id
-          : undefined
-      },
-    })
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } = useInfiniteQuery(['messages', ticker.id], fetchMessages, {
+    getNextPageParam: lastPage => {
+      return lastPage.data.messages.length === 10 ? lastPage.data.messages.slice(-1).pop()?.id : undefined
+    },
+  })
 
   useEffect(() => {
     let fetching = false
@@ -58,28 +55,16 @@ const MessageList: FC<Props> = ({ ticker }) => {
   }
 
   if (status === 'error') {
-    return (
-      <ErrorView queryKey={['messages', ticker.id]}>
-        Unable to fetch messages from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['messages', ticker.id]}>Unable to fetch messages from server.</ErrorView>
   }
 
   return (
     <>
-      {data.pages.map(group =>
-        group.data.messages.map(message => (
-          <Message key={message.id} message={message} ticker={ticker} />
-        ))
-      )}
+      {data.pages.map(group => group.data.messages.map(message => <Message key={message.id} message={message} ticker={ticker} />))}
       {isFetchingNextPage ? (
         <CircularProgress size="3rem" />
       ) : hasNextPage ? (
-        <Button
-          disabled={!hasNextPage || isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-          variant="outlined"
-        >
+        <Button disabled={!hasNextPage || isFetchingNextPage} onClick={() => fetchNextPage()} variant="outlined">
           Load More
         </Button>
       ) : null}

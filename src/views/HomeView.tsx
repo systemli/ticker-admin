@@ -15,12 +15,7 @@ const HomeView: FC = () => {
     <Layout>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Stack
-            alignItems="center"
-            direction="row"
-            justifyContent="space-between"
-            mb={2}
-          >
+          <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" gutterBottom variant="h3">
               Tickers
             </Typography>

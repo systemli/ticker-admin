@@ -1,11 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import {
-  ThemeProvider as MUIThemeProvider,
-  createTheme,
-  StyledEngineProvider,
-  CssBaseline,
-  alpha,
-} from '@mui/material'
+import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider, CssBaseline, alpha } from '@mui/material'
 import GlobalStyles from './GlobalStyles'
 import palette from './palette'
 import shadows from './shadows'

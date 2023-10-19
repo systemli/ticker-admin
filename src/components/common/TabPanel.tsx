@@ -9,12 +9,7 @@ interface Props {
 
 const TabPanel: FC<Props> = ({ children, index, value }) => {
   return (
-    <div
-      aria-labelledby={`simple-tab-${index}`}
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      role="tabpanel"
-    >
+    <div aria-labelledby={`simple-tab-${index}`} hidden={value !== index} id={`simple-tabpanel-${index}`} role="tabpanel">
       {value === index && <Box sx={{ py: 2 }}>{children}</Box>}
     </div>
   )

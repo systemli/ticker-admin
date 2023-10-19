@@ -20,13 +20,7 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   }
 
   return (
-    <Modal
-      fullWidth
-      onClose={onClose}
-      open={open}
-      submitForm={tabValue === 0 ? 'tickerForm' : undefined}
-      title={ticker ? 'Configure Ticker' : 'Create Ticker'}
-    >
+    <Modal fullWidth onClose={onClose} open={open} submitForm={tabValue === 0 ? 'tickerForm' : undefined} title={ticker ? 'Configure Ticker' : 'Create Ticker'}>
       <Tabs onChange={handleTabChange} value={tabValue}>
         <Tab label="General" />
         <Tab disabled={!ticker} label="Social Connections" />

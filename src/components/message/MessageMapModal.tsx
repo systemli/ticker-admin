@@ -15,13 +15,7 @@ interface Props {
   ticker: Ticker
 }
 
-const MessageMapModal: FC<Props> = ({
-  open,
-  onChange,
-  onClose,
-  map,
-  ticker,
-}) => {
+const MessageMapModal: FC<Props> = ({ open, onChange, onClose, map, ticker }) => {
   const [featureGroup, setFeatureGroup] = useState<FG>(new L.FeatureGroup())
   const position = latLng(ticker.location.lat, ticker.location.lon)
   const zoom = 7
@@ -59,11 +53,7 @@ const MessageMapModal: FC<Props> = ({
           }}
         />
         <FeatureGroup ref={onFeatureGroupUpdate}>
-          <EditControl
-            draw={{ circle: false, circlemarker: false }}
-            edit={{ featureGroup: featureGroup }}
-            position="topright"
-          />
+          <EditControl draw={{ circle: false, circlemarker: false }} edit={{ featureGroup: featureGroup }} position="topright" />
         </FeatureGroup>
       </MapContainer>
     </Modal>

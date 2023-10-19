@@ -9,10 +9,7 @@ import SettingsView from './SettingsView'
 import userEvent from '@testing-library/user-event'
 
 describe('SettingsView', function () {
-  const jwt = sign(
-    { id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] },
-    'secret'
-  )
+  const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
   const inactiveSettingsResponse = JSON.stringify({
     data: {
       setting: {
@@ -97,9 +94,7 @@ describe('SettingsView', function () {
 
     await userEvent.click(inactiveSettingEditButton)
 
-    const inactiveSettingsDialogTitle = screen.getByText(
-      'Edit Inactive Settings'
-    )
+    const inactiveSettingsDialogTitle = screen.getByText('Edit Inactive Settings')
     expect(inactiveSettingsDialogTitle).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('button', { name: /close/i }))
@@ -128,8 +123,6 @@ describe('SettingsView', function () {
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })
-    expect(
-      await screen.findByText('Oh no! An error occured')
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Oh no! An error occured')).toBeInTheDocument()
   })
 })

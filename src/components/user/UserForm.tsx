@@ -3,15 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { User, useUserApi } from '../../api/User'
 import { useQueryClient } from '@tanstack/react-query'
 import useAuth from '../useAuth'
-import {
-  FormControlLabel,
-  Checkbox,
-  FormGroup,
-  TextField,
-  Typography,
-  Grid,
-  Divider,
-} from '@mui/material'
+import { FormControlLabel, Checkbox, FormGroup, TextField, Typography, Grid, Divider } from '@mui/material'
 import TickersDropdown from '../ticker/TickersDropdown'
 
 interface Props {
@@ -90,15 +82,7 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
             />
           </FormGroup>
           <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  {...register('is_super_admin')}
-                  defaultChecked={user?.is_super_admin}
-                />
-              }
-              label="Super Admin"
-            />
+            <FormControlLabel control={<Checkbox {...register('is_super_admin')} defaultChecked={user?.is_super_admin} />} label="Super Admin" />
           </FormGroup>
         </Grid>
         <Grid item md={6} xs={12}>
@@ -122,8 +106,7 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
               error={errors.password_validate !== undefined}
               margin="dense"
               {...register('password_validate', {
-                validate: value =>
-                  value === password || 'The passwords do not match',
+                validate: value => value === password || 'The passwords do not match',
               })}
               helperText={errors.password_validate?.message}
               label="Repeat Password"

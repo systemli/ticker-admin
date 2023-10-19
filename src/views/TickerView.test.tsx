@@ -68,10 +68,7 @@ describe('TickerView', function () {
         <MemoryRouter initialEntries={['/ticker/1']}>
           <AuthProvider>
             <Routes>
-              <Route
-                element={<ProtectedRoute outlet={<TickerView />} role="user" />}
-                path="/ticker/:tickerId"
-              />
+              <Route element={<ProtectedRoute outlet={<TickerView />} role="user" />} path="/ticker/:tickerId" />
             </Routes>
           </AuthProvider>
         </MemoryRouter>

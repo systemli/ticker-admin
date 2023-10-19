@@ -22,10 +22,7 @@ const AttachmentPreview: FC<Props> = ({ onDelete, upload }) => {
           objectFit: 'cover',
         }}
       />
-      <IconButton
-        onClick={handleDelete}
-        sx={{ position: 'absolute', right: 0 }}
-      >
+      <IconButton onClick={handleDelete} sx={{ position: 'absolute', right: 0 }}>
         <FontAwesomeIcon icon={faXmarkSquare} />
       </IconButton>
     </ImageListItem>

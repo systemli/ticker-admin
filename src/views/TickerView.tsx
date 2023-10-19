@@ -18,20 +18,14 @@ const TickerView: FC = () => {
   const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
   const tickerIdNum = parseInt(tickerId)
 
-  const { isLoading, error, data } = useQuery(['ticker', tickerIdNum], () =>
-    getTicker(tickerIdNum)
-  )
+  const { isLoading, error, data } = useQuery(['ticker', tickerIdNum], () => getTicker(tickerIdNum))
 
   if (isLoading) {
     return <Loader />
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return (
-      <ErrorView queryKey={['ticker', tickerIdNum]}>
-        Unable to fetch the ticker from server.
-      </ErrorView>
-    )
+    return <ErrorView queryKey={['ticker', tickerIdNum]}>Unable to fetch the ticker from server.</ErrorView>
   }
 
   const ticker = data.data.ticker

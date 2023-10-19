@@ -65,9 +65,7 @@ describe('HomeView', function () {
   }
 
   test('render empty list for admins', async function () {
-    jest
-      .spyOn(window.localStorage.__proto__, 'getItem')
-      .mockReturnValue(jwt('admin'))
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
     fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(emptyTickerResponse)
@@ -84,17 +82,11 @@ describe('HomeView', function () {
     setup()
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    expect(
-      await screen.findByText(
-        'There are no tickers yet. To start with a ticker, create one.'
-      )
-    ).toBeInTheDocument()
+    expect(await screen.findByText('There are no tickers yet. To start with a ticker, create one.')).toBeInTheDocument()
   })
 
   test('render empty list for user', async function () {
-    jest
-      .spyOn(window.localStorage.__proto__, 'getItem')
-      .mockReturnValue(jwt('user'))
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
     fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(emptyTickerResponse)
@@ -111,17 +103,11 @@ describe('HomeView', function () {
     setup()
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    expect(
-      await screen.findByText(
-        'Currently there are no tickers for you. Contact your administrator if that should be different.'
-      )
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Currently there are no tickers for you. Contact your administrator if that should be different.')).toBeInTheDocument()
   })
 
   test('render ticker view for user with 1 ticker', async function () {
-    jest
-      .spyOn(window.localStorage.__proto__, 'getItem')
-      .mockReturnValue(jwt('user'))
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
     fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(singleTickerResponse)
@@ -141,9 +127,7 @@ describe('HomeView', function () {
   })
 
   test('renders list with entries', async function () {
-    jest
-      .spyOn(window.localStorage.__proto__, 'getItem')
-      .mockReturnValue(jwt('admin'))
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
     fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(singleTickerResponse)
@@ -164,9 +148,7 @@ describe('HomeView', function () {
   })
 
   test('open create ticker form', async function () {
-    jest
-      .spyOn(window.localStorage.__proto__, 'getItem')
-      .mockReturnValue(jwt('admin'))
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
     fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(emptyTickerResponse)

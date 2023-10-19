@@ -1,13 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Alert, Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
 import React, { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
@@ -50,11 +41,7 @@ const LoginView: FC = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Box sx={{ mb: 2, textAlign: 'center' }}>
-            <img
-              alt="Systemli Logo"
-              src={logo}
-              style={{ marginLeft: 'auto', marginRight: 'auto' }}
-            />
+            <img alt="Systemli Logo" src={logo} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
             <Typography component="h4" sx={{ mt: 1 }} variant="h4">
               Ticker Login
             </Typography>
@@ -68,33 +55,9 @@ const LoginView: FC = () => {
                   {error.message}
                 </Alert>
               ) : null}
-              <TextField
-                {...register('email')}
-                autoFocus
-                data-testid="email"
-                fullWidth
-                label="E-Mail"
-                required
-                sx={{ my: 1 }}
-                type="email"
-              />
-              <TextField
-                {...register('password')}
-                data-testid="password"
-                fullWidth
-                label="Password"
-                required
-                sx={{ my: 1 }}
-                type="password"
-              />
-              <Button
-                data-testid="submit"
-                fullWidth
-                size="large"
-                sx={{ my: 1 }}
-                type="submit"
-                variant="contained"
-              >
+              <TextField {...register('email')} autoFocus data-testid="email" fullWidth label="E-Mail" required sx={{ my: 1 }} type="email" />
+              <TextField {...register('password')} data-testid="password" fullWidth label="Password" required sx={{ my: 1 }} type="password" />
+              <Button data-testid="submit" fullWidth size="large" sx={{ my: 1 }} type="submit" variant="contained">
                 Login
               </Button>
             </form>

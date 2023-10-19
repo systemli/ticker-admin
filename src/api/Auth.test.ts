@@ -16,17 +16,13 @@ describe('Auth', function () {
       { status: 401 }
     )
 
-    expect(login('user@systemli.org', 'password')).rejects.toThrow(
-      'Login failed'
-    )
+    expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
 
   test('server error', function () {
     fetchMock.mockReject()
 
-    expect(login('user@systemli.org', 'password')).rejects.toThrow(
-      'Login failed'
-    )
+    expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
 
   test('login successful', function () {

@@ -3,14 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
-import {
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
 
 interface Props {
   callback: () => void
@@ -45,22 +38,11 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
     <form id="configureTelegram" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid item xs={12}>
-          <Typography>
-            Only public Telegram Channels are supported. The name of the Channel
-            is prefixed with an @ (e.g. @channel).
-          </Typography>
+          <Typography>Only public Telegram Channels are supported. The name of the Channel is prefixed with an @ (e.g. @channel).</Typography>
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  {...register('active')}
-                  defaultChecked={ticker.telegram.active}
-                />
-              }
-              label="Active"
-            />
+            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.telegram.active} />} label="Active" />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>

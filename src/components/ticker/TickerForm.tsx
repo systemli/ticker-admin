@@ -6,28 +6,9 @@ import useAuth from '../useAuth'
 import LocationSearch, { Result } from './LocationSearch'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  Alert,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material'
-import {
-  faComputerMouse,
-  faEnvelope,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons'
-import {
-  faFacebook,
-  faTelegram,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons'
+import { Alert, Button, Checkbox, FormControlLabel, FormGroup, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material'
+import { faComputerMouse, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faFacebook, faTelegram, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 interface Props {
   id: string
@@ -124,47 +105,22 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid item sm={6} xs={12}>
           <FormGroup>
-            <TextField
-              {...register('title')}
-              label="Title"
-              margin="dense"
-              required
-            />
+            <TextField {...register('title')} label="Title" margin="dense" required />
           </FormGroup>
         </Grid>
         <Grid item sm={6} xs={12}>
           <FormGroup>
-            <TextField
-              {...register('domain')}
-              label="Domain"
-              margin="dense"
-              required
-            />
+            <TextField {...register('domain')} label="Domain" margin="dense" required />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  {...register('active')}
-                  defaultChecked={ticker?.active}
-                />
-              }
-              label="Active"
-            />
+            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker?.active} />} label="Active" />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <TextField
-              margin="dense"
-              maxRows={10}
-              multiline
-              {...register('description')}
-              label="Description"
-              required
-            />
+            <TextField margin="dense" maxRows={10} multiline {...register('description')} label="Description" required />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
@@ -273,8 +229,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
             Location
           </Typography>
           <Alert severity="info" variant="outlined">
-            You can add a default location to the ticker. This will help you to
-            have a pre-selected location when you add a map to a message. <br />
+            You can add a default location to the ticker. This will help you to have a pre-selected location when you add a map to a message. <br />
             Current Location:{' '}
             <code>
               {position.lat.toFixed(2)},{position.lon.toFixed(2)}
@@ -284,23 +239,14 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
         <Grid item xs={12}>
           <Stack direction="row" spacing={1}>
             <LocationSearch callback={onLocationChange} />
-            <Button
-              disabled={ticker?.location.lat === 0 && ticker.location.lon === 0}
-              onClick={onLoctionReset}
-              variant="outlined"
-            >
+            <Button disabled={ticker?.location.lat === 0 && ticker.location.lon === 0} onClick={onLoctionReset} variant="outlined">
               Reset
             </Button>
           </Stack>
         </Grid>
         {position.lat !== 0 && position.lon !== 0 ? (
           <Grid item xs={12}>
-            <MapContainer
-              center={[position.lat, position.lon]}
-              scrollWheelZoom={false}
-              style={{ height: 200 }}
-              zoom={10}
-            >
+            <MapContainer center={[position.lat, position.lon]} scrollWheelZoom={false} style={{ height: 200 }} zoom={10}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker position={[position.lat, position.lon]} />
             </MapContainer>

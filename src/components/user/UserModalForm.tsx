@@ -11,13 +11,7 @@ interface Props {
 
 const UserModalForm: FC<Props> = ({ open, onClose, user }) => {
   return (
-    <Modal
-      fullWidth={true}
-      onClose={onClose}
-      open={open}
-      submitForm="userForm"
-      title={user ? 'Update User' : 'Create User'}
-    >
+    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="userForm" title={user ? 'Update User' : 'Create User'}>
       <UserForm callback={onClose} id="userForm" user={user} />
     </Modal>
   )

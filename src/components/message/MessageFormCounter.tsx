@@ -9,18 +9,7 @@ interface Props {
 
 const MessageFormCounter: FC<Props> = ({ letterCount }) => {
   const [color, setColor] =
-    useState<
-      OverridableStringUnion<
-        | 'default'
-        | 'primary'
-        | 'secondary'
-        | 'error'
-        | 'info'
-        | 'success'
-        | 'warning',
-        ChipPropsColorOverrides
-      >
-    >('default')
+    useState<OverridableStringUnion<'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning', ChipPropsColorOverrides>>('default')
 
   useEffect(() => {
     if (letterCount > MESSAGE_LIMIT) {
@@ -34,14 +23,7 @@ const MessageFormCounter: FC<Props> = ({ letterCount }) => {
     }
   }, [letterCount])
 
-  return (
-    <Chip
-      color={color}
-      label={`${letterCount}/${MESSAGE_LIMIT}`}
-      size="small"
-      variant="outlined"
-    />
-  )
+  return <Chip color={color} label={`${letterCount}/${MESSAGE_LIMIT}`} size="small" variant="outlined" />
 }
 
 export default MessageFormCounter

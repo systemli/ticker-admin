@@ -22,13 +22,7 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   }, [deleteTicker, ticker, queryClient])
 
   return (
-    <Modal
-      dangerActionButtonText="Delete"
-      onClose={onClose}
-      onDangerAction={handleDelete}
-      open={open}
-      title="Delete Ticker"
-    >
+    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete Ticker">
       Are you sure to delete the ticker? This action cannot be undone.
     </Modal>
   )

@@ -26,28 +26,10 @@ const App: FC = () => {
           <AuthProvider>
             <FeatureProvider>
               <Routes>
-                <Route
-                  element={<ProtectedRoute outlet={<HomeView />} role="user" />}
-                  path="/"
-                />
-                <Route
-                  element={
-                    <ProtectedRoute outlet={<TickerView />} role="user" />
-                  }
-                  path="/ticker/:tickerId"
-                />
-                <Route
-                  element={
-                    <ProtectedRoute outlet={<UsersView />} role="admin" />
-                  }
-                  path="/users"
-                />
-                <Route
-                  element={
-                    <ProtectedRoute outlet={<SettingsView />} role="admin" />
-                  }
-                  path="/settings"
-                />
+                <Route element={<ProtectedRoute outlet={<HomeView />} role="user" />} path="/" />
+                <Route element={<ProtectedRoute outlet={<TickerView />} role="user" />} path="/ticker/:tickerId" />
+                <Route element={<ProtectedRoute outlet={<UsersView />} role="admin" />} path="/users" />
+                <Route element={<ProtectedRoute outlet={<SettingsView />} role="admin" />} path="/settings" />
                 <Route element={<LoginView />} path="/login" />
                 <Route element={<NotFoundView />} path="*" />
               </Routes>

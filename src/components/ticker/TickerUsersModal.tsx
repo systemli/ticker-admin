@@ -13,13 +13,7 @@ interface Props {
 
 const TickerUsersModal: FC<Props> = ({ onClose, open, ticker, users }) => {
   return (
-    <Modal
-      fullWidth={true}
-      onClose={onClose}
-      open={open}
-      submitForm="tickerUsersForm"
-      title="Manage User Access"
-    >
+    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="tickerUsersForm" title="Manage User Access">
       <TickerUsersForm
         defaultValue={users.map(user => {
           return user.id

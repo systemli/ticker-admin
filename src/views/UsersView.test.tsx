@@ -9,10 +9,7 @@ import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 
 describe('UsersView', function () {
-  const jwt = sign(
-    { id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] },
-    'secret'
-  )
+  const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
 
   beforeEach(() => {
     jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
@@ -162,8 +159,6 @@ describe('UsersView', function () {
     setup()
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    expect(
-      await screen.findByText('Oh no! An error occured')
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Oh no! An error occured')).toBeInTheDocument()
   })
 })

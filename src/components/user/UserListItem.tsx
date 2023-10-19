@@ -1,21 +1,8 @@
 import React, { FC, useState } from 'react'
-import {
-  faCheck,
-  faPencil,
-  faTrash,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
-import {
-  colors,
-  IconButton,
-  MenuItem,
-  Popover,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@mui/material'
+import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
 import Moment from 'react-moment'
 import { User } from '../../api/User'
 import UserModalDelete from './UserModalDelete'
@@ -44,11 +31,7 @@ const UserListItem: FC<Props> = ({ user }) => {
         {user.id}
       </TableCell>
       <TableCell align="center" padding="none">
-        {user.is_super_admin ? (
-          <FontAwesomeIcon icon={faCheck} />
-        ) : (
-          <FontAwesomeIcon icon={faXmark} />
-        )}
+        {user.is_super_admin ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
       </TableCell>
       <TableCell>{user.email}</TableCell>
       <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
@@ -97,16 +80,8 @@ const UserListItem: FC<Props> = ({ user }) => {
             <Typography sx={{ ml: 2 }}>Delete</Typography>
           </MenuItem>
         </Popover>
-        <UserModalForm
-          onClose={() => setFormModalOpen(false)}
-          open={formModalOpen}
-          user={user}
-        />
-        <UserModalDelete
-          onClose={() => setDeleteModalOpen(false)}
-          open={deleteModalOpen}
-          user={user}
-        />
+        <UserModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} user={user} />
+        <UserModalDelete onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} user={user} />
       </TableCell>
     </TableRow>
   )

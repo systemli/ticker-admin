@@ -11,13 +11,7 @@ interface Props {
 
 const TelegramModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   return (
-    <Modal
-      maxWidth="sm"
-      onClose={onClose}
-      open={open}
-      submitForm="configureTelegram"
-      title="Configure Telegram"
-    >
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureTelegram" title="Configure Telegram">
       <TelegramForm callback={onClose} ticker={ticker} />
     </Modal>
   )

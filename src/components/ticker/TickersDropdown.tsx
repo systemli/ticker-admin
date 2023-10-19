@@ -1,16 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import {
-  Box,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  SxProps,
-  useTheme,
-} from '@mui/material'
+import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, useTheme } from '@mui/material'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 
@@ -73,32 +62,16 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
 
   const getStyle = (value: number, tickers: number[]) => {
     return {
-      fontWeight:
-        tickers.indexOf(value) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
+      fontWeight: tickers.indexOf(value) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
     }
   }
 
   return (
     <FormControl sx={sx}>
       <InputLabel>Tickers</InputLabel>
-      <Select
-        input={<OutlinedInput label="Tickers" />}
-        label="Tickers"
-        multiple
-        name={name}
-        onChange={handleChange}
-        renderValue={renderValue}
-        value={tickers}
-      >
+      <Select input={<OutlinedInput label="Tickers" />} label="Tickers" multiple name={name} onChange={handleChange} renderValue={renderValue} value={tickers}>
         {options.map(ticker => (
-          <MenuItem
-            key={ticker.id}
-            selected={tickers.includes(ticker.id)}
-            style={getStyle(ticker.id, tickers)}
-            value={ticker.id}
-          >
+          <MenuItem key={ticker.id} selected={tickers.includes(ticker.id)} style={getStyle(ticker.id, tickers)} value={ticker.id}>
             {ticker.title}
           </MenuItem>
         ))}

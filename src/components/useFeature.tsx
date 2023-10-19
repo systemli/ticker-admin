@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import { Features, useFeatureApi } from '../api/Features'
 import useAuth from './useAuth'
 
@@ -15,11 +8,7 @@ const initalState: Features = {
   telegram_enabled: false,
 }
 
-export function FeatureProvider({
-  children,
-}: {
-  children: ReactNode
-}): JSX.Element {
+export function FeatureProvider({ children }: { children: ReactNode }): JSX.Element {
   const [features, setFeatures] = useState<Features>(initalState)
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true)
   const { token } = useAuth()
@@ -50,11 +39,7 @@ export function FeatureProvider({
     [features]
   )
 
-  return (
-    <FeatureContext.Provider value={memoedValue}>
-      {!loadingInitial && children}
-    </FeatureContext.Provider>
-  )
+  return <FeatureContext.Provider value={memoedValue}>{!loadingInitial && children}</FeatureContext.Provider>
 }
 
 export default function useFeature() {

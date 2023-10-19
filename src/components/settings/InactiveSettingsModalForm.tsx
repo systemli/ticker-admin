@@ -11,18 +11,8 @@ interface Props {
 
 const InactiveSettingsModalForm: FC<Props> = ({ open, onClose, setting }) => {
   return (
-    <Modal
-      fullWidth={true}
-      onClose={onClose}
-      open={open}
-      submitForm="inactiveSettingForm"
-      title="Edit Inactive Settings"
-    >
-      <InactiveSettingsForm
-        callback={onClose}
-        name="inactiveSettingForm"
-        setting={setting}
-      />
+    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="inactiveSettingForm" title="Edit Inactive Settings">
+      <InactiveSettingsForm callback={onClose} name="inactiveSettingForm" setting={setting} />
     </Modal>
   )
 }
