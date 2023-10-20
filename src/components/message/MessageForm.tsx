@@ -23,8 +23,6 @@ interface FormValues {
   message: string
 }
 
-export const MESSAGE_LIMIT = 280
-
 const MessageForm: FC<Props> = ({ ticker }) => {
   const {
     formState: { isSubmitSuccessful, errors },
@@ -44,6 +42,21 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     features: [],
   }
   const [map, setMap] = useState<FeatureCollection<Geometry, any>>(emptyMap)
+
+  /**
+   * Calculates the maximum length of a message based on the given ticker's configuration.
+   * If the ticker's Mastodon integration is active, the maximum length is 500 characters.
+   * Otherwise, the maximum length is 4096 characters (Telegram message limit).
+   * @param ticker - The ticker object to calculate the maximum message length for.
+   * @returns The maximum length of a message for the given ticker.
+   */
+  const maxLength: number = (function (ticker: Ticker) {
+    if (ticker.mastodon.active) {
+      return 500
+    }
+
+    return 4096
+  })(ticker)
 
   const onUpload = useCallback(
     (uploads: Upload[]) => {
@@ -96,7 +109,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         <TextField
           {...register('message', {
             required: true,
-            maxLength: MESSAGE_LIMIT,
+            maxLength: maxLength,
           })}
           color={errors.message ? 'error' : 'primary'}
           error={!!errors.message}
@@ -119,7 +132,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
           </IconButton>
           <MessageMapModal map={map} onChange={onMapUpdate} onClose={() => setMapDialogOpen(false)} open={mapDialogOpen} ticker={ticker} />
         </Box>
-        <MessageFormCounter letterCount={message?.length || 0} />
+        <MessageFormCounter letterCount={message?.length || 0} maxLength={maxLength} />
       </Stack>
       <Box>
         <AttachmentsPreview attachments={attachments} onDelete={onUploadDelete} />
