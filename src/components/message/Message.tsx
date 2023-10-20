@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react'
 import { Message as MessageType } from '../../api/Message'
-import { replaceMagic } from '../../lib/replaceLinksHelper'
 import MessageModalDelete from './MessageModalDelete'
 import MessageMap from './MessageMap'
 import { Ticker } from '../../api/Ticker'
@@ -32,7 +31,7 @@ const Message: FC<Props> = ({ message, ticker }) => {
         <MessageModalDelete message={message} onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} />
         <p
           dangerouslySetInnerHTML={{
-            __html: replaceMagic(message.text),
+            __html: message.text.replace(/(?:\r\n|\r|\n)/g, '<br/>'),
           }}
           style={{ paddingRight: theme.spacing(6) }}
         />
