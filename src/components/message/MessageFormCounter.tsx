@@ -1,29 +1,29 @@
 import { ChipPropsColorOverrides, Chip } from '@mui/material'
 import { OverridableStringUnion } from '@mui/types'
 import React, { FC, useEffect, useState } from 'react'
-import { MESSAGE_LIMIT } from './MessageForm'
 
 interface Props {
+  maxLength: number
   letterCount: number
 }
 
-const MessageFormCounter: FC<Props> = ({ letterCount }) => {
+const MessageFormCounter: FC<Props> = ({ letterCount, maxLength }) => {
   const [color, setColor] =
     useState<OverridableStringUnion<'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning', ChipPropsColorOverrides>>('default')
 
   useEffect(() => {
-    if (letterCount > MESSAGE_LIMIT) {
+    if (letterCount > maxLength) {
       setColor('error')
-    } else if (letterCount >= 240) {
+    } else if (letterCount >= maxLength * 0.9) {
       setColor('warning')
     } else if (letterCount === 0) {
       setColor('default')
     } else {
       setColor('success')
     }
-  }, [letterCount])
+  }, [letterCount, maxLength])
 
-  return <Chip color={color} label={`${letterCount}/${MESSAGE_LIMIT}`} size="small" variant="outlined" />
+  return <Chip color={color} label={`${letterCount}/${maxLength}`} size="small" variant="outlined" />
 }
 
 export default MessageFormCounter
