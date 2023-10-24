@@ -49,7 +49,7 @@ export function useMessageApi(token: string) {
       headers: headers,
       body: JSON.stringify({
         text: text,
-        geo_information: geoInformation,
+        geoInformation: geoInformation,
         attachments: attachments,
       }),
       method: 'post',
