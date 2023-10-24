@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import useAuth from '../useAuth'
 import { FormControlLabel, Checkbox, FormGroup, TextField, Typography, Grid, Divider } from '@mui/material'
 import TickersDropdown from '../ticker/TickersDropdown'
+import { Ticker } from '../../api/Ticker'
 
 interface Props {
   id: string
@@ -17,7 +18,7 @@ interface FormValues {
   isSuperAdmin: boolean
   password: string
   password_validate: string
-  tickers: Array<number>
+  tickers: Array<Ticker>
 }
 
 const UserForm: FC<Props> = ({ id, user, callback }) => {
