@@ -1,4 +1,5 @@
 import { ApiUrl, Response } from './Api'
+import { Ticker } from './Ticker'
 
 export interface UsersResponseData {
   users: Array<User>
@@ -14,7 +15,7 @@ export interface User {
   email: string
   role: string
   isSuperAdmin: boolean
-  tickers?: Array<number>
+  tickers?: Array<Ticker>
 }
 
 export interface UserData {

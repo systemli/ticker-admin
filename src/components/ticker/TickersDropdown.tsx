@@ -5,23 +5,25 @@ import useAuth from '../useAuth'
 
 interface Props {
   name: string
-  defaultValue: Array<number>
-  onChange: (tickers: number[]) => void
+  defaultValue: Array<Ticker>
+  onChange: (tickers: Array<Ticker>) => void
   sx?: SxProps
 }
 
 const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
   const [options, setOptions] = useState<Array<Ticker>>([])
-  const [tickers, setTickers] = useState<Array<number>>(defaultValue)
+  const [tickers, setTickers] = useState<Array<Ticker>>(defaultValue)
   const { token } = useAuth()
   const { getTickers } = useTickerApi(token)
   const theme = useTheme()
 
-  const handleChange = (event: SelectChangeEvent<typeof tickers>) => {
-    if (typeof event.target.value !== 'string') {
-      setTickers(event.target.value)
-      onChange(event.target.value)
-    }
+  const handleChange = (event: SelectChangeEvent<number[]>) => {
+    const tickerIds = event.target.value as Array<number>
+    const selectedTickers = options.filter(ticker => {
+      return tickerIds.includes(ticker.id)
+    })
+    setTickers(selectedTickers)
+    onChange(selectedTickers)
   }
 
   useEffect(() => {
@@ -40,13 +42,13 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
 
     return (
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-        {selectedTickers.map(ticker => (
+        {selectedTickers.map(selectedTicker => (
           <Chip
-            key={ticker.id}
-            label={ticker.title}
+            key={selectedTicker.id}
+            label={selectedTicker.title}
             onDelete={() => {
-              const reduced = tickers.filter(id => {
-                return id !== ticker.id
+              const reduced = tickers.filter(ticker => {
+                return selectedTicker.id !== ticker.id
               })
               setTickers(reduced)
               onChange(reduced)
@@ -60,18 +62,29 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
     )
   }
 
-  const getStyle = (value: number, tickers: number[]) => {
+  const getStyle = (value: Ticker, tickers: Array<Ticker>) => {
+    const tickerIds = tickers.map(ticker => ticker.id)
     return {
-      fontWeight: tickers.indexOf(value) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+      fontWeight: tickerIds.indexOf(value.id) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
     }
   }
+
+  const tickerIds = tickers.map(ticker => ticker.id)
 
   return (
     <FormControl sx={sx}>
       <InputLabel>Tickers</InputLabel>
-      <Select input={<OutlinedInput label="Tickers" />} label="Tickers" multiple name={name} onChange={handleChange} renderValue={renderValue} value={tickers}>
+      <Select
+        input={<OutlinedInput label="Tickers" />}
+        label="Tickers"
+        multiple
+        name={name}
+        onChange={handleChange}
+        renderValue={renderValue}
+        value={tickerIds}
+      >
         {options.map(ticker => (
-          <MenuItem key={ticker.id} selected={tickers.includes(ticker.id)} style={getStyle(ticker.id, tickers)} value={ticker.id}>
+          <MenuItem key={ticker.id} selected={tickers.includes(ticker)} style={getStyle(ticker, tickers)} value={ticker.id}>
             {ticker.title}
           </MenuItem>
         ))}
