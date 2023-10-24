@@ -121,7 +121,7 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const putTickerUsers = (ticker: Ticker, users: number[]): Promise<Response<TickerUsersResponseData>> => {
+  const putTickerUsers = (ticker: Ticker, users: User[]): Promise<Response<TickerUsersResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/users`, {
       headers: headers,
       method: 'put',

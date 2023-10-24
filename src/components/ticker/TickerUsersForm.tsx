@@ -9,15 +9,15 @@ import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Se
 interface Props {
   ticker: Ticker
   onSubmit: () => void
-  defaultValue: number[]
+  defaultValue: User[]
 }
 
 interface FormValues {
-  users: Array<number>
+  users: Array<User>
 }
 
 const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
-  const [users, setUsers] = useState<Array<number>>(defaultValue)
+  const [users, setUsers] = useState<Array<User>>(defaultValue)
   const [options, setOptions] = useState<Array<User>>([])
   const { token } = useAuth()
   const { getUsers } = useUserApi(token)
@@ -26,10 +26,12 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   const { handleSubmit } = useForm<FormValues>()
   const queryClient = useQueryClient()
 
-  const handleChange = (event: SelectChangeEvent<typeof users>) => {
-    if (typeof event.target.value !== 'string') {
-      setUsers(event.target.value)
-    }
+  const handleChange = (event: SelectChangeEvent<number[]>) => {
+    const userIds = event.target.value as Array<number>
+    const selectedUsers = options.filter(user => {
+      return userIds.includes(user.id)
+    })
+    setUsers(selectedUsers)
   }
 
   const updateTickerUsers: SubmitHandler<FormValues> = () => {
@@ -59,13 +61,13 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
 
     return (
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-        {selectedUsers.map(user => (
+        {selectedUsers.map(selectedUser => (
           <Chip
-            key={user.id}
-            label={user.email}
+            key={selectedUser.id}
+            label={selectedUser.email}
             onDelete={() => {
-              const reduced = users.filter(id => {
-                return id !== user.id
+              const reduced = users.filter(user => {
+                return user.id !== selectedUser.id
               })
               setUsers(reduced)
             }}
@@ -78,19 +80,22 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
     )
   }
 
-  const getStyle = (value: number, users: number[]) => {
+  const getStyle = (value: User, users: User[]) => {
+    const userIds = users.map(user => user.id)
     return {
-      fontWeight: users.indexOf(value) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+      fontWeight: userIds.indexOf(value.id) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
     }
   }
+
+  const userIds = users.map(user => user.id)
 
   return (
     <form id="tickerUsersForm" onSubmit={handleSubmit(updateTickerUsers)}>
       <FormControl sx={{ width: '100%', mt: 1 }}>
         <InputLabel>Users</InputLabel>
-        <Select input={<OutlinedInput label="Users" />} label="Users" multiple name="users" onChange={handleChange} renderValue={renderValue} value={users}>
+        <Select input={<OutlinedInput label="Users" />} label="Users" multiple name="users" onChange={handleChange} renderValue={renderValue} value={userIds}>
           {options.map(user => (
-            <MenuItem key={user.id} selected={users.includes(user.id)} style={getStyle(user.id, users)} value={user.id}>
+            <MenuItem key={user.id} selected={users.includes(user)} style={getStyle(user, users)} value={user.id}>
               {user.email}
             </MenuItem>
           ))}
