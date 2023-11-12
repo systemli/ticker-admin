@@ -8,7 +8,7 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Alert, Button, Checkbox, FormControlLabel, FormGroup, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material'
 import { faComputerMouse, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons'
-import { faFacebook, faTelegram, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faFacebook, faMastodon, faTelegram, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 interface Props {
   id: string
@@ -28,6 +28,7 @@ interface FormValues {
     twitter: string
     facebook: string
     telegram: string
+    mastodon: string
   }
   location: {
     lat: number
@@ -49,6 +50,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
         twitter: ticker?.information.twitter,
         facebook: ticker?.information.facebook,
         telegram: ticker?.information.telegram,
+        mastodon: ticker?.information.mastodon,
       },
       location: {
         lat: ticker?.location.lat || 0,
@@ -220,6 +222,22 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
                 ),
               }}
               label="Telegram"
+              margin="dense"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormGroup>
+            <TextField
+              {...register('information.mastodon')}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FontAwesomeIcon icon={faMastodon} />
+                  </InputAdornment>
+                ),
+              }}
+              label="Mastodon"
               margin="dense"
             />
           </FormGroup>

@@ -33,6 +33,7 @@ export interface TickerInformation {
   twitter: string
   facebook: string
   telegram: string
+  mastodon: string
 }
 
 export interface TickerTelegram {
