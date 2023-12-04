@@ -7,7 +7,7 @@ import LocationSearch, { Result } from './LocationSearch'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Alert, Button, Checkbox, FormControlLabel, FormGroup, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material'
-import { faComputerMouse, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faComputerMouse, faEnvelope, faSquare, faUser } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook, faMastodon, faTelegram, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 interface Props {
@@ -29,6 +29,7 @@ interface FormValues {
     facebook: string
     telegram: string
     mastodon: string
+    bluesky: string
   }
   location: {
     lat: number
@@ -51,6 +52,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
         facebook: ticker?.information.facebook,
         telegram: ticker?.information.telegram,
         mastodon: ticker?.information.mastodon,
+        bluesky: ticker?.information.bluesky,
       },
       location: {
         lat: ticker?.location.lat || 0,
@@ -238,6 +240,22 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
                 ),
               }}
               label="Mastodon"
+              margin="dense"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item sm={6} xs={12}>
+          <FormGroup>
+            <TextField
+              {...register('information.bluesky')}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FontAwesomeIcon icon={faSquare} />
+                  </InputAdornment>
+                ),
+              }}
+              label="Bluesky"
               margin="dense"
             />
           </FormGroup>
