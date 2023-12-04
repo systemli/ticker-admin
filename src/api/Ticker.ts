@@ -34,6 +34,7 @@ export interface TickerInformation {
   facebook: string
   telegram: string
   mastodon: string
+  bluesky: string
 }
 
 export interface TickerTelegram {
