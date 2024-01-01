@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { login as loginApi } from '../api/Auth'
 import { useLocation, useNavigate } from 'react-router'
-import decode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 export type Roles = 'user' | 'admin'
 
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
 
     let user: User
     try {
-      user = decode(token) as User
+      user = jwtDecode(token) as User
     } catch (error) {
       setError(error as Error)
       setLoadingInitial(false)
@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
           localStorage.setItem('token', response.token)
           setToken(response.token)
 
-          const user = decode(response.token) as User
+          const user = jwtDecode(response.token) as User
           setUser(user)
           navigate('/')
         })
