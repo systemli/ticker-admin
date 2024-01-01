@@ -2321,11 +2321,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-twitter-auth@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@types/react-twitter-auth/-/react-twitter-auth-0.0.6.tgz#81ad43ba2164bc09bc4dde6ae6d731bda6824f1d"
-  integrity sha512-xiaDoOKEfi1hirTbHzWroFvtnd8Wso2f2o8OpzhBnIqL4sFOXVVpMDdWL9GwqmfGANxIE9jAz3e8dmCSh6AMRw==
-
 "@types/react@*":
   version "18.0.12"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.12.tgz#cdaa209d0a542b3fcf69cf31a03976ec4cdd8840"
