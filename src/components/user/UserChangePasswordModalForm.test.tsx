@@ -1,14 +1,14 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
 import UserChangePasswordModalForm from './UserChangePasswordModalForm'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router'
 import { AuthProvider } from '../useAuth'
 import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
 
 describe('UserChangePasswordModalForm', () => {
   beforeEach(() => {
-    fetchMock.resetMocks()
+    fetch.resetMocks()
   })
 
   function setup(open: boolean, onClose: () => void) {
@@ -31,7 +31,7 @@ describe('UserChangePasswordModalForm', () => {
   }
 
   it('should render the form fields', async () => {
-    const onClose = jest.fn()
+    const onClose = vi.fn()
     setup(true, onClose)
 
     expect(screen.getByLabelText('Password *')).toBeInTheDocument()
@@ -44,10 +44,10 @@ describe('UserChangePasswordModalForm', () => {
   })
 
   it('should submit the form', async () => {
-    const onClose = jest.fn()
+    const onClose = vi.fn()
     setup(true, onClose)
 
-    fetchMock.mockResponseOnce(
+    fetch.mockResponseOnce(
       JSON.stringify({
         data: {
           user: {
@@ -67,8 +67,8 @@ describe('UserChangePasswordModalForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Save' }))
 
     expect(onClose).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/users/me', {
+    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledWith('http://localhost:8080/v1/admin/users/me', {
       body: '{"password":"password","newPassword":"newpassword","newPasswordValidate":"newpassword"}',
       headers: {
         Accept: 'application/json',
@@ -80,10 +80,10 @@ describe('UserChangePasswordModalForm', () => {
   })
 
   it('should show an error message if the password is wrong', async () => {
-    const onClose = jest.fn()
+    const onClose = vi.fn()
     setup(true, onClose)
 
-    fetchMock.mockResponseOnce(
+    fetch.mockResponseOnce(
       JSON.stringify({
         error: {
           message: 'could not authenticate password',
@@ -99,12 +99,12 @@ describe('UserChangePasswordModalForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Save' }))
 
     expect(onClose).toHaveBeenCalledTimes(0)
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(1)
     expect(await screen.findByText('Wrong password')).toBeInTheDocument()
   })
 
   it('should show an error message if the passwords do not match', async () => {
-    const onClose = jest.fn()
+    const onClose = vi.fn()
     setup(true, onClose)
 
     await userEvent.type(screen.getByLabelText('Password *'), 'password')
@@ -113,7 +113,7 @@ describe('UserChangePasswordModalForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Save' }))
 
     expect(onClose).toHaveBeenCalledTimes(0)
-    expect(fetchMock).toHaveBeenCalledTimes(0)
+    expect(fetch).toHaveBeenCalledTimes(0)
     expect(await screen.findByText('The passwords do not match')).toBeInTheDocument()
   })
 })

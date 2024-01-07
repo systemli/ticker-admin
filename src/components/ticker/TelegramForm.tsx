@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'

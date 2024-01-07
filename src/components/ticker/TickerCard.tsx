@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Box, Card, CardContent, Link, Typography } from '@mui/material'
 import { Ticker } from '../../api/Ticker'
 import NamedListItem from '../common/NamedListItem'

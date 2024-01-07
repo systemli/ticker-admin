@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { TableBody } from '@mui/material'
 import { User } from '../../api/User'
 import UserListItem from './UserListItem'

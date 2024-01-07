@@ -1,13 +1,13 @@
-import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
 import { fireEvent, render, screen } from '@testing-library/react'
 import TickerUsersForm from './TickerUsersForm'
+import { vi } from 'vitest'
 
 describe('TickerUsersForm', () => {
   beforeEach(() => {
-    fetchMock.resetMocks()
+    fetch.resetMocks()
   })
 
   function setup(defaultValue: Array<User>, ticker: Ticker, onSubmit: () => void) {
@@ -34,7 +34,7 @@ describe('TickerUsersForm', () => {
       id: 1,
       email: 'user@systemli.org',
     } as User
-    fetchMock.mockResponseOnce(
+    fetch.mockResponseOnce(
       JSON.stringify({
         data: {
           users: [user],
@@ -43,7 +43,7 @@ describe('TickerUsersForm', () => {
       })
     )
 
-    const handleSubmit = jest.fn()
+    const handleSubmit = vi.fn()
     setup([user], ticker, handleSubmit)
 
     fireEvent.mouseDown(screen.getByRole('button'))
@@ -52,6 +52,6 @@ describe('TickerUsersForm', () => {
     const option = await screen.findByRole('option')
     expect(option).toBeInTheDocument()
     fireEvent.click(option)
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(1)
   })
 })
