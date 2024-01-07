@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Box, Container } from '@mui/material'
 import Nav from '../components/navigation/Nav'
 import NavItem from '../components/navigation/NavItem'

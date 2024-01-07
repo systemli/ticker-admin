@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import UserListItems from './UserListItems'
 import useAuth from '../useAuth'

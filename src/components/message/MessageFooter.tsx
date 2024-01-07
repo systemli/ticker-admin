@@ -1,21 +1,20 @@
+import { FC } from 'react'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { faMastodon, faTelegram } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Link, Stack, Typography, useTheme } from '@mui/material'
-import React, { FC } from 'react'
-import Moment from 'react-moment'
 import { Message } from '../../api/Message'
+import dayjs from 'dayjs'
 
 interface Props {
   message: Message
 }
+
 const MessageFooter: FC<Props> = ({ message }) => {
   return (
     <Stack alignItems="center" direction="row" justifyContent="space-between">
       <Box>
-        <Typography variant="caption">
-          <Moment fromNow>{message.createdAt}</Moment>
-        </Typography>
+        <Typography variant="caption">{dayjs(message.createdAt).format('DD/MM/YYYY HH:mm')}</Typography>
       </Box>
       <Box>
         <Icon icon={faTelegram} url={message.telegramUrl} />

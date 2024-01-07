@@ -1,12 +1,12 @@
-import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import TickersDropdown from './TickersDropdown'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
+import { vi } from 'vitest'
 
 describe('TickersDropdown', () => {
   beforeEach(() => {
-    fetchMock.resetMocks()
+    fetch.resetMocks()
   })
 
   function setup(defaultValue: Array<Ticker>, onChange: (tickers: Array<Ticker>) => void) {
@@ -29,7 +29,7 @@ describe('TickersDropdown', () => {
       id: 1,
       title: 'Ticker 1',
     }
-    fetchMock.mockResponseOnce(
+    fetch.mockResponseOnce(
       JSON.stringify({
         data: {
           tickers: [ticker],
@@ -37,7 +37,7 @@ describe('TickersDropdown', () => {
         status: 'success',
       })
     )
-    const handleChange = jest.fn()
+    const handleChange = vi.fn()
     setup([], handleChange)
 
     fireEvent.mouseDown(screen.getByRole('button'))
@@ -48,6 +48,6 @@ describe('TickersDropdown', () => {
     fireEvent.click(option)
     expect(handleChange).toHaveBeenCalledTimes(1)
     expect(handleChange).toHaveBeenCalledWith([ticker])
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(1)
   })
 })

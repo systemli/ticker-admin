@@ -1,5 +1,5 @@
 import { latLng } from 'leaflet'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet'
 import { Message } from '../../api/Message'
 import { Ticker } from '../../api/Ticker'

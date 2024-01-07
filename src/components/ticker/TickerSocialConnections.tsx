@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import MastodonCard from './MastodonCard'
 import TelegramCard from './TelegramCard'

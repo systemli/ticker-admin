@@ -1,19 +1,18 @@
-import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { AuthProvider } from '../components/useAuth'
 import UsersView from './UsersView'
 import sign from 'jwt-encode'
-import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
 
 describe('UsersView', function () {
   const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
 
   beforeEach(() => {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
-    fetchMock.resetMocks()
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
+    fetch.resetMocks()
   })
 
   function setup() {
@@ -36,7 +35,7 @@ describe('UsersView', function () {
   }
 
   test('renders list', async function () {
-    fetchMock.mockResponseOnce(
+    fetch.mockResponseOnce(
       JSON.stringify({
         data: {
           users: [
@@ -58,7 +57,7 @@ describe('UsersView', function () {
 
   test('open new users dialog', async function () {
     setup()
-    fetchMock.mockIf(
+    fetch.mockIf(
       /\/v1\/admin\/users/i,
       JSON.stringify({
         data: {
@@ -66,7 +65,7 @@ describe('UsersView', function () {
         },
       })
     )
-    fetchMock.mockIf(
+    fetch.mockIf(
       /\/v1\/admin\/tickers/i,
       JSON.stringify({
         data: {
@@ -92,7 +91,7 @@ describe('UsersView', function () {
   })
 
   test('open dialog for existing user', async function () {
-    fetchMock.mockIf(
+    fetch.mockIf(
       /\/v1\/admin\/users/i,
       JSON.stringify({
         data: {
@@ -155,7 +154,7 @@ describe('UsersView', function () {
   })
 
   test('user list could not fetched', async function () {
-    fetchMock.mockReject(new Error('network error'))
+    fetch.mockReject(new Error('network error'))
     setup()
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()

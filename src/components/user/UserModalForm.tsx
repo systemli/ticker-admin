@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { User } from '../../api/User'
 import UserForm from './UserForm'
 import Modal from '../common/Modal'

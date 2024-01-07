@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useTickerApi } from '../../api/Ticker'
 import TickerListItems from './TickerListItems'
 import useAuth from '../useAuth'

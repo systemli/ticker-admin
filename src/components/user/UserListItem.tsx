@@ -3,10 +3,10 @@ import { faCheck, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
 import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
-import Moment from 'react-moment'
 import { User } from '../../api/User'
 import UserModalDelete from './UserModalDelete'
 import UserModalForm from './UserModalForm'
+import dayjs from 'dayjs'
 
 interface Props {
   user: User
@@ -34,9 +34,7 @@ const UserListItem: FC<Props> = ({ user }) => {
         {user.isSuperAdmin ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
       </TableCell>
       <TableCell>{user.email}</TableCell>
-      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-        <Moment date={user.createdAt} fromNow />
-      </TableCell>
+      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{dayjs(user.createdAt).format('DD/MM/YYYY')}</TableCell>
       <TableCell align="right">
         <IconButton data-testid="usermenu" onClick={handleMenu} size="large">
           <MoreVert />

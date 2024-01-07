@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { RefreshIntervalSetting, Setting } from '../../api/Settings'
 import RefreshIntervalForm from './RefreshIntervalForm'
 import Modal from '../common/Modal'

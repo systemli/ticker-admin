@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent, colors, Divider, Stack, Typography } from '@mui/material'
 import { QueryKey, useQueryClient } from '@tanstack/react-query'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 interface Props {
   children: React.ReactNode

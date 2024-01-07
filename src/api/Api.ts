@@ -1,4 +1,4 @@
-export const ApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080/v1'
+export const ApiUrl = import.meta.env.TICKER_API_URL
 
 type StatusSuccess = 'success'
 type StatusError = 'error'
