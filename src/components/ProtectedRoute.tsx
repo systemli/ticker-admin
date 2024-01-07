@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Navigate, RouteProps } from 'react-router'
 import useAuth, { Roles } from './useAuth'
 

@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Ticker, TickerMastodonFormData, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'

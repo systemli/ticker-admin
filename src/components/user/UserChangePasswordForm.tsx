@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Alert, FormGroup, Grid, TextField } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import useAuth from '../useAuth'

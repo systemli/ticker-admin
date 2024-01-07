@@ -1,4 +1,3 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
@@ -7,6 +6,7 @@ import LoginView from './LoginView'
 import * as api from '../api/Auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import sign from 'jwt-encode'
+import { vi } from 'vitest'
 
 function setup() {
   const client = new QueryClient({
@@ -30,7 +30,7 @@ function setup() {
 describe('LoginView', function () {
   test('login successful', async function () {
     const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
-    jest.spyOn(api, 'login').mockResolvedValue({ code: 200, token: jwt, expire: new Date() })
+    vi.spyOn(api, 'login').mockResolvedValue({ code: 200, token: jwt, expire: new Date() })
     setup()
 
     const email = screen.getByTestId('email').querySelector('input') as HTMLInputElement
@@ -49,7 +49,7 @@ describe('LoginView', function () {
   })
 
   test('login failed', async function () {
-    jest.spyOn(api, 'login').mockRejectedValue(new Error('Login failed'))
+    vi.spyOn(api, 'login').mockRejectedValue(new Error('Login failed'))
     setup()
 
     const email = screen.getByTestId('email').querySelector('input') as HTMLInputElement

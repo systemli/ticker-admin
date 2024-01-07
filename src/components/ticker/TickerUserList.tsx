@@ -1,5 +1,5 @@
 import { MenuList, Typography } from '@mui/material'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
 import TickerUsersListItem from './TickerUserListItem'

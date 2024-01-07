@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import MastodonForm from './MastodonForm'
 import Modal from '../common/Modal'

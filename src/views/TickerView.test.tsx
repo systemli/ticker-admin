@@ -1,4 +1,3 @@
-import React from 'react'
 import sign from 'jwt-encode'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -6,6 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router'
 import { AuthProvider } from '../components/useAuth'
 import TickerView from './TickerView'
 import ProtectedRoute from '../components/ProtectedRoute'
+import { vi } from 'vitest'
 
 describe('TickerView', function () {
   const jwt = sign(
@@ -51,8 +51,8 @@ describe('TickerView', function () {
   })
 
   beforeEach(() => {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
-    fetchMock.resetMocks()
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
+    fetch.resetMocks()
   })
 
   function setup() {
@@ -77,7 +77,7 @@ describe('TickerView', function () {
   }
 
   test('renders a ticker with messages', async function () {
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers/1')) {
         return Promise.resolve(tickerResponse)
       }

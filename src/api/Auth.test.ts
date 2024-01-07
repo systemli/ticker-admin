@@ -2,12 +2,12 @@ import { login } from './Auth'
 
 describe('Auth', function () {
   beforeEach(() => {
-    fetchMock.resetMocks()
-    fetchMock.doMock()
+    fetch.resetMocks()
+    fetch.doMock()
   })
 
   test('login failed', function () {
-    fetchMock.mockResponse(
+    fetch.mockResponse(
       JSON.stringify({
         data: {},
         status: 'error',
@@ -20,7 +20,7 @@ describe('Auth', function () {
   })
 
   test('server error', function () {
-    fetchMock.mockReject()
+    fetch.mockReject()
 
     expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
@@ -31,7 +31,7 @@ describe('Auth', function () {
       expire: '2022-10-01T18:22:37+02:00',
       token: 'token',
     }
-    fetchMock.mockResponse(JSON.stringify(response), { status: 200 })
+    fetch.mockResponse(JSON.stringify(response), { status: 200 })
 
     expect(login('user@systemli.org', 'password')).resolves.toEqual(response)
   })

@@ -1,12 +1,11 @@
-import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { AuthProvider } from '../components/useAuth'
 import sign from 'jwt-encode'
-import fetchMock from 'jest-fetch-mock'
 import SettingsView from './SettingsView'
 import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
 
 describe('SettingsView', function () {
   const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
@@ -38,8 +37,8 @@ describe('SettingsView', function () {
   })
 
   beforeEach(() => {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
-    fetchMock.resetMocks()
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
+    fetch.resetMocks()
   })
 
   function setup() {
@@ -62,7 +61,7 @@ describe('SettingsView', function () {
   }
 
   test('renders settings and open dialogs', async function () {
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/settings/inactive_settings')) {
         return Promise.resolve(inactiveSettingsResponse)
       }
@@ -115,7 +114,7 @@ describe('SettingsView', function () {
   })
 
   test('settings could not fetched', async function () {
-    fetchMock.mockReject(new Error('network error'))
+    fetch.mockReject(new Error('network error'))
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
