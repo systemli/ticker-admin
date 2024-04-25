@@ -15,7 +15,7 @@ import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/mater
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapLocationDot, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons'
 import palette from '../../theme/palette'
-import { Emoji } from 'emoji-mart'
+import { Emoji } from './Emoji'
 
 interface Props {
   ticker: Ticker

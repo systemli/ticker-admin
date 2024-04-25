@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import Modal from '../common/Modal'
-import { Emoji } from 'emoji-mart'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { Emoji } from './Emoji'
 
 interface Props {
   open: boolean
@@ -17,13 +17,8 @@ const EmojiPickerModal: FC<Props> = ({ open, onClose, onChange }) => {
   }
 
   return (
-    <Modal
-      dialogContentSx={{ px: 0 }}
-      onClose={onClose}
-      open={open}
-      title="Insert emoji"
-    >
-      <Picker data={data} onClickOutside={() => onClose } onEmojiSelect={handleChange}/>
+    <Modal dialogContentSx={{ px: 0 }} onClose={onClose} open={open} title="Insert emoji">
+      <Picker data={data} onClickOutside={() => onClose} onEmojiSelect={handleChange} />
     </Modal>
   )
 }
