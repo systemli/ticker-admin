@@ -5,7 +5,7 @@ import useAuth from './useAuth'
 const FeatureContext = createContext<Features>({} as Features)
 
 const initalState: Features = {
-  telegram_enabled: false,
+  telegramEnabled: false,
 }
 
 export function FeatureProvider({ children }: { children: ReactNode }): JSX.Element {
@@ -34,7 +34,7 @@ export function FeatureProvider({ children }: { children: ReactNode }): JSX.Elem
 
   const memoedValue = useMemo(
     () => ({
-      telegram_enabled: features.telegram_enabled,
+      telegramEnabled: features.telegramEnabled,
     }),
     [features]
   )
