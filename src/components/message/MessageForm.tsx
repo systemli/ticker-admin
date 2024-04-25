@@ -8,12 +8,12 @@ import useAuth from '../useAuth'
 import { Upload } from '../../api/Upload'
 import UploadButton from './UploadButton'
 import AttachmentsPreview from './AttachmentsPreview'
-import EmojiPickerModal from './EmojiPickerModal'
+import EmojiPicker from './EmojiPicker'
 import MessageMapModal from './MessageMapModal'
 import { FeatureCollection, Geometry } from 'geojson'
 import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapLocationDot, faPaperPlane, faSmile } from '@fortawesome/free-solid-svg-icons'
+import { faMapLocationDot, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import palette from '../../theme/palette'
 import { Emoji } from './Emoji'
 
@@ -40,7 +40,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [attachments, setAttachments] = useState<Upload[]>([])
   const [mapDialogOpen, setMapDialogOpen] = useState<boolean>(false)
-  const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false)
   const emptyMap: FeatureCollection<Geometry, any> = {
     type: 'FeatureCollection',
     features: [],
@@ -130,19 +129,16 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         />
       </FormGroup>
       <Stack alignItems="center" direction="row" justifyContent="space-between">
-        <Box>
+        <Box display="flex">
           <Button disabled={isSubmitting} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
             Send
           </Button>
-          <IconButton component="span" onClick={() => setEmojiPickerOpen(true)} style={{ marginRight: '8px' }}>
-            <FontAwesomeIcon color={palette.primary['main']} icon={faSmile} size="xs" />
-          </IconButton>
+          <EmojiPicker onChange={onSelectEmoji} />
           <UploadButton onUpload={onUpload} ticker={ticker} />
           <IconButton component="span" onClick={() => setMapDialogOpen(true)}>
             <FontAwesomeIcon color={palette.primary['main']} icon={faMapLocationDot} size="xs" />
           </IconButton>
           <MessageMapModal map={map} onChange={onMapUpdate} onClose={() => setMapDialogOpen(false)} open={mapDialogOpen} ticker={ticker} />
-          <EmojiPickerModal onChange={onSelectEmoji} onClose={() => setEmojiPickerOpen(false)} open={emojiPickerOpen} />
         </Box>
         <MessageFormCounter letterCount={message?.length || 0} maxLength={maxLength} />
       </Stack>
