@@ -8,12 +8,14 @@ import useAuth from '../useAuth'
 import { Upload } from '../../api/Upload'
 import UploadButton from './UploadButton'
 import AttachmentsPreview from './AttachmentsPreview'
+import EmojiPicker from './EmojiPicker'
 import MessageMapModal from './MessageMapModal'
 import { FeatureCollection, Geometry } from 'geojson'
 import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapLocationDot, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import palette from '../../theme/palette'
+import { Emoji } from './Emoji'
 
 interface Props {
   ticker: Ticker
@@ -30,6 +32,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     reset,
     register,
     watch,
+    setValue,
   } = useForm<FormValues>({ mode: 'onSubmit' })
   const { token } = useAuth()
   const { postMessage } = useMessageApi(token)
@@ -78,6 +81,10 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     [attachments]
   )
 
+  const onSelectEmoji = (emoji: Emoji) => {
+    setValue('message', message.toString() + emoji.native + ' ')
+  }
+
   const onMapUpdate = useCallback((featureGroups: FeatureCollection<Geometry, any>) => {
     setMap(featureGroups)
   }, [])
@@ -122,10 +129,11 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         />
       </FormGroup>
       <Stack alignItems="center" direction="row" justifyContent="space-between">
-        <Box>
+        <Box display="flex">
           <Button disabled={isSubmitting} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
             Send
           </Button>
+          <EmojiPicker onChange={onSelectEmoji} />
           <UploadButton onUpload={onUpload} ticker={ticker} />
           <IconButton component="span" onClick={() => setMapDialogOpen(true)}>
             <FontAwesomeIcon color={palette.primary['main']} icon={faMapLocationDot} size="xs" />
