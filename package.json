@@ -101,5 +101,6 @@
     "webpack-dev-server": "^5.0.4",
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-merge": "^5.10.0"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }
