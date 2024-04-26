@@ -186,8 +186,9 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
               {...register('information.twitter')}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="start" style={{ marginRight: '0px' }}>
                     <FontAwesomeIcon icon={faTwitter} />
+                    <span style={{ paddingLeft: '8px' }}>twitter.com/</span>
                   </InputAdornment>
                 ),
               }}
@@ -202,8 +203,9 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
               {...register('information.facebook')}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="start" style={{ marginRight: '0px' }}>
                     <FontAwesomeIcon icon={faFacebook} />
+                    <span style={{ paddingLeft: '8px' }}>fb.com/</span>
                   </InputAdornment>
                 ),
               }}
@@ -218,8 +220,9 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
               {...register('information.telegram')}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="start" style={{ marginRight: '0px' }}>
                     <FontAwesomeIcon icon={faTelegram} />
+                    <span style={{ paddingLeft: '8px' }}>t.me/</span>
                   </InputAdornment>
                 ),
               }}
