@@ -11,10 +11,16 @@ updates:
     schedule:
       interval: "monthly"
     groups:
-      react:
+      react-query:
         patterns:
           - "@tanstack/*"
+      react:
+        patterns:
+          - "@emoji-mart/*"
           - "@types/react"
+          - "dayjs"
+          - "emoji-mart"
+          - "jwt-decode"
           - "react"
           - "react-*"
       leaflet:
@@ -32,11 +38,7 @@ updates:
       development:
         patterns:
           - "@testing-library/*"
-          - "@types/jest"
-          - "@types/jwt-decode"
-          - "@types/node"
-          - "@types/react-dom"
-          - "@types/react-router-dom"
+          - "@types/*"
           - "@typescript-eslint/*"
           - "@vitejs/plugin-react"
           - "@vitest/coverage-v8"

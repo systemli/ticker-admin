@@ -3731,7 +3731,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.15, lodash@^4.17.21:
+lodash@^4.17.15:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -4547,11 +4547,6 @@ postcss-reduce-transforms@^7.0.0:
   integrity sha512-pnt1HKKZ07/idH8cpATX/ujMbtOGhUfE+m8gbqwJE05aTaNw8gbo34a2e3if0xc0dlu75sUOiqvwCGY3fzOHew==
   dependencies:
     postcss-value-parser "^4.2.0"
-
-postcss-remove-google-fonts@^1.2.3:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/postcss-remove-google-fonts/-/postcss-remove-google-fonts-1.2.4.tgz#c8c761cc5ff8878e728218ff91a40fa6010e79c7"
-  integrity sha512-ZjaOwF69TlG+8Y2h86uZFCekTZqOoj5ZhTlae5RqA0HjtqxWWhdqT4UHUuyXnLSHkL9iQJpQ/yDFhhqsDc7ydQ==
 
 postcss-selector-parser@^6.0.16:
   version "6.0.16"

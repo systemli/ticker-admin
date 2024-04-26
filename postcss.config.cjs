@@ -10,6 +10,5 @@ module.exports = {
         },
       ],
     },
-    'postcss-remove-google-fonts': {},
   },
 }
