@@ -25,6 +25,7 @@ updates:
           - "react-*"
       leaflet:
         patterns:
+          - "@types/leaflet"
           - "leaflet"
           - "leaflet-*"
           - "react-leaflet"
