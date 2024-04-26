@@ -1,4 +1,5 @@
 import { ApiUrl, Response } from './Api'
+import { FeatureCollection, Geometry } from 'geojson'
 
 interface MessagesResponseData {
   messages: Array<Message>
@@ -16,8 +17,12 @@ export interface Message {
   telegramUrl?: string
   mastodonUrl?: string
   geoInformation: string
-  // TODO
-  attachments: any[]
+  attachments?: Attachment[]
+}
+
+export interface Attachment {
+  url: string
+  contentType: string
 }
 
 export function useMessageApi(token: string) {
@@ -43,8 +48,13 @@ export function useMessageApi(token: string) {
     }).then(response => response.json())
   }
 
-  // TODO: any
-  const postMessage = (ticker: string, text: string, geoInformation: any, attachments: any[]): Promise<Response<MessageResponseData>> => {
+  const postMessage = (
+    ticker: string,
+    text: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    geoInformation: FeatureCollection<Geometry, any>,
+    attachments: number[]
+  ): Promise<Response<MessageResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
       headers: headers,
       body: JSON.stringify({
@@ -56,7 +66,7 @@ export function useMessageApi(token: string) {
     }).then(response => response.json())
   }
 
-  const deleteMessage = (message: Message): Promise<Response<any>> => {
+  const deleteMessage = (message: Message): Promise<Response<void>> => {
     return fetch(`${ApiUrl}/admin/tickers/${message.ticker}/messages/${message.id}`, {
       headers: headers,
       method: 'delete',

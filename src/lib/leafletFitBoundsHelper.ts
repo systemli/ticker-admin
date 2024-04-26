@@ -6,11 +6,10 @@ export const leafletOnDataAddFitToBounds = (event: LeafletEvent) => {
 
   if (
     features.length === 1 &&
-    // type is currently not defined
-    // @ts-ignore
+    // @ts-expect-error type is currently not defined
     features[0].feature.geometry.type === 'Point'
   ) {
-    // @ts-ignore
+    // @ts-expect-error type is currently not defined
     const coords = features[0].feature.geometry.coordinates
     leafletLayer._map.setView([coords[1], coords[0]], 13)
   } else if (features.length > 1) {

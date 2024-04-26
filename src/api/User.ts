@@ -56,7 +56,7 @@ export function useUserApi(token: string) {
     }).then(response => response.json())
   }
 
-  const deleteUser = (user: User): Promise<Response<any>> => {
+  const deleteUser = (user: User): Promise<Response<void>> => {
     return fetch(`${ApiUrl}/admin/users/${user.id}`, {
       headers: headers,
       method: 'delete',
