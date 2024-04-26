@@ -16,5 +16,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './vitest-setup.ts',
     css: false,
+    coverage: {
+      provider: 'v8',
+      reporter: ['lcov'],
+    },
   },
 })

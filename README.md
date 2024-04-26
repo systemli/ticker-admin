@@ -1,4 +1,6 @@
-# ticker-admin [![Integration](https://github.com/systemli/ticker-admin/actions/workflows/integration.yml/badge.svg)](https://github.com/systemli/ticker-admin/actions/workflows/integration.yml)
+# ticker-admin
+
+[![Integration](https://github.com/systemli/ticker-admin/actions/workflows/integration.yml/badge.svg)](https://github.com/systemli/ticker-admin/actions/workflows/integration.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=systemli_ticker-admin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=systemli_ticker-admin) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=systemli_ticker-admin&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=systemli_ticker-admin) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=systemli_ticker-admin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=systemli_ticker-admin)
 
 ## Development
 
