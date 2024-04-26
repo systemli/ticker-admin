@@ -10,6 +10,9 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    ignore:
+      - dependency-name: "eslint"
+        versions: [">=9.0.0"]
     groups:
       react-query:
         patterns:
