@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { User, useUserApi } from '../../api/User'
 import { useQueryClient } from '@tanstack/react-query'
@@ -51,12 +51,12 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
 
     if (user) {
       putUser(formData, user).finally(() => {
-        queryClient.invalidateQueries(['users'])
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         callback()
       })
     } else {
       postUser(formData).finally(() => {
-        queryClient.invalidateQueries(['users'])
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         callback()
       })
     }

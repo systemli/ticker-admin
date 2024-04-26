@@ -85,13 +85,13 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
   const onSubmit: SubmitHandler<FormValues> = data => {
     if (ticker) {
       putTicker(data, ticker.id).finally(() => {
-        queryClient.invalidateQueries(['tickers'])
-        queryClient.invalidateQueries(['ticker', ticker.id])
+        queryClient.invalidateQueries({ queryKey: ['tickers'] })
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         callback()
       })
     } else {
       postTicker(data).finally(() => {
-        queryClient.invalidateQueries(['tickers'])
+        queryClient.invalidateQueries({ queryKey: ['tickers'] })
         callback()
       })
     }

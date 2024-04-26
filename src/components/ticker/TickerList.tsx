@@ -11,7 +11,7 @@ import { Card, CardContent, Table, TableCell, TableContainer, TableHead, TableRo
 const TickerList: FC = () => {
   const { token, user } = useAuth()
   const { getTickers } = useTickerApi(token)
-  const { isLoading, error, data } = useQuery(['tickers'], getTickers)
+  const { isLoading, error, data } = useQuery({ queryKey: ['tickers'], queryFn: getTickers })
 
   if (isLoading) {
     return <Loader />

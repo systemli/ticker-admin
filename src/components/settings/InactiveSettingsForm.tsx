@@ -39,7 +39,7 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     putInactiveSettings(data)
-      .then(() => queryClient.invalidateQueries(['inactive_settings']))
+      .then(() => queryClient.invalidateQueries({ queryKey: ['inactive_settings'] }))
       .finally(() => callback())
   }
 

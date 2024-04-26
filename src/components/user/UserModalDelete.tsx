@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { User, useUserApi } from '../../api/User'
 import useAuth from '../useAuth'
@@ -17,7 +17,7 @@ const UserModalDelete: FC<Props> = ({ onClose, open, user }) => {
 
   const handleDelete = useCallback(() => {
     deleteUser(user).finally(() => {
-      queryClient.invalidateQueries(['users'])
+      queryClient.invalidateQueries({ queryKey: ['users'] })
       onClose()
     })
   }, [deleteUser, user, queryClient, onClose])

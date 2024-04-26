@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { useMessageApi } from '../../api/Message'
 import { Ticker } from '../../api/Ticker'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -40,10 +40,12 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [attachments, setAttachments] = useState<Upload[]>([])
   const [mapDialogOpen, setMapDialogOpen] = useState<boolean>(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emptyMap: FeatureCollection<Geometry, any> = {
     type: 'FeatureCollection',
     features: [],
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [map, setMap] = useState<FeatureCollection<Geometry, any>>(emptyMap)
 
   /**
@@ -85,6 +87,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     setValue('message', message.toString() + emoji.native + ' ')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMapUpdate = useCallback((featureGroups: FeatureCollection<Geometry, any>) => {
     setMap(featureGroups)
   }, [])
@@ -96,7 +99,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     })
 
     postMessage(ticker.id.toString(), data.message, map, uploads).finally(() => {
-      queryClient.invalidateQueries(['messages', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
       setAttachments([])
       setIsSubmitting(false)
     })

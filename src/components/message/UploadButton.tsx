@@ -1,4 +1,4 @@
-import React, { createRef, FC, useCallback } from 'react'
+import { createRef, FC, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton } from '@mui/material'
 import { Ticker } from '../../api/Ticker'
@@ -23,11 +23,11 @@ const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
 
   const handleUpload = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault()
-    // @ts-ignore
+    // @ts-expect-error files is not a property of Event
     const files = e.target.files as Array<FileList>
     const formData = new FormData()
     for (let i = 0; i < files.length; i++) {
-      // @ts-ignore
+      // @ts-expect-error files is not a property of Event
       formData.append('files', files[i])
     }
     formData.append('ticker', ticker.id.toString())
@@ -38,12 +38,12 @@ const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <IconButton onClick={refClick} sx={{ mr: 1 }}>
         <FontAwesomeIcon color={palette.primary['main']} icon={faImages} size="xs" />
       </IconButton>
       <input ref={ref} hidden multiple onChange={handleUpload} type="file" />
-    </React.Fragment>
+    </>
   )
 }
 

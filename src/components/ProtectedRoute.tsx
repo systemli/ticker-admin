@@ -17,9 +17,9 @@ const ProtectedRoute: FC<Props> = ({ role, outlet }) => {
   if (!user.roles.includes(role)) {
     //TODO: ErrorView
     return (
-      <React.Fragment>
+      <>
         <h1>Permission denied</h1>
-      </React.Fragment>
+      </>
     )
   }
 

@@ -10,7 +10,7 @@ import Loader from '../Loader'
 const UserList: FC = () => {
   const { token } = useAuth()
   const { getUsers } = useUserApi(token)
-  const { isLoading, error, data } = useQuery(['users'], getUsers)
+  const { isLoading, error, data } = useQuery({ queryKey: ['users'], queryFn: getUsers })
 
   if (isLoading) {
     return <Loader />

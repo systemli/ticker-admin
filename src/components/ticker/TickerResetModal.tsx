@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 import { useQueryClient } from '@tanstack/react-query'
@@ -18,9 +18,9 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
   const handleReset = useCallback(() => {
     putTickerReset(ticker)
       .then(() => {
-        queryClient.invalidateQueries(['messages', ticker.id])
-        queryClient.invalidateQueries(['tickerUsers', ticker.id])
-        queryClient.invalidateQueries(['ticker', ticker.id])
+        queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
+        queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
       })
       .finally(() => {
         onClose()

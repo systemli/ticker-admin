@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
@@ -36,7 +36,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
 
   const updateTickerUsers: SubmitHandler<FormValues> = () => {
     putTickerUsers(ticker, users).then(() => {
-      queryClient.invalidateQueries(['tickerUsers', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
       onSubmit()
     })
   }

@@ -11,7 +11,7 @@ const ErrorView: FC<Props> = ({ children, queryKey }) => {
   const queryClient = useQueryClient()
 
   const handleClick = () => {
-    queryClient.invalidateQueries(queryKey)
+    queryClient.invalidateQueries({ queryKey: queryKey })
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { Message as MessageType } from '../../api/Message'
 import MessageModalDelete from './MessageModalDelete'
 import MessageMap from './MessageMap'
