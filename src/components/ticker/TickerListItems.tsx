@@ -1,5 +1,5 @@
 import { TableBody } from '@mui/material'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import TickerListItem from './TickerListItem'
 

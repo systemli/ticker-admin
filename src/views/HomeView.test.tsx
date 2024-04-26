@@ -1,4 +1,3 @@
-import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import sign from 'jwt-encode'
@@ -6,10 +5,11 @@ import { MemoryRouter } from 'react-router'
 import { AuthProvider } from '../components/useAuth'
 import HomeView from './HomeView'
 import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
 
 describe('HomeView', function () {
   beforeEach(() => {
-    fetchMock.resetMocks()
+    fetch.resetMocks()
   })
 
   function jwt(role: string): string {
@@ -65,8 +65,8 @@ describe('HomeView', function () {
   }
 
   test('render empty list for admins', async function () {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(emptyTickerResponse)
       }
@@ -86,8 +86,8 @@ describe('HomeView', function () {
   })
 
   test('render empty list for user', async function () {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(emptyTickerResponse)
       }
@@ -107,8 +107,8 @@ describe('HomeView', function () {
   })
 
   test('render ticker view for user with 1 ticker', async function () {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(singleTickerResponse)
       }
@@ -127,8 +127,8 @@ describe('HomeView', function () {
   })
 
   test('renders list with entries', async function () {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(singleTickerResponse)
       }
@@ -148,8 +148,8 @@ describe('HomeView', function () {
   })
 
   test('open create ticker form', async function () {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
+    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/tickers')) {
         return Promise.resolve(emptyTickerResponse)
       }

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton, ImageListItem } from '@mui/material'
 import { Upload } from '../../api/Upload'

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useTickerApi } from '../api/Ticker'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'

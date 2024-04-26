@@ -1,5 +1,5 @@
 import { ImageList } from '@mui/material'
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Upload } from '../../api/Upload'
 import AttachmentPreview from './AttachmentPreview'
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { InactiveSetting, Setting } from '../../api/Settings'
 import InactiveSettingsForm from './InactiveSettingsForm'
 import Modal from '../common/Modal'
