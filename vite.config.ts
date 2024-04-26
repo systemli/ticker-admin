@@ -11,7 +11,7 @@ export default defineConfig({
   },
   plugins: [react()],
   test: {
-    testTimeout: 10000,
+    silent: true,
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest-setup.ts',
