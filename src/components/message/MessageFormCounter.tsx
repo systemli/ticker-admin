@@ -1,6 +1,6 @@
+import { FC, useEffect, useState } from 'react'
 import { ChipPropsColorOverrides, Chip } from '@mui/material'
 import { OverridableStringUnion } from '@mui/types'
-import React, { FC, useEffect, useState } from 'react'
 
 interface Props {
   maxLength: number

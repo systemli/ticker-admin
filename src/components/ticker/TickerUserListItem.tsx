@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import { Ticker } from '../../api/Ticker'

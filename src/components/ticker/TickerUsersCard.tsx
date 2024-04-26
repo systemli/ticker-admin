@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import TickerUserList from './TickerUserList'
@@ -18,8 +18,11 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
   const { getTickerUsers } = useTickerApi(token)
   const [formOpen, setFormOpen] = useState<boolean>(false)
-  const { isLoading, error, data } = useQuery(['tickerUsers', ticker.id], () => {
-    return getTickerUsers(ticker)
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['tickerUsers', ticker.id],
+    queryFn: () => {
+      return getTickerUsers(ticker)
+    },
   })
 
   if (isLoading) {

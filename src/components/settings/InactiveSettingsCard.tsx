@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSettingsApi } from '../../api/Settings'
 import ErrorView from '../../views/ErrorView'
@@ -14,7 +14,7 @@ const InactiveSettingsCard: FC = () => {
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
   const { getInactiveSettings } = useSettingsApi(token)
-  const { isLoading, error, data } = useQuery(['inactive_settings'], getInactiveSettings)
+  const { isLoading, error, data } = useQuery({ queryKey: ['inactive_settings'], queryFn: getInactiveSettings })
 
   const handleFormOpen = () => {
     setFormOpen(true)

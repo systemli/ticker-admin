@@ -24,7 +24,7 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
 
   const onSubmit: SubmitHandler<TickerMastodonFormData> = data => {
     putTickerMastodon(data, ticker).finally(() => {
-      queryClient.invalidateQueries(['ticker', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
       callback()
     })
   }

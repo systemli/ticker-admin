@@ -29,7 +29,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     putTickerTelegram(data, ticker).finally(() => {
-      queryClient.invalidateQueries(['ticker', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
       callback()
     })
   }

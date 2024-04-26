@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import useAuth from '../components/useAuth'

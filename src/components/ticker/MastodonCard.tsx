@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useQueryClient } from '@tanstack/react-query'
@@ -23,13 +23,13 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
 
   const handleDisconnect = useCallback(() => {
     deleteTickerMastodon(ticker).finally(() => {
-      queryClient.invalidateQueries(['ticker', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
   }, [deleteTickerMastodon, queryClient, ticker])
 
   const handleToggle = useCallback(() => {
     putTickerMastodon({ active: !mastodon.active }, ticker).finally(() => {
-      queryClient.invalidateQueries(['ticker', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
   }, [mastodon.active, putTickerMastodon, queryClient, ticker])
 

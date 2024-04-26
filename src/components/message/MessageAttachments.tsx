@@ -1,5 +1,5 @@
 import { ImageList, ImageListItem } from '@mui/material'
-import React, { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import Lightbox from 'react-image-lightbox'
 import { Message } from '../../api/Message'
 import 'react-image-lightbox/style.css'

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { Ticker as Model } from '../../api/Ticker'
 import MessageForm from '../message/MessageForm'
 import TickerCard from './TickerCard'

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import L, { FeatureGroup as FG, latLng } from 'leaflet'
 import { FeatureGroup, GeoJSON, MapContainer, TileLayer } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
@@ -10,7 +10,9 @@ import Modal from '../common/Modal'
 interface Props {
   open: boolean
   onClose: () => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: (features: FeatureCollection<Geometry, any>) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   map: FeatureCollection<Geometry, any>
   ticker: Ticker
 }
@@ -29,7 +31,7 @@ const MessageMapModal: FC<Props> = ({ open, onChange, onClose, map, ticker }) =>
   const handleChange = () => {
     const geoJSON = new L.GeoJSON(map)
     geoJSON.eachLayer(layer => featureGroup.addLayer(layer))
-    // @ts-ignore
+    // @ts-expect-error - toGeoJSON() is not part of the type definition
     onChange(featureGroup.toGeoJSON())
     onClose()
   }

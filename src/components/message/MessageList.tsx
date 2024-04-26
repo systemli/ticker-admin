@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
 import { useMessageApi } from '../../api/Message'
@@ -20,7 +20,10 @@ const MessageList: FC<Props> = ({ ticker }) => {
     return getMessages(ticker.id, pageParam)
   }
 
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } = useInfiniteQuery(['messages', ticker.id], fetchMessages, {
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } = useInfiniteQuery({
+    queryKey: ['messages', ticker.id],
+    queryFn: fetchMessages,
+    initialPageParam: 0,
     getNextPageParam: lastPage => {
       return lastPage.data.messages.length === 10 ? lastPage.data.messages.slice(-1).pop()?.id : undefined
     },
@@ -50,7 +53,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
     }
   }, [fetchNextPage, hasNextPage])
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return <Loader />
   }
 

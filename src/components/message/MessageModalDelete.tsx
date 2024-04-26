@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Message, useMessageApi } from '../../api/Message'
 import useAuth from '../useAuth'
@@ -16,7 +16,7 @@ const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
 
   const handleDelete = useCallback(() => {
     deleteMessage(message).then(() => {
-      queryClient.invalidateQueries(['messages', message.ticker])
+      queryClient.invalidateQueries({ queryKey: ['messages', message.ticker] })
       onClose()
     })
   }, [deleteMessage, message, onClose, queryClient])

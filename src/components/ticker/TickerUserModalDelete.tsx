@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import { User } from '../../api/User'
@@ -19,7 +19,7 @@ const TickerUserModalDelete: FC<Props> = ({ open, onClose, ticker, user }) => {
 
   const handleDelete = useCallback(() => {
     deleteTickerUser(ticker, user).finally(() => {
-      queryClient.invalidateQueries(['tickerUsers', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
       onClose()
     })
   }, [deleteTickerUser, ticker, user, queryClient, onClose])

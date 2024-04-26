@@ -1,9 +1,9 @@
+import { FC, useCallback, useState } from 'react'
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
 import { faBan, faGear, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { FC, useCallback, useState } from 'react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 import TelegramModalForm from './TelegramModalForm'
@@ -21,12 +21,12 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
   const telegram = ticker.telegram
 
   const handleToggle = useCallback(() => {
-    putTickerTelegram({ active: !telegram.active }, ticker).finally(() => queryClient.invalidateQueries(['ticker', ticker.id]))
+    putTickerTelegram({ active: !telegram.active }, ticker).finally(() => queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] }))
   }, [putTickerTelegram, queryClient, telegram.active, ticker])
 
   const handleDisconnect = useCallback(() => {
     deleteTickerTelegram(ticker).finally(() => {
-      queryClient.invalidateQueries(['ticker', ticker.id])
+      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
   }, [deleteTickerTelegram, queryClient, ticker])
 

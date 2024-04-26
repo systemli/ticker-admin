@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSettingsApi } from '../../api/Settings'
 import ErrorView from '../../views/ErrorView'
@@ -13,7 +13,7 @@ const RefreshIntervalCard: FC = () => {
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
   const { getRefreshInterval } = useSettingsApi(token)
-  const { isLoading, error, data } = useQuery(['refresh_interval_setting'], getRefreshInterval)
+  const { isLoading, error, data } = useQuery({ queryKey: ['refresh_interval_setting'], queryFn: getRefreshInterval })
 
   const handleFormOpen = () => {
     setFormOpen(true)

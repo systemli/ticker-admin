@@ -27,7 +27,7 @@ const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     putRefreshInterval(data.refreshInterval)
-      .then(() => queryClient.invalidateQueries(['refresh_interval_setting']))
+      .then(() => queryClient.invalidateQueries({ queryKey: ['refresh_interval_setting'] }))
       .finally(() => callback())
   }
 
