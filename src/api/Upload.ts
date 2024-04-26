@@ -18,7 +18,7 @@ export function useUploadApi(token: string) {
     Authorization: `Bearer ${token}`,
   }
 
-  const postUpload = (formData: any): Promise<Response<UploadeResponseData>> => {
+  const postUpload = (formData: FormData): Promise<Response<UploadeResponseData>> => {
     return fetch(`${ApiUrl}/admin/upload`, {
       headers: headers,
       body: formData,
