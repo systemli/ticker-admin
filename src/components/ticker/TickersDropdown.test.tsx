@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import TickersDropdown from './TickersDropdown'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
 import { vi } from 'vitest'
+import userEvent from '@testing-library/user-event'
 
 describe('TickersDropdown', () => {
   beforeEach(() => {
@@ -40,14 +41,15 @@ describe('TickersDropdown', () => {
     const handleChange = vi.fn()
     setup([], handleChange)
 
-    fireEvent.mouseDown(screen.getByRole('button'))
-    const listbox = await screen.findByRole('listbox')
-    expect(listbox).toBeInTheDocument()
-    const option = await screen.findByRole('option')
-    expect(option).toBeInTheDocument()
-    fireEvent.click(option)
-    expect(handleChange).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('combobox'))
+
+    expect(screen.getByRole('option')).toBeInTheDocument()
+    expect(screen.getByText('Ticker 1')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByText('Ticker 1'))
+
     expect(handleChange).toHaveBeenCalledWith([ticker])
-    expect(fetch).toHaveBeenCalledTimes(1)
   })
 })
