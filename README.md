@@ -8,10 +8,10 @@
 
 ```shell
 # Install dependencies
-yarn
+yarn install
 
 # Start development server (http://localhost:3000)
-yarn start
+yarn run dev
 ```
 
 ## Configuration
