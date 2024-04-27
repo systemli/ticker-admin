@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import TickerUsersForm from './TickerUsersForm'
 import { vi } from 'vitest'
+import userEvent from '@testing-library/user-event'
 
 describe('TickerUsersForm', () => {
   beforeEach(() => {
@@ -46,12 +47,13 @@ describe('TickerUsersForm', () => {
     const handleSubmit = vi.fn()
     setup([user], ticker, handleSubmit)
 
-    fireEvent.mouseDown(screen.getByRole('button'))
-    const listbox = await screen.findByRole('listbox')
-    expect(listbox).toBeInTheDocument()
-    const option = await screen.findByRole('option')
-    expect(option).toBeInTheDocument()
-    fireEvent.click(option)
-    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('combobox'))
+
+    expect(screen.getByRole('option')).toBeInTheDocument()
+    expect(screen.getAllByText('user@systemli.org')).toHaveLength(2)
+
+    await userEvent.click(screen.getAllByText('user@systemli.org')[1])
   })
 })
