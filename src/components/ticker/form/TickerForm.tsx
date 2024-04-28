@@ -1,0 +1,220 @@
+import React, { FC, useCallback, useEffect } from 'react'
+import { Ticker, useTickerApi } from '../../../api/Ticker'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { useQueryClient } from '@tanstack/react-query'
+import useAuth from '../../useAuth'
+import LocationSearch, { Result } from '../LocationSearch'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { Alert, Button, FormGroup, Grid, Stack, Typography } from '@mui/material'
+import Title from './Title'
+import Domain from './Domain'
+import Active from './Active'
+import Description from './Description'
+import Author from './Author'
+import Url from './Url'
+import Facebook from './Facebook'
+import Telegram from './Telegram'
+import Mastodon from './Mastodon'
+import Bluesky from './Bluesky'
+import Email from './Email'
+import Twitter from './Twitter'
+
+interface Props {
+  id: string
+  ticker?: Ticker
+  callback: () => void
+}
+
+interface FormValues {
+  title: string
+  domain: string
+  active: boolean
+  description: string
+  information: {
+    author: string
+    email: string
+    url: string
+    twitter: string
+    facebook: string
+    telegram: string
+    mastodon: string
+    bluesky: string
+  }
+  location: {
+    lat: number
+    lon: number
+  }
+}
+
+const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
+  const form = useForm<FormValues>({
+    defaultValues: {
+      title: ticker?.title,
+      domain: ticker?.domain,
+      active: ticker?.active,
+      description: ticker?.description,
+      information: {
+        author: ticker?.information.author,
+        email: ticker?.information.email,
+        url: ticker?.information.url,
+        twitter: ticker?.information.twitter,
+        facebook: ticker?.information.facebook,
+        telegram: ticker?.information.telegram,
+        mastodon: ticker?.information.mastodon,
+        bluesky: ticker?.information.bluesky,
+      },
+      location: {
+        lat: ticker?.location.lat ?? 0,
+        lon: ticker?.location.lon ?? 0,
+      },
+    },
+  })
+  const { token } = useAuth()
+  const { postTicker, putTicker } = useTickerApi(token)
+  const queryClient = useQueryClient()
+  const { handleSubmit, register, setValue, watch } = form
+
+  const onLocationChange = useCallback(
+    (result: Result) => {
+      setValue('location.lat', result.lat)
+      setValue('location.lon', result.lon)
+    },
+    [setValue]
+  )
+
+  const onLoctionReset = useCallback(
+    (e: React.MouseEvent) => {
+      setValue('location.lat', 0)
+      setValue('location.lon', 0)
+
+      e.preventDefault()
+    },
+    [setValue]
+  )
+
+  const onSubmit: SubmitHandler<FormValues> = data => {
+    if (ticker) {
+      putTicker(data, ticker.id).finally(() => {
+        queryClient.invalidateQueries({ queryKey: ['tickers'] })
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        callback()
+      })
+    } else {
+      postTicker(data).finally(() => {
+        queryClient.invalidateQueries({ queryKey: ['tickers'] })
+        callback()
+      })
+    }
+  }
+
+  useEffect(() => {
+    register('location.lat', { valueAsNumber: true })
+    register('location.lon', { valueAsNumber: true })
+  })
+
+  const position = watch('location')
+
+  return (
+    <FormProvider {...form}>
+      <form id={id} onSubmit={handleSubmit(onSubmit)}>
+        <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Title />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Domain />
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup>
+              <Active defaultChecked={ticker?.active} />
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup>
+              <Description />
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography component="h6" variant="h6">
+              Information
+            </Typography>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Author />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Url />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Email />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Twitter />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Facebook />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Telegram />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Mastodon />
+            </FormGroup>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <FormGroup>
+              <Bluesky />
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography component="h6" variant="h6">
+              Location
+            </Typography>
+            <Alert severity="info" variant="outlined">
+              You can add a default location to the ticker. This will help you to have a pre-selected location when you add a map to a message. <br />
+              Current Location:{' '}
+              <code>
+                {position.lat.toFixed(2)},{position.lon.toFixed(2)}
+              </code>
+            </Alert>
+          </Grid>
+          <Grid item xs={12}>
+            <Stack direction="row" spacing={1}>
+              <LocationSearch callback={onLocationChange} />
+              <Button disabled={ticker?.location.lat === 0 && ticker.location.lon === 0} onClick={onLoctionReset} variant="outlined">
+                Reset
+              </Button>
+            </Stack>
+          </Grid>
+          {position.lat !== 0 && position.lon !== 0 ? (
+            <Grid item xs={12}>
+              <MapContainer center={[position.lat, position.lon]} scrollWheelZoom={false} style={{ height: 200 }} zoom={10}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <Marker position={[position.lat, position.lon]} />
+              </MapContainer>
+            </Grid>
+          ) : null}
+        </Grid>
+      </form>
+    </FormProvider>
+  )
+}
+
+export default TickerForm
