@@ -5,7 +5,7 @@ import TickerCard from './TickerCard'
 import MessageList from '../message/MessageList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import TickerModalForm from './TickerModalForm'
 import TickerDangerZoneCard from './TickerDangerZoneCard'
 import TickerUsersCard from './TickerUsersCard'
@@ -44,6 +44,11 @@ const Ticker: FC<Props> = ({ ticker }) => {
           />
         </Stack>
       </Grid>
+      {!ticker.active ? (
+        <Grid item xs={12}>
+          <Alert severity="warning">This ticker is currently disabled.</Alert>
+        </Grid>
+      ) : null}
       <Grid display={{ xs: 'none', md: 'block' }} item md={4} spacing={2} xs={12}>
         <TickerCard ticker={ticker} />
         {user?.roles.includes('admin') ? (
