@@ -11,7 +11,14 @@ const Facebook: FC = () => {
     <Controller
       name="information.facebook"
       control={control}
-      render={({ field }) => (
+      rules={{
+        required: false,
+        pattern: {
+          value: /^([a-zA-Z0-9._]+)$/,
+          message: 'Invalid Facebook username',
+        },
+      }}
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           InputProps={{
@@ -22,6 +29,8 @@ const Facebook: FC = () => {
               </InputAdornment>
             ),
           }}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
           label="Facebook"
           margin="dense"
         />

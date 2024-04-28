@@ -11,7 +11,14 @@ const Url: FC = () => {
     <Controller
       name="information.url"
       control={control}
-      render={({ field }) => (
+      rules={{
+        required: false,
+        pattern: {
+          value: /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(:\d{1,5})?(\/.*)?$/i,
+          message: 'Homepage is invalid',
+        },
+      }}
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           InputProps={{
@@ -21,6 +28,8 @@ const Url: FC = () => {
               </InputAdornment>
             ),
           }}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
           label="Homepage"
           margin="dense"
         />

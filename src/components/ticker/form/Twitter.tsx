@@ -11,7 +11,14 @@ const Twitter: FC = () => {
     <Controller
       name="information.twitter"
       control={control}
-      render={({ field }) => (
+      rules={{
+        required: false,
+        pattern: {
+          value: /^([a-zA-Z0-9._]+)$/,
+          message: 'Invalid Twitter username',
+        },
+      }}
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           InputProps={{
@@ -22,6 +29,8 @@ const Twitter: FC = () => {
               </InputAdornment>
             ),
           }}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
           label="Twitter"
           margin="dense"
         />
