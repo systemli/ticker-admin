@@ -24,6 +24,7 @@ export interface Ticker {
   information: TickerInformation
   mastodon: TickerMastodon
   telegram: TickerTelegram
+  bluesky: TickerBluesky
   location: TickerLocation
 }
 
@@ -66,6 +67,19 @@ export interface TickerMastodonFormData {
   token?: string
   secret?: string
   accessToken?: string
+}
+
+export interface TickerBluesky {
+  active: boolean
+  connected: boolean
+  handle: string
+  appKey: string
+}
+
+export interface TickerBlueskyFormData {
+  active: boolean
+  handle?: string
+  appKey?: string
 }
 
 export interface TickerLocation {
@@ -185,6 +199,21 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
+  const putTickerBluesky = (data: TickerBlueskyFormData, ticker: Ticker): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/bluesky`, {
+      headers: headers,
+      body: JSON.stringify(data),
+      method: 'put',
+    }).then(response => response.json())
+  }
+
+  const deleteTickerBluesky = (ticker: Ticker): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${ticker.id}/bluesky`, {
+      headers: headers,
+      method: 'delete',
+    }).then(response => response.json())
+  }
+
   return {
     deleteTicker,
     deleteTickerUser,
@@ -199,5 +228,7 @@ export function useTickerApi(token: string) {
     deleteTickerMastodon,
     putTickerTelegram,
     deleteTickerTelegram,
+    putTickerBluesky,
+    deleteTickerBluesky,
   }
 }

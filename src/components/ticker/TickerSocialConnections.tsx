@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import MastodonCard from './MastodonCard'
 import TelegramCard from './TelegramCard'
+import BlueskyCard from './BlueskyCard'
 
 interface Props {
   ticker: Ticker
@@ -16,6 +17,9 @@ const TickerSocialConnections: FC<Props> = ({ ticker }) => {
       </Grid>
       <Grid item md={6} xs={12}>
         <TelegramCard ticker={ticker} />
+      </Grid>
+      <Grid item md={6} xs={12}>
+        <BlueskyCard ticker={ticker} />
       </Grid>
     </Grid>
   )

@@ -31,6 +31,7 @@ describe('TickerView', function () {
         mastodon: {},
         twitter: {},
         telegram: {},
+        bluesky: {},
         location: {},
       },
     },
