@@ -2,7 +2,7 @@ import { Tab, Tabs } from '@mui/material'
 import React, { FC, useState } from 'react'
 import { Ticker } from '../../api/Ticker'
 import TabPanel from '../common/TabPanel'
-import TickerForm from './TickerForm'
+import TickerForm from './form/TickerForm'
 import TickerSocialConnections from './TickerSocialConnections'
 import Modal from '../common/Modal'
 
