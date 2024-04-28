@@ -11,7 +11,14 @@ const Telegram: FC = () => {
     <Controller
       name="information.telegram"
       control={control}
-      render={({ field }) => (
+      rules={{
+        required: false,
+        pattern: {
+          value: /^\w{5,32}$/,
+          message: 'Invalid Telegram username',
+        },
+      }}
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           InputProps={{
@@ -22,6 +29,8 @@ const Telegram: FC = () => {
               </InputAdornment>
             ),
           }}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
           label="Telegram"
           margin="dense"
         />

@@ -11,7 +11,20 @@ const Domain: FC = () => {
     <Controller
       name="domain"
       control={control}
-      render={({ field }) => <TextField {...field} label="Domain" margin="dense" required disabled={!user?.roles.includes('admin')} />}
+      rules={{
+        required: 'Domain is required',
+      }}
+      render={({ field, fieldState: { error } }) => (
+        <TextField
+          {...field}
+          label="Domain"
+          margin="dense"
+          error={!!error}
+          helperText={error?.message ? error.message : null}
+          required
+          disabled={!user?.roles.includes('admin')}
+        />
+      )}
     />
   )
 }

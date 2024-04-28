@@ -11,7 +11,14 @@ const Email: FC = () => {
     <Controller
       name="information.email"
       control={control}
-      render={({ field }) => (
+      rules={{
+        required: false,
+        pattern: {
+          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+          message: 'E-Mail is invalid',
+        },
+      }}
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           InputProps={{
@@ -21,6 +28,8 @@ const Email: FC = () => {
               </InputAdornment>
             ),
           }}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
           label="E-Mail"
           margin="dense"
         />

@@ -9,7 +9,21 @@ const Description: FC = () => {
     <Controller
       name="description"
       control={control}
-      render={({ field }) => <TextField {...field} margin="dense" maxRows={10} multiline label="Description" required />}
+      rules={{
+        required: 'Description is required',
+      }}
+      render={({ field, fieldState: { error } }) => (
+        <TextField
+          {...field}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
+          margin="dense"
+          maxRows={10}
+          multiline
+          label="Description"
+          required
+        />
+      )}
     />
   )
 }
