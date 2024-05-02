@@ -1,60 +1,58 @@
-import { FC } from 'react'
-import { useTickerApi } from '../../api/Ticker'
+import { FC, useEffect, useState } from 'react'
 import TickerListItems from './TickerListItems'
-import useAuth from '../useAuth'
-import { useQuery } from '@tanstack/react-query'
-import Loader from '../Loader'
-import ErrorView from '../../views/ErrorView'
-import { Navigate } from 'react-router'
-import { Card, CardContent, Table, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Table, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material'
+import useDebounce from '../../hooks/useDebounce'
+import { useSearchParams } from 'react-router-dom'
+import { GetTickersQueryParams } from '../../api/Ticker'
+import TickerListFilter from './TickerListFilter'
 
 const TickerList: FC = () => {
-  const { token, user } = useAuth()
-  const { getTickers } = useTickerApi(token)
-  const { isLoading, error, data } = useQuery({ queryKey: ['tickers'], queryFn: getTickers })
+  const initialState = { order_by: 'id', sort: 'asc' } as GetTickersQueryParams
+  const [params, setParams] = useState<GetTickersQueryParams>(initialState)
+  const debouncedValue = useDebounce<GetTickersQueryParams>(params, 200, initialState)
+  const [, setSearchParams] = useSearchParams()
 
-  if (isLoading) {
-    return <Loader />
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams()
+
+    if (params.order_by) newSearchParams.set('order_by', params.order_by)
+    if (params.sort) newSearchParams.set('sort', params.sort)
+    if (params.title) newSearchParams.set('title', params.title)
+    if (params.domain) newSearchParams.set('domain', params.domain)
+    if (params.active !== undefined) newSearchParams.set('active', String(params.active))
+    setSearchParams(newSearchParams)
+  }, [debouncedValue, params, setSearchParams])
+
+  const setDirection = (order_by: string) => {
+    if (params.order_by === order_by) {
+      return params.sort === 'asc' ? 'asc' : 'desc'
+    }
+
+    return undefined
   }
 
-  if (error || data === undefined || data.status === 'error') {
-    return <ErrorView queryKey={['tickers']}>Unable to fetch tickers from server.</ErrorView>
+  const sortActive = (order_by: string) => {
+    return params.order_by === order_by
   }
 
-  const tickers = data.data.tickers
+  const handleSortChange = (order_by: string) => {
+    const direction = params.sort === 'asc' ? 'desc' : 'asc'
+    const sort = params.order_by === order_by ? direction : 'asc'
+    setParams({ ...params, order_by, sort: sort })
+  }
 
-  if (tickers.length === 0) {
-    if (user?.roles.includes('admin')) {
-      return (
-        <Card>
-          <CardContent>
-            <Typography component="h2" variant="h4">
-              Welcome!
-            </Typography>
-            <Typography sx={{ mt: 2 }} variant="body1">
-              There are no tickers yet. To start with a ticker, create one.
-            </Typography>
-          </CardContent>
-        </Card>
-      )
+  const handleActiveChange = (_: React.MouseEvent<HTMLElement, MouseEvent>, value: unknown) => {
+    if (typeof value !== 'string') return
+
+    if (value === '') {
+      setParams({ ...params, active: undefined })
     } else {
-      return (
-        <Card>
-          <CardContent>
-            <Typography component="h2" variant="h4">
-              Oh no! Something unexpected happened
-            </Typography>
-            <Typography sx={{ mt: 2 }} variant="body1">
-              Currently there are no tickers for you. Contact your administrator if that should be different.
-            </Typography>
-          </CardContent>
-        </Card>
-      )
+      setParams({ ...params, active: value === 'true' })
     }
   }
 
-  if (tickers.length === 1 && !user?.roles.includes('admin')) {
-    return <Navigate replace to={`/ticker/${tickers[0].id}`} />
+  const handleFilterChange = (field: string, value: string) => {
+    setParams({ ...params, [field]: value })
   }
 
   return (
@@ -62,15 +60,35 @@ const TickerList: FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="center" size="small">
-              Active
+            <TableCell colSpan={5} sx={{ p: 1 }}>
+              <TickerListFilter params={params} onTitleChange={handleFilterChange} onDomainChange={handleFilterChange} onActiveChange={handleActiveChange} />
             </TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Domain</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell align="center" sortDirection={setDirection('id')}>
+              <TableSortLabel active={sortActive('id')} direction={setDirection('id')} onClick={() => handleSortChange('id')}>
+                ID
+              </TableSortLabel>
+            </TableCell>
+            <TableCell align="center" sortDirection={setDirection('active')}>
+              <TableSortLabel active={sortActive('active')} direction={setDirection('active')} onClick={() => handleSortChange('active')}>
+                Active
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sortDirection={setDirection('title')}>
+              <TableSortLabel active={sortActive('title')} direction={setDirection('title')} onClick={() => handleSortChange('title')}>
+                Title
+              </TableSortLabel>
+            </TableCell>
+            <TableCell sortDirection={setDirection('domain')}>
+              <TableSortLabel active={sortActive('domain')} direction={setDirection('domain')} onClick={() => handleSortChange('domain')}>
+                Domain
+              </TableSortLabel>
+            </TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
-        <TickerListItems tickers={tickers} />
+        <TickerListItems params={debouncedValue} />
       </Table>
     </TableContainer>
   )

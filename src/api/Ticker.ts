@@ -1,3 +1,4 @@
+import { SortDirection } from '@mui/material'
 import { ApiUrl, Response } from './Api'
 import { User } from './User'
 
@@ -72,6 +73,14 @@ export interface TickerLocation {
   lon: number
 }
 
+export interface GetTickersQueryParams {
+  active?: boolean
+  domain?: string
+  title?: string
+  order_by: string
+  sort: SortDirection
+}
+
 export function useTickerApi(token: string) {
   const headers = {
     Accept: 'application/json',
@@ -99,8 +108,16 @@ export function useTickerApi(token: string) {
     }).then(response => response.json())
   }
 
-  const getTickers = (): Promise<Response<TickersResponseData>> => {
-    return fetch(`${ApiUrl}/admin/tickers`, { headers: headers }).then(response => response.json())
+  const getTickers = (params: GetTickersQueryParams): Promise<Response<TickersResponseData>> => {
+    const query = new URLSearchParams()
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== null && value !== undefined) {
+        query.append(key, String(value))
+      }
+    }
+
+    return fetch(`${ApiUrl}/admin/tickers?${query}`, { headers: headers }).then(response => response.json())
   }
 
   const getTicker = (id: number): Promise<Response<TickerResponseData>> => {

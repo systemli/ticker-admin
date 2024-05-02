@@ -35,6 +35,9 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
   return (
     <TableRow hover style={{ cursor: 'pointer' }}>
       <TableCell align="center" onClick={handleUse} padding="none" size="small">
+        {ticker.id}
+      </TableCell>
+      <TableCell align="center" onClick={handleUse} padding="none" size="small">
         {ticker.active ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
       </TableCell>
       <TableCell onClick={handleUse}>{ticker.title}</TableCell>

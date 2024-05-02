@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, useTheme } from '@mui/material'
-import { Ticker, useTickerApi } from '../../api/Ticker'
+import { GetTickersQueryParams, Ticker, useTickerApi } from '../../api/Ticker'
 import useAuth from '../useAuth'
 
 interface Props {
@@ -27,7 +27,8 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
   }
 
   useEffect(() => {
-    getTickers()
+    const params = {} as GetTickersQueryParams
+    getTickers(params)
       .then(response => response.data.tickers)
       .then(tickers => {
         setOptions(tickers)

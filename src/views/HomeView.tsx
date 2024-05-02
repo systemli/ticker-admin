@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import TickerList from '../components/ticker/TickerList'
 import useAuth from '../components/useAuth'
 import Layout from './Layout'
