@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { Navigate, RouteProps } from 'react-router'
-import useAuth, { Roles } from './useAuth'
+import useAuth from '../contexts/useAuth'
+import { Roles } from '../contexts/AuthContext'
 
 type Props = RouteProps & {
   role: Roles

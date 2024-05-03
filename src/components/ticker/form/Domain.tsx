@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import useAuth from '../../useAuth'
+import useAuth from '../../../contexts/useAuth'
 
 const Domain: FC = () => {
   const { control } = useFormContext()

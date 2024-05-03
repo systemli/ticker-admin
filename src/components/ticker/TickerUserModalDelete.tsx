@@ -2,7 +2,7 @@ import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
 import { User } from '../../api/User'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import Modal from '../common/Modal'
 
 interface Props {

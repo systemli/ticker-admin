@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react'
 import UserChangePasswordModalForm from './UserChangePasswordModalForm'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../useAuth'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
+import { AuthProvider } from '../../contexts/AuthContext'
 
 describe('UserChangePasswordModalForm', () => {
   beforeEach(() => {

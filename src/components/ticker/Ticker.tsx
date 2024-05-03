@@ -9,7 +9,7 @@ import { Alert, Box, Button, Card, CardContent, Grid, Stack, Typography } from '
 import TickerModalForm from './TickerModalForm'
 import TickerDangerZoneCard from './TickerDangerZoneCard'
 import TickerUsersCard from './TickerUsersCard'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 
 interface Props {
   ticker: Model

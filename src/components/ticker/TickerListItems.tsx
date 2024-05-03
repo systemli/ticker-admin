@@ -2,7 +2,7 @@ import { CircularProgress, Stack, TableBody, TableCell, TableRow, Typography } f
 import { FC } from 'react'
 import { GetTickersQueryParams, useTickerApi } from '../../api/Ticker'
 import TickerListItem from './TickerListItem'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { useQuery } from '@tanstack/react-query'
 import { Navigate } from 'react-router'
 

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import UserListItems from './UserListItems'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { useUserApi } from '../../api/User'
 import ErrorView from '../../views/ErrorView'
 import { Table, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'

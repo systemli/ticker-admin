@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../components/useAuth'
+import { AuthProvider } from '../contexts/AuthContext'
 import UsersView from './UsersView'
 import sign from 'jwt-encode'
 import userEvent from '@testing-library/user-event'

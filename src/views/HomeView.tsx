@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import TickerList from '../components/ticker/TickerList'
-import useAuth from '../components/useAuth'
+import useAuth from '../contexts/useAuth'
 import Layout from './Layout'
 import { Button, Card, Grid, Stack, Typography } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

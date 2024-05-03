@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import TelegramModalForm from './TelegramModalForm'
 
 interface Props {

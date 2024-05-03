@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton } from '@mui/material'
 import { Ticker } from '../../api/Ticker'
 import { useUploadApi, Upload } from '../../api/Upload'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { faImages } from '@fortawesome/free-solid-svg-icons'
 import palette from '../../theme/palette'
 
