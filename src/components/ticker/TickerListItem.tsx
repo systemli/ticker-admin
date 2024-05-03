@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Ticker } from '../../api/Ticker'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
 import { MoreVert } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

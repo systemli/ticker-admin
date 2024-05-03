@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Message, useMessageApi } from '../../api/Message'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import Modal from '../common/Modal'
 
 interface Props {

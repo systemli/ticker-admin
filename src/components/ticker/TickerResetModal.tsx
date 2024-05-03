@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react'
 import { Ticker, useTickerApi } from '../../api/Ticker'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { useQueryClient } from '@tanstack/react-query'
 import Modal from '../common/Modal'
 

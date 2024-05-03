@@ -3,7 +3,7 @@ import { GetTickersQueryParams } from '../../api/Ticker'
 import TickerListItems from './TickerListItems'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../useAuth'
+import { AuthProvider } from '../../contexts/AuthContext'
 import sign from 'jwt-encode'
 
 describe('TickerListItems', function () {

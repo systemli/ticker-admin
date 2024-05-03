@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, useTheme } from '@mui/material'
 import { GetTickersQueryParams, Ticker, useTickerApi } from '../../api/Ticker'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 
 interface Props {
   name: string

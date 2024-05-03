@@ -5,10 +5,12 @@ import { render, screen } from '@testing-library/react'
 import TickerUsersForm from './TickerUsersForm'
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router'
+import { AuthProvider } from '../../contexts/AuthContext'
 
 describe('TickerUsersForm', () => {
   beforeEach(() => {
-    fetch.resetMocks()
+    fetchMock.resetMocks()
   })
 
   function setup(defaultValue: Array<User>, ticker: Ticker, onSubmit: () => void) {
@@ -21,7 +23,11 @@ describe('TickerUsersForm', () => {
     })
     return render(
       <QueryClientProvider client={client}>
-        <TickerUsersForm defaultValue={defaultValue} onSubmit={onSubmit} ticker={ticker} />
+        <MemoryRouter>
+          <AuthProvider>
+            <TickerUsersForm defaultValue={defaultValue} onSubmit={onSubmit} ticker={ticker} />
+          </AuthProvider>
+        </MemoryRouter>
       </QueryClientProvider>
     )
   }
@@ -35,7 +41,7 @@ describe('TickerUsersForm', () => {
       id: 1,
       email: 'user@systemli.org',
     } as User
-    fetch.mockResponseOnce(
+    fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
           users: [user],

@@ -1,18 +1,18 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { login as loginApi } from '../api/Auth'
+import { ReactNode, createContext, useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { jwtDecode } from 'jwt-decode'
+import { login as loginApi } from '../api/Auth'
 
 export type Roles = 'user' | 'admin'
 
-interface User {
+export interface User {
   id: number
   email: string
   exp: number
   roles: Array<Roles>
 }
 
-interface IAuthContext {
+export interface IAuthContext {
   user?: User
   token: string
   error?: Error
@@ -20,9 +20,9 @@ interface IAuthContext {
   logout: () => void
 }
 
-const AuthContext = createContext<IAuthContext>({} as IAuthContext)
+const AuthContext = createContext<IAuthContext | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }): JSX.Element {
+export function AuthProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {
   const [user, setUser] = useState<User>()
   const [token, setToken] = useState<string>('')
   const [error, setError] = useState<Error>()
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   useEffect(() => {
     const token = localStorage.getItem('token')
 
-    if (token === null || token == '') {
+    if (!token) {
       setLoadingInitial(false)
       return
     }
@@ -102,6 +102,4 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   return <AuthContext.Provider value={memoedValue}>{!loadingInitial && children}</AuthContext.Provider>
 }
 
-export default function useAuth() {
-  return useContext(AuthContext)
-}
+export default AuthContext

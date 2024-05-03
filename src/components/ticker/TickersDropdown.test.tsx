@@ -4,10 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
+import { AuthProvider } from '../../contexts/AuthContext'
+import { MemoryRouter } from 'react-router'
 
 describe('TickersDropdown', () => {
   beforeEach(() => {
-    fetch.resetMocks()
+    fetchMock.resetMocks()
   })
 
   function setup(defaultValue: Array<Ticker>, onChange: (tickers: Array<Ticker>) => void) {
@@ -20,7 +22,11 @@ describe('TickersDropdown', () => {
     })
     return render(
       <QueryClientProvider client={client}>
-        <TickersDropdown defaultValue={defaultValue} name="tickers" onChange={onChange} />
+        <MemoryRouter>
+          <AuthProvider>
+            <TickersDropdown defaultValue={defaultValue} name="tickers" onChange={onChange} />
+          </AuthProvider>
+        </MemoryRouter>
       </QueryClientProvider>
     )
   }
@@ -30,7 +36,7 @@ describe('TickersDropdown', () => {
       id: 1,
       title: 'Ticker 1',
     }
-    fetch.mockResponseOnce(
+    fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
           tickers: [ticker],

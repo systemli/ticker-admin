@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Alert, FormGroup, Grid, TextField } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { useUserApi } from '../../api/User'
 
 interface Props {

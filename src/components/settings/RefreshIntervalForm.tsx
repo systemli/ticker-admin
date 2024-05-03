@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { RefreshIntervalSetting, Setting, useSettingsApi } from '../../api/Settings'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { FormGroup, Grid, TextField } from '@mui/material'
 
 interface Props {

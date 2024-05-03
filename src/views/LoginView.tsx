@@ -2,7 +2,7 @@ import { Alert, Box, Button, Container, Grid, Paper, TextField, Typography } fro
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import useAuth from '../components/useAuth'
+import useAuth from '../contexts/useAuth'
 import logo from '../assets/logo.png'
 import { useQueryClient } from '@tanstack/react-query'
 

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { Ticker, useTickerApi } from '../../api/Ticker'
-import useAuth from '../useAuth'
+import useAuth from '../../contexts/useAuth'
 import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
 
 interface Props {
