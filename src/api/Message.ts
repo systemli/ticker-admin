@@ -16,6 +16,7 @@ export interface Message {
   createdAt: Date
   telegramUrl?: string
   mastodonUrl?: string
+  blueskyUrl?: string
   geoInformation: string
   attachments?: Attachment[]
 }

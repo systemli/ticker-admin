@@ -56,6 +56,10 @@ const MessageForm: FC<Props> = ({ ticker }) => {
    * @returns The maximum length of a message for the given ticker.
    */
   const maxLength: number = (function (ticker: Ticker) {
+    if (ticker.bluesky.active) {
+      return 300
+    }
+
     if (ticker.mastodon.active) {
       return 500
     }
