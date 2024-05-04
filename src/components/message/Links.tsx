@@ -5,17 +5,10 @@ interface Props {
   message: string
 }
 const Links: FC<Props> = ({ message }) => {
-  const render = ({ attributes, content }: { attributes: unknown; content: string }) => {
+  const render = ({ attributes }: { attributes: unknown }) => {
     const { href } = attributes as { href: string }
-    content = content.replace(/^(https?:\/\/)/, '')
-
-    if (content.endsWith('/')) {
-      content = content.slice(0, -1)
-    }
-
-    if (content.length > 40) {
-      content = content.slice(0, 40) + '...'
-    }
+    const url = new URL(href)
+    const content = url.hostname + url.pathname.slice(0, 20) + '...'
 
     return (
       <a href={href} target="_blank" title={href}>

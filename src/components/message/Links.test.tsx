@@ -11,6 +11,15 @@ describe('Links', () => {
     expect(document.querySelector('a')).toHaveTextContent('example.com')
   })
 
+  it('should render links without protocol', () => {
+    const message = 'example.com'
+
+    render(<Links message={message} />)
+
+    expect(document.querySelector('a')).toHaveAttribute('href', 'https://example.com')
+    expect(document.querySelector('a')).toHaveTextContent('example.com')
+  })
+
   it('should shorten long links', () => {
     const message = 'https://www.systemli.org/2024/01/11/neue-sicherheitsma%C3%9Fnahme-gegen-mitm-angriffe-eingef%C3%BChrt/'
 
@@ -20,6 +29,6 @@ describe('Links', () => {
       'href',
       'https://www.systemli.org/2024/01/11/neue-sicherheitsma%C3%9Fnahme-gegen-mitm-angriffe-eingef%C3%BChrt/'
     )
-    expect(document.querySelector('a')).toHaveTextContent('www.systemli.org/2024/01/11/neue-sicherh...')
+    expect(document.querySelector('a')).toHaveTextContent('www.systemli.org/2024/01/11/neue-sic...')
   })
 })
