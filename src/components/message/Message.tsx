@@ -7,6 +7,7 @@ import { Card, CardContent, IconButton, useTheme } from '@mui/material'
 import MessageAttachements from './MessageAttachments'
 import MessageFooter from './MessageFooter'
 import { Close } from '@mui/icons-material'
+import Links from './Links'
 
 interface Props {
   message: MessageType
@@ -29,12 +30,11 @@ const Message: FC<Props> = ({ message, ticker }) => {
           <Close />
         </IconButton>
         <MessageModalDelete message={message} onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} />
-        <p
-          dangerouslySetInnerHTML={{
-            __html: message.text.replace(/(?:\r\n|\r|\n)/g, '<br/>'),
-          }}
-          style={{ paddingRight: theme.spacing(6) }}
-        />
+        {message.text.split(/\r\n|\r|\n/g).map((line, i) => (
+          <p key={message.id + i} style={{ paddingRight: theme.spacing(6) }}>
+            <Links message={line} />
+          </p>
+        ))}
         <MessageAttachements message={message} />
         <MessageMap message={message} ticker={ticker} />
         <MessageFooter message={message} />
