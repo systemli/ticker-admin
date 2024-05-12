@@ -1,15 +1,18 @@
-import { FC, useEffect, useState } from 'react'
-import TickerListItems from './TickerListItems'
 import { Table, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material'
-import useDebounce from '../../hooks/useDebounce'
+import { FC, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { GetTickersQueryParams } from '../../api/Ticker'
+import useDebounce from '../../hooks/useDebounce'
 import TickerListFilter from './TickerListFilter'
+import TickerListItems from './TickerListItems'
 
-const TickerList: FC = () => {
-  const initialState = { order_by: 'id', sort: 'asc' } as GetTickersQueryParams
-  const [params, setParams] = useState<GetTickersQueryParams>(initialState)
-  const debouncedValue = useDebounce<GetTickersQueryParams>(params, 200, initialState)
+interface Props {
+  token: string
+}
+
+const TickerList: FC<Props> = ({ token }) => {
+  const [params, setParams] = useState<GetTickersQueryParams>({})
+  const debouncedValue = useDebounce<GetTickersQueryParams>(params, 200, {})
   const [, setSearchParams] = useSearchParams()
 
   useEffect(() => {
@@ -88,7 +91,7 @@ const TickerList: FC = () => {
             <TableCell />
           </TableRow>
         </TableHead>
-        <TickerListItems params={debouncedValue} />
+        <TickerListItems token={token} params={debouncedValue} />
       </Table>
     </TableContainer>
   )

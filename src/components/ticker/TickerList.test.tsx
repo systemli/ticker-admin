@@ -27,7 +27,7 @@ describe('TickerList', function () {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <TickerList />
+            <TickerList token="1" />
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>
@@ -44,6 +44,6 @@ describe('TickerList', function () {
 
     setup()
 
-    expect(TickerListItems).toHaveBeenCalledTimes(4)
+    expect(TickerListItems).toHaveBeenCalledTimes(3)
   })
 })

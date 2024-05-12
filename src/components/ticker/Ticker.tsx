@@ -1,48 +1,67 @@
+import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Alert, Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
 import { Ticker as Model } from '../../api/Ticker'
-import MessageForm from '../message/MessageForm'
-import TickerCard from './TickerCard'
-import MessageList from '../message/MessageList'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { Alert, Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
-import TickerModalForm from './TickerModalForm'
-import TickerDangerZoneCard from './TickerDangerZoneCard'
-import TickerUsersCard from './TickerUsersCard'
 import useAuth from '../../contexts/useAuth'
+import Loader from '../Loader'
+import MessageForm from '../message/MessageForm'
+import MessageList from '../message/MessageList'
+import TickerCard from './TickerCard'
+import TickerDangerZoneCard from './TickerDangerZoneCard'
+import TickerModalForm from './TickerModalForm'
+import TickerUsersCard from './TickerUsersCard'
 
 interface Props {
-  ticker: Model
+  ticker?: Model
+  isLoading: boolean
 }
 
-const Ticker: FC<Props> = ({ ticker }) => {
+const Ticker: FC<Props> = ({ ticker, isLoading }) => {
   const { user } = useAuth()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
+
+  const headline = () => (
+    <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
+      <Typography component="h2" gutterBottom variant="h3">
+        Ticker
+      </Typography>
+      <Button
+        onClick={() => {
+          setFormModalOpen(true)
+        }}
+        startIcon={<FontAwesomeIcon icon={faGear} />}
+        variant="contained"
+      >
+        Configure
+      </Button>
+      <TickerModalForm
+        onClose={() => {
+          setFormModalOpen(false)
+        }}
+        open={formModalOpen}
+        ticker={ticker}
+      />
+    </Stack>
+  )
+
+  if (ticker === undefined || isLoading) {
+    return (
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          {headline()}
+        </Grid>
+        <Grid item xs={12}>
+          <Loader />
+        </Grid>
+      </Grid>
+    )
+  }
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
-          <Typography component="h2" gutterBottom variant="h3">
-            Ticker
-          </Typography>
-          <Button
-            onClick={() => {
-              setFormModalOpen(true)
-            }}
-            startIcon={<FontAwesomeIcon icon={faGear} />}
-            variant="contained"
-          >
-            Configure
-          </Button>
-          <TickerModalForm
-            onClose={() => {
-              setFormModalOpen(false)
-            }}
-            open={formModalOpen}
-            ticker={ticker}
-          />
-        </Stack>
+        {headline()}
       </Grid>
       {!ticker.active ? (
         <Grid item xs={12}>

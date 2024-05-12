@@ -1,25 +1,19 @@
 import { CircularProgress, Stack, TableBody, TableCell, TableRow, Typography } from '@mui/material'
 import { FC } from 'react'
-import { GetTickersQueryParams, useTickerApi } from '../../api/Ticker'
+import { GetTickersQueryParams } from '../../api/Ticker'
+import useTickersQuery from '../../queries/tickers'
 import TickerListItem from './TickerListItem'
-import useAuth from '../../contexts/useAuth'
-import { useQuery } from '@tanstack/react-query'
-import { Navigate } from 'react-router'
 
 interface Props {
+  token: string
   params: GetTickersQueryParams
 }
 
-const TickerListItems: FC<Props> = ({ params }: Props) => {
-  const { token, user } = useAuth()
-  const { getTickers } = useTickerApi(token)
-  const { isFetching, error, data } = useQuery({
-    queryKey: ['tickers', params],
-    queryFn: () => getTickers(params),
-    placeholderData: previousData => previousData,
-  })
+const TickerListItems: FC<Props> = ({ token, params }) => {
+  const { data, isLoading, error } = useTickersQuery({ token, params: params })
+  const tickers = data?.data.tickers || []
 
-  if (data === undefined && isFetching) {
+  if (isLoading) {
     return (
       <TableBody>
         <TableRow>
@@ -36,7 +30,7 @@ const TickerListItems: FC<Props> = ({ params }: Props) => {
     )
   }
 
-  if (error || data === undefined || data.status === 'error') {
+  if (error) {
     return (
       <TableBody>
         <TableRow>
@@ -48,7 +42,7 @@ const TickerListItems: FC<Props> = ({ params }: Props) => {
     )
   }
 
-  if (data.status === 'success' && data.data.tickers.length === 0) {
+  if (tickers.length === 0) {
     return (
       <TableBody>
         <TableRow>
@@ -60,12 +54,6 @@ const TickerListItems: FC<Props> = ({ params }: Props) => {
         </TableRow>
       </TableBody>
     )
-  }
-
-  const tickers = data.data.tickers
-
-  if (tickers.length === 1 && !user?.roles.includes('admin')) {
-    return <Navigate replace to={`/ticker/${tickers[0].id}`} />
   }
 
   return (

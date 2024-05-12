@@ -1,41 +1,37 @@
 import { FC } from 'react'
-import { useTickerApi } from '../api/Ticker'
-import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import useAuth from '../contexts/useAuth'
 import Ticker from '../components/ticker/Ticker'
-import Layout from './Layout'
+import useAuth from '../contexts/useAuth'
+import useTickersQuery from '../queries/tickers'
 import ErrorView from './ErrorView'
-import Loader from '../components/Loader'
+import Layout from './Layout'
 
 interface TickerViewParams {
   tickerId: string
 }
 
 const TickerView: FC = () => {
-  const { token } = useAuth()
-  const { getTicker } = useTickerApi(token)
   const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
   const tickerIdNum = parseInt(tickerId)
+  const { token } = useAuth()
+  const { data, isLoading, error } = useTickersQuery({ token: token, params: {} })
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ['ticker', tickerIdNum],
-    queryFn: () => getTicker(tickerIdNum),
-  })
-
-  if (isLoading) {
-    return <Loader />
+  if (error !== null || data?.status === 'error') {
+    return (
+      <Layout>
+        <ErrorView queryKey={['tickers']}>
+          <p>Ticker not found.</p>
+        </ErrorView>
+      </Layout>
+    )
   }
 
-  if (error || data === undefined || data.status === 'error') {
-    return <ErrorView queryKey={['ticker', tickerIdNum]}>Unable to fetch the ticker from server.</ErrorView>
-  }
-
-  const ticker = data.data.ticker
+  const tickers = data?.data.tickers || []
+  const ticker = tickers.find(ticker => ticker.id === tickerIdNum)
 
   return (
     <Layout>
-      <Ticker ticker={ticker} />
+      <Ticker ticker={ticker} isLoading={isLoading} />
     </Layout>
   )
 }
