@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import { GetTickersQueryParams } from '../../api/Ticker'
-import TickerListItems from './TickerListItems'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../../contexts/AuthContext'
+import { render, screen } from '@testing-library/react'
 import sign from 'jwt-encode'
+import { MemoryRouter } from 'react-router'
+import { GetTickersQueryParams } from '../../api/Ticker'
+import { AuthProvider } from '../../contexts/AuthContext'
+import TickerListItems from './TickerListItems'
 
 describe('TickerListItems', function () {
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe('TickerListItems', function () {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <TickerListItems params={params} />
+            <TickerListItems params={params} token={jwt('admin')} />
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>
