@@ -57,25 +57,23 @@ describe('TickerView', function () {
 
   it('should render the ticker', async function () {
     fetchMock.doMockOnceIf(
-      /v1\/admin\/tickers/,
+      /v1\/admin\/tickers\/1/,
       JSON.stringify({
         data: {
-          tickers: [
-            {
-              id: 1,
-              createdAt: new Date(),
-              domain: 'localhost',
-              title: 'Ticker Title',
-              description: 'Description',
-              active: true,
-              information: {},
-              mastodon: {},
-              twitter: {},
-              telegram: {},
-              bluesky: {},
-              location: {},
-            },
-          ],
+          ticker: {
+            id: 1,
+            createdAt: new Date(),
+            domain: 'localhost',
+            title: 'Ticker Title',
+            description: 'Description',
+            active: true,
+            information: {},
+            mastodon: {},
+            twitter: {},
+            telegram: {},
+            bluesky: {},
+            location: {},
+          },
         },
         status: 'success',
       })
