@@ -1,7 +1,7 @@
 import { CircularProgress, Stack, TableBody, TableCell, TableRow, Typography } from '@mui/material'
 import { FC } from 'react'
 import { GetTickersQueryParams } from '../../api/Ticker'
-import useTickersQuery from '../../queries/tickers'
+import useTickersQuery from '../../queries/useTickersQuery'
 import TickerListItem from './TickerListItem'
 
 interface Props {

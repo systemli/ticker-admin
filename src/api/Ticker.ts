@@ -134,6 +134,10 @@ export function useTickerApi(token: string) {
     return fetch(`${ApiUrl}/admin/tickers?${query}`, { headers: headers }).then(response => response.json())
   }
 
+  const getTicker = (id: number): Promise<Response<TickerResponseData>> => {
+    return fetch(`${ApiUrl}/admin/tickers/${id}`, { headers: headers }).then(response => response.json())
+  }
+
   const postTicker = (data: Ticker): Promise<Response<TickerResponseData>> => {
     return fetch(`${ApiUrl}/admin/tickers`, {
       headers: headers,
@@ -214,6 +218,7 @@ export function useTickerApi(token: string) {
     deleteTicker,
     deleteTickerUser,
     getTickers,
+    getTicker,
     getTickerUsers,
     postTicker,
     putTicker,
