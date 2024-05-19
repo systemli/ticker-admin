@@ -1,11 +1,11 @@
+import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { User, useUserApi } from '../../api/User'
-import { useQueryClient } from '@tanstack/react-query'
-import useAuth from '../../contexts/useAuth'
-import { FormControlLabel, Checkbox, FormGroup, TextField, Typography, Grid, Divider } from '@mui/material'
-import TickersDropdown from '../ticker/TickersDropdown'
 import { Ticker } from '../../api/Ticker'
+import { User, postUserApi, putUserApi } from '../../api/User'
+import useAuth from '../../contexts/useAuth'
+import TickersDropdown from '../ticker/TickersDropdown'
 
 interface Props {
   id: string
@@ -23,7 +23,6 @@ interface FormValues {
 
 const UserForm: FC<Props> = ({ id, user, callback }) => {
   const { token } = useAuth()
-  const { postUser, putUser } = useUserApi(token)
   const {
     formState: { errors },
     handleSubmit,
@@ -50,12 +49,12 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
     }
 
     if (user) {
-      putUser(formData, user).finally(() => {
+      putUserApi(token, user, formData).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['users'] })
         callback()
       })
     } else {
-      postUser(formData).finally(() => {
+      postUserApi(token, formData).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['users'] })
         callback()
       })

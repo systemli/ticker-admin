@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import { Ticker, TickerBlueskyFormData, useTickerApi } from '../../api/Ticker'
-import useAuth from '../../contexts/useAuth'
-import { useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
+import { Ticker, TickerBlueskyFormData, putTickerBlueskyApi } from '../../api/Ticker'
+import useAuth from '../../contexts/useAuth'
 
 interface Props {
   callback: () => void
@@ -13,7 +13,6 @@ interface Props {
 const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
   const bluesky = ticker.bluesky
   const { token } = useAuth()
-  const { putTickerBluesky } = useTickerApi(token)
   const {
     formState: { errors },
     handleSubmit,
@@ -29,7 +28,7 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit = handleSubmit(data => {
-    putTickerBluesky(data, ticker).then(response => {
+    putTickerBlueskyApi(token, data, ticker).then(response => {
       if (response.status == 'error') {
         setError('root.authenticationFailed', { message: 'Authentication failed' })
       } else {

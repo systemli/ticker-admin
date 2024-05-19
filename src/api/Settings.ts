@@ -1,4 +1,4 @@
-import { ApiUrl, Response } from './Api'
+import { ApiResponse, ApiUrl, apiClient, apiHeaders } from './Api'
 
 interface InactiveSettingsResponseData {
   setting: Setting<InactiveSetting>
@@ -34,45 +34,26 @@ export interface RefreshInterval {
   value: string
 }
 
-export function useSettingsApi(token: string) {
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  }
+export async function fetchInactiveSettingsApi(token: string): Promise<ApiResponse<InactiveSettingsResponseData>> {
+  return apiClient<InactiveSettingsResponseData>(`${ApiUrl}/admin/settings/inactive_settings`, { headers: apiHeaders(token) })
+}
 
-  const getInactiveSettings = (): Promise<Response<InactiveSettingsResponseData>> => {
-    return fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
-      headers: headers,
-    }).then(response => response.json())
-  }
+export async function fetchRefreshIntervalApi(token: string): Promise<ApiResponse<RefreshIntervalResponseData>> {
+  return apiClient<RefreshIntervalResponseData>(`${ApiUrl}/admin/settings/refresh_interval`, { headers: apiHeaders(token) })
+}
 
-  const getRefreshInterval = (): Promise<Response<RefreshIntervalResponseData>> => {
-    return fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
-      headers: headers,
-    }).then(response => response.json())
-  }
+export async function putRefreshIntervalApi(token: string, refreshInterval: number): Promise<ApiResponse<RefreshIntervalResponseData>> {
+  return apiClient<RefreshIntervalResponseData>(`${ApiUrl}/admin/settings/refresh_interval`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify({ refreshInterval: refreshInterval }),
+  })
+}
 
-  const putRefreshInterval = (refreshInterval: number): Promise<Response<RefreshIntervalResponseData>> => {
-    return fetch(`${ApiUrl}/admin/settings/refresh_interval`, {
-      headers: headers,
-      body: JSON.stringify({ refreshInterval: refreshInterval }),
-      method: 'put',
-    }).then(response => response.json())
-  }
-
-  const putInactiveSettings = (data: InactiveSetting): Promise<Response<InactiveSettingsResponseData>> => {
-    return fetch(`${ApiUrl}/admin/settings/inactive_settings`, {
-      headers: headers,
-      body: JSON.stringify(data),
-      method: 'put',
-    }).then(response => response.json())
-  }
-
-  return {
-    getInactiveSettings,
-    getRefreshInterval,
-    putInactiveSettings,
-    putRefreshInterval,
-  }
+export async function putInactiveSettingsApi(token: string, data: InactiveSetting): Promise<ApiResponse<InactiveSettingsResponseData>> {
+  return apiClient<InactiveSettingsResponseData>(`${ApiUrl}/admin/settings/inactive_settings`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
 }

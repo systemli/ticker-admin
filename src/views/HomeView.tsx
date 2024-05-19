@@ -40,7 +40,7 @@ const HomeView: FC = () => {
     )
   }
 
-  const tickers = data?.data.tickers || []
+  const tickers = data?.data?.tickers || []
 
   if (!user?.roles.includes('admin') && tickers.length === 1) {
     return <Navigate replace to={`/ticker/${tickers[0].id}`} />

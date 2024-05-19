@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { GetTickersQueryParams, useTickerApi } from '../api/Ticker'
+import { GetTickersQueryParams, fetchTickersApi } from '../api/Ticker'
 
 interface Props {
   token: string
@@ -7,11 +7,9 @@ interface Props {
 }
 
 const useTickersQuery = ({ token, params }: Props) => {
-  const { getTickers } = useTickerApi(token)
-
   return useQuery({
     queryKey: ['tickers', params],
-    queryFn: () => getTickers(params),
+    queryFn: () => fetchTickersApi(token, params),
     placeholderData: previousData => previousData,
   })
 }

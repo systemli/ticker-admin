@@ -1,9 +1,9 @@
+import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
-import { Ticker, useTickerApi } from '../../api/Ticker'
+import { Ticker, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
-import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
 
 interface Props {
   callback: () => void
@@ -18,7 +18,6 @@ interface FormValues {
 const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   const telegram = ticker.telegram
   const { token } = useAuth()
-  const { putTickerTelegram } = useTickerApi(token)
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
       active: telegram.active,
@@ -28,7 +27,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putTickerTelegram(data, ticker).finally(() => {
+    putTickerTelegramApi(token, data, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
       callback()
     })

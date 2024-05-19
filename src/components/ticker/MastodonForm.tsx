@@ -2,7 +2,7 @@ import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } fr
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Ticker, TickerMastodonFormData, useTickerApi } from '../../api/Ticker'
+import { Ticker, TickerMastodonFormData, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 
 interface Props {
@@ -13,7 +13,6 @@ interface Props {
 const MastodonForm: FC<Props> = ({ callback, ticker }) => {
   const mastodon = ticker.mastodon
   const { token } = useAuth()
-  const { putTickerMastodon } = useTickerApi(token)
   const { handleSubmit, register } = useForm<TickerMastodonFormData>({
     defaultValues: {
       active: mastodon.active,
@@ -23,7 +22,7 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<TickerMastodonFormData> = data => {
-    putTickerMastodon(data, ticker).finally(() => {
+    putTickerMastodonApi(token, data, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
       callback()
     })

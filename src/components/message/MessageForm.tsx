@@ -1,21 +1,21 @@
-import { FC, useCallback, useEffect, useState } from 'react'
-import { useMessageApi } from '../../api/Message'
-import { Ticker } from '../../api/Ticker'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
-import MessageFormCounter from './MessageFormCounter'
-import useAuth from '../../contexts/useAuth'
-import { Upload } from '../../api/Upload'
-import UploadButton from './UploadButton'
-import AttachmentsPreview from './AttachmentsPreview'
-import EmojiPicker from './EmojiPicker'
-import MessageMapModal from './MessageMapModal'
-import { FeatureCollection, Geometry } from 'geojson'
-import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapLocationDot, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
+import { FeatureCollection, Geometry } from 'geojson'
+import { FC, useCallback, useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { postMessageApi } from '../../api/Message'
+import { Ticker } from '../../api/Ticker'
+import { Upload } from '../../api/Upload'
+import useAuth from '../../contexts/useAuth'
 import palette from '../../theme/palette'
+import AttachmentsPreview from './AttachmentsPreview'
 import { Emoji } from './Emoji'
+import EmojiPicker from './EmojiPicker'
+import MessageFormCounter from './MessageFormCounter'
+import MessageMapModal from './MessageMapModal'
+import UploadButton from './UploadButton'
 
 interface Props {
   ticker: Ticker
@@ -35,7 +35,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     setValue,
   } = useForm<FormValues>({ mode: 'onSubmit' })
   const { token } = useAuth()
-  const { postMessage } = useMessageApi(token)
   const queryClient = useQueryClient()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [attachments, setAttachments] = useState<Upload[]>([])
@@ -102,7 +101,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       return upload.id
     })
 
-    postMessage(ticker.id.toString(), data.message, map, uploads).finally(() => {
+    postMessageApi(token, ticker.id.toString(), data.message, map, uploads).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
       setAttachments([])
       setIsSubmitting(false)

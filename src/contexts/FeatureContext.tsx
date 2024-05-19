@@ -1,8 +1,15 @@
-import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
-import { Features, useFeatureApi } from '../api/Features'
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import { ApiResponse } from '../api/Api'
+import { Features, fetchFeaturesApi } from '../api/Features'
 import useAuth from './useAuth'
 
-const FeatureContext = createContext<Features | undefined>(undefined)
+interface FeatureContextType {
+  features: Features
+  loading: boolean
+  error: string | null
+}
+
+const FeatureContext = createContext<FeatureContextType | undefined>(undefined)
 
 const initalState: Features = {
   telegramEnabled: false,
@@ -10,36 +17,44 @@ const initalState: Features = {
 
 export function FeatureProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {
   const [features, setFeatures] = useState<Features>(initalState)
-  const [loadingInitial, setLoadingInitial] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
   const { token } = useAuth()
-  const { getFeatures } = useFeatureApi(token)
 
-  useEffect(() => {
+  const fetchFeatures = useCallback(async () => {
     if (token === '') {
-      setLoadingInitial(false)
+      setLoading(false)
       return
     }
 
-    getFeatures()
-      .then(response => {
-        if (response.status === 'success') {
-          setFeatures(response.data.features)
-        }
-      })
-      .finally(() => {
-        setLoadingInitial(false)
-      })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setLoading(true)
+    setError(null)
+
+    const result: ApiResponse<{ features: Features }> = await fetchFeaturesApi(token)
+
+    if (result.error) {
+      setError(result.error.message)
+    } else if (result.data) {
+      setFeatures(result.data.features)
+    }
+
+    setLoading(false)
   }, [token])
 
-  const memoedValue = useMemo(
+  useEffect(() => {
+    fetchFeatures()
+  }, [fetchFeatures])
+
+  const contextValue = useMemo(
     () => ({
-      telegramEnabled: features.telegramEnabled,
+      features,
+      loading,
+      error,
     }),
-    [features]
+    [features, loading, error]
   )
 
-  return <FeatureContext.Provider value={memoedValue}>{!loadingInitial && children}</FeatureContext.Provider>
+  return <FeatureContext.Provider value={contextValue}>{children}</FeatureContext.Provider>
 }
 
 export default FeatureContext

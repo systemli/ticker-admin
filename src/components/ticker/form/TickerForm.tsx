@@ -1,23 +1,23 @@
-import React, { FC, useCallback, useEffect } from 'react'
-import { Ticker, useTickerApi } from '../../../api/Ticker'
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { Alert, Button, FormGroup, Grid, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
+import React, { FC, useCallback, useEffect } from 'react'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { Ticker, TickerFormData, postTickerApi, putTickerApi } from '../../../api/Ticker'
 import useAuth from '../../../contexts/useAuth'
 import LocationSearch, { Result } from '../LocationSearch'
-import { MapContainer, Marker, TileLayer } from 'react-leaflet'
-import { Alert, Button, FormGroup, Grid, Stack, Typography } from '@mui/material'
-import Title from './Title'
-import Domain from './Domain'
 import Active from './Active'
-import Description from './Description'
 import Author from './Author'
-import Url from './Url'
-import Facebook from './Facebook'
-import Telegram from './Telegram'
-import Mastodon from './Mastodon'
 import Bluesky from './Bluesky'
+import Description from './Description'
+import Domain from './Domain'
 import Email from './Email'
+import Facebook from './Facebook'
+import Mastodon from './Mastodon'
+import Telegram from './Telegram'
+import Title from './Title'
 import Twitter from './Twitter'
+import Url from './Url'
 
 interface Props {
   id: string
@@ -25,29 +25,8 @@ interface Props {
   callback: () => void
 }
 
-interface FormValues {
-  title: string
-  domain: string
-  active: boolean
-  description: string
-  information: {
-    author: string
-    email: string
-    url: string
-    twitter: string
-    facebook: string
-    telegram: string
-    mastodon: string
-    bluesky: string
-  }
-  location: {
-    lat: number
-    lon: number
-  }
-}
-
 const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
-  const form = useForm<FormValues>({
+  const form = useForm<TickerFormData>({
     defaultValues: {
       title: ticker?.title,
       domain: ticker?.domain,
@@ -70,7 +49,6 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
     },
   })
   const { token } = useAuth()
-  const { postTicker, putTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
   const { handleSubmit, register, setValue, watch } = form
 
@@ -92,15 +70,15 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
     [setValue]
   )
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<TickerFormData> = data => {
     if (ticker) {
-      putTicker(data, ticker.id).finally(() => {
+      putTickerApi(token, data, ticker.id).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         callback()
       })
     } else {
-      postTicker(data).finally(() => {
+      postTickerApi(token, data).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         callback()
       })

@@ -11,7 +11,7 @@ interface Props {
 
 const TickerListItems: FC<Props> = ({ token, params }) => {
   const { data, isLoading, error } = useTickersQuery({ token, params: params })
-  const tickers = data?.data.tickers || []
+  const tickers = data?.data?.tickers || []
 
   if (isLoading) {
     return (
@@ -30,7 +30,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
     )
   }
 
-  if (error) {
+  if (error || data === undefined || data.data === undefined || data.status === 'error') {
     return (
       <TableBody>
         <TableRow>

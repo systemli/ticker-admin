@@ -1,16 +1,14 @@
-import { FC } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import UserListItems from './UserListItems'
-import useAuth from '../../contexts/useAuth'
-import { useUserApi } from '../../api/User'
-import ErrorView from '../../views/ErrorView'
 import { Table, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { FC } from 'react'
+import useAuth from '../../contexts/useAuth'
+import useUsersQuery from '../../queries/useUsersQuery'
+import ErrorView from '../../views/ErrorView'
 import Loader from '../Loader'
+import UserListItems from './UserListItems'
 
 const UserList: FC = () => {
   const { token } = useAuth()
-  const { getUsers } = useUserApi(token)
-  const { isLoading, error, data } = useQuery({ queryKey: ['users'], queryFn: getUsers })
+  const { isLoading, error, data } = useUsersQuery({ token })
 
   if (isLoading) {
     return <Loader />
@@ -20,7 +18,7 @@ const UserList: FC = () => {
     return <ErrorView queryKey={['users']}>Unable to fetch users from server.</ErrorView>
   }
 
-  const users = data.data.users
+  const users = data.data?.users || []
 
   return (
     <TableContainer>

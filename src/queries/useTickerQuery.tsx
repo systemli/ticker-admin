@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useTickerApi } from '../api/Ticker'
+import { fetchTickerApi } from '../api/Ticker'
 
 interface Props {
   id: number
@@ -7,11 +7,9 @@ interface Props {
 }
 
 const useTickerQuery = ({ id, token }: Props) => {
-  const { getTicker } = useTickerApi(token)
-
   return useQuery({
     queryKey: ['ticker', id],
-    queryFn: () => getTicker(id),
+    queryFn: () => fetchTickerApi(token, id),
   })
 }
 

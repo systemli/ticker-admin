@@ -1,6 +1,6 @@
-import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Ticker, useTickerApi } from '../../api/Ticker'
+import { FC, useCallback } from 'react'
+import { Ticker, deleteTickerApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import Modal from '../common/Modal'
 
@@ -12,14 +12,13 @@ interface Props {
 
 const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   const { token } = useAuth()
-  const { deleteTicker } = useTickerApi(token)
   const queryClient = useQueryClient()
 
   const handleDelete = useCallback(() => {
-    deleteTicker(ticker).finally(() => {
+    deleteTickerApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['tickers'] })
     })
-  }, [deleteTicker, ticker, queryClient])
+  }, [token, ticker, queryClient])
 
   return (
     <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete Ticker">

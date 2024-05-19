@@ -1,11 +1,11 @@
-import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
-import { Ticker, useTickerApi } from '../../api/Ticker'
-import useAuth from '../../contexts/useAuth'
-import { FC, useCallback, useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBluesky } from '@fortawesome/free-brands-svg-icons'
 import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
+import { FC, useCallback, useState } from 'react'
+import { Ticker, deleteTickerBlueskyApi, putTickerBlueskyApi } from '../../api/Ticker'
+import useAuth from '../../contexts/useAuth'
 import BlueskyModalForm from './BlueskyModalForm'
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
 
 const BlueskyCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
-  const { deleteTickerBluesky, putTickerBluesky } = useTickerApi(token)
   const [open, setOpen] = useState<boolean>(false)
 
   const queryClient = useQueryClient()
@@ -22,16 +21,16 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
   const bluesky = ticker.bluesky
 
   const handleDisconnect = useCallback(() => {
-    deleteTickerBluesky(ticker).finally(() => {
+    deleteTickerBlueskyApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
-  }, [deleteTickerBluesky, queryClient, ticker])
+  }, [token, queryClient, ticker])
 
   const handleToggle = useCallback(() => {
-    putTickerBluesky({ active: !bluesky.active }, ticker).finally(() => {
+    putTickerBlueskyApi(token, { active: !bluesky.active }, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
-  }, [bluesky.active, putTickerBluesky, queryClient, ticker])
+  }, [bluesky.active, token, queryClient, ticker])
 
   const profileLink = (
     <Link href={'https://bsky.app/profile/' + bluesky.handle} rel="noreferrer" target="_blank">

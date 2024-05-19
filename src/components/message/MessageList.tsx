@@ -1,12 +1,11 @@
+import { Button, CircularProgress } from '@mui/material'
 import { FC, useEffect } from 'react'
-import { useInfiniteQuery } from '@tanstack/react-query'
 import { Ticker } from '../../api/Ticker'
-import { useMessageApi } from '../../api/Message'
-import Message from './Message'
 import useAuth from '../../contexts/useAuth'
+import useMessagesQuery from '../../queries/useMessagesQuery'
 import ErrorView from '../../views/ErrorView'
 import Loader from '../Loader'
-import { Button, CircularProgress } from '@mui/material'
+import Message from './Message'
 
 interface Props {
   ticker: Ticker
@@ -14,20 +13,7 @@ interface Props {
 
 const MessageList: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
-  const { getMessages } = useMessageApi(token)
-
-  const fetchMessages = ({ pageParam = 0 }) => {
-    return getMessages(ticker.id, pageParam)
-  }
-
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ['messages', ticker.id],
-    queryFn: fetchMessages,
-    initialPageParam: 0,
-    getNextPageParam: lastPage => {
-      return lastPage.data.messages.length === 10 ? lastPage.data.messages.slice(-1).pop()?.id : undefined
-    },
-  })
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } = useMessagesQuery({ token, ticker })
 
   useEffect(() => {
     let fetching = false
@@ -63,7 +49,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
 
   return (
     <>
-      {data.pages.map(group => group.data.messages.map(message => <Message key={message.id} message={message} ticker={ticker} />))}
+      {data.pages.map(group => group.data?.messages.map(message => <Message key={message.id} message={message} ticker={ticker} />))}
       {isFetchingNextPage ? (
         <CircularProgress size="3rem" />
       ) : hasNextPage ? (

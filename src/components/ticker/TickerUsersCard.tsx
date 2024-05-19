@@ -1,13 +1,13 @@
-import { FC, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Ticker, useTickerApi } from '../../api/Ticker'
-import TickerUserList from './TickerUserList'
-import useAuth from '../../contexts/useAuth'
-import Loader from '../Loader'
-import ErrorView from '../../views/ErrorView'
-import { Button, Card, CardContent, Typography } from '@mui/material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShieldDog, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Card, CardContent, Typography } from '@mui/material'
+import { FC, useState } from 'react'
+import { Ticker } from '../../api/Ticker'
+import useAuth from '../../contexts/useAuth'
+import useTickerUsersQuery from '../../queries/useTickerUsersQuery'
+import ErrorView from '../../views/ErrorView'
+import Loader from '../Loader'
+import TickerUserList from './TickerUserList'
 import TickerUsersModal from './TickerUsersModal'
 
 interface Props {
@@ -16,20 +16,14 @@ interface Props {
 
 const TickerUsersCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
-  const { getTickerUsers } = useTickerApi(token)
   const [formOpen, setFormOpen] = useState<boolean>(false)
-  const { isLoading, error, data } = useQuery({
-    queryKey: ['tickerUsers', ticker.id],
-    queryFn: () => {
-      return getTickerUsers(ticker)
-    },
-  })
+  const { isLoading, error, data } = useTickerUsersQuery({ ticker, token })
 
   if (isLoading) {
     return <Loader />
   }
 
-  if (error || data === undefined || data.status === 'error') {
+  if (error || data === undefined || data.data === undefined || data.status === 'error') {
     return <ErrorView queryKey={['tickerUsers', ticker.id]}>Unable to fetch users from server.</ErrorView>
   }
 
