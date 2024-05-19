@@ -1,9 +1,9 @@
+import { FormGroup, Grid, TextField } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
-import { InactiveSetting, Setting, useSettingsApi } from '../../api/Settings'
+import { InactiveSetting, Setting, putInactiveSettingsApi } from '../../api/Settings'
 import useAuth from '../../contexts/useAuth'
-import { FormGroup, Grid, TextField } from '@mui/material'
 
 interface Props {
   name: string
@@ -34,11 +34,10 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
     },
   })
   const { token } = useAuth()
-  const { putInactiveSettings } = useSettingsApi(token)
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putInactiveSettings(data)
+    putInactiveSettingsApi(token, data)
       .then(() => queryClient.invalidateQueries({ queryKey: ['inactive_settings'] }))
       .finally(() => callback())
   }

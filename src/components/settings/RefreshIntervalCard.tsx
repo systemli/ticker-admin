@@ -1,19 +1,17 @@
-import { FC, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { useSettingsApi } from '../../api/Settings'
-import ErrorView from '../../views/ErrorView'
-import useAuth from '../../contexts/useAuth'
-import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
+import { FC, useState } from 'react'
+import useAuth from '../../contexts/useAuth'
+import useRefreshIntervalSettingsQuery from '../../queries/useRefreshIntervalSettingsQuery'
+import ErrorView from '../../views/ErrorView'
 import Loader from '../Loader'
 import RefreshIntervalModalForm from './RefreshIntervalModalForm'
 
 const RefreshIntervalCard: FC = () => {
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
-  const { getRefreshInterval } = useSettingsApi(token)
-  const { isLoading, error, data } = useQuery({ queryKey: ['refresh_interval_setting'], queryFn: getRefreshInterval })
+  const { isLoading, error, data } = useRefreshIntervalSettingsQuery({ token })
 
   const handleFormOpen = () => {
     setFormOpen(true)
@@ -27,7 +25,7 @@ const RefreshIntervalCard: FC = () => {
     return <Loader />
   }
 
-  if (error || data === undefined || data.status === 'error') {
+  if (error || data === undefined || data.data === undefined || data.status === 'error') {
     return <ErrorView queryKey={['refresh_interval_setting']}>Unable to fetch refresh interval setting from server.</ErrorView>
   }
 

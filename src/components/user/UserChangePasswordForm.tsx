@@ -1,8 +1,8 @@
-import { FC } from 'react'
 import { Alert, FormGroup, Grid, TextField } from '@mui/material'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { putMeApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
-import { useUserApi } from '../../api/User'
 
 interface Props {
   id: string
@@ -24,10 +24,9 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose }) => {
     watch,
   } = useForm<FormValues>()
   const { token } = useAuth()
-  const { putMe } = useUserApi(token)
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putMe(data).then(response => {
+    putMeApi(token, data).then(response => {
       if (response.status === 'error') {
         const message = response.error?.message === 'could not authenticate password' ? 'Wrong password' : 'Something went wrong'
 

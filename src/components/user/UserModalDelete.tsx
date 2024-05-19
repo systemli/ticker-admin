@@ -1,6 +1,6 @@
-import { FC, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { User, useUserApi } from '../../api/User'
+import { FC, useCallback } from 'react'
+import { User, deleteUserApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
 import Modal from '../common/Modal'
 
@@ -12,15 +12,14 @@ interface Props {
 
 const UserModalDelete: FC<Props> = ({ onClose, open, user }) => {
   const { token } = useAuth()
-  const { deleteUser } = useUserApi(token)
   const queryClient = useQueryClient()
 
   const handleDelete = useCallback(() => {
-    deleteUser(user).finally(() => {
+    deleteUserApi(token, user).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       onClose()
     })
-  }, [deleteUser, user, queryClient, onClose])
+  }, [token, user, queryClient, onClose])
 
   return (
     <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete User">

@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks'
-import useFeature from './useFeature'
-import { FeatureProvider } from './FeatureContext'
 import { ReactNode } from 'react'
-import { AuthProvider } from './AuthContext'
 import { MemoryRouter } from 'react-router'
+import { AuthProvider } from './AuthContext'
+import { FeatureProvider } from './FeatureContext'
+import useFeature from './useFeature'
 
 describe('useFeature', () => {
   it('throws error when not rendered within FeatureProvider', () => {
@@ -22,6 +22,6 @@ describe('useFeature', () => {
     )
     const { result } = renderHook(() => useFeature(), { wrapper })
 
-    expect(result.current).toEqual({ telegramEnabled: false })
+    expect(result.current).toEqual({ error: null, features: { telegramEnabled: false }, loading: false })
   })
 })

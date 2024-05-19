@@ -1,10 +1,10 @@
-import { FC, useCallback, useState } from 'react'
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
 import { faBan, faGear, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { Ticker, useTickerApi } from '../../api/Ticker'
+import { FC, useCallback, useState } from 'react'
+import { Ticker, deleteTickerTelegramApi, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import TelegramModalForm from './TelegramModalForm'
 
@@ -14,21 +14,20 @@ interface Props {
 
 const TelegramCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
-  const { deleteTickerTelegram, putTickerTelegram } = useTickerApi(token)
   const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
 
   const telegram = ticker.telegram
 
   const handleToggle = useCallback(() => {
-    putTickerTelegram({ active: !telegram.active }, ticker).finally(() => queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] }))
-  }, [putTickerTelegram, queryClient, telegram.active, ticker])
+    putTickerTelegramApi(token, { active: !telegram.active }, ticker).finally(() => queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] }))
+  }, [token, queryClient, telegram.active, ticker])
 
   const handleDisconnect = useCallback(() => {
-    deleteTickerTelegram(ticker).finally(() => {
+    deleteTickerTelegramApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
-  }, [deleteTickerTelegram, queryClient, ticker])
+  }, [token, queryClient, ticker])
 
   const channelLink = (
     <Link href={`https://t.me/${telegram.channelName}`} rel="noreferrer" target="_blank">
@@ -58,9 +57,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
             </Typography>
           </Box>
         ) : (
-          <Typography variant="body2">
-            You are currently not connected to Telegram. New messages will not be published to your channel and old messages can not be deleted anymore.
-          </Typography>
+          <Box>
+            <Typography variant="body2">You are not connected with Telegram.</Typography>
+            <Typography variant="body2">New messages will not be published to your channel and old messages can not be deleted anymore.</Typography>
+          </Box>
         )}
       </CardContent>
       {telegram.connected ? (

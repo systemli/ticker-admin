@@ -1,12 +1,12 @@
-import { FC, useCallback, useState } from 'react'
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
+import { faBan, faGear, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { Ticker, useTickerApi } from '../../api/Ticker'
+import { FC, useCallback, useState } from 'react'
+import { Ticker, deleteTickerMastodonApi, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import MastodonModalForm from './MastodonModalForm'
-import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
-import { faBan, faGear, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -14,7 +14,6 @@ interface Props {
 
 const MastodonCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
-  const { deleteTickerMastodon, putTickerMastodon } = useTickerApi(token)
   const [open, setOpen] = useState<boolean>(false)
 
   const queryClient = useQueryClient()
@@ -22,16 +21,16 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
   const mastodon = ticker.mastodon
 
   const handleDisconnect = useCallback(() => {
-    deleteTickerMastodon(ticker).finally(() => {
+    deleteTickerMastodonApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
-  }, [deleteTickerMastodon, queryClient, ticker])
+  }, [token, queryClient, ticker])
 
   const handleToggle = useCallback(() => {
-    putTickerMastodon({ active: !mastodon.active }, ticker).finally(() => {
+    putTickerMastodonApi(token, { active: !mastodon.active }, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
-  }, [mastodon.active, putTickerMastodon, queryClient, ticker])
+  }, [mastodon.active, token, queryClient, ticker])
 
   const profileLink = (
     <Link href={mastodon.server + '/web/@' + mastodon.name} rel="noreferrer" target="_blank">
@@ -59,9 +58,14 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
             <Typography variant="body2">Your Profile: {profileLink}</Typography>
           </Box>
         ) : (
-          <Typography component="p" variant="body2">
-            You are currently not connected to Mastodon. New messages will not be published to your account and old messages can not be deleted anymore.
-          </Typography>
+          <Box>
+            <Typography component="p" variant="body2">
+              You are not connected with Mastodon.
+            </Typography>
+            <Typography component="p" variant="body2">
+              New messages will not be published to your account and old messages can not be deleted anymore.
+            </Typography>
+          </Box>
         )}
       </CardContent>
       {mastodon.connected ? (

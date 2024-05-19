@@ -1,20 +1,18 @@
-import { FC, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { useSettingsApi } from '../../api/Settings'
-import ErrorView from '../../views/ErrorView'
-import useAuth from '../../contexts/useAuth'
-import Loader from '../Loader'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { FC, useState } from 'react'
+import useAuth from '../../contexts/useAuth'
+import useInactiveSettingsQuery from '../../queries/useInactiveSettingsQuery'
+import ErrorView from '../../views/ErrorView'
+import Loader from '../Loader'
 import InactiveSettingsModalForm from './InactiveSettingsModalForm'
 
 const InactiveSettingsCard: FC = () => {
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
-  const { getInactiveSettings } = useSettingsApi(token)
-  const { isLoading, error, data } = useQuery({ queryKey: ['inactive_settings'], queryFn: getInactiveSettings })
+  const { isLoading, error, data } = useInactiveSettingsQuery({ token })
 
   const handleFormOpen = () => {
     setFormOpen(true)
@@ -28,11 +26,11 @@ const InactiveSettingsCard: FC = () => {
     return <Loader />
   }
 
-  if (error || data === undefined || data.status === 'error') {
+  if (error || data === undefined || data.status === 'error' || data.data === undefined) {
     return <ErrorView queryKey={['inactive_settings']}>Unable to fetch inactive settings from server.</ErrorView>
   }
 
-  const setting = data.data.setting
+  const setting = data.data?.setting
 
   return (
     <Card>

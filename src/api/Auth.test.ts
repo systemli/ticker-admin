@@ -1,13 +1,12 @@
 import { login } from './Auth'
 
-describe('Auth', function () {
+describe('Auth', () => {
   beforeEach(() => {
-    fetch.resetMocks()
-    fetch.doMock()
+    fetchMock.resetMocks()
   })
 
-  test('login failed', function () {
-    fetch.mockResponse(
+  it('should fail to login when credentials wrong', () => {
+    fetchMock.mockResponse(
       JSON.stringify({
         data: {},
         status: 'error',
@@ -19,19 +18,19 @@ describe('Auth', function () {
     expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
 
-  test('server error', function () {
-    fetch.mockReject()
+  it('should fail when network fails', () => {
+    fetchMock.mockReject()
 
     expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
 
-  test('login successful', function () {
+  it('should succeed', () => {
     const response = {
       code: 200,
       expire: '2022-10-01T18:22:37+02:00',
       token: 'token',
     }
-    fetch.mockResponse(JSON.stringify(response), { status: 200 })
+    fetchMock.mockResponse(JSON.stringify(response), { status: 200 })
 
     expect(login('user@systemli.org', 'password')).resolves.toEqual(response)
   })

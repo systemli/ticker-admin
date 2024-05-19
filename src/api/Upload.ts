@@ -1,4 +1,4 @@
-import { ApiUrl, Response } from './Api'
+import { ApiResponse, ApiUrl, apiClient, apiHeaders } from './Api'
 
 interface UploadeResponseData {
   uploads: Array<Upload>
@@ -12,19 +12,6 @@ export interface Upload {
   content_type: string
 }
 
-export function useUploadApi(token: string) {
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  }
-
-  const postUpload = (formData: FormData): Promise<Response<UploadeResponseData>> => {
-    return fetch(`${ApiUrl}/admin/upload`, {
-      headers: headers,
-      body: formData,
-      method: 'post',
-    }).then(response => response.json())
-  }
-
-  return { postUpload }
+export async function postUploadApi(token: string, formData: FormData): Promise<ApiResponse<UploadeResponseData>> {
+  return apiClient<UploadeResponseData>(`${ApiUrl}/admin/upload`, { headers: apiHeaders(token), method: 'post', body: formData })
 }

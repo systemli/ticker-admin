@@ -1,4 +1,4 @@
-import { ApiUrl, Response } from './Api'
+import { ApiResponse, ApiUrl, apiClient, apiHeaders } from './Api'
 import { Ticker } from './Ticker'
 
 export interface UsersResponseData {
@@ -29,47 +29,37 @@ export interface MeData {
   newPassword: string
 }
 
-export function useUserApi(token: string) {
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  }
+export async function fetchUsersApi(token: string): Promise<ApiResponse<UsersResponseData>> {
+  return apiClient<UsersResponseData>(`${ApiUrl}/admin/users`, { headers: apiHeaders(token) })
+}
 
-  const getUsers = (): Promise<Response<UsersResponseData>> => {
-    return fetch(`${ApiUrl}/admin/users`, { headers: headers }).then(response => response.json())
-  }
+export async function putUserApi(token: string, user: User, data: UserData): Promise<ApiResponse<UserResponseData>> {
+  return apiClient<UserResponseData>(`${ApiUrl}/admin/users/${user.id}`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
+}
 
-  const putUser = (data: UserData, user: User): Promise<Response<UserResponseData>> => {
-    return fetch(`${ApiUrl}/admin/users/${user.id}`, {
-      body: JSON.stringify(data),
-      method: 'put',
-      headers: { ...headers, 'Content-Type': 'application/json' },
-    }).then(response => response.json())
-  }
+export async function postUserApi(token: string, data: UserData): Promise<ApiResponse<UserResponseData>> {
+  return apiClient<UserResponseData>(`${ApiUrl}/admin/users`, {
+    headers: apiHeaders(token),
+    method: 'post',
+    body: JSON.stringify(data),
+  })
+}
 
-  const postUser = (data: UserData): Promise<Response<UserResponseData>> => {
-    return fetch(`${ApiUrl}/admin/users`, {
-      body: JSON.stringify(data),
-      headers: headers,
-      method: 'post',
-    }).then(response => response.json())
-  }
+export async function deleteUserApi(token: string, user: User): Promise<ApiResponse<void>> {
+  return apiClient<void>(`${ApiUrl}/admin/users/${user.id}`, {
+    headers: apiHeaders(token),
+    method: 'delete',
+  })
+}
 
-  const deleteUser = (user: User): Promise<Response<void>> => {
-    return fetch(`${ApiUrl}/admin/users/${user.id}`, {
-      headers: headers,
-      method: 'delete',
-    }).then(response => response.json())
-  }
-
-  const putMe = (data: MeData): Promise<Response<UserResponseData>> => {
-    return fetch(`${ApiUrl}/admin/users/me`, {
-      body: JSON.stringify(data),
-      headers: headers,
-      method: 'put',
-    }).then(response => response.json())
-  }
-
-  return { getUsers, putUser, postUser, deleteUser, putMe }
+export async function putMeApi(token: string, data: MeData): Promise<ApiResponse<UserResponseData>> {
+  return apiClient<UserResponseData>(`${ApiUrl}/admin/users/me`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
 }

@@ -1,9 +1,9 @@
+import { FormGroup, Grid, TextField } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
-import { RefreshIntervalSetting, Setting, useSettingsApi } from '../../api/Settings'
+import { RefreshIntervalSetting, Setting, putRefreshIntervalApi } from '../../api/Settings'
 import useAuth from '../../contexts/useAuth'
-import { FormGroup, Grid, TextField } from '@mui/material'
 
 interface Props {
   name: string
@@ -22,11 +22,10 @@ const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
     },
   })
   const { token } = useAuth()
-  const { putRefreshInterval } = useSettingsApi(token)
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putRefreshInterval(data.refreshInterval)
+    putRefreshIntervalApi(token, data.refreshInterval)
       .then(() => queryClient.invalidateQueries({ queryKey: ['refresh_interval_setting'] }))
       .finally(() => callback())
   }

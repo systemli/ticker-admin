@@ -1,10 +1,10 @@
+import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, useTheme } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
-import { Ticker, useTickerApi } from '../../api/Ticker'
-import { User, useUserApi } from '../../api/User'
+import { Ticker, putTickerUsersApi } from '../../api/Ticker'
+import { User, fetchUsersApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
-import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, useTheme } from '@mui/material'
 
 interface Props {
   ticker: Ticker
@@ -20,9 +20,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   const [users, setUsers] = useState<Array<User>>(defaultValue)
   const [options, setOptions] = useState<Array<User>>([])
   const { token } = useAuth()
-  const { getUsers } = useUserApi(token)
   const theme = useTheme()
-  const { putTickerUsers } = useTickerApi(token)
   const { handleSubmit } = useForm<FormValues>()
   const queryClient = useQueryClient()
 
@@ -35,22 +33,26 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   }
 
   const updateTickerUsers: SubmitHandler<FormValues> = () => {
-    putTickerUsers(ticker, users).then(() => {
+    putTickerUsersApi(token, ticker, users).then(() => {
       queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
       onSubmit()
     })
   }
 
   useEffect(() => {
-    getUsers()
-      .then(response => response.data.users)
-      .then(users =>
+    fetchUsersApi(token)
+      .then(response => response.data?.users)
+      .then(users => {
+        if (!users) {
+          return
+        }
+
         setOptions(
           users.filter(user => {
             return !user.isSuperAdmin
           })
         )
-      )
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

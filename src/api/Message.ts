@@ -1,5 +1,5 @@
-import { ApiUrl, Response } from './Api'
 import { FeatureCollection, Geometry } from 'geojson'
+import { ApiResponse, ApiUrl, apiClient, apiHeaders } from './Api'
 
 interface MessagesResponseData {
   messages: Array<Message>
@@ -26,53 +26,44 @@ export interface Attachment {
   contentType: string
 }
 
-export function useMessageApi(token: string) {
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
+export async function fetchMessagesApi(token: string, ticker: number, before?: number, after?: number, limit = 10): Promise<ApiResponse<MessagesResponseData>> {
+  let params = `limit=${limit}`
+
+  if (before) {
+    params += `&before=${before}`
   }
 
-  const getMessages = (ticker: number, before?: number, after?: number, limit = 10): Promise<Response<MessagesResponseData>> => {
-    let params = `limit=${limit}`
-
-    if (before) {
-      params += `&before=${before}`
-    }
-
-    if (after) {
-      params += `&after=${after}`
-    }
-
-    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages?${params}`, {
-      headers: headers,
-    }).then(response => response.json())
+  if (after) {
+    params += `&after=${after}`
   }
 
-  const postMessage = (
-    ticker: string,
-    text: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    geoInformation: FeatureCollection<Geometry, any>,
-    attachments: number[]
-  ): Promise<Response<MessageResponseData>> => {
-    return fetch(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
-      headers: headers,
-      body: JSON.stringify({
-        text: text,
-        geoInformation: geoInformation,
-        attachments: attachments,
-      }),
-      method: 'post',
-    }).then(response => response.json())
-  }
+  return apiClient<MessagesResponseData>(`${ApiUrl}/admin/tickers/${ticker}/messages?${params}`, {
+    headers: apiHeaders(token),
+  })
+}
 
-  const deleteMessage = (message: Message): Promise<Response<void>> => {
-    return fetch(`${ApiUrl}/admin/tickers/${message.ticker}/messages/${message.id}`, {
-      headers: headers,
-      method: 'delete',
-    }).then(response => response.json())
-  }
+export async function postMessageApi(
+  token: string,
+  ticker: string,
+  text: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  geoInformation: FeatureCollection<Geometry, any>,
+  attachments: number[]
+): Promise<ApiResponse<MessageResponseData>> {
+  return apiClient<MessageResponseData>(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
+    headers: apiHeaders(token),
+    method: 'post',
+    body: JSON.stringify({
+      text: text,
+      geoInformation: geoInformation,
+      attachments: attachments,
+    }),
+  })
+}
 
-  return { deleteMessage, getMessages, postMessage }
+export async function deleteMessageApi(token: string, message: Message): Promise<ApiResponse<void>> {
+  return apiClient<void>(`${ApiUrl}/admin/tickers/${message.ticker}/messages/${message.id}`, {
+    headers: apiHeaders(token),
+    method: 'delete',
+  })
 }

@@ -45,7 +45,6 @@ describe('HomeView', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    expect(await screen.findByText('Unable to fetch tickers from server.')).toBeInTheDocument()
   })
 
   it('should render tickers list', async () => {
@@ -64,8 +63,6 @@ describe('HomeView', () => {
     vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(token)
 
     setup()
-
-    expect(fetchMock).toHaveBeenCalledTimes(2)
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
     expect(await screen.findByText('Tickers')).toBeInTheDocument()

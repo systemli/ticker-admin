@@ -1,14 +1,14 @@
-import { render, screen } from '@testing-library/react'
-import UserChangePasswordModalForm from './UserChangePasswordModalForm'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MemoryRouter } from 'react-router'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { AuthProvider } from '../../contexts/AuthContext'
+import UserChangePasswordModalForm from './UserChangePasswordModalForm'
 
 describe('UserChangePasswordModalForm', () => {
   beforeEach(() => {
-    fetch.resetMocks()
+    fetchMock.resetMocks()
   })
 
   function setup(open: boolean, onClose: () => void) {
@@ -47,7 +47,7 @@ describe('UserChangePasswordModalForm', () => {
     const onClose = vi.fn()
     setup(true, onClose)
 
-    fetch.mockResponseOnce(
+    fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
           user: {
@@ -83,14 +83,14 @@ describe('UserChangePasswordModalForm', () => {
     const onClose = vi.fn()
     setup(true, onClose)
 
-    fetch.mockResponseOnce(
+    fetchMock.mockResponseOnce(
       JSON.stringify({
         error: {
           message: 'could not authenticate password',
         },
         status: 'error',
       }),
-      { status: 401 }
+      { status: 200 }
     )
 
     await userEvent.type(screen.getByLabelText('Password *'), 'password')

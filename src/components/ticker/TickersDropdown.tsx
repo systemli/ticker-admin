@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react'
 import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, useTheme } from '@mui/material'
-import { GetTickersQueryParams, Ticker, useTickerApi } from '../../api/Ticker'
+import { FC, useEffect, useState } from 'react'
+import { GetTickersQueryParams, Ticker, fetchTickersApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 
 interface Props {
@@ -14,7 +14,6 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
   const [options, setOptions] = useState<Array<Ticker>>([])
   const [tickers, setTickers] = useState<Array<Ticker>>(defaultValue)
   const { token } = useAuth()
-  const { getTickers } = useTickerApi(token)
   const theme = useTheme()
 
   const handleChange = (event: SelectChangeEvent<number[]>) => {
@@ -28,9 +27,10 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
 
   useEffect(() => {
     const params = {} as GetTickersQueryParams
-    getTickers(params)
-      .then(response => response.data.tickers)
+    fetchTickersApi(token, params)
+      .then(response => response.data?.tickers)
       .then(tickers => {
+        if (!tickers) return
         setOptions(tickers)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps

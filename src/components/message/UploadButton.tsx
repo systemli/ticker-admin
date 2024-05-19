@@ -1,10 +1,10 @@
-import { createRef, FC, useCallback } from 'react'
+import { faImages } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton } from '@mui/material'
+import { createRef, FC, useCallback } from 'react'
 import { Ticker } from '../../api/Ticker'
-import { useUploadApi, Upload } from '../../api/Upload'
+import { postUploadApi, Upload } from '../../api/Upload'
 import useAuth from '../../contexts/useAuth'
-import { faImages } from '@fortawesome/free-solid-svg-icons'
 import palette from '../../theme/palette'
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
   const ref = createRef<HTMLInputElement>()
   const { token } = useAuth()
-  const { postUpload } = useUploadApi(token)
 
   const refClick = useCallback(() => {
     ref.current?.click()
@@ -32,7 +31,10 @@ const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
     }
     formData.append('ticker', ticker.id.toString())
 
-    postUpload(formData).then(response => {
+    postUploadApi(token, formData).then(response => {
+      if (response.status === 'error' || response.data === undefined || response.data.uploads === undefined) {
+        return
+      }
       onUpload(response.data.uploads)
     })
   }
