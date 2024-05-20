@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router'
 import { vi } from 'vitest'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { AuthProvider } from '../contexts/AuthContext'
+import { NotificationProvider } from '../contexts/NotificationContext'
 import TickerView from './TickerView'
 
 describe('TickerView', function () {
@@ -19,11 +20,13 @@ describe('TickerView', function () {
     return render(
       <QueryClientProvider client={client}>
         <MemoryRouter initialEntries={['/ticker/1']}>
-          <AuthProvider>
-            <Routes>
-              <Route element={<ProtectedRoute outlet={<TickerView />} role="user" />} path="/ticker/:tickerId" />
-            </Routes>
-          </AuthProvider>
+          <NotificationProvider>
+            <AuthProvider>
+              <Routes>
+                <Route element={<ProtectedRoute outlet={<TickerView />} role="user" />} path="/ticker/:tickerId" />
+              </Routes>
+            </AuthProvider>
+          </NotificationProvider>
         </MemoryRouter>
       </QueryClientProvider>
     )
