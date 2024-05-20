@@ -1,5 +1,5 @@
-import React, { FC, useRef, useState } from 'react'
 import { Autocomplete, TextField } from '@mui/material'
+import React, { FC, useRef, useState } from 'react'
 
 interface SearchResult {
   place_id: number
@@ -28,7 +28,7 @@ const LocationSearch: FC<Props> = ({ callback }) => {
   const [options, setOptions] = useState<SearchResult[]>([])
   const previousController = useRef<AbortController>()
 
-  const handleInputChange = (event: React.SyntheticEvent, value: string) => {
+  const handleInputChange = (_: React.SyntheticEvent, value: string) => {
     if (previousController.current) {
       previousController.current.abort()
     }
@@ -44,7 +44,7 @@ const LocationSearch: FC<Props> = ({ callback }) => {
       })
   }
 
-  const handleChange = (event: React.SyntheticEvent, value: SearchResult | null) => {
+  const handleChange = (_: React.SyntheticEvent, value: SearchResult | null) => {
     if (value) {
       callback({ title: value?.display_name, lat: value?.lat, lon: value?.lon })
     }

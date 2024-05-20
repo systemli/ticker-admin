@@ -1,10 +1,10 @@
-import React, { FC, ReactNode } from 'react'
-import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider, CssBaseline, alpha } from '@mui/material'
+import { CssBaseline, ThemeProvider as MUIThemeProvider, StyledEngineProvider, alpha, createTheme } from '@mui/material'
+import { FC, ReactNode } from 'react'
 import GlobalStyles from './GlobalStyles'
+import customShadows from './customShadows'
 import palette from './palette'
 import shadows from './shadows'
 import typography from './typography'
-import customShadows from './customShadows'
 
 const theme = createTheme({
   palette: palette,

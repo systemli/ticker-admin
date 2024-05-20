@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../contexts/AuthContext'
-import sign from 'jwt-encode'
-import SettingsView from './SettingsView'
 import userEvent from '@testing-library/user-event'
+import sign from 'jwt-encode'
+import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
+import { AuthProvider } from '../contexts/AuthContext'
+import SettingsView from './SettingsView'
 
 describe('SettingsView', function () {
   const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
@@ -38,7 +38,7 @@ describe('SettingsView', function () {
 
   beforeEach(() => {
     vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
-    fetch.resetMocks()
+    fetchMock.resetMocks()
   })
 
   function setup() {
@@ -61,7 +61,7 @@ describe('SettingsView', function () {
   }
 
   test('renders settings and open dialogs', async function () {
-    fetch.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/settings/inactive_settings')) {
         return Promise.resolve(inactiveSettingsResponse)
       }
@@ -114,7 +114,7 @@ describe('SettingsView', function () {
   })
 
   test('settings could not fetched', async function () {
-    fetch.mockReject(new Error('network error'))
+    fetchMock.mockReject(new Error('network error'))
     setup()
 
     const loaders = screen.getAllByText(/loading/i)

@@ -26,7 +26,7 @@ const TickerView: FC = () => {
     )
   }
 
-  const ticker = data?.data.ticker
+  const ticker = data?.data?.ticker
 
   return (
     <Layout>

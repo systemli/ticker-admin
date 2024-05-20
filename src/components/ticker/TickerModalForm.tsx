@@ -1,10 +1,10 @@
 import { Tab, Tabs } from '@mui/material'
 import React, { FC, useState } from 'react'
 import { Ticker } from '../../api/Ticker'
-import TabPanel from '../common/TabPanel'
-import TickerForm from './form/TickerForm'
-import TickerSocialConnections from './TickerSocialConnections'
 import Modal from '../common/Modal'
+import TabPanel from '../common/TabPanel'
+import TickerSocialConnections from './TickerSocialConnections'
+import TickerForm from './form/TickerForm'
 
 interface Props {
   onClose: () => void
@@ -15,7 +15,7 @@ interface Props {
 const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   const [tabValue, setTabValue] = useState<number>(0)
 
-  const handleTabChange = (e: React.SyntheticEvent, value: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, value: number) => {
     setTabValue(value)
   }
 
