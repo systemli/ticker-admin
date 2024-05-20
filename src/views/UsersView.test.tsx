@@ -1,18 +1,18 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
+import { vi } from 'vitest'
 import { AuthProvider } from '../contexts/AuthContext'
 import UsersView from './UsersView'
-import sign from 'jwt-encode'
-import userEvent from '@testing-library/user-event'
-import { vi } from 'vitest'
 
 describe('UsersView', function () {
   const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
 
   beforeEach(() => {
     vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
-    fetch.resetMocks()
+    fetchMock.resetMocks()
   })
 
   function setup() {
@@ -35,7 +35,7 @@ describe('UsersView', function () {
   }
 
   test('renders list', async function () {
-    fetch.mockResponseOnce(
+    fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
           users: [
@@ -57,7 +57,7 @@ describe('UsersView', function () {
 
   test('open new users dialog', async function () {
     setup()
-    fetch.mockIf(
+    fetchMock.mockIf(
       /\/v1\/admin\/users/i,
       JSON.stringify({
         data: {
@@ -65,7 +65,7 @@ describe('UsersView', function () {
         },
       })
     )
-    fetch.mockIf(
+    fetchMock.mockIf(
       /\/v1\/admin\/tickers/i,
       JSON.stringify({
         data: {
@@ -91,7 +91,7 @@ describe('UsersView', function () {
   })
 
   test('open dialog for existing user', async function () {
-    fetch.mockIf(
+    fetchMock.mockIf(
       /\/v1\/admin\/users/i,
       JSON.stringify({
         data: {
@@ -154,7 +154,7 @@ describe('UsersView', function () {
   })
 
   test('user list could not fetched', async function () {
-    fetch.mockReject(new Error('network error'))
+    fetchMock.mockReject(new Error('network error'))
     setup()
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()

@@ -1,8 +1,8 @@
 import { ImageList, ImageListItem } from '@mui/material'
 import { FC, useCallback, useState } from 'react'
 import Lightbox from 'react-image-lightbox'
-import { Message } from '../../api/Message'
 import 'react-image-lightbox/style.css'
+import { Message } from '../../api/Message'
 
 interface Props {
   message: Message
@@ -11,7 +11,7 @@ interface Props {
 const MessageAttachements: FC<Props> = ({ message }) => {
   const [imageLightboxOpen, setImageLightboxOpen] = useState<boolean>(false)
   const [imageIndex, setImageIndex] = useState<number>(0)
-  const attachments = message.attachments
+  const attachments = message.attachments || []
 
   const openImageLightbox = useCallback(() => setImageLightboxOpen(true), [])
   const closeImageLightbox = useCallback(() => setImageLightboxOpen(false), [])
