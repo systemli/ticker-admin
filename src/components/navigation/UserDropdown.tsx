@@ -1,13 +1,15 @@
-import React, { FC, useCallback, useState } from 'react'
 import { AccountCircle } from '@mui/icons-material'
 import { IconButton, Menu, MenuItem } from '@mui/material'
+import React, { FC, useCallback, useState } from 'react'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import UserChangePasswordModalForm from '../user/UserChangePasswordModalForm'
 
 const UserDropdown: FC = () => {
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
+  const { createNotification } = useNotification()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -19,7 +21,8 @@ const UserDropdown: FC = () => {
 
   const handleLogout = useCallback(() => {
     logout()
-  }, [logout])
+    createNotification({ content: 'You have been logged out' })
+  }, [createNotification, logout])
 
   return (
     <>

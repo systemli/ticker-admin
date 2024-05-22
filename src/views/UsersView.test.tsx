@@ -5,6 +5,7 @@ import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { AuthProvider } from '../contexts/AuthContext'
+import { NotificationProvider } from '../contexts/NotificationContext'
 import UsersView from './UsersView'
 
 describe('UsersView', function () {
@@ -26,9 +27,11 @@ describe('UsersView', function () {
     return render(
       <QueryClientProvider client={client}>
         <MemoryRouter>
-          <AuthProvider>
-            <UsersView />
-          </AuthProvider>
+          <NotificationProvider>
+            <AuthProvider>
+              <UsersView />
+            </AuthProvider>
+          </NotificationProvider>
         </MemoryRouter>
       </QueryClientProvider>
     )

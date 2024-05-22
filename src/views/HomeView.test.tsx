@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { AuthProvider } from '../contexts/AuthContext'
+import { NotificationProvider } from '../contexts/NotificationContext'
 import HomeView from './HomeView'
 
 describe('HomeView', () => {
@@ -18,9 +19,11 @@ describe('HomeView', () => {
     return render(
       <QueryClientProvider client={client}>
         <MemoryRouter>
-          <AuthProvider>
-            <HomeView />
-          </AuthProvider>
+          <NotificationProvider>
+            <AuthProvider>
+              <HomeView />
+            </AuthProvider>
+          </NotificationProvider>
         </MemoryRouter>
       </QueryClientProvider>
     )
