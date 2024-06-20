@@ -5,8 +5,9 @@ import useAuth from '../../contexts/useAuth'
 import { useQueryClient } from '@tanstack/react-query'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignalMessenger } from '@fortawesome/free-brands-svg-icons'
-import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCrown, faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import SignalGroupModalForm from './SignalGroupModalForm'
+import SignalGroupAdminModalForm from './SignalGroupAdminModalForm'
 
 interface Props {
   ticker: Ticker
@@ -15,6 +16,7 @@ interface Props {
 const SignalGroupCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
+  const [adminOpen, setAdminOpen] = useState<boolean>(false)
 
   const queryClient = useQueryClient()
 
@@ -45,6 +47,11 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faSignalMessenger} /> Signal Group
           </Typography>
+          {signalGroup.connected && (
+            <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faCrown} />}>
+              Add admins
+            </Button>
+          )}
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
             Configure
           </Button>
@@ -54,13 +61,13 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         {signalGroup.connected ? (
           <Box>
-            <Typography variant="body2">You are connected with the Signal group.</Typography>
+            <Typography variant="body2">You have a Signal group connected.</Typography>
             <Typography variant="body2">Your Signal group invite link: {groupLink}</Typography>
           </Box>
         ) : (
           <Box>
-            <Typography variant="body2">You are not connected with the Signal group.</Typography>
-            <Typography variant="body2">New messages will not be published to the group and old messages can not be deleted anymore.</Typography>
+            <Typography variant="body2">You don't have a Signal group connected.</Typography>
+            <Typography variant="body2">New messages will not be published to a group and old messages can not be deleted.</Typography>
           </Box>
         )}
       </CardContent>
@@ -81,6 +88,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         </CardActions>
       ) : null}
       <SignalGroupModalForm open={open} onClose={() => setOpen(false)} ticker={ticker} />
+      <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
     </Card>
   )
 }

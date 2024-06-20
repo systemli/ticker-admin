@@ -111,6 +111,10 @@ export interface TickerSignalGroupFormData {
   groupDescription?: string
 }
 
+export interface TickerSignalGroupAdminFormData {
+  number: string
+}
+
 export interface TickerLocation {
   lat: number
   lon: number
@@ -212,10 +216,18 @@ export async function putTickerSignalGroupApi(token: string, data: TickerSignalG
   return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/signal_group`, {
     headers: apiHeaders(token),
     method: 'put',
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
 }
 
 export async function deleteTickerSignalGroupApi(token: string, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
   return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/signal_group`, { headers: apiHeaders(token), method: 'delete' })
+}
+
+export async function putTickerSignalGroupAdminApi(token: string, data: TickerSignalGroupAdminFormData, ticker: Ticker): Promise<ApiResponse<void>> {
+  return apiClient<void>(`${ApiUrl}/admin/tickers/${ticker.id}/signal_group/admin`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
 }
