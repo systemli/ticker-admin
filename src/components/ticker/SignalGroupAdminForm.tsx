@@ -1,4 +1,6 @@
-import { Alert, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Alert, FormGroup, Grid, InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { Ticker, TickerSignalGroupAdminFormData, putTickerSignalGroupAdminApi } from '../../api/Ticker'
@@ -45,17 +47,21 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
           <Alert severity="warning">Only do this if extra members with write access are needed.</Alert>
         </Grid>
         <Grid item xs={12}>
-          <Typography>Add more admins to the Signal group. If the number is not a member yet, it's added automatically.</Typography>
-        </Grid>
-        <Grid item xs={12}>
           <FormGroup>
             <TextField
               {...register('number')}
-              label="Signal contact number"
-              placeholder="Signal contact number"
+              label="Phone number"
+              placeholder="+49123456789"
               required
               helperText={errors.number ? errors.number?.message : null}
               error={errors.number ? true : false}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FontAwesomeIcon icon={faPhone} />
+                  </InputAdornment>
+                ),
+              }}
             />
           </FormGroup>
         </Grid>

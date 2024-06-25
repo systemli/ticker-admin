@@ -1,13 +1,13 @@
-import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
-import { Ticker, putTickerSignalGroupApi, deleteTickerSignalGroupApi } from '../../api/Ticker'
-import { FC, useCallback, useState } from 'react'
-import useAuth from '../../contexts/useAuth'
-import { useQueryClient } from '@tanstack/react-query'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignalMessenger } from '@fortawesome/free-brands-svg-icons'
-import { faCrown, faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
-import SignalGroupModalForm from './SignalGroupModalForm'
+import { faGear, faPause, faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
+import { FC, useCallback, useState } from 'react'
+import { Ticker, deleteTickerSignalGroupApi, putTickerSignalGroupApi } from '../../api/Ticker'
+import useAuth from '../../contexts/useAuth'
 import SignalGroupAdminModalForm from './SignalGroupAdminModalForm'
+import SignalGroupModalForm from './SignalGroupModalForm'
 
 interface Props {
   ticker: Ticker
@@ -47,11 +47,6 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faSignalMessenger} /> Signal Group
           </Typography>
-          {signalGroup.connected && (
-            <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faCrown} />}>
-              Add admins
-            </Button>
-          )}
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
             Configure
           </Button>
@@ -73,6 +68,9 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       </CardContent>
       {signalGroup.connected ? (
         <CardActions>
+          <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
+            Admin
+          </Button>
           {signalGroup.active ? (
             <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
               Pause

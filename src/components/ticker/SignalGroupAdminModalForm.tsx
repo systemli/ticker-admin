@@ -13,7 +13,7 @@ const SignalGroupAdminModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   const [submitting, setSubmitting] = useState<boolean>(false)
 
   return (
-    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureSignalGroupAdmin" title="Add admin members" submitting={submitting}>
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureSignalGroupAdmin" title="Add Admin to group" submitting={submitting}>
       <SignalGroupAdminForm callback={onClose} ticker={ticker} setSubmitting={setSubmitting} />
     </Modal>
   )
