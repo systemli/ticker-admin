@@ -39,6 +39,7 @@ const TickerCard: FC<Props> = ({ ticker }) => {
             <SocialConnectionChip active={ticker.mastodon.active} label="Mastodon" />
             <SocialConnectionChip active={ticker.telegram.active} label="Telegram" />
             <SocialConnectionChip active={ticker.bluesky.active} label="Bluesky" />
+            <SocialConnectionChip active={ticker.signalGroup.active} label="Signal" />
           </Box>
         </NamedListItem>
       </CardContent>

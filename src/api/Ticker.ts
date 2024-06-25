@@ -23,6 +23,7 @@ export interface TickerFormData {
   mastodon: TickerMastodon
   telegram: TickerTelegram
   bluesky: TickerBluesky
+  signalGroup: TickerSignalGroup
   location: TickerLocation
 }
 
@@ -37,6 +38,7 @@ export interface Ticker {
   mastodon: TickerMastodon
   telegram: TickerTelegram
   bluesky: TickerBluesky
+  signalGroup: TickerSignalGroup
   location: TickerLocation
 }
 
@@ -92,6 +94,25 @@ export interface TickerBlueskyFormData {
   active: boolean
   handle?: string
   appKey?: string
+}
+
+export interface TickerSignalGroup {
+  active: boolean
+  connected: boolean
+  groupID: string
+  groupName: string
+  groupDescription: string
+  groupInviteLink: string
+}
+
+export interface TickerSignalGroupFormData {
+  active: boolean
+  groupName?: string
+  groupDescription?: string
+}
+
+export interface TickerSignalGroupAdminFormData {
+  number: string
 }
 
 export interface TickerLocation {
@@ -189,4 +210,24 @@ export async function putTickerBlueskyApi(token: string, data: TickerBlueskyForm
 
 export async function deleteTickerBlueskyApi(token: string, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
   return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/bluesky`, { headers: apiHeaders(token), method: 'delete' })
+}
+
+export async function putTickerSignalGroupApi(token: string, data: TickerSignalGroupFormData, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
+  return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/signal_group`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteTickerSignalGroupApi(token: string, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
+  return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/signal_group`, { headers: apiHeaders(token), method: 'delete' })
+}
+
+export async function putTickerSignalGroupAdminApi(token: string, data: TickerSignalGroupAdminFormData, ticker: Ticker): Promise<ApiResponse<void>> {
+  return apiClient<void>(`${ApiUrl}/admin/tickers/${ticker.id}/signal_group/admin`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
 }
