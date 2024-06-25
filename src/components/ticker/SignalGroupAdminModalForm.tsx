@@ -12,7 +12,7 @@ interface Props {
 const SignalGroupAdminModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   return (
     <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureSignalGroupAdmin" title="Add admin members">
-      <SignalGroupAdminForm ticker={ticker} />
+      <SignalGroupAdminForm callback={onClose} ticker={ticker} />
     </Modal>
   )
 }
