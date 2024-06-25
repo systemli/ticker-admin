@@ -1,5 +1,5 @@
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
-import { faBan, faGear, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
@@ -20,7 +20,7 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
 
   const mastodon = ticker.mastodon
 
-  const handleDisconnect = useCallback(() => {
+  const handleDelete = useCallback(() => {
     deleteTickerMastodonApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
@@ -79,8 +79,8 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
               Enable
             </Button>
           )}
-          <Button onClick={handleDisconnect} startIcon={<FontAwesomeIcon icon={faBan} />}>
-            Disconnect
+          <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
+            Delete
           </Button>
         </CardActions>
       ) : null}

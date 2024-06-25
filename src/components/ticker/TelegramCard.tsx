@@ -1,5 +1,5 @@
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
-import { faBan, faGear, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
@@ -23,7 +23,7 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     putTickerTelegramApi(token, { active: !telegram.active }, ticker).finally(() => queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] }))
   }, [token, queryClient, telegram.active, ticker])
 
-  const handleDisconnect = useCallback(() => {
+  const handleDelete = useCallback(() => {
     deleteTickerTelegramApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
@@ -74,8 +74,8 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
               Enable
             </Button>
           )}
-          <Button onClick={handleDisconnect} startIcon={<FontAwesomeIcon icon={faBan} />}>
-            Disconnect
+          <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
+            Delete
           </Button>
         </CardActions>
       ) : null}

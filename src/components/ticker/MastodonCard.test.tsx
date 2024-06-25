@@ -65,7 +65,7 @@ describe('MastodonCard', () => {
     expect(screen.getByText('Your Profile:')).toBeInTheDocument()
     expect(screen.getByText('@user@mastodon.social')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Disconnect' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Disable' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
@@ -85,7 +85,7 @@ describe('MastodonCard', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    screen.getByRole('button', { name: 'Disconnect' }).click()
+    screen.getByRole('button', { name: 'Delete' }).click()
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/mastodon', {

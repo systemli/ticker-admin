@@ -64,7 +64,7 @@ describe('BlueSkyCard', () => {
     expect(screen.getByText('You are connected with Bluesky.')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'handle.bsky.social' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Disconnect' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Disable' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
@@ -84,7 +84,7 @@ describe('BlueSkyCard', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    await userEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/bluesky', {

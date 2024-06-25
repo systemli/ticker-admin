@@ -20,7 +20,7 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
 
   const bluesky = ticker.bluesky
 
-  const handleDisconnect = useCallback(() => {
+  const handleDelete = useCallback(() => {
     deleteTickerBlueskyApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
     })
@@ -75,8 +75,8 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
               Enable
             </Button>
           )}
-          <Button onClick={handleDisconnect} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            Disconnect
+          <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
+            Delete
           </Button>
         </CardActions>
       ) : null}
