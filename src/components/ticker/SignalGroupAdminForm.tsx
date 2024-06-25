@@ -8,9 +8,10 @@ import useNotification from '../../contexts/useNotification'
 interface Props {
   callback: () => void
   ticker: Ticker
+  setSubmitting: (submitting: boolean) => void
 }
 
-const SignalGroupAdminForm: FC<Props> = ({ callback, ticker }) => {
+const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) => {
   const { token } = useAuth()
   const {
     formState: { errors },
@@ -21,15 +22,20 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker }) => {
   const { createNotification } = useNotification()
 
   const onSubmit = handleSubmit(data => {
-    putTickerSignalGroupAdminApi(token, data, ticker).then(response => {
-      if (response.status == 'error') {
-        createNotification({ content: 'Failed to add number to Signal group', severity: 'error' })
-        setError('number', { message: 'Failed to add number to Signal group' })
-      } else {
-        createNotification({ content: 'Number successfully added to Signal group', severity: 'success' })
-        callback()
-      }
-    })
+    setSubmitting(true)
+    putTickerSignalGroupAdminApi(token, data, ticker)
+      .then(response => {
+        if (response.status == 'error') {
+          createNotification({ content: 'Failed to add number to Signal group', severity: 'error' })
+          setError('number', { message: 'Failed to add number to Signal group' })
+        } else {
+          createNotification({ content: 'Number successfully added to Signal group', severity: 'success' })
+          callback()
+        }
+      })
+      .finally(() => {
+        setSubmitting(false)
+      })
   })
 
   return (

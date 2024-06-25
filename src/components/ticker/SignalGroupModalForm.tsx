@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Ticker } from '../../api/Ticker'
 import Modal from '../common/Modal'
 import SignalGroupForm from './SignalGroupForm'
@@ -10,9 +10,11 @@ interface Props {
 }
 
 const SignalGroupModalForm: FC<Props> = ({ onClose, open, ticker }) => {
+  const [submitting, setSubmitting] = useState<boolean>(false)
+
   return (
-    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureSignalGroup" title="Configure Signal Group">
-      <SignalGroupForm callback={onClose} ticker={ticker} />
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureSignalGroup" title="Configure Signal Group" submitting={submitting}>
+      <SignalGroupForm callback={onClose} ticker={ticker} setSubmitting={setSubmitting} />
     </Modal>
   )
 }

@@ -1,6 +1,6 @@
-import { FC, ReactNode } from 'react'
-import { Breakpoint, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, SxProps } from '@mui/material'
 import { Close } from '@mui/icons-material'
+import { Box, Breakpoint, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, SxProps } from '@mui/material'
+import { FC, ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
@@ -14,6 +14,7 @@ interface Props {
   open: boolean
   submitForm?: string
   title?: string
+  submitting?: boolean
 }
 
 const Modal: FC<Props> = ({
@@ -27,6 +28,7 @@ const Modal: FC<Props> = ({
   onSubmitAction,
   open,
   submitForm,
+  submitting = false,
   title,
 }) => {
   return (
@@ -42,9 +44,24 @@ const Modal: FC<Props> = ({
       <DialogContent sx={dialogContentSx}>{children}</DialogContent>
       <DialogActions>
         {submitForm && (
-          <Button color="primary" form={submitForm} onClick={onSubmitAction} type="submit" variant="contained">
-            Save
-          </Button>
+          <Box sx={{ display: 'inline', position: 'relative' }}>
+            <Button color="primary" form={submitForm} onClick={onSubmitAction} type="submit" variant="contained" disabled={submitting}>
+              Save
+            </Button>
+            {submitting && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: 'primary',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+            )}
+          </Box>
         )}
         {onDangerAction && dangerActionButtonText && (
           <Button color="error" onClick={onDangerAction} variant="contained">

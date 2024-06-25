@@ -1,16 +1,18 @@
+import { Alert, Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
+import { useForm } from 'react-hook-form'
 import { Ticker, TickerSignalGroupFormData, putTickerSignalGroupApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
-import { useForm } from 'react-hook-form'
-import { useQueryClient } from '@tanstack/react-query'
-import { Alert, Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   callback: () => void
   ticker: Ticker
+  setSubmitting: (submitting: boolean) => void
 }
 
-const SignalGroupForm: FC<Props> = ({ callback, ticker }) => {
+const SignalGroupForm: FC<Props> = ({ callback, ticker, setSubmitting }) => {
   const signalGroup = ticker.signalGroup
   const { token } = useAuth()
   const {
@@ -26,16 +28,24 @@ const SignalGroupForm: FC<Props> = ({ callback, ticker }) => {
     },
   })
   const queryClient = useQueryClient()
+  const { createNotification } = useNotification()
 
   const onSubmit = handleSubmit(data => {
-    putTickerSignalGroupApi(token, data, ticker).then(response => {
-      if (response.status == 'error') {
-        setError('root.authenticationFailed', { message: 'Authentication failed' })
-      } else {
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        callback()
-      }
-    })
+    setSubmitting(true)
+    putTickerSignalGroupApi(token, data, ticker)
+      .then(response => {
+        if (response.status == 'error') {
+          createNotification({ content: 'Failed to configure Signal group', severity: 'error' })
+          setError('root.error', { message: 'Failed to configure Signal group' })
+        } else {
+          queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+          createNotification({ content: 'Signal group successfully configured', severity: 'success' })
+          callback()
+        }
+      })
+      .finally(() => {
+        setSubmitting(false)
+      })
   })
 
   return (
@@ -48,9 +58,9 @@ const SignalGroupForm: FC<Props> = ({ callback, ticker }) => {
             <Typography>A new Signal group will be created with these settings.</Typography>
           )}
         </Grid>
-        {errors.root?.authenticationFailed && (
+        {errors.root?.error && (
           <Grid item xs={12}>
-            <Alert severity="error">{errors.root.authenticationFailed.message}</Alert>
+            <Alert severity="error">{errors.root.error.message}</Alert>
           </Grid>
         )}
         <Grid item xs={12}>
