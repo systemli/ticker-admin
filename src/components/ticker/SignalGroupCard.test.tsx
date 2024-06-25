@@ -67,7 +67,7 @@ describe('SignalGroupCard', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    await userEvent.click(screen.getByRole('button', { name: 'Pause' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/signal_group', {

@@ -103,7 +103,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           </Button>
           {signalGroup.active ? (
             <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
-              Pause
+              Disable
             </Button>
           ) : (
             <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
