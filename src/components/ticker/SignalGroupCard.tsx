@@ -125,7 +125,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         <DialogActions>
           <Button onClick={() => setDialogDeleteOpen(false)}>Cancel</Button>
           <Box sx={{ display: 'inline', position: 'relative' }}>
-            <Button onClick={handleDelete} color="error" disabled={submitting}>
+            <Button onClick={handleDelete} color="error" disabled={submitting} data-testid="dialog-delete">
               Delete
             </Button>
             {submitting && (
