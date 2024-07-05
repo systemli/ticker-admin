@@ -100,15 +100,11 @@ export interface TickerSignalGroup {
   active: boolean
   connected: boolean
   groupID: string
-  groupName: string
-  groupDescription: string
   groupInviteLink: string
 }
 
 export interface TickerSignalGroupFormData {
   active: boolean
-  groupName?: string
-  groupDescription?: string
 }
 
 export interface TickerSignalGroupAdminFormData {
