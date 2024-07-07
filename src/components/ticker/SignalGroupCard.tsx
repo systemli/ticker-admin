@@ -1,5 +1,5 @@
 import { faSignalMessenger } from '@fortawesome/free-brands-svg-icons'
-import { faGear, faPause, faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faAdd, faPause, faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Box,
@@ -24,7 +24,6 @@ import { Ticker, deleteTickerSignalGroupApi, putTickerSignalGroupApi } from '../
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import SignalGroupAdminModalForm from './SignalGroupAdminModalForm'
-import SignalGroupModalForm from './SignalGroupModalForm'
 
 interface Props {
   ticker: Ticker
@@ -32,24 +31,40 @@ interface Props {
 
 const SignalGroupCard: FC<Props> = ({ ticker }) => {
   const { token } = useAuth()
-  const [open, setOpen] = useState<boolean>(false)
   const [dialogDeleteOpen, setDialogDeleteOpen] = useState<boolean>(false)
   const [adminOpen, setAdminOpen] = useState<boolean>(false)
-  const [submitting, setSubmitting] = useState<boolean>(false)
+  const [submittingAdd, setSubmittingAdd] = useState<boolean>(false)
+  const [submittingToggle, setSubmittingToggle] = useState<boolean>(false)
+  const [submittingDelete, setSubmittingDelete] = useState<boolean>(false)
   const { createNotification } = useNotification()
 
   const queryClient = useQueryClient()
 
   const signalGroup = ticker.signalGroup
 
+  const handleAdd = () => {
+    setSubmittingAdd(true)
+    putTickerSignalGroupApi(token, { active: true }, ticker)
+      .finally(() => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Signal group successfully configured', severity: 'success' })
+        setSubmittingAdd(false)
+      })
+      .catch(() => {
+        createNotification({ content: 'Failed to configure Signal group', severity: 'error' })
+      })
+  }
+
   const handleToggle = useCallback(() => {
+    setSubmittingToggle(true)
     putTickerSignalGroupApi(token, { active: !signalGroup.active }, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+      setSubmittingToggle(false)
     })
   }, [token, queryClient, signalGroup.active, ticker])
 
   const handleDelete = () => {
-    setSubmitting(true)
+    setSubmittingDelete(true)
     deleteTickerSignalGroupApi(token, ticker)
       .finally(() => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
@@ -60,13 +75,13 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       })
       .finally(() => {
         setDialogDeleteOpen(false)
-        setSubmitting(false)
+        setSubmittingDelete(false)
       })
   }
 
   const groupLink = (
     <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank">
-      {signalGroup.groupName}
+      {ticker.title}
     </Link>
   )
 
@@ -77,9 +92,26 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faSignalMessenger} /> Signal Group
           </Typography>
-          <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            Configure
-          </Button>
+          {signalGroup.connected ? null : (
+            <Box sx={{ display: 'inline', position: 'relative' }}>
+              <Button onClick={handleAdd} size="small" startIcon={<FontAwesomeIcon icon={faAdd} />} disabled={submittingAdd}>
+                Add
+              </Button>
+              {submittingAdd && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: 'primary',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-12px',
+                    marginLeft: '-12px',
+                  }}
+                />
+              )}
+            </Box>
+          )}
         </Stack>
       </CardContent>
       <Divider variant="middle" />
@@ -101,21 +133,35 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
             Admin
           </Button>
-          {signalGroup.active ? (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
-              Disable
-            </Button>
-          ) : (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              Enable
-            </Button>
-          )}
+          <Box sx={{ display: 'inline', position: 'relative' }}>
+            {signalGroup.active ? (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />} disabled={submittingToggle}>
+                Disable
+              </Button>
+            ) : (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />} disabled={submittingToggle}>
+                Enable
+              </Button>
+            )}
+            {submittingToggle && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: 'primary',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+            )}
+          </Box>
           <Button onClick={() => setDialogDeleteOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
             Delete
           </Button>
         </CardActions>
       ) : null}
-      <SignalGroupModalForm open={open} onClose={() => setOpen(false)} ticker={ticker} />
       <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
       <Dialog open={dialogDeleteOpen}>
         <DialogTitle>Delete Signal Group</DialogTitle>
@@ -125,10 +171,10 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         <DialogActions>
           <Button onClick={() => setDialogDeleteOpen(false)}>Cancel</Button>
           <Box sx={{ display: 'inline', position: 'relative' }}>
-            <Button onClick={handleDelete} color="error" disabled={submitting} data-testid="dialog-delete">
+            <Button onClick={handleDelete} color="error" disabled={submittingDelete} data-testid="dialog-delete">
               Delete
             </Button>
-            {submitting && (
+            {submittingDelete && (
               <CircularProgress
                 size={24}
                 sx={{

@@ -50,12 +50,26 @@ describe('SignalGroupCard', () => {
     )
   }
 
-  it('should render the component', () => {
+  it('should render the component', async () => {
     setup(ticker({ active: false, connected: false }))
 
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
     expect(screen.getByText("You don't have a Signal group connected.")).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Add' }))
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/signal_group', {
+      body: JSON.stringify({ active: true }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      method: 'put',
+    })
   })
 
   it('should render the component when connected and active', async () => {
