@@ -1,4 +1,4 @@
-import { ApiResponse, ApiUrl, apiClient, apiHeaders } from './Api'
+import { ApiResponse, ApiUrl, apiClient } from './Api'
 
 interface UploadeResponseData {
   uploads: Array<Upload>
@@ -13,5 +13,12 @@ export interface Upload {
 }
 
 export async function postUploadApi(token: string, formData: FormData): Promise<ApiResponse<UploadeResponseData>> {
-  return apiClient<UploadeResponseData>(`${ApiUrl}/admin/upload`, { headers: apiHeaders(token), method: 'post', body: formData })
+  return apiClient<UploadeResponseData>(`${ApiUrl}/admin/upload`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'post',
+    body: formData,
+  })
 }

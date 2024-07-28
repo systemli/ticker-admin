@@ -1,4 +1,4 @@
-import { ApiUrl, apiHeaders } from './Api'
+import { ApiUrl } from './Api'
 import { postUploadApi } from './Upload'
 
 describe('postUploadApi', () => {
@@ -12,7 +12,11 @@ describe('postUploadApi', () => {
     const response = await postUploadApi('token', new FormData())
     expect(response).toEqual(data)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/upload`, { headers: apiHeaders('token'), method: 'post', body: new FormData() })
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/upload`, {
+      headers: { Accept: 'application/json', Authorization: 'Bearer token' },
+      method: 'post',
+      body: new FormData(),
+    })
   })
 
   it('should throw error on non-200 status', async () => {
@@ -21,7 +25,11 @@ describe('postUploadApi', () => {
     const response = await postUploadApi('token', new FormData())
     expect(response).toEqual(data)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/upload`, { headers: apiHeaders('token'), method: 'post', body: new FormData() })
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/upload`, {
+      headers: { Accept: 'application/json', Authorization: 'Bearer token' },
+      method: 'post',
+      body: new FormData(),
+    })
   })
 
   it('should throw error on network failure', async () => {
@@ -29,6 +37,10 @@ describe('postUploadApi', () => {
     const response = await postUploadApi('token', new FormData())
     expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Failed to fetch' } })
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/upload`, { headers: apiHeaders('token'), method: 'post', body: new FormData() })
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/upload`, {
+      headers: { Accept: 'application/json', Authorization: 'Bearer token' },
+      method: 'post',
+      body: new FormData(),
+    })
   })
 })
