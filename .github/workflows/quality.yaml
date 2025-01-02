@@ -17,8 +17,8 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: "yarn"
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -40,8 +40,8 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: "yarn"
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
