@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import Ticker from '../components/ticker/Ticker'
 import useAuth from '../contexts/useAuth'
 import useTickerQuery from '../queries/useTickerQuery'

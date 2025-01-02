@@ -1,6 +1,6 @@
 import { Box, Button, colors } from '@mui/material'
 import { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 interface Props {
   active: boolean

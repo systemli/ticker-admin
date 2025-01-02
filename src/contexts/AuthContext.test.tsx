@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { AuthProvider } from './AuthContext'
-import { MemoryRouter } from 'react-router-dom'
 import sign from 'jwt-encode'
+import { MemoryRouter } from 'react-router-dom'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { AuthProvider } from './AuthContext'
 
-// Mock of useNavigate, useLocation (react-router-dom)
+// Mock of useNavigate, useLocation (react-router)
 vi.mock('react-router', () => ({
   ...vi.importActual('react-router'), // This ensures any other exports remain intact
   useNavigate: vi.fn(() => vi.fn()), // A function that returns another function
