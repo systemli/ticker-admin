@@ -1,6 +1,6 @@
 import { Table, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material'
 import { FC, useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 import { GetTickersQueryParams } from '../../api/Ticker'
 import useDebounce from '../../hooks/useDebounce'
 import TickerListFilter from './TickerListFilter'

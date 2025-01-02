@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import { faGaugeHigh, faGears, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Container } from '@mui/material'
+import { FC } from 'react'
+import { useLocation } from 'react-router'
 import Nav from '../components/navigation/Nav'
 import NavItem from '../components/navigation/NavItem'
 import UserDropdown from '../components/navigation/UserDropdown'
 import useAuth from '../contexts/useAuth'
-import { useLocation } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGaugeHigh, faGears, faUsers } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   children: React.ReactNode
