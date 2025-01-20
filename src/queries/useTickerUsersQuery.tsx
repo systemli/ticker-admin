@@ -8,7 +8,7 @@ interface Props {
 
 const useTickerUsersQuery = ({ ticker, token }: Props) => {
   return useQuery({
-    queryKey: ['tickerUsers'],
+    queryKey: ['tickerUsers', ticker.id],
     queryFn: () => fetchTickerUsersApi(token, ticker),
   })
 }
