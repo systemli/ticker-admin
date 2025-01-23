@@ -59,14 +59,14 @@ describe('MastodonForm', () => {
 
     expect(screen.getByRole('checkbox', { name: 'Active' })).toBeInTheDocument()
     expect(screen.getByLabelText('Server *')).toBeInTheDocument()
-    expect(screen.getByLabelText('Token *')).toBeInTheDocument()
-    expect(screen.getByLabelText('Secret *')).toBeInTheDocument()
+    expect(screen.getByLabelText('Client Key *')).toBeInTheDocument()
+    expect(screen.getByLabelText('Client Secret *')).toBeInTheDocument()
     expect(screen.getByLabelText('Access Token *')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
-    await userEvent.type(screen.getByLabelText('Token *'), 'token')
-    await userEvent.type(screen.getByLabelText('Secret *'), 'secret')
+    await userEvent.type(screen.getByLabelText('Client Key *'), 'token')
+    await userEvent.type(screen.getByLabelText('Client Secret *'), 'secret')
     await userEvent.type(screen.getByLabelText('Access Token *'), 'access-token')
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
