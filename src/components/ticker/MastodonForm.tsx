@@ -33,9 +33,11 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid item xs={12}>
           <Typography>
-            You need to create a Application for Ticker in Mastodon. Go to your profile settings in Mastodon. You find a menu point {`"`}Developer
-            {`"`} where you need to create an Application. After saving you see the required secrets and tokens. Required Scopes:{' '}
-            <code>read write write:media write:statuses</code>
+            You need to create a Application for Ticker in Mastodon. Go to your profile settings in Mastodon. You find a menu point "Developer" where you need
+            to create an Application. After saving you see the required secrets and tokens.
+          </Typography>
+          <Typography sx={{ mt: 1 }}>
+            Required Scopes: <code>read write write:media write:statuses</code>
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -50,12 +52,12 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <TextField {...register('token')} label="Token" required type="password" />
+            <TextField {...register('token')} label="Client Key" required />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <TextField {...register('secret')} label="Secret" required type="password" />
+            <TextField {...register('secret')} label="Client Secret" required type="password" />
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
