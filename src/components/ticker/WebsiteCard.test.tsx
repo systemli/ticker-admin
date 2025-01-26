@@ -9,7 +9,7 @@ import WebsiteCard from './WebsiteCard'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
-describe('WebsiteForm', () => {
+describe('WebsiteCard', () => {
   beforeAll(() => {
     localStorage.setItem('token', token)
   })

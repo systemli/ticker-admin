@@ -1,4 +1,5 @@
-import { FormGroup, Grid, TextField } from '@mui/material'
+import { FormGroup, TextField } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -33,7 +34,7 @@ const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
   return (
     <form id={name} onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FormGroup>
             <TextField
               margin="dense"

@@ -1,4 +1,5 @@
-import { Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { Checkbox, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -36,15 +37,15 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   return (
     <form id="configureTelegram" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Typography>Only public Telegram Channels are supported. The name of the Channel is prefixed with an @ (e.g. @channel).</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FormGroup>
             <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.telegram.active} />} label="Active" />
           </FormGroup>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FormGroup>
             <TextField
               {...register('channelName', {

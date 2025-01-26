@@ -1,6 +1,7 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alert, Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { FC, useState } from 'react'
 import { Ticker as Model } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
@@ -48,10 +49,8 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
   if (ticker === undefined || isLoading) {
     return (
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          {headline()}
-        </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>{headline()}</Grid>
+        <Grid size={{ xs: 12 }}>
           <Loader />
         </Grid>
       </Grid>
@@ -60,15 +59,13 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        {headline()}
-      </Grid>
+      <Grid size={{ xs: 12 }}>{headline()}</Grid>
       {!ticker.active ? (
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Alert severity="warning">This ticker is currently disabled.</Alert>
         </Grid>
       ) : null}
-      <Grid display={{ xs: 'none', md: 'block' }} item md={4} spacing={2} xs={12}>
+      <Grid display={{ xs: 'none', md: 'block' }} spacing={2} size={{ md: 4, xs: 12 }}>
         <TickerCard ticker={ticker} />
         {user?.roles.includes('admin') ? (
           <>
@@ -81,15 +78,15 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
           </>
         ) : null}
       </Grid>
-      <Grid container item md={8} rowSpacing={2} xs={12}>
-        <Grid item xs={12}>
+      <Grid container rowSpacing={2} size={{ md: 8, xs: 12 }}>
+        <Grid size={{ xs: 12 }}>
           <Card>
             <CardContent>
               <MessageForm ticker={ticker} />
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <MessageList ticker={ticker} />
         </Grid>
       </Grid>

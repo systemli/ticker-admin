@@ -1,5 +1,6 @@
 import { Delete } from '@mui/icons-material'
-import { Button, FormControl, FormGroup, FormHelperText, Grid, IconButton, InputAdornment, OutlinedInput, Typography } from '@mui/material'
+import { Button, FormControl, FormGroup, FormHelperText, IconButton, InputAdornment, OutlinedInput, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
@@ -43,10 +44,10 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
   return (
     <form id="configureWebsites" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Typography>You can configure website origins for your ticker. The ticker will only be reachable from the configured websites.</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FormGroup>
             {fields.map((field, index) => (
               <FormControl sx={{ mb: 1 }} error={!!errors.websites?.[index]?.origin} key={field.id}>

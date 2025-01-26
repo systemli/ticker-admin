@@ -1,6 +1,7 @@
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alert, FormGroup, Grid, InputAdornment, TextField } from '@mui/material'
+import { Alert, FormGroup, InputAdornment, TextField } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { Ticker, TickerSignalGroupAdminFormData, putTickerSignalGroupAdminApi } from '../../api/Ticker'
@@ -43,10 +44,10 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
   return (
     <form id="configureSignalGroupAdmin" onSubmit={onSubmit}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Alert severity="warning">Only do this if extra members with write access are needed.</Alert>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FormGroup>
             <TextField
               {...register('number')}

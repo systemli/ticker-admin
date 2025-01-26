@@ -1,6 +1,7 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Card, Grid, Stack, Typography } from '@mui/material'
+import { Button, Card, Stack, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { FC, useState } from 'react'
 import TickerList from '../components/ticker/TickerList'
 import TickerModalForm from '../components/ticker/TickerModalForm'
@@ -14,7 +15,7 @@ const TickerListView: FC = () => {
   return (
     <Layout>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" gutterBottom variant="h3">
               Tickers
@@ -40,7 +41,7 @@ const TickerListView: FC = () => {
             ) : null}
           </Stack>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Card>
             <TickerList token={token} />
           </Card>

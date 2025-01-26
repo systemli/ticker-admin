@@ -1,6 +1,7 @@
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Divider, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { Stack } from '@mui/system'
 import { FC, useState } from 'react'
 import useAuth from '../../contexts/useAuth'
@@ -68,7 +69,7 @@ const InactiveSettingsCard: FC = () => {
           <Typography>{setting.value.description}</Typography>
         </Box>
         <Grid container>
-          <Grid item lg={6} xs={12}>
+          <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
                 Author
@@ -76,7 +77,7 @@ const InactiveSettingsCard: FC = () => {
               <Typography>{setting.value.author}</Typography>
             </Box>
           </Grid>
-          <Grid item lg={6} xs={12}>
+          <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
                 Homepage
@@ -84,7 +85,7 @@ const InactiveSettingsCard: FC = () => {
               <Typography>{setting.value.homepage}</Typography>
             </Box>
           </Grid>
-          <Grid item lg={6} xs={12}>
+          <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
                 E-Mail
@@ -92,7 +93,7 @@ const InactiveSettingsCard: FC = () => {
               <Typography>{setting.value.email}</Typography>
             </Box>
           </Grid>
-          <Grid item lg={6} xs={12}>
+          <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
                 Twitter

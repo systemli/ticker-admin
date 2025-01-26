@@ -1,4 +1,5 @@
-import { FormGroup, Grid, TextField } from '@mui/material'
+import { FormGroup, TextField } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -45,17 +46,17 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
   return (
     <form id={name} onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
             <TextField margin="dense" {...register('headline')} defaultValue={setting.value.headline} label="Headline" name="headline" required />
           </FormGroup>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
             <TextField margin="dense" {...register('subHeadline')} defaultValue={setting.value.subHeadline} label="Subheadline" required />
           </FormGroup>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <FormGroup>
             <TextField
               margin="normal"
@@ -68,22 +69,22 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
             />
           </FormGroup>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
             <TextField margin="dense" {...register('author')} defaultValue={setting.value.author} label="Author" name="author" required />
           </FormGroup>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
             <TextField margin="dense" {...register('homepage')} defaultValue={setting.value.homepage} label="Homepage" name="homepage" required type="url" />
           </FormGroup>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
             <TextField margin="dense" {...register('email')} defaultValue={setting.value.email} label="E-Mail" name="email" required type="email" />
           </FormGroup>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
             <TextField margin="dense" {...register('twitter')} defaultValue={setting.value.twitter} label="Twitter" name="twitter" required />
           </FormGroup>
