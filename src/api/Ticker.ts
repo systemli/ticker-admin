@@ -30,11 +30,11 @@ export interface TickerFormData {
 export interface Ticker {
   id: number
   createdAt: Date
-  domain: string
   title: string
   description: string
   active: boolean
   information: TickerInformation
+  websites: Array<TickerWebsite>
   mastodon: TickerMastodon
   telegram: TickerTelegram
   bluesky: TickerBluesky
@@ -51,6 +51,11 @@ export interface TickerInformation {
   telegram: string
   mastodon: string
   bluesky: string
+}
+
+export interface TickerWebsite {
+  id: number
+  origin: string
 }
 
 export interface TickerTelegram {
@@ -118,7 +123,7 @@ export interface TickerLocation {
 
 export interface GetTickersQueryParams {
   active?: boolean
-  domain?: string
+  origin?: string
   title?: string
   order_by?: string
   sort?: SortDirection
@@ -170,6 +175,21 @@ export async function putTickerUsersApi(token: string, ticker: Ticker, users: Us
 
 export async function putTickerResetApi(token: string, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
   return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/reset`, { headers: apiHeaders(token), method: 'put' })
+}
+
+export async function putTickerWebsitesApi(token: string, ticker: Ticker, websites: Array<TickerWebsite>): Promise<ApiResponse<TickerResponseData>> {
+  return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/websites`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify({ websites: websites }),
+  })
+}
+
+export async function deleteTickerWebsitesApi(token: string, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
+  return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/websites`, {
+    headers: apiHeaders(token),
+    method: 'delete',
+  })
 }
 
 export async function putTickerMastodonApi(token: string, data: TickerMastodonFormData, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {

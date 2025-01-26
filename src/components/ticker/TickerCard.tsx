@@ -1,10 +1,10 @@
+import { faCheck, faHeading, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Card, CardContent, Typography } from '@mui/material'
 import { FC } from 'react'
-import { Box, Card, CardContent, Link, Typography } from '@mui/material'
 import { Ticker } from '../../api/Ticker'
 import NamedListItem from '../common/NamedListItem'
 import SocialConnectionChip from './SocialConnectionChip'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faHeading, faLink, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   ticker: Ticker
@@ -26,16 +26,9 @@ const TickerCard: FC<Props> = ({ ticker }) => {
             {ticker.active ? 'Active' : 'Inactive'}
           </Typography>
         </NamedListItem>
-        <NamedListItem title="Domain">
-          <Typography>
-            <FontAwesomeIcon color="GrayText" icon={faLink} style={{ width: 16, paddingRight: 2 }} />
-            <Link href={'https://' + ticker.domain} rel="noreferrer" target="_blank">
-              {ticker.domain}
-            </Link>
-          </Typography>
-        </NamedListItem>
-        <NamedListItem title="Social Connections">
+        <NamedListItem title="Integrations">
           <Box>
+            <SocialConnectionChip active={ticker.websites.length > 0} label="Website" />
             <SocialConnectionChip active={ticker.mastodon.active} label="Mastodon" />
             <SocialConnectionChip active={ticker.telegram.active} label="Telegram" />
             <SocialConnectionChip active={ticker.bluesky.active} label="Bluesky" />

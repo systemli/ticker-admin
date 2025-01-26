@@ -10,7 +10,6 @@ import Active from './Active'
 import Author from './Author'
 import Bluesky from './Bluesky'
 import Description from './Description'
-import Domain from './Domain'
 import Email from './Email'
 import Facebook from './Facebook'
 import Mastodon from './Mastodon'
@@ -29,7 +28,6 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
   const form = useForm<TickerFormData>({
     defaultValues: {
       title: ticker?.title,
-      domain: ticker?.domain,
       active: ticker?.active,
       description: ticker?.description,
       information: {
@@ -96,19 +94,14 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
     <FormProvider {...form}>
       <form id={id} onSubmit={handleSubmit(onSubmit)}>
         <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-          <Grid item sm={6} xs={12}>
+          <Grid item xs={12}>
             <FormGroup>
-              <Title />
-            </FormGroup>
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormGroup>
-              <Domain />
+              <Active defaultChecked={ticker?.active} />
             </FormGroup>
           </Grid>
           <Grid item xs={12}>
             <FormGroup>
-              <Active defaultChecked={ticker?.active} />
+              <Title />
             </FormGroup>
           </Grid>
           <Grid item xs={12}>

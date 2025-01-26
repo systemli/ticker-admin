@@ -10,7 +10,16 @@ const Description: FC = () => {
       name="description"
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <TextField {...field} error={!!error} helperText={error?.message ? error.message : null} margin="dense" maxRows={10} multiline label="Description" />
+        <TextField
+          {...field}
+          error={!!error}
+          helperText={error?.message ? error.message : null}
+          margin="dense"
+          maxRows={10}
+          rows={3}
+          multiline
+          label="Description"
+        />
       )}
     />
   )

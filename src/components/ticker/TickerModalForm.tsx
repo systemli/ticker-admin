@@ -1,12 +1,12 @@
-import { Tab, Tabs } from '@mui/material'
-import Tune from '@mui/icons-material/Tune'
 import Campaign from '@mui/icons-material/Campaign'
+import Tune from '@mui/icons-material/Tune'
+import { Tab, Tabs } from '@mui/material'
 import React, { FC, useState } from 'react'
 import { Ticker } from '../../api/Ticker'
 import Modal from '../common/Modal'
 import TabPanel from '../common/TabPanel'
-import TickerSocialConnections from './TickerSocialConnections'
 import TickerForm from './form/TickerForm'
+import TickerIntegrations from './TickerIntegrations'
 
 interface Props {
   onClose: () => void
@@ -25,14 +25,14 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
     <Modal fullWidth onClose={onClose} open={open} submitForm={tabValue === 0 ? 'tickerForm' : undefined} title={ticker ? 'Configure Ticker' : 'Create Ticker'}>
       <Tabs onChange={handleTabChange} value={tabValue}>
         <Tab icon={<Tune />} iconPosition="start" label="General" />
-        <Tab disabled={!ticker} icon={<Campaign />} iconPosition="start" label="Social Connections" />
+        <Tab disabled={!ticker} icon={<Campaign />} iconPosition="start" label="Integrations" />
       </Tabs>
       <TabPanel index={0} value={tabValue}>
         <TickerForm callback={onClose} id="tickerForm" ticker={ticker} />
       </TabPanel>
       {ticker ? (
         <TabPanel index={1} value={tabValue}>
-          <TickerSocialConnections ticker={ticker} />
+          <TickerIntegrations ticker={ticker} />
         </TabPanel>
       ) : null}
     </Modal>
