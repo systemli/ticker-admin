@@ -1,10 +1,11 @@
-import { Alert, Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Container, Paper, TextField, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
+import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import useAuth from '../contexts/useAuth'
 import logo from '../assets/logo.png'
-import { useQueryClient } from '@tanstack/react-query'
+import useAuth from '../contexts/useAuth'
 
 interface FormValues {
   email: string
@@ -39,7 +40,7 @@ const LoginView: FC = () => {
   return (
     <Container fixed maxWidth="sm" sx={{ mt: 5 }}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Box sx={{ mb: 2, textAlign: 'center' }}>
             <img alt="Systemli Logo" src={logo} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
             <Typography component="h4" sx={{ mt: 1 }} variant="h4">
@@ -47,7 +48,7 @@ const LoginView: FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Paper elevation={3} sx={{ p: 2 }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               {error ? (

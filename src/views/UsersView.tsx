@@ -1,6 +1,7 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Card, Grid, Stack, Typography } from '@mui/material'
+import { Button, Card, Stack, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { FC, useState } from 'react'
 import UserList from '../components/user/UserList'
 import UserModalForm from '../components/user/UserModalForm'
@@ -12,7 +13,7 @@ const UsersView: FC = () => {
   return (
     <Layout>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" gutterBottom variant="h3">
               Users
@@ -34,7 +35,7 @@ const UsersView: FC = () => {
             />
           </Stack>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Card>
             <UserList />
           </Card>

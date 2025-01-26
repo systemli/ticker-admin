@@ -1,4 +1,5 @@
-import { Alert, Button, FormGroup, Grid, Stack, Typography } from '@mui/material'
+import { Alert, Button, FormGroup, Stack, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import React, { FC, useCallback, useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
@@ -94,67 +95,67 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
     <FormProvider {...form}>
       <form id={id} onSubmit={handleSubmit(onSubmit)}>
         <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormGroup>
               <Active defaultChecked={ticker?.active} />
             </FormGroup>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormGroup>
               <Title />
             </FormGroup>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormGroup>
               <Description />
             </FormGroup>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Typography component="h6" variant="h6">
               Information
             </Typography>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Author />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Url />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Email />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Twitter />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Facebook />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Telegram />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Mastodon />
             </FormGroup>
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Bluesky />
             </FormGroup>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Typography component="h6" variant="h6">
               Location
             </Typography>
@@ -166,7 +167,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
               </code>
             </Alert>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Stack direction="row" spacing={1}>
               <LocationSearch callback={onLocationChange} />
               <Button disabled={ticker?.location.lat === 0 && ticker.location.lon === 0} onClick={onLoctionReset} variant="outlined">
@@ -175,7 +176,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
             </Stack>
           </Grid>
           {position.lat !== 0 && position.lon !== 0 ? (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <MapContainer center={[position.lat, position.lon]} scrollWheelZoom={false} style={{ height: 200 }} zoom={10}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={[position.lat, position.lon]} />

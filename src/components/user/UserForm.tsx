@@ -1,4 +1,5 @@
-import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { Checkbox, Divider, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -68,7 +69,7 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
   return (
     <form id={id} onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
-        <Grid item md={6} xs={12}>
+        <Grid size={{ md: 6, xs: 12 }}>
           <FormGroup>
             <TextField
               error={errors.email !== undefined}
@@ -85,7 +86,7 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
             <FormControlLabel control={<Checkbox {...register('isSuperAdmin')} defaultChecked={user?.isSuperAdmin} />} label="Super Admin" />
           </FormGroup>
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid size={{ md: 6, xs: 12 }}>
           <FormGroup>
             <TextField
               error={errors.password !== undefined}
@@ -117,7 +118,7 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
           </FormGroup>
         </Grid>
         {!isSuperAdminChecked ? (
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Divider />
             <Typography component="h6" sx={{ my: 1 }} variant="h6">
               Permissions
