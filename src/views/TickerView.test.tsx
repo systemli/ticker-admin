@@ -66,7 +66,6 @@ describe('TickerView', function () {
           ticker: {
             id: 1,
             createdAt: new Date(),
-            domain: 'localhost',
             title: 'Ticker Title',
             description: 'Description',
             active: true,
@@ -77,6 +76,7 @@ describe('TickerView', function () {
             bluesky: {},
             signalGroup: {},
             location: {},
+            websites: [],
           },
         },
         status: 'success',

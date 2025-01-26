@@ -16,7 +16,7 @@ const HomeView: FC = () => {
       order_by: params.get('order_by') ?? 'id',
       sort: params.get('sort') === 'asc' ? 'asc' : 'desc',
       title: params.get('title') ?? undefined,
-      domain: params.get('domain') ?? undefined,
+      origin: params.get('origin') ?? undefined,
       active: params.get('active') === 'true' ? true : params.get('active') === 'false' ? false : undefined,
     },
   })

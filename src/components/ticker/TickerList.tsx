@@ -21,7 +21,7 @@ const TickerList: FC<Props> = ({ token }) => {
     if (params.order_by) newSearchParams.set('order_by', params.order_by)
     if (params.sort) newSearchParams.set('sort', params.sort)
     if (params.title) newSearchParams.set('title', params.title)
-    if (params.domain) newSearchParams.set('domain', params.domain)
+    if (params.origin) newSearchParams.set('domain', params.origin)
     if (params.active !== undefined) newSearchParams.set('active', String(params.active))
     setSearchParams(newSearchParams)
   }, [debouncedValue, params, setSearchParams])
@@ -64,7 +64,7 @@ const TickerList: FC<Props> = ({ token }) => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={5} sx={{ p: 1 }}>
-              <TickerListFilter params={params} onTitleChange={handleFilterChange} onDomainChange={handleFilterChange} onActiveChange={handleActiveChange} />
+              <TickerListFilter params={params} onTitleChange={handleFilterChange} onOriginChange={handleFilterChange} onActiveChange={handleActiveChange} />
             </TableCell>
           </TableRow>
           <TableRow>
@@ -83,11 +83,7 @@ const TickerList: FC<Props> = ({ token }) => {
                 Title
               </TableSortLabel>
             </TableCell>
-            <TableCell sortDirection={setDirection('domain')}>
-              <TableSortLabel active={sortActive('domain')} direction={setDirection('domain')} onClick={() => handleSortChange('domain')}>
-                Domain
-              </TableSortLabel>
-            </TableCell>
+            <TableCell sortDirection={setDirection('origin')}>Web Origins</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>

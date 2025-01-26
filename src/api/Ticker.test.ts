@@ -5,11 +5,13 @@ import {
   TickerFormData,
   TickerMastodonFormData,
   TickerTelegramFormData,
+  TickerWebsite,
   deleteTickerApi,
   deleteTickerBlueskyApi,
   deleteTickerMastodonApi,
   deleteTickerTelegramApi,
   deleteTickerUserApi,
+  deleteTickerWebsitesApi,
   fetchTickerApi,
   fetchTickerUsersApi,
   fetchTickersApi,
@@ -20,6 +22,7 @@ import {
   putTickerResetApi,
   putTickerTelegramApi,
   putTickerUsersApi,
+  putTickerWebsitesApi,
 } from './Ticker'
 import { User } from './User'
 
@@ -344,6 +347,91 @@ describe('putTickerResetApi', () => {
     expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/reset`, { headers: apiHeaders('token'), method: 'put' })
+  })
+})
+
+describe('putTickerWebsitesApi', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
+  it('should return data on success', async () => {
+    const data = { status: 'success', data: { ticker: { id: 1 } } }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await putTickerWebsitesApi('token', { id: 1 } as Ticker, [{ origin: 'origin' } as TickerWebsite])
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/websites`, {
+      headers: apiHeaders('token'),
+      method: 'put',
+      body: JSON.stringify({ websites: [{ origin: 'origin' }] }),
+    })
+  })
+
+  it('should throw error on non-200 status', async () => {
+    const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await putTickerWebsitesApi('token', { id: 1 } as Ticker, [{ origin: 'origin' } as TickerWebsite])
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/websites`, {
+      headers: apiHeaders('token'),
+      method: 'put',
+      body: JSON.stringify({ websites: [{ origin: 'origin' } as TickerWebsite] }),
+    })
+  })
+
+  it('should throw error on network error', async () => {
+    fetchMock.mockReject(new Error('Network error'))
+    const response = await putTickerWebsitesApi('token', { id: 1 } as Ticker, [{ origin: 'origin' } as TickerWebsite])
+    expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/websites`, {
+      headers: apiHeaders('token'),
+      method: 'put',
+      body: JSON.stringify({ websites: [{ origin: 'origin' } as TickerWebsite] }),
+    })
+  })
+})
+
+describe('deleteTickerWebsitesApi', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
+  it('should return data on success', async () => {
+    const data = { status: 'success', data: { ticker: { id: 1 } } }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await deleteTickerWebsitesApi('token', { id: 1 } as Ticker)
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/websites`, {
+      headers: apiHeaders('token'),
+      method: 'delete',
+    })
+  })
+
+  it('should throw error on non-200 status', async () => {
+    const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await deleteTickerWebsitesApi('token', { id: 1 } as Ticker)
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/websites`, {
+      headers: apiHeaders('token'),
+      method: 'delete',
+    })
+  })
+
+  it('should throw error on network error', async () => {
+    fetchMock.mockReject(new Error('Network error'))
+    const response = await deleteTickerWebsitesApi('token', { id: 1 } as Ticker)
+    expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/1/websites`, {
+      headers: apiHeaders('token'),
+      method: 'delete',
+    })
   })
 })
 

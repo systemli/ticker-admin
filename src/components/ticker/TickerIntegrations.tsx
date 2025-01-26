@@ -1,18 +1,22 @@
 import { Grid } from '@mui/material'
 import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
-import MastodonCard from './MastodonCard'
-import TelegramCard from './TelegramCard'
 import BlueskyCard from './BlueskyCard'
+import MastodonCard from './MastodonCard'
 import SignalGroupCard from './SignalGroupCard'
+import TelegramCard from './TelegramCard'
+import WebsiteCard from './WebsiteCard'
 
 interface Props {
   ticker: Ticker
 }
 
-const TickerSocialConnections: FC<Props> = ({ ticker }) => {
+const TickerIntegrations: FC<Props> = ({ ticker }) => {
   return (
     <Grid container spacing={2}>
+      <Grid item md={6} xs={12}>
+        <WebsiteCard ticker={ticker} />
+      </Grid>
       <Grid item md={6} xs={12}>
         <MastodonCard ticker={ticker} />
       </Grid>
@@ -29,4 +33,4 @@ const TickerSocialConnections: FC<Props> = ({ ticker }) => {
   )
 }
 
-export default TickerSocialConnections
+export default TickerIntegrations

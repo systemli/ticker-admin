@@ -46,7 +46,7 @@ describe('TickerListItems', function () {
     vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
     fetchMock.mockResponseOnce(JSON.stringify({ data: { tickers: [] }, status: 'success' }))
 
-    const params = { title: '', domain: '', active: undefined } as GetTickersQueryParams
+    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
     setup(params)
 
     expect(screen.getByText('Loading')).toBeInTheDocument()
@@ -65,10 +65,10 @@ describe('TickerListItems', function () {
             {
               id: 1,
               createdAt: new Date(),
-              domain: 'localhost',
               title: 'title',
               description: 'description',
               active: true,
+              websites: [{ id: 1, origin: 'http://localhost' }],
             },
           ],
         },
@@ -76,7 +76,7 @@ describe('TickerListItems', function () {
       })
     )
 
-    const params = { title: '', domain: '', active: undefined } as GetTickersQueryParams
+    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
     setup(params)
 
     expect(screen.getByText('Loading')).toBeInTheDocument()
@@ -84,7 +84,7 @@ describe('TickerListItems', function () {
     expect(fetchMock).toHaveBeenCalledTimes(1)
 
     expect(await screen.findByText('title')).toBeInTheDocument()
-    expect(await screen.findByText('localhost')).toBeInTheDocument()
+    expect(await screen.findByText('http://localhost')).toBeInTheDocument()
   })
 
   it('should render tickers for user', async function () {
@@ -96,7 +96,6 @@ describe('TickerListItems', function () {
             {
               id: 1,
               createdAt: new Date(),
-              domain: 'localhost',
               title: 'title',
               description: 'description',
               active: true,
@@ -107,7 +106,7 @@ describe('TickerListItems', function () {
       })
     )
 
-    const params = { title: '', domain: '', active: undefined } as GetTickersQueryParams
+    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
     setup(params)
 
     expect(screen.getByText('Loading')).toBeInTheDocument()
@@ -119,7 +118,7 @@ describe('TickerListItems', function () {
     vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
     fetchMock.mockRejectOnce(new Error('bad url'))
 
-    const params = { title: '', domain: '', active: undefined } as GetTickersQueryParams
+    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
     setup(params)
 
     expect(screen.getByText('Loading')).toBeInTheDocument()

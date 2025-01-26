@@ -7,11 +7,11 @@ import { GetTickersQueryParams } from '../../api/Ticker'
 interface Props {
   params: GetTickersQueryParams
   onTitleChange: (field: string, value: string) => void
-  onDomainChange: (field: string, value: string) => void
+  onOriginChange: (field: string, value: string) => void
   onActiveChange: (e: React.MouseEvent<HTMLElement, MouseEvent>, value: unknown) => void
 }
 
-const TickerListFilter: FC<Props> = ({ params, onTitleChange, onDomainChange, onActiveChange }) => {
+const TickerListFilter: FC<Props> = ({ params, onTitleChange, onOriginChange, onActiveChange }) => {
   return (
     <Stack direction="row" alignItems="center">
       <Box sx={{ px: 1 }}>
@@ -28,7 +28,7 @@ const TickerListFilter: FC<Props> = ({ params, onTitleChange, onDomainChange, on
         />
       </Box>
       <Box sx={{ px: 1 }}>
-        <TextField label="Domain" onChange={e => onDomainChange('domain', e.target.value)} placeholder="Filter by domain" size="small" value={params.domain} />
+        <TextField label="Origin" onChange={e => onOriginChange('origin', e.target.value)} placeholder="Filter by origin" size="small" value={params.origin} />
       </Box>
       <Box sx={{ px: 1 }}>
         <ToggleButtonGroup size="small" value={params.active} exclusive onChange={onActiveChange}>
