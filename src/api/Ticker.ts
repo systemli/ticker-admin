@@ -48,6 +48,8 @@ export interface TickerInformation {
   email: string
   twitter: string
   facebook: string
+  threads: string
+  instagram: string
   telegram: string
   mastodon: string
   bluesky: string
