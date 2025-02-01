@@ -13,8 +13,10 @@ import Bluesky from './Bluesky'
 import Description from './Description'
 import Email from './Email'
 import Facebook from './Facebook'
+import Instagram from './Instagram'
 import Mastodon from './Mastodon'
 import Telegram from './Telegram'
+import Threads from './Threads'
 import Title from './Title'
 import Twitter from './Twitter'
 import Url from './Url'
@@ -37,6 +39,8 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
         url: ticker?.information.url,
         twitter: ticker?.information.twitter,
         facebook: ticker?.information.facebook,
+        threads: ticker?.information.threads,
+        instagram: ticker?.information.instagram,
         telegram: ticker?.information.telegram,
         mastodon: ticker?.information.mastodon,
         bluesky: ticker?.information.bluesky,
@@ -138,6 +142,16 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
           <Grid size={{ sm: 6, xs: 12 }}>
             <FormGroup>
               <Facebook />
+            </FormGroup>
+          </Grid>
+          <Grid size={{ sm: 6, xs: 12 }}>
+            <FormGroup>
+              <Threads />
+            </FormGroup>
+          </Grid>
+          <Grid size={{ sm: 6, xs: 12 }}>
+            <FormGroup>
+              <Instagram />
             </FormGroup>
           </Grid>
           <Grid size={{ sm: 6, xs: 12 }}>
