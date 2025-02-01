@@ -14,12 +14,14 @@ const Bluesky: FC = () => {
       render={({ field }) => (
         <TextField
           {...field}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FontAwesomeIcon icon={faBluesky} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FontAwesomeIcon icon={faBluesky} />
+                </InputAdornment>
+              ),
+            },
           }}
           label="Bluesky"
           margin="dense"

@@ -14,12 +14,14 @@ const Mastodon: FC = () => {
       render={({ field }) => (
         <TextField
           {...field}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FontAwesomeIcon icon={faMastodon} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FontAwesomeIcon icon={faMastodon} />
+                </InputAdornment>
+              ),
+            },
           }}
           label="Mastodon"
           margin="dense"

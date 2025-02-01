@@ -21,13 +21,15 @@ const Twitter: FC = () => {
       render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" style={{ marginRight: '0px' }}>
-                <FontAwesomeIcon icon={faTwitter} />
-                <span style={{ paddingLeft: '8px' }}>twitter.com/</span>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start" style={{ marginRight: '0px' }}>
+                  <FontAwesomeIcon icon={faTwitter} />
+                  <span style={{ paddingLeft: '8px' }}>twitter.com/</span>
+                </InputAdornment>
+              ),
+            },
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}

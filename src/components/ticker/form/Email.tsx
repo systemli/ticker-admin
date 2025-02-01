@@ -21,12 +21,14 @@ const Email: FC = () => {
       render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </InputAdornment>
+              ),
+            },
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
