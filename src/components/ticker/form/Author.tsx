@@ -14,12 +14,14 @@ const Author: FC = () => {
       render={({ field }) => (
         <TextField
           {...field}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FontAwesomeIcon icon={faUser} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FontAwesomeIcon icon={faUser} />
+                </InputAdornment>
+              ),
+            },
           }}
           label="Author"
           margin="dense"
