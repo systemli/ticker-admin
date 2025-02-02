@@ -8,11 +8,13 @@ import useAuth from '../../contexts/useAuth'
 import palette from '../../theme/palette'
 
 interface Props {
+  color?: string
+  disabled: boolean
   ticker: Ticker
   onUpload: (uploads: Upload[]) => void
 }
 
-const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
+const UploadButton: FC<Props> = ({ color, disabled, onUpload, ticker }) => {
   const ref = createRef<HTMLInputElement>()
   const { token } = useAuth()
 
@@ -39,10 +41,12 @@ const UploadButton: FC<Props> = ({ onUpload, ticker }) => {
     })
   }
 
+  color = color ?? palette.primary['main']
+
   return (
     <>
-      <IconButton onClick={refClick} sx={{ mr: 1 }}>
-        <FontAwesomeIcon color={palette.primary['main']} icon={faImages} size="xs" />
+      <IconButton onClick={refClick} sx={{ mr: 1 }} disabled={disabled}>
+        <FontAwesomeIcon color={color} icon={faImages} size="xs" />
       </IconButton>
       <input ref={ref} hidden multiple onChange={handleUpload} type="file" />
     </>
