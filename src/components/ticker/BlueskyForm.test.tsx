@@ -1,11 +1,12 @@
-import sign from 'jwt-encode'
-import { Ticker } from '../../api/Ticker'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../../contexts/AuthContext'
-import BlueskyForm from './BlueskyForm'
 import userEvent from '@testing-library/user-event'
+import sign from 'jwt-encode'
+import { MemoryRouter } from 'react-router'
+import { Ticker } from '../../api/Ticker'
+import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
+import BlueskyForm from './BlueskyForm'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
@@ -44,10 +45,10 @@ describe('BlueskyForm', () => {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <div>
+            <NotificationProvider>
               <BlueskyForm callback={callback} ticker={ticker} />
               <input name="Submit" type="submit" value="Submit" form="configureBluesky" />
-            </div>
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

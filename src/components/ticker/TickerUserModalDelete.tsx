@@ -3,6 +3,7 @@ import { FC, useCallback } from 'react'
 import { Ticker, deleteTickerUserApi } from '../../api/Ticker'
 import { User } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import Modal from '../common/Modal'
 
 interface Props {
@@ -13,15 +14,17 @@ interface Props {
 }
 
 const TickerUserModalDelete: FC<Props> = ({ open, onClose, ticker, user }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const queryClient = useQueryClient()
 
   const handleDelete = useCallback(() => {
     deleteTickerUserApi(token, ticker, user).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
+      createNotification({ content: 'User is successfully deleted from ticker', severity: 'success' })
       onClose()
     })
-  }, [token, ticker, user, queryClient, onClose])
+  }, [token, ticker, user, queryClient, createNotification, onClose])
 
   return (
     <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete User from Ticker">

@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import sign from 'jwt-encode'
-import BlueskyCard from './BlueskyCard'
-import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { Ticker } from '../../api/Ticker'
 import userEvent from '@testing-library/user-event'
+import sign from 'jwt-encode'
+import { MemoryRouter } from 'react-router'
+import { Ticker } from '../../api/Ticker'
+import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
+import BlueskyCard from './BlueskyCard'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
@@ -42,7 +43,9 @@ describe('BlueSkyCard', () => {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <BlueskyCard ticker={ticker} />
+            <NotificationProvider>
+              <BlueskyCard ticker={ticker} />
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

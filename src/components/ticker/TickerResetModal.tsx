@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FC, useCallback } from 'react'
 import { Ticker, putTickerResetApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import Modal from '../common/Modal'
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const queryClient = useQueryClient()
 
@@ -22,9 +24,10 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
       })
       .finally(() => {
+        createNotification({ content: 'Ticker has been successfully reset', severity: 'success' })
         onClose()
       })
-  }, [onClose, token, queryClient, ticker])
+  }, [token, ticker, queryClient, createNotification, onClose])
 
   return (
     <Modal dangerActionButtonText="Reset" onClose={onClose} onDangerAction={handleReset} open={open} title="Reset Ticker">

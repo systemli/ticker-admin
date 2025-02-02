@@ -5,6 +5,7 @@ import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
 import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
 import MastodonCard from './MastodonCard'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
@@ -42,7 +43,9 @@ describe('MastodonCard', () => {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <MastodonCard ticker={ticker} />
+            <NotificationProvider>
+              <MastodonCard ticker={ticker} />
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

@@ -6,6 +6,7 @@ import { FC } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { putTickerWebsitesApi, Ticker, TickerWebsite } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   callback: () => void
@@ -18,6 +19,7 @@ interface FormData {
 
 const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
   const websites = ticker.websites
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const {
     control,
@@ -37,6 +39,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
   const onSubmit: SubmitHandler<FormData> = data => {
     putTickerWebsitesApi(token, ticker, data.websites).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+      createNotification({ content: 'Websites were successfully updated', severity: 'success' })
       callback()
     })
   }

@@ -6,6 +6,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import { postTickerApi, putTickerApi, Ticker, TickerFormData } from '../../../api/Ticker'
 import useAuth from '../../../contexts/useAuth'
+import useNotification from '../../../contexts/useNotification'
 import LocationSearch, { Result } from '../LocationSearch'
 import Active from './Active'
 import Author from './Author'
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
+  const { createNotification } = useNotification()
   const form = useForm<TickerFormData>({
     defaultValues: {
       title: ticker?.title,
@@ -81,12 +83,14 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         setSubmitting(false)
+        createNotification({ content: 'Ticker was successfully updated', severity: 'success' })
         callback()
       })
     } else {
       postTickerApi(token, data).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         setSubmitting(false)
+        createNotification({ content: 'Ticker was successfully created', severity: 'success' })
         callback()
       })
     }

@@ -5,6 +5,7 @@ import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { Ticker, TickerWebsite } from '../../api/Ticker'
 import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
 import WebsiteForm from './WebsiteForm'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
@@ -39,10 +40,10 @@ describe('WebsiteForm', () => {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <div>
+            <NotificationProvider>
               <WebsiteForm callback={callback} ticker={ticker} />
               <input name="Submit" type="submit" value="Submit" form="configureWebsites" />
-            </div>
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

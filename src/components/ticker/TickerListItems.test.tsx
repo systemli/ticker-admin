@@ -4,6 +4,7 @@ import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { GetTickersQueryParams } from '../../api/Ticker'
 import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
 import TickerListItems from './TickerListItems'
 
 describe('TickerListItems', function () {
@@ -35,7 +36,9 @@ describe('TickerListItems', function () {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <TickerListItems params={params} token={jwt('admin')} />
+            <NotificationProvider>
+              <TickerListItems params={params} token={jwt('admin')} />
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

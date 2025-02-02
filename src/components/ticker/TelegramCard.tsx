@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FC, useCallback, useState } from 'react'
 import { Ticker, deleteTickerTelegramApi, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import TelegramModalForm from './TelegramModalForm'
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const TelegramCard: FC<Props> = ({ ticker }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
   const queryClient = useQueryClient()
@@ -20,14 +22,18 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
   const telegram = ticker.telegram
 
   const handleToggle = useCallback(() => {
-    putTickerTelegramApi(token, { active: !telegram.active }, ticker).finally(() => queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] }))
-  }, [token, queryClient, telegram.active, ticker])
+    putTickerTelegramApi(token, { active: !telegram.active }, ticker).finally(() => {
+      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+      createNotification({ content: `Telegram integration ${telegram.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+    })
+  }, [token, telegram.active, ticker, queryClient, createNotification])
 
   const handleDelete = useCallback(() => {
     deleteTickerTelegramApi(token, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+      createNotification({ content: 'Telegram integration successfully deleted', severity: 'success' })
     })
-  }, [token, queryClient, ticker])
+  }, [token, ticker, queryClient, createNotification])
 
   const channelLink = (
     <Link href={`https://t.me/${telegram.channelName}`} rel="noreferrer" target="_blank">

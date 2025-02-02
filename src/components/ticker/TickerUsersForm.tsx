@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Ticker, putTickerUsersApi } from '../../api/Ticker'
 import { User, fetchUsersApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   ticker: Ticker
@@ -17,6 +18,7 @@ interface FormValues {
 }
 
 const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
+  const { createNotification } = useNotification()
   const [users, setUsers] = useState<Array<User>>(defaultValue)
   const [options, setOptions] = useState<Array<User>>([])
   const { token } = useAuth()
@@ -35,6 +37,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   const updateTickerUsers: SubmitHandler<FormValues> = () => {
     putTickerUsersApi(token, ticker, users).then(() => {
       queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
+      createNotification({ content: 'Users were successfully updated', severity: 'success' })
       onSubmit()
     })
   }

@@ -5,6 +5,7 @@ import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Ticker, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   callback: () => void
@@ -17,6 +18,7 @@ interface FormValues {
 }
 
 const TelegramForm: FC<Props> = ({ callback, ticker }) => {
+  const { createNotification } = useNotification()
   const telegram = ticker.telegram
   const { token } = useAuth()
   const { handleSubmit, register } = useForm<FormValues>({
@@ -30,6 +32,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   const onSubmit: SubmitHandler<FormValues> = data => {
     putTickerTelegramApi(token, data, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+      createNotification({ content: 'Telegram integration was successfully updated', severity: 'success' })
       callback()
     })
   }

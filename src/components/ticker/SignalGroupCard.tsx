@@ -47,7 +47,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     putTickerSignalGroupApi(token, { active: true }, ticker)
       .finally(() => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Signal group successfully configured', severity: 'success' })
+        createNotification({ content: 'Signal Group enabled successfully', severity: 'success' })
         setSubmittingAdd(false)
       })
       .catch(() => {
@@ -68,7 +68,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     deleteTickerSignalGroupApi(token, ticker)
       .finally(() => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Signal group deleted successfully', severity: 'success' })
+        createNotification({ content: 'Signal Group deleted successfully', severity: 'success' })
       })
       .catch(() => {
         createNotification({ content: 'Failed to delete Signal group', severity: 'error' })
