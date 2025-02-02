@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import React, { FC, useCallback, useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
-import { Ticker, TickerFormData, postTickerApi, putTickerApi } from '../../../api/Ticker'
+import { postTickerApi, putTickerApi, Ticker, TickerFormData } from '../../../api/Ticker'
 import useAuth from '../../../contexts/useAuth'
 import LocationSearch, { Result } from '../LocationSearch'
 import Active from './Active'
@@ -25,9 +25,10 @@ interface Props {
   id: string
   ticker?: Ticker
   callback: () => void
+  setSubmitting: (submitting: boolean) => void
 }
 
-const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
+const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
   const form = useForm<TickerFormData>({
     defaultValues: {
       title: ticker?.title,
@@ -74,15 +75,18 @@ const TickerForm: FC<Props> = ({ callback, id, ticker }) => {
   )
 
   const onSubmit: SubmitHandler<TickerFormData> = data => {
+    setSubmitting(true)
     if (ticker) {
       putTickerApi(token, data, ticker.id).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        setSubmitting(false)
         callback()
       })
     } else {
       postTickerApi(token, data).finally(() => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
+        setSubmitting(false)
         callback()
       })
     }
