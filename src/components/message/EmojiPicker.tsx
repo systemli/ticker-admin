@@ -1,17 +1,19 @@
-import React, { FC } from 'react'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { Emoji } from './Emoji'
-import { Box, IconButton, Popper } from '@mui/material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSmile } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, IconButton, Popper } from '@mui/material'
+import React, { FC } from 'react'
 import palette from '../../theme/palette'
+import { Emoji } from './Emoji'
 
 interface Props {
+  color?: string
+  disabled: boolean
   onChange: (emoji: Emoji) => void
 }
 
-const EmojiPicker: FC<Props> = ({ onChange }) => {
+const EmojiPicker: FC<Props> = ({ color, disabled, onChange }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleChange = (emoji: Emoji) => {
@@ -25,12 +27,13 @@ const EmojiPicker: FC<Props> = ({ onChange }) => {
   }
 
   const open = Boolean(anchorEl)
+  color = color ?? palette.primary['main']
   const id = open ? 'simple-popper' : undefined
 
   return (
     <Box>
-      <IconButton component="span" onClick={handleClick} style={{ marginRight: '8px' }}>
-        <FontAwesomeIcon color={palette.primary['main']} icon={faSmile} size="xs" />
+      <IconButton component="span" onClick={handleClick} style={{ marginRight: '8px' }} disabled={disabled}>
+        <FontAwesomeIcon color={color} icon={faSmile} size="xs" />
       </IconButton>
       <Popper anchorEl={anchorEl} id={id} open={open}>
         <Picker data={data} onClickOutside={() => setAnchorEl(null)} onEmojiSelect={handleChange} theme="light" />

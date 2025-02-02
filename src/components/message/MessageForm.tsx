@@ -115,43 +115,49 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   }, [isSubmitSuccessful, reset])
 
   const message = watch('message')
+  const disabled = !ticker.active || isSubmitting
+  const color = disabled ? palette.action.disabled : palette.primary['main']
+  const placeholder = ticker.active ? 'Write a message' : "You can't post messages to inactive tickers."
 
   return (
-    <form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup sx={{ mb: 1 }}>
-        <TextField
-          {...register('message', {
-            required: true,
-            maxLength: maxLength,
-          })}
-          color={errors.message ? 'error' : 'primary'}
-          error={!!errors.message}
-          helperText={
-            errors.message?.type === 'maxLength' ? 'The message is too long.' : errors.message?.type === 'required' ? 'The message is required.' : null
-          }
-          multiline
-          placeholder="Write a message"
-          rows="3"
-        />
-      </FormGroup>
-      <Stack alignItems="center" direction="row" justifyContent="space-between">
-        <Box display="flex">
-          <Button disabled={isSubmitting} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
-            Send
-          </Button>
-          <EmojiPicker onChange={onSelectEmoji} />
-          <UploadButton onUpload={onUpload} ticker={ticker} />
-          <IconButton component="span" onClick={() => setMapDialogOpen(true)}>
-            <FontAwesomeIcon color={palette.primary['main']} icon={faMapLocationDot} size="xs" />
-          </IconButton>
-          <MessageMapModal map={map} onChange={onMapUpdate} onClose={() => setMapDialogOpen(false)} open={mapDialogOpen} ticker={ticker} />
+    <Box>
+      <form id="sendMessage" onSubmit={handleSubmit(onSubmit)}>
+        <FormGroup sx={{ mb: 1 }}>
+          <TextField
+            {...register('message', {
+              required: true,
+              maxLength: maxLength,
+            })}
+            color={errors.message ? 'error' : 'primary'}
+            error={!!errors.message}
+            helperText={
+              errors.message?.type === 'maxLength' ? 'The message is too long.' : errors.message?.type === 'required' ? 'The message is required.' : null
+            }
+            multiline
+            placeholder={placeholder}
+            rows="3"
+            disabled={!ticker.active}
+          />
+        </FormGroup>
+        <Stack alignItems="center" direction="row" justifyContent="space-between">
+          <Box display="flex">
+            <Button disabled={disabled} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
+              Send
+            </Button>
+            <EmojiPicker color={color} disabled={disabled} onChange={onSelectEmoji} />
+            <UploadButton color={color} disabled={disabled} onUpload={onUpload} ticker={ticker} />
+            <IconButton disabled={disabled} component="span" onClick={() => setMapDialogOpen(true)}>
+              <FontAwesomeIcon color={color} icon={faMapLocationDot} size="xs" />
+            </IconButton>
+            <MessageMapModal map={map} onChange={onMapUpdate} onClose={() => setMapDialogOpen(false)} open={mapDialogOpen} ticker={ticker} />
+          </Box>
+          <MessageFormCounter letterCount={message?.length || 0} maxLength={maxLength} />
+        </Stack>
+        <Box>
+          <AttachmentsPreview attachments={attachments} onDelete={onUploadDelete} />
         </Box>
-        <MessageFormCounter letterCount={message?.length || 0} maxLength={maxLength} />
-      </Stack>
-      <Box>
-        <AttachmentsPreview attachments={attachments} onDelete={onUploadDelete} />
-      </Box>
-    </form>
+      </form>
+    </Box>
   )
 }
 

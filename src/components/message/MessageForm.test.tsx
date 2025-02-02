@@ -36,6 +36,7 @@ describe('MessageForm', () => {
     setup({
       id: 1,
       title: 'ticker',
+      active: true,
       bluesky: { active: false },
       mastodon: { active: false },
       telegram: { active: false },
@@ -53,5 +54,20 @@ describe('MessageForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Send' }))
     expect(api.postMessageApi).toHaveBeenCalledTimes(1)
     expect(api.postMessageApi).toHaveBeenCalledWith('', '1', 'Hello, World!', { features: [], type: 'FeatureCollection' }, [])
+  })
+
+  it('should render the component when ticker is inactive', async () => {
+    setup({
+      id: 1,
+      title: 'ticker',
+      active: false,
+      bluesky: { active: false },
+      mastodon: { active: false },
+      telegram: { active: false },
+      location: { lat: 0, lon: 0 },
+    } as Ticker)
+
+    expect(screen.getByRole('textbox')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
   })
 })
