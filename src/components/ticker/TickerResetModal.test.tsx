@@ -6,32 +6,21 @@ import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
 import { AuthProvider } from '../../contexts/AuthContext'
 import { NotificationProvider } from '../../contexts/NotificationContext'
-import TelegramForm from './TelegramForm'
+import TickerResetModal from './TickerResetModal'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
-describe('TelegramForm', () => {
+describe('TickerResetModal', () => {
   beforeAll(() => {
     localStorage.setItem('token', token)
   })
 
-  const ticker = ({ active, connected, channelName = '' }: { active: boolean; connected: boolean; channelName?: string }) => {
-    return {
-      id: 1,
-      telegram: {
-        active: active,
-        connected: connected,
-        channelName: channelName,
-        botUsername: 'bot',
-      },
-    } as Ticker
-  }
-
-  const callback = vi.fn()
-
   beforeEach(() => {
     fetchMock.resetMocks()
+    onClose.mockClear()
   })
+
+  const onClose = vi.fn()
 
   function setup(ticker: Ticker) {
     const client = new QueryClient({
@@ -46,8 +35,7 @@ describe('TelegramForm', () => {
         <MemoryRouter>
           <AuthProvider>
             <NotificationProvider>
-              <TelegramForm callback={callback} ticker={ticker} />
-              <input name="Submit" type="submit" value="Submit" form="configureTelegram" />
+              <TickerResetModal open={true} onClose={onClose} ticker={ticker} />
             </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
@@ -56,29 +44,43 @@ describe('TelegramForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(ticker({ active: false, connected: false }))
+    const ticker = {
+      id: 1,
+      title: 'Ticker 1',
+    } as Ticker
+    setup(ticker)
 
-    expect(screen.getByRole('checkbox', { name: 'Active' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Channel *')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument()
-
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
-    await userEvent.type(screen.getByLabelText('Channel *'), '@channel')
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Reset' }))
 
-    expect(callback).toHaveBeenCalledTimes(1)
+    expect(onClose).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/telegram', {
-      body: JSON.stringify({ active: true, channelName: '@channel' }),
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/reset', {
+      method: 'put',
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-      method: 'put',
     })
+  })
+
+  it('should render the component and close the modal', async () => {
+    const ticker = {
+      id: 1,
+      title: 'Ticker 1',
+    } as Ticker
+    setup(ticker)
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Close' }))
+
+    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledTimes(0)
   })
 })

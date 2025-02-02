@@ -5,6 +5,7 @@ import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
 import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
 import TelegramCard from './TelegramCard'
 
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
@@ -42,7 +43,9 @@ describe('TelegramCard', () => {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <TelegramCard ticker={ticker} />
+            <NotificationProvider>
+              <TelegramCard ticker={ticker} />
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

@@ -5,6 +5,7 @@ import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { Ticker, TickerBlueskyFormData, putTickerBlueskyApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   callback: () => void
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
+  const { createNotification } = useNotification()
   const bluesky = ticker.bluesky
   const { token } = useAuth()
   const {
@@ -32,8 +34,10 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
     putTickerBlueskyApi(token, data, ticker).then(response => {
       if (response.status == 'error') {
         setError('root.authenticationFailed', { message: 'Authentication failed' })
+        createNotification({ content: 'Bluesky integration failed to update', severity: 'error' })
       } else {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Bluesky integration was successfully updated', severity: 'success' })
         callback()
       }
     })

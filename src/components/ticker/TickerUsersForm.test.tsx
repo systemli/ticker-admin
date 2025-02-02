@@ -1,12 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Ticker } from '../../api/Ticker'
-import { User } from '../../api/User'
 import { render, screen } from '@testing-library/react'
-import TickerUsersForm from './TickerUsersForm'
-import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
+import { vi } from 'vitest'
+import { Ticker } from '../../api/Ticker'
+import { User } from '../../api/User'
 import { AuthProvider } from '../../contexts/AuthContext'
+import { NotificationProvider } from '../../contexts/NotificationContext'
+import TickerUsersForm from './TickerUsersForm'
 
 describe('TickerUsersForm', () => {
   beforeEach(() => {
@@ -25,7 +26,9 @@ describe('TickerUsersForm', () => {
       <QueryClientProvider client={client}>
         <MemoryRouter>
           <AuthProvider>
-            <TickerUsersForm defaultValue={defaultValue} onSubmit={onSubmit} ticker={ticker} />
+            <NotificationProvider>
+              <TickerUsersForm defaultValue={defaultValue} onSubmit={onSubmit} ticker={ticker} />
+            </NotificationProvider>
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

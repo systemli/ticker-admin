@@ -5,6 +5,7 @@ import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Ticker, TickerMastodonFormData, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   callback: () => void
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const MastodonForm: FC<Props> = ({ callback, ticker }) => {
+  const { createNotification } = useNotification()
   const mastodon = ticker.mastodon
   const { token } = useAuth()
   const { handleSubmit, register } = useForm<TickerMastodonFormData>({
@@ -25,6 +27,7 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
   const onSubmit: SubmitHandler<TickerMastodonFormData> = data => {
     putTickerMastodonApi(token, data, ticker).finally(() => {
       queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+      createNotification({ content: 'Mastodon integration was successfully updated', severity: 'success' })
       callback()
     })
   }
