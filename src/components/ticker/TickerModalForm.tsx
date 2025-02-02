@@ -15,6 +15,7 @@ interface Props {
 }
 
 const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
+  const [submitting, setSubmitting] = useState<boolean>(false)
   const [tabValue, setTabValue] = useState<number>(0)
 
   const handleTabChange = (_: React.SyntheticEvent, value: number) => {
@@ -22,13 +23,20 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   }
 
   return (
-    <Modal fullWidth onClose={onClose} open={open} submitForm={tabValue === 0 ? 'tickerForm' : undefined} title={ticker ? 'Configure Ticker' : 'Create Ticker'}>
+    <Modal
+      fullWidth
+      onClose={onClose}
+      open={open}
+      submitForm={tabValue === 0 ? 'tickerForm' : undefined}
+      title={ticker ? 'Configure Ticker' : 'Create Ticker'}
+      submitting={submitting}
+    >
       <Tabs onChange={handleTabChange} value={tabValue}>
         <Tab icon={<Tune />} iconPosition="start" label="General" />
         <Tab disabled={!ticker} icon={<Campaign />} iconPosition="start" label="Integrations" />
       </Tabs>
       <TabPanel index={0} value={tabValue}>
-        <TickerForm callback={onClose} id="tickerForm" ticker={ticker} />
+        <TickerForm callback={onClose} id="tickerForm" ticker={ticker} setSubmitting={setSubmitting} />
       </TabPanel>
       {ticker ? (
         <TabPanel index={1} value={tabValue}>
