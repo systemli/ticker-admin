@@ -21,6 +21,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   const { createNotification } = useNotification()
   const [users, setUsers] = useState<Array<User>>(defaultValue)
   const [options, setOptions] = useState<Array<User>>([])
+  const [open, setOpen] = useState(false)
   const { token } = useAuth()
   const theme = useTheme()
   const { handleSubmit } = useForm<FormValues>()
@@ -32,13 +33,18 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
       return userIds.includes(user.id)
     })
     setUsers(selectedUsers)
+    setOpen(false)
   }
 
   const updateTickerUsers: SubmitHandler<FormValues> = () => {
-    putTickerUsersApi(token, ticker, users).then(() => {
-      queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
-      createNotification({ content: 'Users were successfully updated', severity: 'success' })
-      onSubmit()
+    putTickerUsersApi(token, ticker, users).then(response => {
+      if (response.status !== 'success') {
+        createNotification({ content: 'Failed to update users', severity: 'error' })
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
+        createNotification({ content: 'Users were successfully updated', severity: 'success' })
+        onSubmit()
+      }
     })
   }
 
@@ -98,7 +104,17 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
     <form id="tickerUsersForm" onSubmit={handleSubmit(updateTickerUsers)}>
       <FormControl sx={{ width: '100%', mt: 1 }}>
         <InputLabel>Users</InputLabel>
-        <Select input={<OutlinedInput label="Users" />} label="Users" multiple name="users" onChange={handleChange} renderValue={renderValue} value={userIds}>
+        <Select
+          open={open}
+          input={<OutlinedInput label="Users" />}
+          label="Users"
+          multiple
+          name="users"
+          onChange={handleChange}
+          onClick={() => setOpen(!open)}
+          renderValue={renderValue}
+          value={userIds}
+        >
           {options.map(user => (
             <MenuItem key={user.id} selected={users.includes(user)} style={getStyle(user, users)} value={user.id}>
               {user.email}
