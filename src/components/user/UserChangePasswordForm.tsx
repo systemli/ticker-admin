@@ -2,12 +2,15 @@ import { Alert, FormGroup, TextField } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { putMeApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   id: string
   onClose: () => void
+  setSubmitting: (submitting: boolean) => void
 }
 
 interface FormValues {
@@ -16,7 +19,8 @@ interface FormValues {
   newPasswordValidate: string
 }
 
-const UserChangePasswordForm: FC<Props> = ({ id, onClose }) => {
+const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
+  const { createNotification } = useNotification()
   const {
     register,
     handleSubmit,
@@ -27,18 +31,29 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose }) => {
   const { token } = useAuth()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putMeApi(token, data).then(response => {
-      if (response.status === 'error') {
+    setSubmitting(true)
+
+    handleApiCall(putMeApi(token, data), {
+      onSuccess: () => {
+        createNotification({ content: 'Password successfully updated', severity: 'success' })
+        onClose()
+      },
+      onError: response => {
         const message = response.error?.message === 'could not authenticate password' ? 'Wrong password' : 'Something went wrong'
 
         setError('password', {
           type: 'custom',
           message: message,
         })
-      } else {
-        onClose()
-      }
+
+        createNotification({ content: 'Failed to update password', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
+
+    setSubmitting(false)
   }
 
   const newPassword = watch('newPassword', '')

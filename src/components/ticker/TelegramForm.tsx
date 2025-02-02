@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -30,10 +31,18 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putTickerTelegramApi(token, data, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      createNotification({ content: 'Telegram integration was successfully updated', severity: 'success' })
-      callback()
+    handleApiCall(putTickerTelegramApi(token, data, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Telegram integration was successfully updated', severity: 'success' })
+        callback()
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update Telegram integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
   }
 

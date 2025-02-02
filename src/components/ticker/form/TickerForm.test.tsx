@@ -1,22 +1,13 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../../api/Ticker'
-import { AuthProvider } from '../../../contexts/AuthContext'
-import { NotificationProvider } from '../../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../../tests/utils'
 import TickerForm from './TickerForm'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('TickerForm', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
   })
-
-  const callback = vi.fn()
-  const setSubmitting = vi.fn()
 
   beforeEach(() => {
     fetchMock.resetMocks()
@@ -24,43 +15,38 @@ describe('TickerForm', () => {
     setSubmitting.mockClear()
   })
 
-  function setup(ticker?: Ticker) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <TickerForm ticker={ticker} id="tickerForm" callback={callback} setSubmitting={setSubmitting} />
-              <input name="Submit" type="submit" value="Submit" form="tickerForm" />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
+  const callback = vi.fn()
+  const setSubmitting = vi.fn()
+
+  const component = ({ ticker }: { ticker?: Ticker }) => {
+    return (
+      <>
+        <TickerForm ticker={ticker} id="tickerForm" callback={callback} setSubmitting={setSubmitting} />
+        <input name="Submit" type="submit" value="Submit" form="tickerForm" />
+      </>
     )
   }
 
   it('should render the component', async () => {
-    setup({
-      id: 1,
-      title: 'Ticker',
-      active: false,
-      information: {},
-      location: {},
-    } as Ticker)
+    setup(
+      queryClient,
+      component({
+        ticker: {
+          id: 1,
+          title: 'Ticker',
+          active: false,
+          information: {},
+          location: {},
+        } as Ticker,
+      })
+    )
 
     expect(screen.getByRole('textbox', { name: 'Title' })).toBeInTheDocument()
     expect(screen.getByRole('checkbox', { name: 'Active' })).toBeInTheDocument()
   })
 
   it('should submit for new ticker', async () => {
-    setup()
+    setup(queryClient, component({ ticker: undefined }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -104,7 +90,7 @@ describe('TickerForm', () => {
       }),
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
       },
       method: 'post',
@@ -112,13 +98,18 @@ describe('TickerForm', () => {
   })
 
   it('should submit for existing ticker', async () => {
-    setup({
-      id: 1,
-      title: 'Ticker',
-      active: false,
-      information: {},
-      location: {},
-    } as Ticker)
+    setup(
+      queryClient,
+      component({
+        ticker: {
+          id: 1,
+          title: 'Ticker',
+          active: false,
+          information: {},
+          location: {},
+        } as Ticker,
+      })
+    )
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -163,10 +154,62 @@ describe('TickerForm', () => {
       }),
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
       },
       method: 'put',
     })
+  })
+
+  it('should fail when response fails', async () => {
+    setup(
+      queryClient,
+      component({
+        ticker: {
+          id: 1,
+          title: 'Ticker',
+          active: false,
+          information: {},
+          location: {},
+        } as Ticker,
+      })
+    )
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
+    await userEvent.type(screen.getByRole('textbox', { name: 'Title' }), 'New Ticker')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(callback).toHaveBeenCalledTimes(0)
+    expect(setSubmitting).toHaveBeenCalledTimes(2)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(
+      queryClient,
+      component({
+        ticker: {
+          id: 1,
+          title: 'Ticker',
+          active: false,
+          information: {},
+          location: {},
+        } as Ticker,
+      })
+    )
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
+    await userEvent.type(screen.getByRole('textbox', { name: 'Title' }), 'New Ticker')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(callback).toHaveBeenCalledTimes(0)
+    expect(setSubmitting).toHaveBeenCalledTimes(2)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

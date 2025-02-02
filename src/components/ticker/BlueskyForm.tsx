@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerBlueskyFormData, putTickerBlueskyApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -31,15 +32,19 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit = handleSubmit(data => {
-    putTickerBlueskyApi(token, data, ticker).then(response => {
-      if (response.status == 'error') {
-        setError('root.authenticationFailed', { message: 'Authentication failed' })
-        createNotification({ content: 'Bluesky integration failed to update', severity: 'error' })
-      } else {
+    handleApiCall(putTickerBlueskyApi(token, data, ticker), {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         createNotification({ content: 'Bluesky integration was successfully updated', severity: 'success' })
         callback()
-      }
+      },
+      onError: () => {
+        setError('root.authenticationFailed', { message: 'Authentication failed' })
+        createNotification({ content: 'Failed to update Bluesky integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
   })
 

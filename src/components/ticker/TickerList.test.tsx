@@ -1,7 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
-import { AuthProvider } from '../../contexts/AuthContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import TickerList from './TickerList'
 import TickerListItems from './TickerListItems'
 
@@ -15,23 +12,8 @@ describe('TickerList', function () {
     vi.restoreAllMocks()
   })
 
-  function setup() {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <TickerList token="1" />
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
+  const component = () => {
+    return <TickerList token={userToken} />
   }
 
   it('should render', async function () {
@@ -42,7 +24,7 @@ describe('TickerList', function () {
       }
     })
 
-    setup()
+    setup(queryClient, component())
 
     expect(TickerListItems).toHaveBeenCalledTimes(3)
   })

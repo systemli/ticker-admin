@@ -2,6 +2,7 @@ import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Se
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, putTickerUsersApi } from '../../api/Ticker'
 import { User, fetchUsersApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
@@ -37,21 +38,25 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   }
 
   const updateTickerUsers: SubmitHandler<FormValues> = () => {
-    putTickerUsersApi(token, ticker, users).then(response => {
-      if (response.status !== 'success') {
-        createNotification({ content: 'Failed to update users', severity: 'error' })
-      } else {
+    handleApiCall(putTickerUsersApi(token, ticker, users), {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
         createNotification({ content: 'Users were successfully updated', severity: 'success' })
         onSubmit()
-      }
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update users', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
   }
 
   useEffect(() => {
-    fetchUsersApi(token)
-      .then(response => response.data?.users)
-      .then(users => {
+    handleApiCall(fetchUsersApi(token), {
+      onSuccess: response => {
+        const users = response.data?.users
         if (!users) {
           return
         }
@@ -61,7 +66,14 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
             return !user.isSuperAdmin
           })
         )
-      })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to fetch users', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

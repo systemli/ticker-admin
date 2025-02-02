@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useCallback } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, putTickerResetApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -17,16 +18,21 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
   const queryClient = useQueryClient()
 
   const handleReset = useCallback(() => {
-    putTickerResetApi(token, ticker)
-      .then(() => {
+    handleApiCall(putTickerResetApi(token, ticker), {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
         queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      })
-      .finally(() => {
         createNotification({ content: 'Ticker has been successfully reset', severity: 'success' })
         onClose()
-      })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to reset ticker', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
   }, [token, ticker, queryClient, createNotification, onClose])
 
   return (

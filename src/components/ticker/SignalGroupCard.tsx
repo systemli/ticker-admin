@@ -19,7 +19,8 @@ import {
   Typography,
 } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerSignalGroupApi, putTickerSignalGroupApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -44,24 +45,41 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
 
   const handleAdd = () => {
     setSubmittingAdd(true)
-    putTickerSignalGroupApi(token, { active: true }, ticker)
-      .finally(() => {
+
+    handleApiCall(putTickerSignalGroupApi(token, { active: true }, ticker), {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         createNotification({ content: 'Signal Group enabled successfully', severity: 'success' })
-        setSubmittingAdd(false)
-      })
-      .catch(() => {
+      },
+      onError: () => {
         createNotification({ content: 'Failed to configure Signal group', severity: 'error' })
-      })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
+
+    setSubmittingAdd(false)
   }
 
-  const handleToggle = useCallback(() => {
+  const handleToggle = () => {
     setSubmittingToggle(true)
-    putTickerSignalGroupApi(token, { active: !signalGroup.active }, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      setSubmittingToggle(false)
+
+    handleApiCall(putTickerSignalGroupApi(token, { active: !signalGroup.active }, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: `Signal group ${signalGroup.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update Signal group', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [token, queryClient, signalGroup.active, ticker])
+
+    setSubmittingToggle(false)
+  }
 
   const handleDelete = () => {
     setSubmittingDelete(true)

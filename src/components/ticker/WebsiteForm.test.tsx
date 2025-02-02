@@ -1,57 +1,40 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker, TickerWebsite } from '../../api/Ticker'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import WebsiteForm from './WebsiteForm'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('WebsiteForm', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
   })
-
-  const ticker = ({ websites }: { websites: Array<TickerWebsite> }) => {
-    return {
-      id: 1,
-      websites: websites,
-    } as Ticker
-  }
-
-  const callback = vi.fn()
 
   beforeEach(() => {
     fetchMock.resetMocks()
+    callback.mockClear()
   })
 
-  function setup(ticker: Ticker) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <WebsiteForm callback={callback} ticker={ticker} />
-              <input name="Submit" type="submit" value="Submit" form="configureWebsites" />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
+  const callback = vi.fn()
+
+  const component = ({ websites }: { websites: Array<TickerWebsite> }) => {
+    return (
+      <>
+        <WebsiteForm
+          ticker={
+            {
+              id: 1,
+              websites: websites,
+            } as Ticker
+          }
+          callback={callback}
+        />
+        <input name="Submit" type="submit" value="Submit" form="configureWebsites" />
+      </>
     )
   }
 
   it('should render the component', async () => {
-    setup(ticker({ websites: [] }))
+    setup(queryClient, component({ websites: [] }))
 
     expect(screen.getByRole('button', { name: 'Add Origin' })).toBeInTheDocument()
 
@@ -71,10 +54,46 @@ describe('WebsiteForm', () => {
       body: JSON.stringify({ websites: [{ origin: 'https://example.com' }] }),
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + userToken,
         'Content-Type': 'application/json',
       },
       method: 'put',
     })
+  })
+
+  it('should fail when URL is already exists', async () => {
+    setup(queryClient, component({ websites: [] }))
+
+    expect(screen.getByRole('button', { name: 'Add Origin' })).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Add Origin' }))
+
+    expect(screen.getByPlaceholderText('https://example.com')).toBeInTheDocument()
+
+    await userEvent.type(screen.getByPlaceholderText('https://example.com'), 'https://example.com')
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ websites: [] }))
+
+    expect(screen.getByRole('button', { name: 'Add Origin' })).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Add Origin' }))
+
+    expect(screen.getByPlaceholderText('https://example.com')).toBeInTheDocument()
+
+    await userEvent.type(screen.getByPlaceholderText('https://example.com'), 'https://example.com')
+
+    fetchMock.mockRejectOnce()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

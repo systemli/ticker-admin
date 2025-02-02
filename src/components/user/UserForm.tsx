@@ -3,15 +3,18 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { Ticker } from '../../api/Ticker'
 import { User, postUserApi, putUserApi } from '../../api/User'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import TickersDropdown from '../ticker/TickersDropdown'
 
 interface Props {
   id: string
   user?: User
   callback: () => void
+  setSubmitting: (submitting: boolean) => void
 }
 
 interface FormValues {
@@ -22,7 +25,8 @@ interface FormValues {
   tickers: Array<Ticker>
 }
 
-const UserForm: FC<Props> = ({ id, user, callback }) => {
+const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const {
     formState: { errors },
@@ -42,6 +46,8 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
   const password = watch('password', '')
 
   const onSubmit: SubmitHandler<FormValues> = data => {
+    setSubmitting(true)
+
     const formData = {
       email: data.email,
       isSuperAdmin: data.isSuperAdmin,
@@ -49,17 +55,23 @@ const UserForm: FC<Props> = ({ id, user, callback }) => {
       tickers: data.tickers,
     }
 
-    if (user) {
-      putUserApi(token, user, formData).finally(() => {
+    const apiCall = user ? putUserApi(token, user, formData) : postUserApi(token, formData)
+
+    handleApiCall(apiCall, {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['users'] })
+        createNotification({ content: `User was successfully ${user ? 'updated' : 'created'}`, severity: 'success' })
         callback()
-      })
-    } else {
-      postUserApi(token, formData).finally(() => {
-        queryClient.invalidateQueries({ queryKey: ['users'] })
-        callback()
-      })
-    }
+      },
+      onError: () => {
+        createNotification({ content: `Failed to ${user ? 'update' : 'create'} user`, severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
+
+    setSubmitting(false)
   }
 
   useEffect(() => {

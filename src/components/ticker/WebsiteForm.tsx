@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { putTickerWebsitesApi, Ticker, TickerWebsite } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -37,10 +38,18 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormData> = data => {
-    putTickerWebsitesApi(token, ticker, data.websites).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      createNotification({ content: 'Websites were successfully updated', severity: 'success' })
-      callback()
+    handleApiCall(putTickerWebsitesApi(token, ticker, data.websites), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Websites were successfully updated', severity: 'success' })
+        callback()
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update websites', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
   }
 

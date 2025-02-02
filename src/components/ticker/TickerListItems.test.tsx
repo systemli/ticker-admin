@@ -1,66 +1,34 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
+import { screen } from '@testing-library/react'
 import { GetTickersQueryParams } from '../../api/Ticker'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { adminToken, queryClient, setup } from '../../tests/utils'
 import TickerListItems from './TickerListItems'
 
 describe('TickerListItems', function () {
+  beforeAll(() => {
+    localStorage.setItem('token', adminToken)
+  })
+
   beforeEach(() => {
     fetchMock.resetMocks()
   })
 
-  function jwt(role: string): string {
-    return sign(
-      {
-        id: 1,
-        email: 'louis@systemli.org',
-        roles: role === 'admin' ? ['admin', 'user'] : ['user'],
-        exp: new Date().getTime() / 1000 + 600,
-      },
-      'secret'
-    )
+  const component = ({ params }: { params: GetTickersQueryParams }) => {
+    return <TickerListItems params={params} token={adminToken} />
   }
 
-  function setup(params: GetTickersQueryParams) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <TickerListItems params={params} token={jwt('admin')} />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
-  }
+  const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
 
   it('should render zero tickers', async function () {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
     fetchMock.mockResponseOnce(JSON.stringify({ data: { tickers: [] }, status: 'success' }))
 
-    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
-    setup(params)
+    setup(queryClient, component({ params }))
 
     expect(screen.getByText('Loading')).toBeInTheDocument()
-
     expect(fetchMock).toHaveBeenCalledTimes(1)
-
     expect(await screen.findByText('No tickers found.')).toBeInTheDocument()
   })
 
-  it('should render tickers for admin', async function () {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
+  it('should render tickers', async function () {
     fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -79,55 +47,28 @@ describe('TickerListItems', function () {
       })
     )
 
-    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
-    setup(params)
-
-    expect(screen.getByText('Loading')).toBeInTheDocument()
+    setup(queryClient, component({ params }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
-
     expect(await screen.findByText('title')).toBeInTheDocument()
     expect(await screen.findByText('http://localhost')).toBeInTheDocument()
   })
 
-  it('should render tickers for user', async function () {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('user'))
-    fetchMock.mockResponseOnce(
-      JSON.stringify({
-        data: {
-          tickers: [
-            {
-              id: 1,
-              createdAt: new Date(),
-              title: 'title',
-              description: 'description',
-              active: true,
-            },
-          ],
-        },
-        status: 'success',
-      })
-    )
+  it('should render error message', async function () {
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error', error: { code: 500, message: 'Internal Server Error' } }))
 
-    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
-    setup(params)
-
-    expect(screen.getByText('Loading')).toBeInTheDocument()
+    setup(queryClient, component({ params }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(await screen.findByText('Unable to fetch tickers from server.')).toBeInTheDocument()
   })
 
-  it('should render error message', async function () {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt('admin'))
-    fetchMock.mockRejectOnce(new Error('bad url'))
+  it('should fail when request fails', async () => {
+    fetchMock.mockReject()
 
-    const params = { title: '', origin: '', active: undefined } as GetTickersQueryParams
-    setup(params)
-
-    expect(screen.getByText('Loading')).toBeInTheDocument()
+    setup(queryClient, component({ params }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
-
     expect(await screen.findByText('Unable to fetch tickers from server.')).toBeInTheDocument()
   })
 })

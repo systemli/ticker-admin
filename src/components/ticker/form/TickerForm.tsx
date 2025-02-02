@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import React, { FC, useCallback, useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { handleApiCall } from '../../../api/Api'
 import { postTickerApi, putTickerApi, Ticker, TickerFormData } from '../../../api/Ticker'
 import useAuth from '../../../contexts/useAuth'
 import useNotification from '../../../contexts/useNotification'
@@ -78,22 +79,25 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
 
   const onSubmit: SubmitHandler<TickerFormData> = data => {
     setSubmitting(true)
-    if (ticker) {
-      putTickerApi(token, data, ticker.id).finally(() => {
+
+    const apiCall = ticker ? putTickerApi(token, data, ticker.id) : postTickerApi(token, data)
+
+    handleApiCall(apiCall, {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        setSubmitting(false)
-        createNotification({ content: 'Ticker was successfully updated', severity: 'success' })
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker?.id] })
+        createNotification({ content: `Ticker was successfully ${ticker ? 'updated' : 'created'}`, severity: 'success' })
         callback()
-      })
-    } else {
-      postTickerApi(token, data).finally(() => {
-        queryClient.invalidateQueries({ queryKey: ['tickers'] })
-        setSubmitting(false)
-        createNotification({ content: 'Ticker was successfully created', severity: 'success' })
-        callback()
-      })
-    }
+      },
+      onError: () => {
+        createNotification({ content: `Failed to ${ticker ? 'update' : 'create'} ticker`, severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
+
+    setSubmitting(false)
   }
 
   useEffect(() => {

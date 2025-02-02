@@ -4,6 +4,7 @@ import { Alert, FormGroup, InputAdornment, TextField } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerSignalGroupAdminFormData, putTickerSignalGroupAdminApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -26,19 +27,22 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
 
   const onSubmit = handleSubmit(data => {
     setSubmitting(true)
-    putTickerSignalGroupAdminApi(token, data, ticker)
-      .then(response => {
-        if (response.status == 'error') {
-          createNotification({ content: 'Failed to add number to Signal group', severity: 'error' })
-          setError('number', { message: 'Failed to add number to Signal group' })
-        } else {
-          createNotification({ content: 'Number successfully added to Signal group', severity: 'success' })
-          callback()
-        }
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+
+    handleApiCall(putTickerSignalGroupAdminApi(token, data, ticker), {
+      onSuccess: () => {
+        createNotification({ content: 'Number successfully added to Signal group', severity: 'success' })
+        callback()
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to add number to Signal group', severity: 'error' })
+        setError('number', { message: 'Failed to add number to Signal group' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
+
+    setSubmitting(false)
   })
 
   return (

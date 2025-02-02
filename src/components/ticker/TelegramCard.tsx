@@ -3,7 +3,8 @@ import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerTelegramApi, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -21,19 +22,35 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
 
   const telegram = ticker.telegram
 
-  const handleToggle = useCallback(() => {
-    putTickerTelegramApi(token, { active: !telegram.active }, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      createNotification({ content: `Telegram integration ${telegram.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+  const handleToggle = () => {
+    handleApiCall(putTickerTelegramApi(token, { active: !telegram.active }, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: `Telegram integration ${telegram.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update Telegram integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [token, telegram.active, ticker, queryClient, createNotification])
+  }
 
-  const handleDelete = useCallback(() => {
-    deleteTickerTelegramApi(token, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      createNotification({ content: 'Telegram integration successfully deleted', severity: 'success' })
+  const handleDelete = () => {
+    handleApiCall(deleteTickerTelegramApi(token, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Telegram integration successfully deleted', severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to delete Telegram integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [token, ticker, queryClient, createNotification])
+  }
 
   const channelLink = (
     <Link href={`https://t.me/${telegram.channelName}`} rel="noreferrer" target="_blank">
