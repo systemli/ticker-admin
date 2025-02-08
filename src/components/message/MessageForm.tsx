@@ -5,10 +5,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FeatureCollection, Geometry } from 'geojson'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { postMessageApi } from '../../api/Message'
 import { Ticker } from '../../api/Ticker'
 import { Upload } from '../../api/Upload'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import palette from '../../theme/palette'
 import AttachmentsPreview from './AttachmentsPreview'
 import { Emoji } from './Emoji'
@@ -26,6 +28,7 @@ interface FormValues {
 }
 
 const MessageForm: FC<Props> = ({ ticker }) => {
+  const { createNotification } = useNotification()
   const {
     formState: { isSubmitSuccessful, errors },
     handleSubmit,
@@ -97,15 +100,26 @@ const MessageForm: FC<Props> = ({ ticker }) => {
 
   const onSubmit: SubmitHandler<FormValues> = data => {
     setIsSubmitting(true)
+
     const uploads = attachments.map(upload => {
       return upload.id
     })
 
-    postMessageApi(token, ticker.id.toString(), data.message, map, uploads).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
-      setAttachments([])
-      setIsSubmitting(false)
+    handleApiCall(postMessageApi(token, ticker.id.toString(), data.message, map, uploads), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
+        setAttachments([])
+        createNotification({ content: 'Message successfully posted', severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to post message', severity: 'error' })
+      },
+      onFailure: () => {
+        createNotification({ content: 'Failed to post message', severity: 'error' })
+      },
     })
+
+    setIsSubmitting(false)
   }
 
   useEffect(() => {
