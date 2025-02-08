@@ -1,20 +1,14 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import TickerUsersForm from './TickerUsersForm'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('TickerUsersForm', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
   })
 
   beforeEach(() => {
@@ -24,38 +18,25 @@ describe('TickerUsersForm', () => {
 
   const handleSubmit = vi.fn()
 
-  const setup = (defaultValue: Array<User>, ticker: Ticker, onSubmit: () => void) => {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <TickerUsersForm defaultValue={defaultValue} onSubmit={onSubmit} ticker={ticker} />
-              <input name="Submit" type="submit" value="Submit" form="tickerUsersForm" />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
+  const component = ({ ticker, defaultValue }: { ticker: Ticker; defaultValue: Array<User> }) => {
+    return (
+      <>
+        <TickerUsersForm defaultValue={defaultValue} onSubmit={handleSubmit} ticker={ticker} />
+        <input name="Submit" type="submit" value="Submit" form="tickerUsersForm" />
+      </>
     )
   }
 
-  it('should renders correctly', async () => {
-    const ticker = {
-      id: 1,
-      title: 'Ticker 1',
-    } as Ticker
-    const user = {
-      id: 1,
-      email: 'user@systemli.org',
-    } as User
+  const ticker = {
+    id: 1,
+    title: 'Ticker 1',
+  } as Ticker
+  const user = {
+    id: 1,
+    email: 'user@systemli.org',
+  } as User
 
+  it('should renders correctly', async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -65,7 +46,7 @@ describe('TickerUsersForm', () => {
       })
     )
 
-    setup([user], ticker, handleSubmit)
+    setup(queryClient, component({ ticker, defaultValue: [user] }))
 
     expect(screen.getByRole('combobox')).toBeInTheDocument()
 
@@ -90,10 +71,70 @@ describe('TickerUsersForm', () => {
       body: JSON.stringify({ users: [] }),
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
       },
       method: 'put',
     })
+  })
+
+  it('should fail when response fails', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        data: {
+          users: [user],
+        },
+        status: 'success',
+      })
+    )
+
+    setup(queryClient, component({ ticker, defaultValue: [] }))
+
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('combobox'))
+
+    expect(screen.getByRole('option')).toBeInTheDocument()
+    expect(screen.getAllByText('user@systemli.org')).toHaveLength(1)
+
+    await userEvent.click(screen.getAllByText('user@systemli.org')[0])
+
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        status: 'error',
+      })
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('should fail when request fails', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify({
+        data: {
+          users: [user],
+        },
+        status: 'success',
+      })
+    )
+
+    setup(queryClient, component({ ticker, defaultValue: [] }))
+
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('combobox'))
+
+    expect(screen.getByRole('option')).toBeInTheDocument()
+    expect(screen.getAllByText('user@systemli.org')).toHaveLength(1)
+
+    await userEvent.click(screen.getAllByText('user@systemli.org')[0])
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 })

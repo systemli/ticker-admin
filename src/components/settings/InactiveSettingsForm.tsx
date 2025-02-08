@@ -3,13 +3,16 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { InactiveSetting, Setting, putInactiveSettingsApi } from '../../api/Settings'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   name: string
   setting: Setting<InactiveSetting>
   callback: () => void
+  setSubmitting: (submitting: boolean) => void
 }
 
 interface FormValues {
@@ -22,7 +25,8 @@ interface FormValues {
   twitter: string
 }
 
-const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
+const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmitting }) => {
+  const { createNotification } = useNotification()
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
       headline: setting.value.headline,
@@ -38,9 +42,22 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putInactiveSettingsApi(token, data)
-      .then(() => queryClient.invalidateQueries({ queryKey: ['inactive_settings'] }))
-      .finally(() => callback())
+    setSubmitting(true)
+    handleApiCall(putInactiveSettingsApi(token, data), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['inactive_settings'] })
+        createNotification({ content: 'Inactive settings successfully updated', severity: 'success' })
+        callback()
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to updating inactive settings', severity: 'error' })
+      },
+      onFailure: () => {
+        createNotification({ content: 'Failed to updating inactive settings', severity: 'error' })
+      },
+    })
+
+    setSubmitting(false)
   }
 
   return (

@@ -2,9 +2,11 @@ import { faGear, faGlobe, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { deleteTickerWebsitesApi, Ticker } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import WebsiteModalForm from './WebsiteModalForm'
 
 interface Props {
@@ -12,6 +14,7 @@ interface Props {
 }
 
 const WebsiteCard: FC<Props> = ({ ticker }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
 
@@ -19,11 +22,20 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
 
   const websites = ticker.websites
 
-  const handleDelete = useCallback(() => {
-    deleteTickerWebsitesApi(token, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+  const handleDelete = () => {
+    handleApiCall(deleteTickerWebsitesApi(token, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Websites integration successfully deleted', severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to delete Websites integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [token, queryClient, ticker])
+  }
 
   const links = websites.map(website => (
     <Box component="span" key={website.id}>

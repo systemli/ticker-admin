@@ -1,18 +1,12 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import TickerResetModal from './TickerResetModal'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('TickerResetModal', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
   })
 
   beforeEach(() => {
@@ -22,33 +16,17 @@ describe('TickerResetModal', () => {
 
   const onClose = vi.fn()
 
-  function setup(ticker: Ticker) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <TickerResetModal open={true} onClose={onClose} ticker={ticker} />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
+  const component = ({ ticker }: { ticker: Ticker }) => {
+    return <TickerResetModal open={true} onClose={onClose} ticker={ticker} />
   }
 
+  const ticker = {
+    id: 1,
+    title: 'Ticker 1',
+  } as Ticker
+
   it('should render the component', async () => {
-    const ticker = {
-      id: 1,
-      title: 'Ticker 1',
-    } as Ticker
-    setup(ticker)
+    setup(queryClient, component({ ticker }))
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
@@ -64,17 +42,13 @@ describe('TickerResetModal', () => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
     })
   })
 
   it('should render the component and close the modal', async () => {
-    const ticker = {
-      id: 1,
-      title: 'Ticker 1',
-    } as Ticker
-    setup(ticker)
+    setup(queryClient, component({ ticker }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -82,5 +56,29 @@ describe('TickerResetModal', () => {
 
     expect(onClose).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(0)
+  })
+
+  it('should fail when response fails', async () => {
+    setup(queryClient, component({ ticker }))
+
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Reset' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ ticker }))
+
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Reset' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

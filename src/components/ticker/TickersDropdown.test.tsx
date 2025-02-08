@@ -1,41 +1,27 @@
-import { render, screen } from '@testing-library/react'
-import TickersDropdown from './TickersDropdown'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Ticker } from '../../api/Ticker'
-import { vi } from 'vitest'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { MemoryRouter } from 'react-router'
+import { vi } from 'vitest'
+import { Ticker } from '../../api/Ticker'
+import { queryClient, setup } from '../../tests/utils'
+import TickersDropdown from './TickersDropdown'
 
 describe('TickersDropdown', () => {
   beforeEach(() => {
     fetchMock.resetMocks()
   })
 
-  function setup(defaultValue: Array<Ticker>, onChange: (tickers: Array<Ticker>) => void) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <TickersDropdown defaultValue={defaultValue} name="tickers" onChange={onChange} />
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
+  const onChange = vi.fn()
+
+  const component = ({ tickers }: { tickers: Array<Ticker> }) => {
+    return <TickersDropdown defaultValue={tickers} name="tickers" onChange={onChange} />
   }
 
   it('should renders correctly', async () => {
     const ticker = {
       id: 1,
       title: 'Ticker 1',
-    }
+    } as Ticker
+
     fetchMock.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -44,8 +30,7 @@ describe('TickersDropdown', () => {
         status: 'success',
       })
     )
-    const handleChange = vi.fn()
-    setup([], handleChange)
+    setup(queryClient, component({ tickers: [] }))
 
     expect(screen.getByRole('combobox')).toBeInTheDocument()
 
@@ -56,6 +41,6 @@ describe('TickersDropdown', () => {
 
     await userEvent.click(screen.getByText('Ticker 1'))
 
-    expect(handleChange).toHaveBeenCalledWith([ticker])
+    expect(onChange).toHaveBeenCalledWith([ticker])
   })
 })

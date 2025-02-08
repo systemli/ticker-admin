@@ -3,9 +3,11 @@ import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerMastodonApi, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import MastodonModalForm from './MastodonModalForm'
 
 interface Props {
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const MastodonCard: FC<Props> = ({ ticker }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
 
@@ -20,17 +23,35 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
 
   const mastodon = ticker.mastodon
 
-  const handleDelete = useCallback(() => {
-    deleteTickerMastodonApi(token, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+  const handleDelete = () => {
+    handleApiCall(deleteTickerMastodonApi(token, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Mastodon integration successfully deleted', severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to delete Mastodon integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [token, queryClient, ticker])
+  }
 
-  const handleToggle = useCallback(() => {
-    putTickerMastodonApi(token, { active: !mastodon.active }, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+  const handleToggle = () => {
+    handleApiCall(putTickerMastodonApi(token, { active: !mastodon.active }, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: `Mastodon integration ${mastodon.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update Mastodon integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [mastodon.active, token, queryClient, ticker])
+  }
 
   const profileLink = (
     <Link href={mastodon.server + '/web/@' + mastodon.name} rel="noreferrer" target="_blank">

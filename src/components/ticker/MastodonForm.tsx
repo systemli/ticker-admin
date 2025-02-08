@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerMastodonFormData, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -25,10 +26,18 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<TickerMastodonFormData> = data => {
-    putTickerMastodonApi(token, data, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-      createNotification({ content: 'Mastodon integration was successfully updated', severity: 'success' })
-      callback()
+    handleApiCall(putTickerMastodonApi(token, data, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Mastodon integration was successfully updated', severity: 'success' })
+        callback()
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update Mastodon integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
   }
 

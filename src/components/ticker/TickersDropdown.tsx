@@ -1,7 +1,9 @@
 import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, useTheme } from '@mui/material'
 import { FC, useEffect, useState } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { GetTickersQueryParams, Ticker, fetchTickersApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   name: string
@@ -11,6 +13,7 @@ interface Props {
 }
 
 const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
+  const { createNotification } = useNotification()
   const [options, setOptions] = useState<Array<Ticker>>([])
   const [tickers, setTickers] = useState<Array<Ticker>>(defaultValue)
   const { token } = useAuth()
@@ -26,13 +29,19 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
   }
 
   useEffect(() => {
-    const params = {} as GetTickersQueryParams
-    fetchTickersApi(token, params)
-      .then(response => response.data?.tickers)
-      .then(tickers => {
+    handleApiCall(fetchTickersApi(token, {} as GetTickersQueryParams), {
+      onSuccess: response => {
+        const tickers = response.data?.tickers
         if (!tickers) return
         setOptions(tickers)
-      })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to fetch tickers', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

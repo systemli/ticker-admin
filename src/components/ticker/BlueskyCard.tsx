@@ -3,9 +3,11 @@ import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerBlueskyApi, putTickerBlueskyApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 import BlueskyModalForm from './BlueskyModalForm'
 
 interface Props {
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const BlueskyCard: FC<Props> = ({ ticker }) => {
+  const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
 
@@ -20,17 +23,35 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
 
   const bluesky = ticker.bluesky
 
-  const handleDelete = useCallback(() => {
-    deleteTickerBlueskyApi(token, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+  const handleDelete = () => {
+    handleApiCall(deleteTickerBlueskyApi(token, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: 'Bluesky integration successfully deleted', severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to delete Bluesky integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [token, queryClient, ticker])
+  }
 
-  const handleToggle = useCallback(() => {
-    putTickerBlueskyApi(token, { active: !bluesky.active }, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+  const handleToggle = () => {
+    handleApiCall(putTickerBlueskyApi(token, { active: !bluesky.active }, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
+        createNotification({ content: `Bluesky integration ${bluesky.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update Bluesky integration', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
-  }, [bluesky.active, token, queryClient, ticker])
+  }
 
   const profileLink = (
     <Link href={'https://bsky.app/profile/' + bluesky.handle} rel="noreferrer" target="_blank">

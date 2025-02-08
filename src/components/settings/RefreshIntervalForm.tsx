@@ -3,20 +3,24 @@ import Grid from '@mui/material/Grid2'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { RefreshIntervalSetting, Setting, putRefreshIntervalApi } from '../../api/Settings'
+import { handleApiCall } from '../../api/Api'
+import { putRefreshIntervalApi, RefreshIntervalSetting, Setting } from '../../api/Settings'
 import useAuth from '../../contexts/useAuth'
+import useNotification from '../../contexts/useNotification'
 
 interface Props {
   name: string
   setting: Setting<RefreshIntervalSetting>
   callback: () => void
+  setSubmitting: (submitting: boolean) => void
 }
 
 interface FormValues {
   refreshInterval: number
 }
 
-const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
+const RefreshIntervalForm: FC<Props> = ({ name, setting, callback, setSubmitting }) => {
+  const { createNotification } = useNotification()
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
       refreshInterval: parseInt(setting.value.refreshInterval, 10),
@@ -26,9 +30,21 @@ const RefreshIntervalForm: FC<Props> = ({ name, setting, callback }) => {
   const queryClient = useQueryClient()
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    putRefreshIntervalApi(token, data.refreshInterval)
-      .then(() => queryClient.invalidateQueries({ queryKey: ['refresh_interval_setting'] }))
-      .finally(() => callback())
+    setSubmitting(true)
+    handleApiCall(putRefreshIntervalApi(token, data.refreshInterval), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['refresh_interval_setting'] })
+        createNotification({ content: 'Refresh Interval successfully updated', severity: 'success' })
+        callback()
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to update refresh interval', severity: 'error' })
+      },
+      onFailure: () => {
+        createNotification({ content: 'Failed to update refresh interval', severity: 'error' })
+      },
+    })
+    setSubmitting(false)
   }
 
   return (

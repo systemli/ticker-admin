@@ -1,56 +1,37 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import TickerUserModalDelete from './TickerUserModalDelete'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('TickerUserModalDelete', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
   })
 
   beforeEach(() => {
     fetchMock.resetMocks()
+    onClose.mockClear()
   })
 
-  function setup(ticker: Ticker, user: User, open: boolean) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <TickerUserModalDelete ticker={ticker} user={user} open={open} onClose={vi.fn()} />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
+  const onClose = vi.fn()
+
+  const component = ({ ticker, user, open }: { ticker: Ticker; user: User; open: boolean }) => {
+    return <TickerUserModalDelete ticker={ticker} user={user} open={open} onClose={onClose} />
   }
 
+  const ticker = {
+    id: 1,
+    title: 'Ticker 1',
+  } as Ticker
+  const user = {
+    id: 1,
+    email: 'user@example.org',
+  } as User
+
   it('should render the component', async () => {
-    const ticker = {
-      id: 1,
-      title: 'Ticker 1',
-    } as Ticker
-    const user = {
-      id: 1,
-      email: 'user@example.org',
-    } as User
-    setup(ticker, user, true)
+    setup(queryClient, component({ ticker, user, open: true }))
 
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
 
@@ -62,10 +43,45 @@ describe('TickerUserModalDelete', () => {
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/users/1', {
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
       },
       method: 'delete',
     })
+  })
+
+  it('should fail when response fails', async () => {
+    setup(queryClient, component({ ticker, user, open: true }))
+
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ ticker, user, open: true }))
+
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should close the modal', async () => {
+    setup(queryClient, component({ ticker, user, open: true }))
+
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Close' }))
+
+    expect(onClose).toHaveBeenCalledTimes(1)
   })
 })

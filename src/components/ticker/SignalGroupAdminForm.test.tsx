@@ -1,18 +1,17 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import SignalGroupAdminForm from './SignalGroupAdminForm'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('SignalGroupAdminForm', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
+  })
+
+  beforeEach(() => {
+    callback.mockClear()
+    fetchMock.resetMocks()
   })
 
   const ticker = ({ active, connected }: { active: boolean; connected: boolean }) => {
@@ -28,36 +27,17 @@ describe('SignalGroupAdminForm', () => {
   const callback = vi.fn()
   const setSubmitting = vi.fn()
 
-  beforeEach(() => {
-    fetchMock.resetMocks()
-  })
-
-  function setup(ticker: Ticker) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <div>
-                <SignalGroupAdminForm callback={callback} ticker={ticker} setSubmitting={setSubmitting} />
-                <input name="Submit" type="submit" value="Submit" form="configureSignalGroupAdmin" />
-              </div>
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
+  const component = ({ ticker }: { ticker: Ticker }) => {
+    return (
+      <>
+        <SignalGroupAdminForm callback={callback} ticker={ticker} setSubmitting={setSubmitting} />
+        <input name="Submit" type="submit" value="Submit" form="configureSignalGroupAdmin" />
+      </>
     )
   }
 
   it('should render the component', async () => {
-    setup(ticker({ active: false, connected: false }))
+    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Only do this if extra members with write access are needed.')).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument()
@@ -75,7 +55,7 @@ describe('SignalGroupAdminForm', () => {
       body: '{"number":"+49123456789"}',
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
       },
       method: 'put',
@@ -83,7 +63,7 @@ describe('SignalGroupAdminForm', () => {
   })
 
   it('should render the error message', async () => {
-    setup(ticker({ active: false, connected: false }))
+    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Only do this if extra members with write access are needed.')).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument()
@@ -95,5 +75,29 @@ describe('SignalGroupAdminForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(screen.getByText('Failed to add number to Signal group')).toBeInTheDocument()
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Modal from '../common/Modal'
 import UserChangePasswordForm from './UserChangePasswordForm'
 
@@ -8,9 +8,10 @@ interface Props {
 }
 
 const UserChangePasswordModalForm: FC<Props> = ({ open, onClose }) => {
+  const [submitting, setSubmitting] = useState<boolean>(false)
   return (
-    <Modal onClose={onClose} open={open} submitForm="changePasswordForm" title="Change Password">
-      <UserChangePasswordForm id="changePasswordForm" onClose={onClose} />
+    <Modal submitting={submitting} onClose={onClose} open={open} submitForm="changePasswordForm" title="Change Password">
+      <UserChangePasswordForm id="changePasswordForm" onClose={onClose} setSubmitting={setSubmitting} />
     </Modal>
   )
 }

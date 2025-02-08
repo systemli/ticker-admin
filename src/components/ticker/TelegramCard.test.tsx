@@ -1,18 +1,16 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import TelegramCard from './TelegramCard'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('TelegramCard', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
+  })
+
+  beforeEach(() => {
+    fetchMock.resetMocks()
   })
 
   const ticker = ({ active, connected, channelName = '' }: { active: boolean; connected: boolean; channelName?: string }) => {
@@ -27,33 +25,12 @@ describe('TelegramCard', () => {
     } as Ticker
   }
 
-  beforeEach(() => {
-    fetchMock.resetMocks()
-  })
-
-  function setup(ticker: Ticker) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <TelegramCard ticker={ticker} />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
+  const component = ({ ticker }: { ticker: Ticker }) => {
+    return <TelegramCard ticker={ticker} />
   }
 
   it('should render the component', () => {
-    setup(ticker({ active: false, connected: false }))
+    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Telegram')).toBeInTheDocument()
     expect(screen.getByText('You are not connected with Telegram.')).toBeInTheDocument()
@@ -61,7 +38,7 @@ describe('TelegramCard', () => {
   })
 
   it('should render the component when connected and active', async () => {
-    setup(ticker({ active: true, connected: true, channelName: 'channel' }))
+    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
 
     expect(screen.getByText('Telegram')).toBeInTheDocument()
     expect(screen.getByText('You are connected with Telegram.')).toBeInTheDocument()
@@ -80,7 +57,7 @@ describe('TelegramCard', () => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + userToken,
       },
       method: 'put',
     })
@@ -94,7 +71,7 @@ describe('TelegramCard', () => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + userToken,
       },
       method: 'delete',
     })
@@ -102,5 +79,25 @@ describe('TelegramCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Configure' }))
 
     expect(screen.getByRole('dialog')).toBeInTheDocument()
+  })
+
+  it('should fail when response fails', async () => {
+    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

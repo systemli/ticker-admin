@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useCallback } from 'react'
+import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
@@ -17,9 +18,17 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   const queryClient = useQueryClient()
 
   const handleDelete = useCallback(() => {
-    deleteTickerApi(token, ticker).finally(() => {
-      queryClient.invalidateQueries({ queryKey: ['tickers'] })
-      createNotification({ content: 'Ticker was successfully deleted', severity: 'success' })
+    handleApiCall(deleteTickerApi(token, ticker), {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['tickers'] })
+        createNotification({ content: 'Ticker was successfully deleted', severity: 'success' })
+      },
+      onError: () => {
+        createNotification({ content: 'Failed to delete ticker', severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error as string, severity: 'error' })
+      },
     })
   }, [token, ticker, queryClient, createNotification])
 

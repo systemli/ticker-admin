@@ -1,18 +1,16 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import sign from 'jwt-encode'
-import { MemoryRouter } from 'react-router'
 import { Ticker } from '../../api/Ticker'
-import { AuthProvider } from '../../contexts/AuthContext'
-import { NotificationProvider } from '../../contexts/NotificationContext'
+import { queryClient, setup, userToken } from '../../tests/utils'
 import MastodonCard from './MastodonCard'
-
-const token = sign({ id: 1, email: 'user@example.org', roles: ['user'], exp: new Date().getTime() / 1000 + 600 }, 'secret')
 
 describe('MastodonCard', () => {
   beforeAll(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', userToken)
+  })
+
+  beforeEach(() => {
+    fetchMock.resetMocks()
   })
 
   const ticker = ({ active, connected, name = '' }: { active: boolean; connected: boolean; name?: string }) => {
@@ -27,33 +25,12 @@ describe('MastodonCard', () => {
     } as Ticker
   }
 
-  beforeEach(() => {
-    fetchMock.resetMocks()
-  })
-
-  function setup(ticker: Ticker) {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    })
-    return render(
-      <QueryClientProvider client={client}>
-        <MemoryRouter>
-          <AuthProvider>
-            <NotificationProvider>
-              <MastodonCard ticker={ticker} />
-            </NotificationProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
-    )
+  const component = ({ ticker }: { ticker: Ticker }) => {
+    return <MastodonCard ticker={ticker} />
   }
 
   it('should render the component', () => {
-    setup(ticker({ active: false, connected: false }))
+    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Mastodon')).toBeInTheDocument()
     expect(screen.getByText('You are not connected with Mastodon.')).toBeInTheDocument()
@@ -61,7 +38,7 @@ describe('MastodonCard', () => {
   })
 
   it('should render the component when connected and active', async () => {
-    setup(ticker({ active: true, connected: true, name: 'user' }))
+    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, name: 'user' }) }))
 
     expect(screen.getByText('Mastodon')).toBeInTheDocument()
     expect(screen.getByText('You are connected with Mastodon.')).toBeInTheDocument()
@@ -81,7 +58,7 @@ describe('MastodonCard', () => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + userToken,
       },
       method: 'put',
     })
@@ -95,7 +72,7 @@ describe('MastodonCard', () => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + userToken,
       },
       method: 'delete',
     })
@@ -103,5 +80,25 @@ describe('MastodonCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Configure' }))
 
     expect(screen.getByRole('dialog')).toBeInTheDocument()
+  })
+
+  it('should fail when response fails', async () => {
+    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, name: 'user' }) }))
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    screen.getByRole('button', { name: 'Disable' }).click()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should fail when request fails', async () => {
+    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, name: 'user' }) }))
+
+    fetchMock.mockReject()
+
+    screen.getByRole('button', { name: 'Disable' }).click()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

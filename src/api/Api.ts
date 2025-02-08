@@ -47,3 +47,24 @@ export function apiHeaders(token: string): HeadersInit {
     'Content-Type': 'application/json',
   }
 }
+
+interface ApiCallParams<T> {
+  onSuccess: (response: ApiResponse<T>) => void
+  onError: (response: ApiResponse<T>) => void
+  onFailure: (error: unknown) => void
+}
+
+export async function handleApiCall<T>(apiCall: Promise<ApiResponse<T>>, params: ApiCallParams<T>): Promise<void> {
+  const { onSuccess, onError, onFailure } = params
+
+  try {
+    const response = await apiCall
+    if (response.status === 'error') {
+      onError(response)
+    } else {
+      onSuccess(response)
+    }
+  } catch (error) {
+    onFailure(error)
+  }
+}

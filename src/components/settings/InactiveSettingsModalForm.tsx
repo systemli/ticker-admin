@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { InactiveSetting, Setting } from '../../api/Settings'
-import InactiveSettingsForm from './InactiveSettingsForm'
 import Modal from '../common/Modal'
+import InactiveSettingsForm from './InactiveSettingsForm'
 
 interface Props {
   open: boolean
@@ -10,9 +10,11 @@ interface Props {
 }
 
 const InactiveSettingsModalForm: FC<Props> = ({ open, onClose, setting }) => {
+  const [submitting, setSubmitting] = useState<boolean>(false)
+
   return (
-    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="inactiveSettingForm" title="Edit Inactive Settings">
-      <InactiveSettingsForm callback={onClose} name="inactiveSettingForm" setting={setting} />
+    <Modal submitting={submitting} fullWidth={true} onClose={onClose} open={open} submitForm="inactiveSettingForm" title="Edit Inactive Settings">
+      <InactiveSettingsForm callback={onClose} name="inactiveSettingForm" setting={setting} setSubmitting={setSubmitting} />
     </Modal>
   )
 }
