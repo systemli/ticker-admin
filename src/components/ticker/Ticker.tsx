@@ -8,6 +8,7 @@ import useAuth from '../../contexts/useAuth'
 import Loader from '../Loader'
 import MessageForm from '../message/MessageForm'
 import MessageList from '../message/MessageList'
+import MessageListReload from '../message/MessageListReload'
 import TickerCard from './TickerCard'
 import TickerDangerZoneCard from './TickerDangerZoneCard'
 import TickerModalForm from './TickerModalForm'
@@ -85,6 +86,9 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
               <MessageForm ticker={ticker} />
             </CardContent>
           </Card>
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <MessageListReload ticker={ticker} />
         </Grid>
         <Grid size={{ xs: 12 }}>
           <MessageList ticker={ticker} />
