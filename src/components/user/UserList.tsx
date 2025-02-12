@@ -37,6 +37,9 @@ const UserList: FC = () => {
             <TableCell align="left" size="small" sx={{ display: { xs: 'none', md: 'table-cell' } }}>
               Creation Time
             </TableCell>
+            <TableCell align="left" size="small" sx={{ display: { xs: 'none', md: 'table-cell' } }}>
+              Last Login
+            </TableCell>
             <TableCell />
           </TableRow>
         </TableHead>

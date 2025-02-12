@@ -1,16 +1,19 @@
-import React, { FC, useState } from 'react'
 import { faCheck, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
 import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import React, { FC, useState } from 'react'
 import { User } from '../../api/User'
 import UserModalDelete from './UserModalDelete'
 import UserModalForm from './UserModalForm'
-import dayjs from 'dayjs'
 
 interface Props {
   user: User
 }
+
+dayjs.extend(relativeTime)
 
 const UserListItem: FC<Props> = ({ user }) => {
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
@@ -25,6 +28,10 @@ const UserListItem: FC<Props> = ({ user }) => {
     setAnchorEl(null)
   }
 
+  const emptyDate = '0001-01-01T00:00:00Z'
+  const createdAt = dayjs(user.createdAt).format('MMM D, YYYY h:mm A')
+  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : 'never'
+
   return (
     <TableRow hover>
       <TableCell align="center" padding="none">
@@ -34,7 +41,8 @@ const UserListItem: FC<Props> = ({ user }) => {
         {user.isSuperAdmin ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
       </TableCell>
       <TableCell>{user.email}</TableCell>
-      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{dayjs(user.createdAt).format('DD/MM/YYYY')}</TableCell>
+      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{createdAt}</TableCell>
+      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{lastLogin}</TableCell>
       <TableCell align="right">
         <IconButton data-testid="usermenu" onClick={handleMenu} size="large">
           <MoreVert />

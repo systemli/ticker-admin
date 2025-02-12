@@ -1,5 +1,5 @@
-import { ApiUrl, apiHeaders } from './Api'
-import { deleteUserApi, fetchUsersApi, putMeApi, putUserApi } from './User'
+import { apiHeaders, ApiUrl } from './Api'
+import { deleteUserApi, fetchUsersApi, putMeApi, putUserApi, User } from './User'
 
 describe('fetchUsersApi', () => {
   beforeEach(() => {
@@ -38,8 +38,9 @@ describe('putUserApi', () => {
     fetchMock.resetMocks()
   })
 
+  const user = { id: 1, createdAt: '', email: 'user@example.com', role: 'user', isSuperAdmin: false } as User
+
   it('should return data on success', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     const data = { status: 'success', data: { user: user } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     await putUserApi('token', user, { email: 'user@example.com', isSuperAdmin: false })
@@ -52,7 +53,6 @@ describe('putUserApi', () => {
   })
 
   it('should throw error on non-200 status', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     const response = await putUserApi('token', user, { email: 'user@example.com', isSuperAdmin: false })
@@ -66,7 +66,6 @@ describe('putUserApi', () => {
   })
 
   it('should throw error on network error', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     fetchMock.mockReject(new Error('Network error'))
     const response = await putUserApi('token', user, { email: 'user@example.com', isSuperAdmin: false })
     expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
@@ -84,8 +83,9 @@ describe('postUserApi', () => {
     fetchMock.resetMocks()
   })
 
+  const user = { id: 1, createdAt: '', email: 'user@example.com', role: 'user', isSuperAdmin: false } as User
+
   it('should return data on success', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     const data = { status: 'success', data: { user: user } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     putUserApi('token', user, { email: 'user@example.com', isSuperAdmin: false })
@@ -98,7 +98,6 @@ describe('postUserApi', () => {
   })
 
   it('should throw error on non-200 status', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     const response = await putUserApi('token', user, { email: 'user@example.com', isSuperAdmin: false })
@@ -112,7 +111,6 @@ describe('postUserApi', () => {
   })
 
   it('should throw error on network error', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     fetchMock.mockReject(new Error('Network error'))
     const response = await putUserApi('token', user, { email: 'user@example.com', isSuperAdmin: false })
     expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
@@ -130,8 +128,9 @@ describe('deleteUserApi', () => {
     fetchMock.resetMocks()
   })
 
+  const user = { id: 1, createdAt: '', email: 'user@example.com', role: 'user', isSuperAdmin: false } as User
+
   it('should return data on success', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     const data = { status: 'success' }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     await deleteUserApi('token', user)
@@ -143,7 +142,6 @@ describe('deleteUserApi', () => {
   })
 
   it('should throw error on non-200 status', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     const response = await deleteUserApi('token', user)
@@ -156,7 +154,6 @@ describe('deleteUserApi', () => {
   })
 
   it('should throw error on network error', async () => {
-    const user = { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false }
     fetchMock.mockReject(new Error('Network error'))
     const response = await deleteUserApi('token', user)
     expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
@@ -174,7 +171,7 @@ describe('putMeApi', () => {
   })
 
   it('should return data on success', async () => {
-    const data = { status: 'success', data: { user: { id: 1, createdAt: new Date(), email: 'user@example.com', role: 'user', isSuperAdmin: false } } }
+    const data = { status: 'success', data: { user: { id: 1, createdAt: '', email: 'user@example.com', role: 'user', isSuperAdmin: false } } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
     await putMeApi('token', { password: 'password', newPassword: 'newpassword' })
     expect(fetchMock).toHaveBeenCalledTimes(1)
