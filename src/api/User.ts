@@ -11,7 +11,8 @@ export interface UserResponseData {
 
 export interface User {
   id: number
-  createdAt: Date
+  createdAt: string
+  lastLogin: string
   email: string
   role: string
   isSuperAdmin: boolean
