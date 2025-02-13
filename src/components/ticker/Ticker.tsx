@@ -79,7 +79,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
           </>
         ) : null}
       </Grid>
-      <Grid container rowSpacing={2} size={{ md: 8, xs: 12 }}>
+      <Grid container rowSpacing={2} size={{ md: 8, xs: 12 }} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Grid size={{ xs: 12 }}>
           <Card>
             <CardContent>
@@ -90,7 +90,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
         <Grid size={{ xs: 12 }}>
           <MessageListReload ticker={ticker} />
         </Grid>
-        <Grid size={{ xs: 12 }}>
+        <Grid size={{ xs: 12 }} sx={{ flexGrow: 1 }}>
           <MessageList ticker={ticker} />
         </Grid>
       </Grid>

@@ -1,13 +1,13 @@
+import { Close } from '@mui/icons-material'
+import { Box, Card, CardContent, IconButton, useTheme } from '@mui/material'
 import { FC, useState } from 'react'
 import { Message as MessageType } from '../../api/Message'
-import MessageModalDelete from './MessageModalDelete'
-import MessageMap from './MessageMap'
 import { Ticker } from '../../api/Ticker'
-import { Card, CardContent, IconButton, useTheme } from '@mui/material'
+import Links from './Links'
 import MessageAttachements from './MessageAttachments'
 import MessageFooter from './MessageFooter'
-import { Close } from '@mui/icons-material'
-import Links from './Links'
+import MessageMap from './MessageMap'
+import MessageModalDelete from './MessageModalDelete'
 
 interface Props {
   message: MessageType
@@ -31,9 +31,9 @@ const Message: FC<Props> = ({ message, ticker }) => {
         </IconButton>
         <MessageModalDelete message={message} onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} />
         {message.text.split(/\r\n|\r|\n/g).map((line, i) => (
-          <p key={message.id + i} style={{ paddingRight: theme.spacing(6) }}>
+          <Box key={message.id + i} style={{ paddingRight: theme.spacing(6) }}>
             <Links message={line} />
-          </p>
+          </Box>
         ))}
         <MessageAttachements message={message} />
         <MessageMap message={message} ticker={ticker} />

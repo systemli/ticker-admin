@@ -83,14 +83,24 @@ theme.components = {
     },
     styleOverrides: {
       root: {
-        padding: theme.spacing(3, 3, 0),
+        padding: theme.spacing(2, 2, 0),
       },
     },
   },
   MuiCardContent: {
     styleOverrides: {
       root: {
-        padding: theme.spacing(3),
+        padding: theme.spacing(2),
+        ':last-child': {
+          paddingBottom: theme.spacing(2),
+        },
+      },
+    },
+  },
+  MuiDialogActions: {
+    styleOverrides: {
+      root: {
+        paddingBottom: theme.spacing(2),
       },
     },
   },
@@ -184,7 +194,7 @@ theme.components = {
   MuiTypography: {
     styleOverrides: {
       paragraph: {
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(1),
       },
       gutterBottom: {
         marginBottom: theme.spacing(1),
