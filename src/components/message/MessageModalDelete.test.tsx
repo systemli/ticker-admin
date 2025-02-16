@@ -16,7 +16,7 @@ describe('MessageModalDelete', () => {
   const onClose = vi.fn()
 
   const component = (open: boolean) => {
-    const message: Message = { id: 1, ticker: 1, text: 'Hello', createdAt: new Date(), geoInformation: '' }
+    const message: Message = { id: 1, ticker: 1, text: 'Hello', createdAt: '', geoInformation: '' }
 
     return <MessageModalDelete message={message} onClose={onClose} open={open} />
   }

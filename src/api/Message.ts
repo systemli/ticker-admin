@@ -13,7 +13,7 @@ export interface Message {
   id: number
   ticker: number
   text: string
-  createdAt: Date
+  createdAt: string
   telegramUrl?: string
   mastodonUrl?: string
   blueskyUrl?: string
