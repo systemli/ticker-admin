@@ -29,8 +29,8 @@ describe('Message', () => {
     setup(queryClient, <Message message={message} ticker={ticker} />)
 
     expect(screen.getByText('Multi line message with links')).toBeInTheDocument()
-    expect(screen.getByTitle('https://example.com')).toBeInTheDocument()
-    expect(screen.getByTitle('https://example.net')).toBeInTheDocument()
+    expect(screen.getByText('example.com')).toBeInTheDocument()
+    expect(screen.getByText('example.net')).toBeInTheDocument()
     expect(screen.getByRole('img')).toBeInTheDocument()
   })
 })
