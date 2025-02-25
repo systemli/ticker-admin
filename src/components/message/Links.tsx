@@ -5,19 +5,15 @@ interface Props {
   message: string
 }
 const Links: FC<Props> = ({ message }) => {
-  const render = ({ attributes }: { attributes: unknown }) => {
-    const { href } = attributes as { href: string }
-    const url = new URL(href)
-    const content = url.hostname + url.pathname.slice(0, 20) + '...'
-
-    return (
-      <a href={href} target="_blank" title={href}>
-        {content}
-      </a>
-    )
+  const format = (value: string, type: string) => {
+    if (type === 'url') {
+      value = value.replace(/https?:\/\//, '')
+      return value.length > 30 ? `${value.slice(0, 30)}…` : value
+    }
+    return value
   }
 
-  return <Linkify options={{ defaultProtocol: 'https', render: render }}>{message}</Linkify>
+  return <Linkify options={{ defaultProtocol: 'https', format: format }}>{message}</Linkify>
 }
 
 export default Links

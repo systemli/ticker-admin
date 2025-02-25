@@ -29,6 +29,6 @@ describe('Links', () => {
       'href',
       'https://www.systemli.org/2024/01/11/neue-sicherheitsma%C3%9Fnahme-gegen-mitm-angriffe-eingef%C3%BChrt/'
     )
-    expect(document.querySelector('a')).toHaveTextContent('www.systemli.org/2024/01/11/neue-sic...')
+    expect(document.querySelector('a')).toHaveTextContent('www.systemli.org/2024/01/11/ne…')
   })
 })
