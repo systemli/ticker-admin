@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 import { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router'
 import { AuthProvider } from './AuthContext'
@@ -7,9 +7,9 @@ import useFeature from './useFeature'
 
 describe('useFeature', () => {
   it('throws error when not rendered within FeatureProvider', () => {
-    const { result } = renderHook(() => useFeature())
-
-    expect(result.error).toEqual(Error('useFeature must be used within a FeatureProvider'))
+    expect(() => {
+      renderHook(() => useFeature())
+    }).toThrow('useFeature must be used within a FeatureProvider')
   })
 
   it('returns context when rendered within FeatureProvider', async () => {

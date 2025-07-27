@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
-import useAuth from './useAuth'
-import { AuthProvider, Roles } from './AuthContext'
-import { MemoryRouter } from 'react-router'
-import { ReactNode } from 'react'
+import { renderHook, waitFor } from '@testing-library/react'
 import sign from 'jwt-encode'
+import { ReactNode } from 'react'
+import { MemoryRouter } from 'react-router'
+import { AuthProvider, Roles } from './AuthContext'
+import useAuth from './useAuth'
 
 const exp = Math.floor(Date.now() / 1000) + 5000
 const token = sign({ id: 1, email: 'user@example.org', roles: ['user'] as Array<Roles>, exp: exp }, 'secret')
@@ -25,9 +25,9 @@ beforeEach(() => {
 
 describe('useAuth', () => {
   it('throws error when not rendered within AuthProvider', () => {
-    const { result } = renderHook(() => useAuth())
-
-    expect(result.error).toEqual(Error('useAuth must be used within a AuthProvider'))
+    expect(() => {
+      renderHook(() => useAuth())
+    }).toThrow('useAuth must be used within a AuthProvider')
   })
 
   it('returns initial values', () => {
@@ -129,7 +129,9 @@ describe('useAuth', () => {
 
     result.current.logout()
 
-    expect(result.current.user).toEqual(undefined)
-    expect(result.current.token).toEqual('')
+    await waitFor(() => {
+      expect(result.current.user).toEqual(undefined)
+      expect(result.current.token).toEqual('')
+    })
   })
 })
