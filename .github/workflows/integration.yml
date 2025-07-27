@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,28 +17,26 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: TSC
-        run: yarn run tsc
+        run: npm ci
 
       - name: Test
-        run: yarn run coverage
+        run: npm run coverage
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: sonarsource/sonarqube-scan-action@v5.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [test]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,14 +44,14 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'yarn'
+          node-version-file: .nvmrc
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn run build
+        run: npm run build
 
   automerge:
     name: Merge Automatically
