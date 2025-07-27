@@ -1,5 +1,4 @@
-import { FormGroup, TextField } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { FormGroup, Grid, TextField } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'

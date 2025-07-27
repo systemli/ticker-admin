@@ -1,6 +1,5 @@
 import { Delete } from '@mui/icons-material'
-import { Button, FormControl, FormGroup, FormHelperText, IconButton, InputAdornment, OutlinedInput, Typography } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Button, FormControl, FormGroup, FormHelperText, Grid, IconButton, InputAdornment, OutlinedInput, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'

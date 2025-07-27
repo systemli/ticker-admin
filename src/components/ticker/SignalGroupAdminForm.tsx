@@ -1,7 +1,6 @@
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alert, FormGroup, InputAdornment, TextField } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Alert, FormGroup, Grid, InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { handleApiCall } from '../../api/Api'

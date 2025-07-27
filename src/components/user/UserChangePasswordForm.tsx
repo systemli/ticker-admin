@@ -1,5 +1,4 @@
-import { Alert, FormGroup, TextField } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Alert, FormGroup, Grid, TextField } from '@mui/material'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { handleApiCall } from '../../api/Api'
