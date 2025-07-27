@@ -2,7 +2,6 @@ import { Stack, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { FC } from 'react'
 import InactiveSettingsCard from '../components/settings/InactiveSettingsCard'
-import RefreshIntervalCard from '../components/settings/RefreshIntervalCard'
 import Layout from './Layout'
 
 const SettingsView: FC = () => {
@@ -18,9 +17,6 @@ const SettingsView: FC = () => {
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
           <InactiveSettingsCard />
-        </Grid>
-        <Grid size={{ md: 6, xs: 12 }}>
-          <RefreshIntervalCard />
         </Grid>
       </Grid>
     </Layout>
