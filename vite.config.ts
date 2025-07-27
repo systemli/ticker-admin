@@ -11,16 +11,14 @@ export default defineConfig({
   },
   plugins: [react()],
   test: {
-    silent: true,
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest-setup.ts',
-    css: false,
+    css: true,
     coverage: {
       provider: 'v8',
       reporter: ['lcov'],
     },
-    pool: 'threads',
     testTimeout: 10000,
   },
 })

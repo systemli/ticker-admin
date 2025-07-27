@@ -27,15 +27,6 @@ describe('SettingsView', function () {
       },
     },
   })
-  const refreshIntervalResponse = JSON.stringify({
-    data: {
-      setting: {
-        id: 2,
-        name: 'refresh_interval',
-        value: 10000,
-      },
-    },
-  })
 
   beforeEach(() => {
     vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
@@ -68,9 +59,6 @@ describe('SettingsView', function () {
       if (request.url.endsWith('/admin/settings/inactive_settings')) {
         return Promise.resolve(inactiveSettingsResponse)
       }
-      if (request.url.endsWith('/admin/settings/refresh_interval')) {
-        return Promise.resolve(refreshIntervalResponse)
-      }
 
       return Promise.resolve(
         JSON.stringify({
@@ -84,7 +72,7 @@ describe('SettingsView', function () {
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
-    expect(loaders).toHaveLength(2)
+    expect(loaders).toHaveLength(1)
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })
@@ -102,18 +90,6 @@ describe('SettingsView', function () {
     await userEvent.click(screen.getByRole('button', { name: /close/i }))
 
     expect(inactiveSettingsDialogTitle).not.toBeVisible()
-
-    const refreshIntervalEditButton = screen.getByTestId('refreshinterval-edit')
-    expect(refreshIntervalEditButton).toBeInTheDocument()
-
-    await userEvent.click(refreshIntervalEditButton)
-
-    const refreshIntervalDialogTitle = screen.getByText('Edit Refresh Interval')
-    expect(refreshIntervalDialogTitle).toBeInTheDocument()
-
-    await userEvent.click(screen.getByRole('button', { name: /close/i }))
-
-    expect(refreshIntervalDialogTitle).not.toBeVisible()
   })
 
   test('settings could not fetched', async function () {
@@ -121,7 +97,7 @@ describe('SettingsView', function () {
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
-    expect(loaders).toHaveLength(2)
+    expect(loaders).toHaveLength(1)
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })
