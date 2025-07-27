@@ -32,7 +32,7 @@
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
-    "linkify-react": "^4.2.0",
+    "linkify-react": "^4.3.2",
     "linkifyjs": "^4.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
