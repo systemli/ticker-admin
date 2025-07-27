@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid2'
+import { Grid } from '@mui/material'
 import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import BlueskyCard from './BlueskyCard'

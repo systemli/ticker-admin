@@ -1,7 +1,6 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alert, Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Alert, Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
 import { Ticker as Model } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'

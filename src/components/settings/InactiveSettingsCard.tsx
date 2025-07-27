@@ -1,7 +1,6 @@
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Button, Card, CardContent, Divider, Typography } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { FC, useState } from 'react'
 import useAuth from '../../contexts/useAuth'

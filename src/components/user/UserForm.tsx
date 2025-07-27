@@ -1,5 +1,4 @@
-import { Checkbox, Divider, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'

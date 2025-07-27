@@ -1,7 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Card, Stack, Typography } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Button, Card, Grid, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
 import UserList from '../components/user/UserList'
 import UserModalForm from '../components/user/UserModalForm'

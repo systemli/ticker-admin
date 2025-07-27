@@ -1,5 +1,4 @@
-import { Stack, Typography } from '@mui/material'
-import Grid from '@mui/material/Grid2'
+import { Grid, Stack, Typography } from '@mui/material'
 import { FC } from 'react'
 import InactiveSettingsCard from '../components/settings/InactiveSettingsCard'
 import Layout from './Layout'
