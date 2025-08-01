@@ -73,7 +73,7 @@
     "vitest-fetch-mock": "^0.4.5"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5"
+    "@rollup/rollup-linux-x64-gnu": "4.46.2"
   },
   "packageManager": "npm@10.9.2"
 }
