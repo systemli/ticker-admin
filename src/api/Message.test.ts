@@ -77,7 +77,7 @@ describe('postMessageApi', () => {
   it('should return data on success', async () => {
     const data = { status: 'success', data: { message: {} } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
-    const response = await postMessageApi('token', 'ticker', 'text', { type: 'FeatureCollection', features: [] }, [])
+    const response = await postMessageApi('token', 'ticker', 'text', [])
     expect(response).toEqual(data)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/ticker/messages`, {
@@ -85,7 +85,6 @@ describe('postMessageApi', () => {
       method: 'post',
       body: JSON.stringify({
         text: 'text',
-        geoInformation: { type: 'FeatureCollection', features: [] },
         attachments: [],
       }),
     })
@@ -94,7 +93,7 @@ describe('postMessageApi', () => {
   it('should throw error on non-200 status', async () => {
     const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
     fetchMock.mockResponseOnce(JSON.stringify(data))
-    const response = await postMessageApi('token', 'ticker', 'text', { type: 'FeatureCollection', features: [] }, [])
+    const response = await postMessageApi('token', 'ticker', 'text', [])
     expect(response).toEqual(data)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/ticker/messages`, {
@@ -102,7 +101,6 @@ describe('postMessageApi', () => {
       method: 'post',
       body: JSON.stringify({
         text: 'text',
-        geoInformation: { type: 'FeatureCollection', features: [] },
         attachments: [],
       }),
     })
@@ -110,7 +108,7 @@ describe('postMessageApi', () => {
 
   it('should throw error on network error', async () => {
     fetchMock.mockReject(new Error('Network error'))
-    const response = await postMessageApi('token', 'ticker', 'text', { type: 'FeatureCollection', features: [] }, [])
+    const response = await postMessageApi('token', 'ticker', 'text', [])
     expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/tickers/ticker/messages`, {
@@ -118,7 +116,6 @@ describe('postMessageApi', () => {
       method: 'post',
       body: JSON.stringify({
         text: 'text',
-        geoInformation: { type: 'FeatureCollection', features: [] },
         attachments: [],
       }),
     })

@@ -2,19 +2,16 @@ import { Close } from '@mui/icons-material'
 import { Box, Card, CardContent, IconButton, useTheme } from '@mui/material'
 import { FC, useState } from 'react'
 import { Message as MessageType } from '../../api/Message'
-import { Ticker } from '../../api/Ticker'
 import Links from './Links'
 import MessageAttachements from './MessageAttachments'
 import MessageFooter from './MessageFooter'
-import MessageMap from './MessageMap'
 import MessageModalDelete from './MessageModalDelete'
 
 interface Props {
   message: MessageType
-  ticker: Ticker
 }
 
-const Message: FC<Props> = ({ message, ticker }) => {
+const Message: FC<Props> = ({ message }) => {
   const theme = useTheme()
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
 
@@ -36,7 +33,6 @@ const Message: FC<Props> = ({ message, ticker }) => {
           </Box>
         ))}
         <MessageAttachements message={message} />
-        <MessageMap message={message} ticker={ticker} />
         <MessageFooter message={message} />
       </CardContent>
     </Card>

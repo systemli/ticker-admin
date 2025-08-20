@@ -1,8 +1,7 @@
-import { faMapLocationDot, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Button, FormGroup, IconButton, Stack, TextField } from '@mui/material'
+import { Box, Button, FormGroup, Stack, TextField } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
-import { FeatureCollection, Geometry } from 'geojson'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { handleApiCall } from '../../api/Api'
@@ -16,7 +15,6 @@ import AttachmentsPreview from './AttachmentsPreview'
 import { Emoji } from './Emoji'
 import EmojiPicker from './EmojiPicker'
 import MessageFormCounter from './MessageFormCounter'
-import MessageMapModal from './MessageMapModal'
 import UploadButton from './UploadButton'
 
 interface Props {
@@ -41,14 +39,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const queryClient = useQueryClient()
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [attachments, setAttachments] = useState<Upload[]>([])
-  const [mapDialogOpen, setMapDialogOpen] = useState<boolean>(false)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const emptyMap: FeatureCollection<Geometry, any> = {
-    type: 'FeatureCollection',
-    features: [],
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [map, setMap] = useState<FeatureCollection<Geometry, any>>(emptyMap)
 
   /**
    * Calculates the maximum length of a message based on the given ticker's configuration.
@@ -93,11 +83,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     setValue('message', message.toString() + emoji.native + ' ')
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onMapUpdate = useCallback((featureGroups: FeatureCollection<Geometry, any>) => {
-    setMap(featureGroups)
-  }, [])
-
   const onSubmit: SubmitHandler<FormValues> = data => {
     setIsSubmitting(true)
 
@@ -105,7 +90,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       return upload.id
     })
 
-    handleApiCall(postMessageApi(token, ticker.id.toString(), data.message, map, uploads), {
+    handleApiCall(postMessageApi(token, ticker.id.toString(), data.message, uploads), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
         setAttachments([])
@@ -160,10 +145,6 @@ const MessageForm: FC<Props> = ({ ticker }) => {
             </Button>
             <EmojiPicker color={color} disabled={disabled} onChange={onSelectEmoji} />
             <UploadButton color={color} disabled={disabled} onUpload={onUpload} ticker={ticker} />
-            <IconButton disabled={disabled} component="span" onClick={() => setMapDialogOpen(true)}>
-              <FontAwesomeIcon color={color} icon={faMapLocationDot} size="xs" />
-            </IconButton>
-            <MessageMapModal map={map} onChange={onMapUpdate} onClose={() => setMapDialogOpen(false)} open={mapDialogOpen} ticker={ticker} />
           </Box>
           <MessageFormCounter letterCount={message?.length || 0} maxLength={maxLength} />
         </Stack>
