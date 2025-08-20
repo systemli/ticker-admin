@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import TickerResetModal from './TickerResetModal'
 
 describe('TickerResetModal', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
     onClose.mockClear()
   })
@@ -26,7 +23,7 @@ describe('TickerResetModal', () => {
   } as Ticker
 
   it('should render the component', async () => {
-    setup(queryClient, component({ ticker }))
+    renderWithProviders(component({ ticker }))
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
@@ -48,7 +45,7 @@ describe('TickerResetModal', () => {
   })
 
   it('should render the component and close the modal', async () => {
-    setup(queryClient, component({ ticker }))
+    renderWithProviders(component({ ticker }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -59,7 +56,7 @@ describe('TickerResetModal', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker }))
+    renderWithProviders(component({ ticker }))
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
 
@@ -71,7 +68,7 @@ describe('TickerResetModal', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker }))
+    renderWithProviders(component({ ticker }))
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
 

@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { User } from '../../api/User'
-import { adminToken, queryClient, setup } from '../../tests/utils'
+import { adminToken, renderWithProviders, setMockToken } from '../../tests/utils'
 import UserForm from './UserForm'
 
 describe('UserForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', adminToken)
-  })
-
   beforeEach(() => {
+    setMockToken(adminToken)
     fetchMock.resetMocks()
     callback.mockClear()
     setSubmitting.mockClear()
@@ -37,7 +34,7 @@ describe('UserForm', () => {
       })
     )
 
-    setup(queryClient, component())
+    renderWithProviders(component())
 
     expect(screen.getByLabelText('E-Mail *')).toBeInTheDocument()
     expect(screen.getByLabelText('Password *')).toBeInTheDocument()
@@ -82,8 +79,7 @@ describe('UserForm', () => {
       })
     )
 
-    setup(
-      queryClient,
+    renderWithProviders(
       component({
         id: 1,
         email: 'user@example.org',

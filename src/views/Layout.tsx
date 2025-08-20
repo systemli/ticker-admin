@@ -21,10 +21,10 @@ const Layout: FC<Props> = ({ children }) => {
       <Nav>
         <Box sx={{ flexGrow: 1 }}>
           <NavItem active={location.pathname === '/'} icon={<FontAwesomeIcon icon={faGaugeHigh} />} title="Dashboard" to="/" />
-          {!user?.roles.includes('admin') || (
+          {user?.roles.includes('admin') && (
             <NavItem active={location.pathname === '/users'} icon={<FontAwesomeIcon icon={faUsers} />} title="Users" to="/users" />
           )}
-          {!user?.roles.includes('admin') || (
+          {user?.roles.includes('admin') && (
             <NavItem active={location.pathname === '/settings'} icon={<FontAwesomeIcon icon={faGears} />} title="Settings" to="/settings" />
           )}
         </Box>

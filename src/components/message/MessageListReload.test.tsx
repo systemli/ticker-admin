@@ -1,14 +1,14 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup } from '../../tests/utils'
+import { queryClient, renderWithProviders } from '../../tests/utils'
 import MessageListReload from './MessageListReload'
 
 describe('MessageListReload', () => {
   const ticker = { id: 1 } as Ticker
 
   it('should render', async () => {
-    setup(queryClient, <MessageListReload ticker={ticker} />)
+    renderWithProviders(<MessageListReload ticker={ticker} />)
 
     vi.spyOn(queryClient, 'invalidateQueries')
 

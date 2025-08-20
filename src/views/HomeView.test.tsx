@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { AuthProvider } from '../contexts/AuthContext'
@@ -7,6 +7,11 @@ import { NotificationProvider } from '../contexts/NotificationContext'
 import HomeView from './HomeView'
 
 describe('HomeView', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+    vi.clearAllMocks()
+  })
+
   function setup() {
     const client = new QueryClient({
       defaultOptions: {
@@ -41,13 +46,16 @@ describe('HomeView', () => {
       },
       'secret'
     )
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(token)
+    vi.mocked(localStorage.getItem).mockReturnValue(token)
 
     setup()
 
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    })
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
   it('should render tickers list', async () => {
@@ -63,12 +71,18 @@ describe('HomeView', () => {
       'secret'
     )
 
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(token)
+    vi.mocked(localStorage.getItem).mockReturnValue(token)
 
     setup()
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    expect(await screen.findByText('Tickers')).toBeInTheDocument()
+    // Wait for initial loading state, then for final state
+    await waitFor(() => {
+      expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('Tickers')).toBeInTheDocument()
+    })
   })
 
   it('should redirect to ticker when user has only one ticker', async () => {
@@ -84,10 +98,12 @@ describe('HomeView', () => {
       'secret'
     )
 
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(token)
+    vi.mocked(localStorage.getItem).mockReturnValue(token)
 
     setup()
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    })
   })
 })

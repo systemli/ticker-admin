@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import BlueskyForm from './BlueskyForm'
 
 describe('BlueskyForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     callback.mockClear()
     fetchMock.resetMocks()
   })
@@ -38,7 +35,7 @@ describe('BlueskyForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('You need to create a application password in Bluesky.')).toBeInTheDocument()
     expect(screen.getByRole('checkbox', { name: 'Active' })).toBeInTheDocument()
@@ -68,7 +65,7 @@ describe('BlueskyForm', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
     await userEvent.type(screen.getByRole('textbox', { name: 'Handle' }), 'handle.bsky.social')
@@ -83,7 +80,7 @@ describe('BlueskyForm', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
     await userEvent.type(screen.getByRole('textbox', { name: 'Handle' }), 'handle.bsky.social')

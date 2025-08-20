@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../../api/Ticker'
-import { queryClient, setup, userToken } from '../../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../../tests/utils'
 import TickerForm from './TickerForm'
 
 describe('TickerForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
     callback.mockClear()
     setSubmitting.mockClear()
@@ -28,8 +25,7 @@ describe('TickerForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(
-      queryClient,
+    renderWithProviders(
       component({
         ticker: {
           id: 1,
@@ -46,7 +42,7 @@ describe('TickerForm', () => {
   })
 
   it('should submit for new ticker', async () => {
-    setup(queryClient, component({ ticker: undefined }))
+    renderWithProviders(component({ ticker: undefined }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -97,8 +93,7 @@ describe('TickerForm', () => {
   })
 
   it('should submit for existing ticker', async () => {
-    setup(
-      queryClient,
+    renderWithProviders(
       component({
         ticker: {
           id: 1,
@@ -160,8 +155,7 @@ describe('TickerForm', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(
-      queryClient,
+    renderWithProviders(
       component({
         ticker: {
           id: 1,
@@ -186,8 +180,7 @@ describe('TickerForm', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(
-      queryClient,
+    renderWithProviders(
       component({
         ticker: {
           id: 1,

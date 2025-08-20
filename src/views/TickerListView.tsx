@@ -20,23 +20,15 @@ const TickerListView: FC = () => {
               Tickers
             </Typography>
             {user?.roles.includes('admin') ? (
-              <>
-                <Button
-                  onClick={() => {
-                    setFormModalOpen(true)
-                  }}
-                  startIcon={<FontAwesomeIcon icon={faPlus} />}
-                  variant="contained"
-                >
-                  New Ticker
-                </Button>
-                <TickerModalForm
-                  onClose={() => {
-                    setFormModalOpen(false)
-                  }}
-                  open={formModalOpen}
-                />
-              </>
+              <Button
+                onClick={() => {
+                  setFormModalOpen(true)
+                }}
+                startIcon={<FontAwesomeIcon icon={faPlus} />}
+                variant="contained"
+              >
+                New Ticker
+              </Button>
             ) : null}
           </Stack>
         </Grid>
@@ -46,6 +38,14 @@ const TickerListView: FC = () => {
           </Card>
         </Grid>
       </Grid>
+      {user?.roles.includes('admin') && (
+        <TickerModalForm
+          onClose={() => {
+            setFormModalOpen(false)
+          }}
+          open={formModalOpen}
+        />
+      )}
     </Layout>
   )
 }

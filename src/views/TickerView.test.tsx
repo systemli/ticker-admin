@@ -33,7 +33,7 @@ describe('TickerView', function () {
   }
 
   beforeEach(() => {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(
+    vi.mocked(localStorage.getItem).mockReturnValue(
       sign(
         {
           id: 1,

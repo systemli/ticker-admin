@@ -5,9 +5,15 @@ import useNotification from './useNotification'
 
 describe('useNotification', () => {
   it('throws error when not rendered within NotificationProvider', () => {
+    // Suppress expected error output
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
     expect(() => {
       renderHook(() => useNotification())
     }).toThrow('useNotification must be used within a NotificationProvider')
+
+    // Restore console.error
+    consoleSpy.mockRestore()
   })
 
   it('returns context when rendered within NotificationProvider', async () => {

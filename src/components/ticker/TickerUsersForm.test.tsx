@@ -3,15 +3,12 @@ import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import TickerUsersForm from './TickerUsersForm'
 
 describe('TickerUsersForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
     handleSubmit.mockClear()
   })
@@ -46,7 +43,7 @@ describe('TickerUsersForm', () => {
       })
     )
 
-    setup(queryClient, component({ ticker, defaultValue: [user] }))
+    renderWithProviders(component({ ticker, defaultValue: [user] }))
 
     expect(screen.getByRole('combobox')).toBeInTheDocument()
 
@@ -88,7 +85,7 @@ describe('TickerUsersForm', () => {
       })
     )
 
-    setup(queryClient, component({ ticker, defaultValue: [] }))
+    renderWithProviders(component({ ticker, defaultValue: [] }))
 
     expect(screen.getByRole('combobox')).toBeInTheDocument()
 
@@ -120,7 +117,7 @@ describe('TickerUsersForm', () => {
       })
     )
 
-    setup(queryClient, component({ ticker, defaultValue: [] }))
+    renderWithProviders(component({ ticker, defaultValue: [] }))
 
     expect(screen.getByRole('combobox')).toBeInTheDocument()
 
