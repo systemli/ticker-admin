@@ -12,7 +12,7 @@ describe('UsersView', function () {
   const jwt = sign({ id: 1, email: 'louis@systemli.org', roles: ['admin', 'user'] }, 'secret')
 
   beforeEach(() => {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
+    vi.mocked(localStorage.getItem).mockReturnValue(jwt)
     fetchMock.resetMocks()
   })
 

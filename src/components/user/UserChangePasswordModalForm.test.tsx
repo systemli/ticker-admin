@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import UserChangePasswordModalForm from './UserChangePasswordModalForm'
 
 describe('UserChangePasswordModalForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     onClose.mockClear()
     fetchMock.resetMocks()
   })
@@ -21,7 +18,7 @@ describe('UserChangePasswordModalForm', () => {
   }
 
   it('should render the form fields', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     expect(screen.getByLabelText('Password *')).toBeInTheDocument()
     expect(screen.getByLabelText('New Password')).toBeInTheDocument()
@@ -33,7 +30,7 @@ describe('UserChangePasswordModalForm', () => {
   })
 
   it('should submit the form', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     fetchMock.mockResponseOnce(
       JSON.stringify({
@@ -68,7 +65,7 @@ describe('UserChangePasswordModalForm', () => {
   })
 
   it('should show an error message if the password is wrong', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     fetchMock.mockResponseOnce(
       JSON.stringify({
@@ -91,7 +88,7 @@ describe('UserChangePasswordModalForm', () => {
   })
 
   it('should show an error message if the passwords do not match', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     await userEvent.type(screen.getByLabelText('Password *'), 'password')
     await userEvent.type(screen.getByLabelText('New Password'), 'newpassword')

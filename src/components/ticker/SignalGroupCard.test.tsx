@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import SignalGroupCard from './SignalGroupCard'
 
 describe('SignalGroupCard', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
@@ -28,7 +25,7 @@ describe('SignalGroupCard', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
     expect(screen.getByText("You don't have a Signal group connected.")).toBeInTheDocument()
@@ -50,7 +47,7 @@ describe('SignalGroupCard', () => {
   })
 
   it('should render the component when connected and active', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true }) }))
 
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
     expect(screen.getByText('You have a Signal group connected.')).toBeInTheDocument()
@@ -92,7 +89,7 @@ describe('SignalGroupCard', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true }) }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
@@ -102,7 +99,7 @@ describe('SignalGroupCard', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true }) }))
 
     fetchMock.mockReject()
 

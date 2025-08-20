@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker, TickerWebsite } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import WebsiteForm from './WebsiteForm'
 
 describe('WebsiteForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
     callback.mockClear()
   })
@@ -34,7 +31,7 @@ describe('WebsiteForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component({ websites: [] }))
+    renderWithProviders(component({ websites: [] }))
 
     expect(screen.getByRole('button', { name: 'Add Origin' })).toBeInTheDocument()
 
@@ -62,7 +59,7 @@ describe('WebsiteForm', () => {
   })
 
   it('should fail when URL is already exists', async () => {
-    setup(queryClient, component({ websites: [] }))
+    renderWithProviders(component({ websites: [] }))
 
     expect(screen.getByRole('button', { name: 'Add Origin' })).toBeInTheDocument()
 
@@ -80,7 +77,7 @@ describe('WebsiteForm', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ websites: [] }))
+    renderWithProviders(component({ websites: [] }))
 
     expect(screen.getByRole('button', { name: 'Add Origin' })).toBeInTheDocument()
 

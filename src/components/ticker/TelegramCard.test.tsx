@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import TelegramCard from './TelegramCard'
 
 describe('TelegramCard', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
@@ -30,7 +27,7 @@ describe('TelegramCard', () => {
   }
 
   it('should render the component', () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Telegram')).toBeInTheDocument()
     expect(screen.getByText('You are not connected with Telegram.')).toBeInTheDocument()
@@ -38,7 +35,7 @@ describe('TelegramCard', () => {
   })
 
   it('should render the component when connected and active', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
 
     expect(screen.getByText('Telegram')).toBeInTheDocument()
     expect(screen.getByText('You are connected with Telegram.')).toBeInTheDocument()
@@ -82,7 +79,7 @@ describe('TelegramCard', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
@@ -92,7 +89,7 @@ describe('TelegramCard', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
 
     fetchMock.mockReject()
 

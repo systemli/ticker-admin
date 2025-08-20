@@ -5,7 +5,7 @@ describe('Auth', () => {
     fetchMock.resetMocks()
   })
 
-  it('should fail to login when credentials wrong', () => {
+  it('should fail to login when credentials wrong', async () => {
     fetchMock.mockResponse(
       JSON.stringify({
         data: {},
@@ -15,16 +15,16 @@ describe('Auth', () => {
       { status: 401 }
     )
 
-    expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
+    await expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
 
-  it('should fail when network fails', () => {
+  it('should fail when network fails', async () => {
     fetchMock.mockReject()
 
-    expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
+    await expect(login('user@systemli.org', 'password')).rejects.toThrow('Login failed')
   })
 
-  it('should succeed', () => {
+  it('should succeed', async () => {
     const response = {
       code: 200,
       expire: '2022-10-01T18:22:37+02:00',
@@ -32,6 +32,6 @@ describe('Auth', () => {
     }
     fetchMock.mockResponse(JSON.stringify(response), { status: 200 })
 
-    expect(login('user@systemli.org', 'password')).resolves.toEqual(response)
+    await expect(login('user@systemli.org', 'password')).resolves.toEqual(response)
   })
 })

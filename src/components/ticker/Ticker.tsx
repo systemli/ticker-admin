@@ -65,7 +65,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
           <Alert severity="warning">This ticker is currently disabled.</Alert>
         </Grid>
       ) : null}
-      <Grid display={{ xs: 'none', md: 'block' }} spacing={2} size={{ md: 4, xs: 12 }}>
+      <Grid display={{ xs: 'none', md: 'block' }} size={{ md: 4, xs: 12 }}>
         <TickerCard ticker={ticker} />
         {user?.roles.includes('admin') ? (
           <>

@@ -31,20 +31,20 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
   const { createNotification } = useNotification()
   const form = useForm<TickerFormData>({
     defaultValues: {
-      title: ticker?.title,
-      active: ticker?.active,
-      description: ticker?.description,
+      title: ticker?.title || '',
+      active: ticker?.active || false,
+      description: ticker?.description || '',
       information: {
-        author: ticker?.information.author,
-        email: ticker?.information.email,
-        url: ticker?.information.url,
-        twitter: ticker?.information.twitter,
-        facebook: ticker?.information.facebook,
-        threads: ticker?.information.threads,
-        instagram: ticker?.information.instagram,
-        telegram: ticker?.information.telegram,
-        mastodon: ticker?.information.mastodon,
-        bluesky: ticker?.information.bluesky,
+        author: ticker?.information?.author || '',
+        email: ticker?.information?.email || '',
+        url: ticker?.information?.url || '',
+        twitter: ticker?.information?.twitter || '',
+        facebook: ticker?.information?.facebook || '',
+        threads: ticker?.information?.threads || '',
+        instagram: ticker?.information?.instagram || '',
+        telegram: ticker?.information?.telegram || '',
+        mastodon: ticker?.information?.mastodon || '',
+        bluesky: ticker?.information?.bluesky || '',
       },
     },
   })

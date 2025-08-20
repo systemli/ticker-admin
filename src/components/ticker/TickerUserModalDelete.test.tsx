@@ -2,15 +2,12 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
 import { User } from '../../api/User'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import TickerUserModalDelete from './TickerUserModalDelete'
 
 describe('TickerUserModalDelete', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
     onClose.mockClear()
   })
@@ -31,7 +28,7 @@ describe('TickerUserModalDelete', () => {
   } as User
 
   it('should render the component', async () => {
-    setup(queryClient, component({ ticker, user, open: true }))
+    renderWithProviders(component({ ticker, user, open: true }))
 
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
 
@@ -51,7 +48,7 @@ describe('TickerUserModalDelete', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker, user, open: true }))
+    renderWithProviders(component({ ticker, user, open: true }))
 
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
 
@@ -63,7 +60,7 @@ describe('TickerUserModalDelete', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker, user, open: true }))
+    renderWithProviders(component({ ticker, user, open: true }))
 
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
 
@@ -75,7 +72,7 @@ describe('TickerUserModalDelete', () => {
   })
 
   it('should close the modal', async () => {
-    setup(queryClient, component({ ticker, user, open: true }))
+    renderWithProviders(component({ ticker, user, open: true }))
 
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()

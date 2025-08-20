@@ -1,28 +1,25 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { Message } from '../../api/Message'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import MessageModalDelete from './MessageModalDelete'
 
 describe('MessageModalDelete', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
   const onClose = vi.fn()
 
   const component = (open: boolean) => {
-    const message: Message = { id: 1, ticker: 1, text: 'Hello', createdAt: '', geoInformation: '' }
+    const message: Message = { id: 1, ticker: 1, text: 'Hello', createdAt: '' }
 
     return <MessageModalDelete message={message} onClose={onClose} open={open} />
   }
 
   it('should render the modal', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     expect(screen.getByText('Delete Message')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
@@ -30,14 +27,14 @@ describe('MessageModalDelete', () => {
   })
 
   it('should close the modal', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     await userEvent.click(screen.getByRole('button', { name: 'Close' }))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
   it('should delete the message', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -55,7 +52,7 @@ describe('MessageModalDelete', () => {
   })
 
   it('should fail when response is not success', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
@@ -65,7 +62,7 @@ describe('MessageModalDelete', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component(true))
+    renderWithProviders(component(true))
 
     fetchMock.mockRejectOnce()
 

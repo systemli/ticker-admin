@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import BlueskyCard from './BlueskyCard'
 
 describe('BlueSkyCard', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
@@ -30,7 +27,7 @@ describe('BlueSkyCard', () => {
   }
 
   it('should render the component', () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
     expect(screen.getByText('You are not connected with Bluesky.')).toBeInTheDocument()
@@ -38,7 +35,7 @@ describe('BlueSkyCard', () => {
   })
 
   it('should render the component when connected and active', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social' }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social' }) }))
 
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
     expect(screen.getByText('You are connected with Bluesky.')).toBeInTheDocument()
@@ -82,21 +79,21 @@ describe('BlueSkyCard', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true }) }))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
-    screen.getByRole('button', { name: 'Disable' }).click()
+    await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: true, connected: true }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true }) }))
 
     fetchMock.mockRejectOnce()
 
-    screen.getByRole('button', { name: 'Disable' }).click()
+    await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })

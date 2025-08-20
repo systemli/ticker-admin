@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import MessageForm from './MessageForm'
 
 describe('MessageForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
@@ -30,7 +27,7 @@ describe('MessageForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component(ticker(true)))
+    renderWithProviders(component(ticker(true)))
 
     expect(screen.getByText('0/4096')).toBeInTheDocument()
 
@@ -59,7 +56,7 @@ describe('MessageForm', () => {
   })
 
   it('should render the component when ticker is inactive', async () => {
-    setup(queryClient, component(ticker(false)))
+    renderWithProviders(component(ticker(false)))
 
     expect(screen.getByRole('textbox')).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled()
@@ -69,7 +66,7 @@ describe('MessageForm', () => {
     const t = ticker(true)
     t.mastodon.active = true
 
-    setup(queryClient, component(t))
+    renderWithProviders(component(t))
 
     expect(screen.getByText('0/500')).toBeInTheDocument()
   })
@@ -78,7 +75,7 @@ describe('MessageForm', () => {
     const t = ticker(true)
     t.bluesky.active = true
 
-    setup(queryClient, component(t))
+    renderWithProviders(component(t))
 
     expect(screen.getByText('0/300')).toBeInTheDocument()
   })

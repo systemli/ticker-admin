@@ -26,12 +26,6 @@ const UsersView: FC = () => {
             >
               New User
             </Button>
-            <UserModalForm
-              onClose={() => {
-                setFormModalOpen(false)
-              }}
-              open={formModalOpen}
-            />
           </Stack>
         </Grid>
         <Grid size={{ xs: 12 }}>
@@ -40,6 +34,12 @@ const UsersView: FC = () => {
           </Card>
         </Grid>
       </Grid>
+      <UserModalForm
+        onClose={() => {
+          setFormModalOpen(false)
+        }}
+        open={formModalOpen}
+      />
     </Layout>
   )
 }

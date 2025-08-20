@@ -29,7 +29,7 @@ describe('SettingsView', function () {
   })
 
   beforeEach(() => {
-    vi.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(jwt)
+    vi.mocked(localStorage.getItem).mockReturnValue(jwt)
     fetchMock.resetMocks()
   })
 

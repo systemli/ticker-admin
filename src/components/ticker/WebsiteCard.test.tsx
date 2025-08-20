@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker, TickerWebsite } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import WebsiteCard from './WebsiteCard'
 
 describe('WebsiteCard', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
@@ -30,14 +27,14 @@ describe('WebsiteCard', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component({ websites: [] }))
+    renderWithProviders(component({ websites: [] }))
 
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.getByText('No website origins configured.')).toBeInTheDocument()
   })
 
   it('should delete the origins', async () => {
-    setup(queryClient, component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
+    renderWithProviders(component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
 
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
@@ -58,7 +55,7 @@ describe('WebsiteCard', () => {
   })
 
   it('should open the form', async () => {
-    setup(queryClient, component({ websites: [] }))
+    renderWithProviders(component({ websites: [] }))
 
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
 
@@ -68,7 +65,7 @@ describe('WebsiteCard', () => {
   })
 
   it('should fail when reponse fails', async () => {
-    setup(queryClient, component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
+    renderWithProviders(component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
 
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
 
@@ -80,7 +77,7 @@ describe('WebsiteCard', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
+    renderWithProviders(component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
 
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
 

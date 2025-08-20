@@ -28,7 +28,9 @@ const ErrorView: FC<Props> = ({ children, queryKey }) => {
             </Button>
           </Box>
           <Box>
-            <Typography variant="body1">{children}</Typography>
+            <Typography component="div" variant="body1">
+              {children}
+            </Typography>
             <Typography color={colors.grey[700]} component="p" variant="body2">
               Please try again later or contact your administrator.
             </Typography>

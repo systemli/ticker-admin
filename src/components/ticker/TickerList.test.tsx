@@ -1,4 +1,5 @@
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { TableBody } from '@mui/material'
+import { renderWithProviders, userToken } from '../../tests/utils'
 import TickerList from './TickerList'
 import TickerListItems from './TickerListItems'
 
@@ -20,12 +21,12 @@ describe('TickerList', function () {
     vi.mock('./TickerListItems', () => {
       return {
         __esModule: true,
-        default: vi.fn(() => <div></div>),
+        default: vi.fn(() => <TableBody></TableBody>),
       }
     })
 
-    setup(queryClient, component())
+    renderWithProviders(component())
 
-    expect(TickerListItems).toHaveBeenCalledTimes(3)
+    expect(TickerListItems).toHaveBeenCalledTimes(2)
   })
 })

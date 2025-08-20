@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { InactiveSetting, Setting } from '../../api/Settings'
-import { adminToken, queryClient, setup } from '../../tests/utils'
+import { adminToken, renderWithProviders, setMockToken } from '../../tests/utils'
 import InactiveSettingsForm from './InactiveSettingsForm'
 
 describe('InactiveSettingsForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', adminToken)
-  })
-
   beforeEach(() => {
+    setMockToken(adminToken)
     fetchMock.resetMocks()
     callback.mockClear()
     setSubmitting.mockClear()
@@ -33,7 +30,7 @@ describe('InactiveSettingsForm', () => {
       name: 'inactive_setting',
       value: {} as InactiveSetting,
     } as Setting<InactiveSetting>
-    setup(queryClient, component(setting))
+    renderWithProviders(component(setting))
 
     expect(screen.getByRole('textbox', { name: 'Headline' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Subheadline' })).toBeInTheDocument()
@@ -91,7 +88,7 @@ describe('InactiveSettingsForm', () => {
         twitter: 'user',
       } as InactiveSetting,
     } as Setting<InactiveSetting>
-    setup(queryClient, component(setting))
+    renderWithProviders(component(setting))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
@@ -116,7 +113,7 @@ describe('InactiveSettingsForm', () => {
         twitter: 'user',
       } as InactiveSetting,
     } as Setting<InactiveSetting>
-    setup(queryClient, component(setting))
+    renderWithProviders(component(setting))
 
     fetchMock.mockRejectOnce()
 

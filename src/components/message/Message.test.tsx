@@ -1,18 +1,13 @@
 import { screen } from '@testing-library/dom'
 import { Message as MessageAPI } from '../../api/Message'
-import { Ticker } from '../../api/Ticker'
-import { queryClient, setup } from '../../tests/utils'
+import { renderWithProviders } from '../../tests/utils'
 import Message from './Message'
 
 describe('Message', () => {
   it('should render', () => {
-    const ticker = {
-      location: {
-        lat: 0,
-        lon: 0,
-      },
-    } as Ticker
     const message = {
+      id: 1,
+      ticker: 1,
       createdAt: '2021-10-01T00:00:00Z',
       text: 'Multi line message with links\nhttps://example.com\nhttps://example.net',
       attachments: [
@@ -26,7 +21,7 @@ describe('Message', () => {
       geoInformation: '{}',
     } as MessageAPI
 
-    setup(queryClient, <Message message={message} ticker={ticker} />)
+    renderWithProviders(<Message message={message} />)
 
     expect(screen.getByText('Multi line message with links')).toBeInTheDocument()
     expect(screen.getByText('example.com')).toBeInTheDocument()

@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import TelegramForm from './TelegramForm'
 
 describe('TelegramForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     callback.mockClear()
     fetchMock.resetMocks()
   })
@@ -38,7 +35,7 @@ describe('TelegramForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByRole('checkbox', { name: 'Active' })).toBeInTheDocument()
     expect(screen.getByLabelText('Channel *')).toBeInTheDocument()
@@ -65,7 +62,7 @@ describe('TelegramForm', () => {
   })
 
   it('should fail when response fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
     await userEvent.type(screen.getByLabelText('Channel *'), '@channel')
@@ -79,7 +76,7 @@ describe('TelegramForm', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
     await userEvent.type(screen.getByLabelText('Channel *'), '@channel')

@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup } from '../../tests/utils'
+import { renderWithProviders } from '../../tests/utils'
 import TickersDropdown from './TickersDropdown'
 
 describe('TickersDropdown', () => {
@@ -30,7 +30,7 @@ describe('TickersDropdown', () => {
         status: 'success',
       })
     )
-    setup(queryClient, component({ tickers: [] }))
+    renderWithProviders(component({ tickers: [] }))
 
     expect(screen.getByRole('combobox')).toBeInTheDocument()
 

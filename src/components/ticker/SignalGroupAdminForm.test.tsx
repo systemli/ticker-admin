@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { Ticker } from '../../api/Ticker'
-import { queryClient, setup, userToken } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import SignalGroupAdminForm from './SignalGroupAdminForm'
 
 describe('SignalGroupAdminForm', () => {
-  beforeAll(() => {
-    localStorage.setItem('token', userToken)
-  })
-
   beforeEach(() => {
+    setMockToken(userToken)
     callback.mockClear()
     fetchMock.resetMocks()
   })
@@ -37,7 +34,7 @@ describe('SignalGroupAdminForm', () => {
   }
 
   it('should render the component', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Only do this if extra members with write access are needed.')).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument()
@@ -63,7 +60,7 @@ describe('SignalGroupAdminForm', () => {
   })
 
   it('should render the error message', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Only do this if extra members with write access are needed.')).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument()
@@ -78,7 +75,7 @@ describe('SignalGroupAdminForm', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
 
@@ -90,7 +87,7 @@ describe('SignalGroupAdminForm', () => {
   })
 
   it('should fail when request fails', async () => {
-    setup(queryClient, component({ ticker: ticker({ active: false, connected: false }) }))
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
 
