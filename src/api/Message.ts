@@ -1,4 +1,3 @@
-import { FeatureCollection, Geometry } from 'geojson'
 import { ApiResponse, ApiUrl, apiClient, apiHeaders } from './Api'
 
 interface MessagesResponseData {
@@ -17,7 +16,6 @@ export interface Message {
   telegramUrl?: string
   mastodonUrl?: string
   blueskyUrl?: string
-  geoInformation: string
   attachments?: Attachment[]
 }
 
@@ -42,20 +40,12 @@ export async function fetchMessagesApi(token: string, ticker: number, before?: n
   })
 }
 
-export async function postMessageApi(
-  token: string,
-  ticker: string,
-  text: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  geoInformation: FeatureCollection<Geometry, any>,
-  attachments: number[]
-): Promise<ApiResponse<MessageResponseData>> {
+export async function postMessageApi(token: string, ticker: string, text: string, attachments: number[]): Promise<ApiResponse<MessageResponseData>> {
   return apiClient<MessageResponseData>(`${ApiUrl}/admin/tickers/${ticker}/messages`, {
     headers: apiHeaders(token),
     method: 'post',
     body: JSON.stringify({
       text: text,
-      geoInformation: geoInformation,
       attachments: attachments,
     }),
   })

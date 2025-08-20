@@ -47,10 +47,6 @@ describe('MessageForm', () => {
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/messages', {
       body: JSON.stringify({
         text: 'Hello, World!',
-        geoInformation: {
-          type: 'FeatureCollection',
-          features: [],
-        },
         attachments: [],
       }),
       headers: {

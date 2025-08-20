@@ -86,7 +86,6 @@ describe('TickerForm', () => {
           mastodon: 'https://mastodon.social/@account',
           bluesky: 'https://bsky.app/profile/account.bsky.social',
         },
-        location: { lat: 0, lon: 0 },
       }),
       headers: {
         Accept: 'application/json',
@@ -150,7 +149,6 @@ describe('TickerForm', () => {
           mastodon: 'https://mastodon.social/@account',
           bluesky: 'https://bsky.app/profile/account.bsky.social',
         },
-        location: { lat: 0, lon: 0 },
       }),
       headers: {
         Accept: 'application/json',

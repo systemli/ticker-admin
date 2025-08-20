@@ -16,7 +16,7 @@ const Description: FC = () => {
           helperText={error?.message ? error.message : null}
           margin="dense"
           maxRows={10}
-          rows={3}
+          minRows={3}
           multiline
           label="Description"
         />
