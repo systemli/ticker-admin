@@ -50,16 +50,17 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         createNotification({ content: 'Signal Group enabled successfully', severity: 'success' })
+        setSubmittingAdd(false)
       },
       onError: () => {
         createNotification({ content: 'Failed to configure Signal group', severity: 'error' })
+        setSubmittingAdd(false)
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
+        setSubmittingAdd(false)
       },
     })
-
-    setSubmittingAdd(false)
   }
 
   const handleToggle = () => {
