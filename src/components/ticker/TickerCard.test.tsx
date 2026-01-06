@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { Ticker, TickerBluesky, TickerMastodon, TickerSignalGroup, TickerTelegram, TickerWebsite } from '../../api/Ticker'
+import { Ticker, TickerBluesky, TickerMatrix, TickerMastodon, TickerSignalGroup, TickerTelegram, TickerWebsite } from '../../api/Ticker'
 import TickerCard from './TickerCard'
 
 describe('TickerCard', () => {
@@ -11,6 +11,7 @@ describe('TickerCard', () => {
     telegram = { connected: false } as TickerTelegram,
     bluesky = { connected: false } as TickerBluesky,
     signalGroup = { connected: false } as TickerSignalGroup,
+    matrix = { connected: false } as TickerMatrix,
   }) => {
     return {
       id: 1,
@@ -21,6 +22,7 @@ describe('TickerCard', () => {
       telegram: telegram,
       bluesky: bluesky,
       signalGroup: signalGroup,
+      matrix: matrix,
     } as unknown as Ticker
   }
 
@@ -121,5 +123,23 @@ describe('TickerCard', () => {
 
     expect(screen.getByText('Integrations')).toBeInTheDocument()
     expect(screen.getAllByText('Signal Group')).toHaveLength(2)
+  })
+
+  it('renders matrix integration', () => {
+    render(
+      <TickerCard
+        ticker={ticker({
+          matrix: {
+            connected: true,
+            active: true,
+            roomID: '',
+            roomName: '!systemli:matrix.org',
+          },
+        })}
+      />
+    )
+
+    expect(screen.getByText('Integrations')).toBeInTheDocument()
+    expect(screen.getByText('Matrix')).toBeInTheDocument()
   })
 })

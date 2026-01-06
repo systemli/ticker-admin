@@ -24,6 +24,7 @@ export interface TickerFormData {
   telegram: TickerTelegram
   bluesky: TickerBluesky
   signalGroup: TickerSignalGroup
+  matrix: TickerMatrix
   location: TickerLocation
 }
 
@@ -39,6 +40,7 @@ export interface Ticker {
   telegram: TickerTelegram
   bluesky: TickerBluesky
   signalGroup: TickerSignalGroup
+  matrix: TickerMatrix
   location: TickerLocation
 }
 
@@ -116,6 +118,17 @@ export interface TickerSignalGroupFormData {
 
 export interface TickerSignalGroupAdminFormData {
   number: string
+}
+
+export interface TickerMatrix {
+  active: boolean
+  connected: boolean
+  roomID: string
+  roomName: string
+}
+
+export interface TickerMatrixFormData {
+  active: boolean
 }
 
 export interface TickerLocation {
@@ -248,4 +261,16 @@ export async function putTickerSignalGroupAdminApi(token: string, data: TickerSi
     method: 'put',
     body: JSON.stringify(data),
   })
+}
+
+export async function putTickerMatrixApi(token: string, data: TickerMatrixFormData, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
+  return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/matrix`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteTickerMatrixApi(token: string, ticker: Ticker): Promise<ApiResponse<TickerResponseData>> {
+  return apiClient<TickerResponseData>(`${ApiUrl}/admin/tickers/${ticker.id}/matrix`, { headers: apiHeaders(token), method: 'delete' })
 }

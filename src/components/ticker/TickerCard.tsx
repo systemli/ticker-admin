@@ -17,7 +17,12 @@ const TickerCard: FC<Props> = ({ ticker }) => {
   const color = ticker.active ? 'primary' : 'warning'
 
   const hasIntegrations =
-    ticker.websites.length > 0 || ticker.mastodon.connected || ticker.telegram.connected || ticker.bluesky.connected || ticker.signalGroup.connected
+    ticker.websites.length > 0 ||
+    ticker.mastodon.connected ||
+    ticker.telegram.connected ||
+    ticker.bluesky.connected ||
+    ticker.signalGroup.connected ||
+    ticker.matrix.connected
 
   return (
     <Card>
@@ -99,6 +104,12 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
         <TickerProperty
           label="Signal Group"
           value={<IntegrationChip active={ticker.signalGroup.active} title="Signal Group" link={ticker.signalGroup.groupInviteLink} />}
+        />
+      )}
+      {ticker.matrix.connected && (
+        <TickerProperty
+          label="Matrix"
+          value={<IntegrationChip active={ticker.matrix.active} title={ticker.matrix.roomName} link={`https://matrix.to/#/${ticker.matrix.roomName}`} />}
         />
       )}
     </Stack>

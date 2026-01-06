@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { Ticker } from '../../api/Ticker'
 import BlueskyCard from './BlueskyCard'
 import MastodonCard from './MastodonCard'
+import MatrixCard from './MatrixCard'
 import SignalGroupCard from './SignalGroupCard'
 import TelegramCard from './TelegramCard'
 import WebsiteCard from './WebsiteCard'
@@ -28,6 +29,9 @@ const TickerIntegrations: FC<Props> = ({ ticker }) => {
       </Grid>
       <Grid size={{ md: 6, xs: 12 }}>
         <SignalGroupCard ticker={ticker} />
+      </Grid>
+      <Grid size={{ md: 6, xs: 12 }}>
+        <MatrixCard ticker={ticker} />
       </Grid>
     </Grid>
   )
