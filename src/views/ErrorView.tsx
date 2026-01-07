@@ -1,6 +1,7 @@
 import { Box, Button, Card, CardContent, colors, Divider, Stack, Typography } from '@mui/material'
 import { QueryKey, useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   children: React.ReactNode
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const ErrorView: FC<Props> = ({ children, queryKey }) => {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const handleClick = () => {
@@ -18,13 +20,13 @@ const ErrorView: FC<Props> = ({ children, queryKey }) => {
     <Card>
       <CardContent>
         <Typography component="h2" variant="h4">
-          Oh no! An error occured
+          {t('error.ohNo')}
         </Typography>
         <Divider sx={{ mt: 1, mb: 2 }} />
         <Stack alignItems="center" direction="row" spacing={2}>
           <Box>
             <Button color="secondary" onClick={handleClick} variant="contained">
-              Reload
+              {t('action.reload')}
             </Button>
           </Box>
           <Box>
@@ -32,7 +34,7 @@ const ErrorView: FC<Props> = ({ children, queryKey }) => {
               {children}
             </Typography>
             <Typography color={colors.grey[700]} component="p" variant="body2">
-              Please try again later or contact your administrator.
+              {t('error.contactAdmin')}
             </Typography>
           </Box>
         </Stack>

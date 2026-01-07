@@ -7,6 +7,7 @@ import { handleApiCall } from '../../api/Api'
 import { putTickerWebsitesApi, Ticker, TickerWebsite } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   callback: () => void
@@ -18,6 +19,7 @@ interface FormData {
 }
 
 const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
+  const { t } = useTranslation()
   const websites = ticker.websites
   const { createNotification } = useNotification()
   const { token } = useAuth()
@@ -40,11 +42,11 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerWebsitesApi(token, ticker, data.websites), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Websites were successfully updated', severity: 'success' })
+        createNotification({ content: t("integrations.website.updated"), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: 'Failed to update websites', severity: 'error' })
+        createNotification({ content: t("integrations.website.errorUpdate"), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -56,7 +58,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
     <form id="configureWebsites" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ xs: 12 }}>
-          <Typography>You can configure website origins for your ticker. The ticker will only be reachable from the configured websites.</Typography>
+          <Typography>{t("integrations.website.configureMessage")}</Typography>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
@@ -85,7 +87,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
               </FormControl>
             ))}
           </FormGroup>
-          <Button onClick={() => append({ origin: '' } as TickerWebsite)}>Add Origin</Button>
+          <Button onClick={() => append({ origin: '' } as TickerWebsite)}>{t("integrations.website.addOrigin")}</Button>
         </Grid>
       </Grid>
     </form>

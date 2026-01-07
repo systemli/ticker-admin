@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Navigate, RouteProps } from 'react-router'
 import useAuth from '../contexts/useAuth'
 import { Roles } from '../contexts/AuthContext'
+import { useTranslation } from 'react-i18next'
 
 type Props = RouteProps & {
   role: Roles
@@ -9,6 +10,7 @@ type Props = RouteProps & {
 }
 
 const ProtectedRoute: FC<Props> = ({ role, outlet }) => {
+  const { t } = useTranslation()
   const { user } = useAuth()
 
   if (!user) {
@@ -19,7 +21,7 @@ const ProtectedRoute: FC<Props> = ({ role, outlet }) => {
     //TODO: ErrorView
     return (
       <>
-        <h1>Permission denied</h1>
+        <h1>{t("error.permissionDenied")}</h1>
       </>
     )
   }

@@ -2,6 +2,7 @@ import { Checkbox, Divider, FormControlLabel, FormGroup, Grid, TextField, Typogr
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { Ticker } from '../../api/Ticker'
 import { User, postUserApi, putUserApi } from '../../api/User'
@@ -25,6 +26,7 @@ interface FormValues {
 }
 
 const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const {
@@ -59,11 +61,11 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
     handleApiCall(apiCall, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['users'] })
-        createNotification({ content: `User was successfully ${user ? 'updated' : 'created'}`, severity: 'success' })
+        createNotification({ content: t(user ? "user.updated" : "user.created"), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: `Failed to ${user ? 'update' : 'create'} user`, severity: 'error' })
+        createNotification({ content: t(user ? "user.errorUpdate" : "user.errorCreate"), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -87,14 +89,14 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
               margin="normal"
               {...register('email')}
               defaultValue={user ? user.email : ''}
-              label="E-Mail"
+              label={t('user.email')}
               name="email"
               required
               type="email"
             />
           </FormGroup>
           <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('isSuperAdmin')} defaultChecked={user?.isSuperAdmin} />} label="Super Admin" />
+            <FormControlLabel control={<Checkbox {...register('isSuperAdmin')} defaultChecked={user?.isSuperAdmin} />} label={t('user.superAdmin')} />
           </FormGroup>
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
@@ -104,12 +106,12 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
               margin="normal"
               {...register('password', {
                 minLength: {
-                  value: 8,
-                  message: 'Password must have at least 8 characters',
+                  value: 10,
+                  message: t('user.errorPasswordMinLength'),
                 },
               })}
               helperText={errors.password?.message}
-              label="Password"
+              label={t('user.password')}
               name="password"
               required={!user}
               type="password"
@@ -118,10 +120,10 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
               error={errors.password_validate !== undefined}
               margin="dense"
               {...register('password_validate', {
-                validate: value => value === password || 'The passwords do not match',
+                validate: value => value === password || t('user.errorPasswordMatch'),
               })}
               helperText={errors.password_validate?.message}
-              label="Repeat Password"
+              label={t('user.repeatPassword')}
               name="password_validate"
               required={!user}
               type="password"
@@ -132,7 +134,7 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
           <Grid size={{ xs: 12 }}>
             <Divider />
             <Typography component="h6" sx={{ my: 1 }} variant="h6">
-              Permissions
+              {t('user.permissions')}
             </Typography>
             <TickersDropdown
               defaultValue={user?.tickers || []}

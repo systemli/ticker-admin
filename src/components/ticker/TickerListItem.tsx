@@ -8,12 +8,14 @@ import { Ticker } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import TickerModalDelete from './TickerModalDelete'
 import TickerModalForm from './TickerModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const TickerListItem: FC<Props> = ({ ticker }: Props) => {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const navigate = useNavigate()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
@@ -32,7 +34,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
     navigate(`/ticker/${ticker.id}`)
   }
 
-  const origins = ticker.websites.length > 0 ? ticker.websites.map(website => website.origin).join(', ') : 'No origins'
+  const origins = ticker.websites.length > 0 ? ticker.websites.map(website => website.origin).join(', ') : t("integrations.website.noOrigins")
 
   return (
     <TableRow hover style={{ cursor: 'pointer' }}>
@@ -72,7 +74,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
             }}
           >
             <FontAwesomeIcon icon={faHandPointer} />
-            <Typography sx={{ ml: 2 }}>Use</Typography>
+            <Typography sx={{ ml: 2 }}>{t('action.use')}</Typography>
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -81,7 +83,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
             }}
           >
             <FontAwesomeIcon icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>Edit</Typography>
+            <Typography sx={{ ml: 2 }}>{t("action.edit")}</Typography>
           </MenuItem>
           {user?.roles.includes('admin') ? (
             <>
@@ -93,7 +95,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
                 sx={{ color: colors.red[400] }}
               >
                 <FontAwesomeIcon icon={faTrash} />
-                <Typography sx={{ ml: 2 }}>Delete</Typography>
+                <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
               </MenuItem>
             </>
           ) : null}

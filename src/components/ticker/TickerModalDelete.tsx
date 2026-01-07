@@ -5,6 +5,7 @@ import { Ticker, deleteTickerApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import Modal from '../common/Modal'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onClose: () => void
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const queryClient = useQueryClient()
@@ -21,20 +23,20 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
     handleApiCall(deleteTickerApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
-        createNotification({ content: 'Ticker was successfully deleted', severity: 'success' })
+        createNotification({ content: t("tickers.deleted"), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to delete ticker', severity: 'error' })
+        createNotification({ content: t('tickers.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
       },
     })
-  }, [token, ticker, queryClient, createNotification])
+  }, [token, ticker, queryClient, createNotification, t])
 
   return (
-    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete Ticker">
-      Are you sure to delete the ticker? This action cannot be undone.
+    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title={t("tickers.delete")}>
+      {t('tickers.questionDelete')}
     </Modal>
   )
 }

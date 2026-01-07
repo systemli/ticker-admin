@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 const Url: FC = () => {
+  const { t } = useTranslation()
   const { control } = useFormContext()
 
   return (
@@ -15,7 +17,7 @@ const Url: FC = () => {
         required: false,
         pattern: {
           value: /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(:\d{1,5})?(\/.*)?$/i,
-          message: 'Homepage is invalid',
+          message: t("integrations.errorHomepage"),
         },
       }}
       render={({ field, fieldState: { error } }) => (
@@ -32,7 +34,7 @@ const Url: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label="Homepage"
+          label={t("integrations.homepage")}
           margin="dense"
         />
       )}

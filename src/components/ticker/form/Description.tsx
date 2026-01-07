@@ -1,8 +1,10 @@
 import { TextField } from '@mui/material'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 const Description: FC = () => {
+  const { t } = useTranslation()
   const { control } = useFormContext()
 
   return (
@@ -18,7 +20,7 @@ const Description: FC = () => {
           maxRows={10}
           minRows={3}
           multiline
-          label="Description"
+          label={t("common.description")}
         />
       )}
     />

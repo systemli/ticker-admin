@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material'
 import { Box, Breakpoint, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, SxProps } from '@mui/material'
 import { FC, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   children: ReactNode
@@ -31,6 +32,7 @@ const Modal: FC<Props> = ({
   submitting = false,
   title,
 }) => {
+  const { t } = useTranslation()
   return (
     <Dialog fullWidth={fullWidth} maxWidth={maxWidth} open={open}>
       <DialogTitle>
@@ -46,7 +48,7 @@ const Modal: FC<Props> = ({
         {submitForm && (
           <Box sx={{ display: 'inline', position: 'relative' }}>
             <Button color="primary" form={submitForm} onClick={onSubmitAction} type="submit" variant="contained" disabled={submitting}>
-              Save
+              {t('action.save')}
             </Button>
             {submitting && (
               <CircularProgress
@@ -69,7 +71,7 @@ const Modal: FC<Props> = ({
           </Button>
         )}
         <Button color="secondary" onClick={onClose}>
-          Close
+          {t('action.close')}
         </Button>
       </DialogActions>
     </Dialog>

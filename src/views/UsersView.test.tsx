@@ -161,6 +161,6 @@ describe('UsersView', function () {
     setup()
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
-    expect(await screen.findByText('Oh no! An error occured')).toBeInTheDocument()
+    expect(await screen.findByText('Oh no! An error occurred')).toBeInTheDocument()
   })
 })

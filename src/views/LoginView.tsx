@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import logo from '../assets/logo.png'
 import useAuth from '../contexts/useAuth'
 
@@ -12,6 +13,7 @@ interface FormValues {
 }
 
 const LoginView: FC = () => {
+  const { t } = useTranslation()
   const { getValues, handleSubmit, register, reset } = useForm<FormValues>()
   const { login, error, user } = useAuth()
   const navigate = useNavigate()
@@ -43,7 +45,7 @@ const LoginView: FC = () => {
           <Box sx={{ mb: 2, textAlign: 'center' }}>
             <img alt="Systemli Logo" src={logo} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
             <Typography component="h4" sx={{ mt: 1 }} variant="h4">
-              Ticker Login
+              {t('user.tickerLogin')}
             </Typography>
           </Box>
         </Grid>
@@ -55,10 +57,10 @@ const LoginView: FC = () => {
                   {error.message}
                 </Alert>
               ) : null}
-              <TextField {...register('email')} autoFocus data-testid="email" fullWidth label="E-Mail" required sx={{ my: 1 }} type="email" />
-              <TextField {...register('password')} data-testid="password" fullWidth label="Password" required sx={{ my: 1 }} type="password" />
+              <TextField {...register('email')} autoFocus data-testid="email" fullWidth label={t('user.email')} required sx={{ my: 1 }} type="email" />
+              <TextField {...register('password')} data-testid="password" fullWidth label={t('user.password')} required sx={{ my: 1 }} type="password" />
               <Button data-testid="submit" fullWidth size="large" sx={{ my: 1 }} type="submit" variant="contained">
-                Login
+                {t('user.login')}
               </Button>
             </form>
           </Paper>

@@ -2,6 +2,7 @@ import { FormGroup, Grid, TextField } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { InactiveSetting, Setting, putInactiveSettingsApi } from '../../api/Settings'
 import useAuth from '../../contexts/useAuth'
@@ -25,6 +26,7 @@ interface FormValues {
 }
 
 const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmitting }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { handleSubmit, register } = useForm<FormValues>({
     defaultValues: {
@@ -64,12 +66,12 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('headline')} defaultValue={setting.value.headline} label="Headline" name="headline" required />
+            <TextField margin="dense" {...register('headline')} defaultValue={setting.value.headline} label={t('common.headline')} name="headline" required />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('subHeadline')} defaultValue={setting.value.subHeadline} label="Subheadline" required />
+            <TextField margin="dense" {...register('subHeadline')} defaultValue={setting.value.subHeadline} label={t('common.subheadline')} required />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
@@ -80,29 +82,29 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
               multiline
               {...register('description')}
               defaultValue={setting.value.description}
-              label="Description"
+              label={t('common.description')}
               required
             />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('author')} defaultValue={setting.value.author} label="Author" name="author" required />
+            <TextField margin="dense" {...register('author')} defaultValue={setting.value.author} label={t('common.author')} name="author" required />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('homepage')} defaultValue={setting.value.homepage} label="Homepage" name="homepage" required type="url" />
+            <TextField margin="dense" {...register('homepage')} defaultValue={setting.value.homepage} label={t('integrations.homepage')} name="homepage" required type="url" />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('email')} defaultValue={setting.value.email} label="E-Mail" name="email" required type="email" />
+            <TextField margin="dense" {...register('email')} defaultValue={setting.value.email} label={t('user.email')} name="email" required type="email" />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('twitter')} defaultValue={setting.value.twitter} label="Twitter" name="twitter" required />
+            <TextField margin="dense" {...register('twitter')} defaultValue={setting.value.twitter} label={t("social.twitter")} name="twitter" required />
           </FormGroup>
         </Grid>
       </Grid>

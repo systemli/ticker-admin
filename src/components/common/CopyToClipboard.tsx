@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Tooltip } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   text: string
 }
 
 const CopyToClipboard: FC<Props> = ({ text }) => {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState<boolean>(false)
 
   const handleClick = async () => {
@@ -18,8 +20,8 @@ const CopyToClipboard: FC<Props> = ({ text }) => {
   }
 
   return (
-    <Tooltip title={copied ? 'Copied!' : 'Copy to clipboard'} arrow placement="top">
-      <FontAwesomeIcon icon={faCopy} onClick={handleClick} color={grey[800]} style={{ cursor: 'pointer' }} aria-label="Copy to Clipboard" />
+    <Tooltip title={copied ? t('common.copied') : t('action.copyToClipboard')} arrow placement="top">
+      <FontAwesomeIcon icon={faCopy} onClick={handleClick} color={grey[800]} style={{ cursor: 'pointer' }} aria-label={t('action.copyToClipboard')} />
     </Tooltip>
   )
 }

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import useAuth from '../../contexts/useAuth'
 import useInactiveSettingsQuery from '../../queries/useInactiveSettingsQuery'
 import ErrorView from '../../views/ErrorView'
@@ -10,6 +11,7 @@ import Loader from '../Loader'
 import InactiveSettingsModalForm from './InactiveSettingsModalForm'
 
 const InactiveSettingsCard: FC = () => {
+  const { t } = useTranslation()
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { token } = useAuth()
   const { isLoading, error, data } = useInactiveSettingsQuery({ token })
@@ -37,33 +39,33 @@ const InactiveSettingsCard: FC = () => {
       <CardContent>
         <Stack alignItems="center" direction="row" justifyContent="space-between">
           <Typography component="h3" variant="h5">
-            Inactive Settings
+            {t('title.inactive')}
           </Typography>
           <Button data-testid="inactivesetting-edit" onClick={handleFormOpen} size="small" startIcon={<FontAwesomeIcon icon={faPencil} />}>
-            Edit
+            {t('action.edit')}
           </Button>
         </Stack>
         <Typography color="GrayText" component="span" variant="body2">
-          These settings have affect for inactive or non-configured tickers.
+          {t('status.description')}
         </Typography>
       </CardContent>
       <Divider variant="middle" />
       <CardContent>
         <Box sx={{ mb: 1 }}>
           <Typography color="GrayText" component="span" variant="body2">
-            Headline
+            {t('common.headline')}
           </Typography>
           <Typography>{setting.value.headline}</Typography>
         </Box>
         <Box sx={{ mb: 1 }}>
           <Typography color="GrayText" component="span" variant="body2">
-            Subheadline
+            {t('common.subheadline')}
           </Typography>
           <Typography>{setting.value.subHeadline}</Typography>
         </Box>
         <Box sx={{ mb: 1 }}>
           <Typography color="GrayText" component="span" variant="body2">
-            Description
+            {t('common.description')}
           </Typography>
           <Typography>{setting.value.description}</Typography>
         </Box>
@@ -71,7 +73,7 @@ const InactiveSettingsCard: FC = () => {
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
-                Author
+                {t('common.author')}
               </Typography>
               <Typography>{setting.value.author}</Typography>
             </Box>
@@ -79,7 +81,7 @@ const InactiveSettingsCard: FC = () => {
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
-                Homepage
+                {t('integrations.homepage')}
               </Typography>
               <Typography>{setting.value.homepage}</Typography>
             </Box>
@@ -87,7 +89,7 @@ const InactiveSettingsCard: FC = () => {
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
-                E-Mail
+                {t('user.email')}
               </Typography>
               <Typography>{setting.value.email}</Typography>
             </Box>
@@ -95,7 +97,7 @@ const InactiveSettingsCard: FC = () => {
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
               <Typography color="GrayText" component="span" variant="body2">
-                Twitter
+                {t('social.twitter')}
               </Typography>
               <Typography>{setting.value.twitter}</Typography>
             </Box>

@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import Ticker from '../components/ticker/Ticker'
 import useAuth from '../contexts/useAuth'
 import useTickerQuery from '../queries/useTickerQuery'
@@ -11,6 +12,7 @@ interface TickerViewParams {
 }
 
 const TickerView: FC = () => {
+  const { t } = useTranslation()
   const { tickerId } = useParams<keyof TickerViewParams>() as TickerViewParams
   const tickerIdNum = parseInt(tickerId)
   const { token } = useAuth()
@@ -20,7 +22,7 @@ const TickerView: FC = () => {
     return (
       <Layout>
         <ErrorView queryKey={['ticker']}>
-          <p>Ticker not found.</p>
+          <p>{t('tickers.errorNotFound')}</p>
         </ErrorView>
       </Layout>
     )
