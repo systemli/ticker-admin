@@ -45,7 +45,7 @@ const UserListItem: FC<Props> = ({ user }) => {
 
   const emptyDate = '0001-01-01T00:00:00Z'
   const createdAt = dayjs(user.createdAt).format('lll')
-  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : 'never'
+  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : t("user.never")
 
   return (
     <TableRow hover>
