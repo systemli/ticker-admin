@@ -1,5 +1,6 @@
 import { Button, CircularProgress } from '@mui/material'
 import { FC, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Ticker } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useMessagesQuery from '../../queries/useMessagesQuery'
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const MessageList: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { token } = useAuth()
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage, status } = useMessagesQuery({ token, ticker })
 
@@ -44,7 +46,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
   }
 
   if (status === 'error') {
-    return <ErrorView queryKey={['messages', ticker.id]}>Unable to fetch messages from server.</ErrorView>
+    return <ErrorView queryKey={['messages', ticker.id]}>{t("message.errorUnableToFetch")}</ErrorView>
   }
 
   return (
@@ -54,7 +56,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
         <CircularProgress size="3rem" />
       ) : hasNextPage ? (
         <Button disabled={!hasNextPage || isFetchingNextPage} onClick={() => fetchNextPage()} variant="outlined">
-          Load More
+          {t("message.loadMore")}
         </Button>
       ) : null}
     </>

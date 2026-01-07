@@ -5,6 +5,7 @@ import { Ticker, putTickerResetApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import Modal from '../common/Modal'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onClose: () => void
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const queryClient = useQueryClient()
@@ -23,11 +25,11 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
         queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
         queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Ticker has been successfully reset', severity: 'success' })
+        createNotification({ content: t("tickers.reseted"), severity: 'success' })
         onClose()
       },
       onError: () => {
-        createNotification({ content: 'Failed to reset ticker', severity: 'error' })
+        createNotification({ content: t("tickers.errorReset"), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -36,11 +38,11 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
   }, [token, ticker, queryClient, createNotification, onClose])
 
   return (
-    <Modal dangerActionButtonText="Reset" onClose={onClose} onDangerAction={handleReset} open={open} title="Reset Ticker">
+    <Modal dangerActionButtonText="Reset" onClose={onClose} onDangerAction={handleReset} open={open} title={t("tickers.reset")}>
       <p>
-        <strong>Are you sure you want to reset the ticker?</strong>
+        <strong>{t("tickers.questionReset")}</strong>
       </p>
-      <p>This will remove all messages, descriptions and disable the ticker.</p>
+      <p>{t("tickers.resetMessage")}</p>
     </Modal>
   )
 }

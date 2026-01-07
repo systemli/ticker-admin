@@ -6,6 +6,7 @@ import { handleApiCall } from '../../api/Api'
 import { Ticker, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   callback: () => void
@@ -18,6 +19,7 @@ interface FormValues {
 }
 
 const TelegramForm: FC<Props> = ({ callback, ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const telegram = ticker.telegram
   const { token } = useAuth()
@@ -33,11 +35,11 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerTelegramApi(token, data, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Telegram integration was successfully updated', severity: 'success' })
+        createNotification({ content: t("integrations.telegram.updated"), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: 'Failed to update Telegram integration', severity: 'error' })
+        createNotification({ content: t("integrations.telegram.errorUpdate"), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -49,11 +51,11 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
     <form id="configureTelegram" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ xs: 12 }}>
-          <Typography>Only public Telegram Channels are supported. The name of the Channel is prefixed with an @ (e.g. @channel).</Typography>
+          <Typography>{t('integrations.telegram.onlyPublic')}</Typography>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.telegram.active} />} label="Active" />
+            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.telegram.active} />} label={t("status.active")} />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
@@ -62,11 +64,11 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
               {...register('channelName', {
                 pattern: {
                   value: /@\w+/i,
-                  message: 'The Channel must start with an @',
+                  message: t("integrations.telegram.errorNaming"),
                 },
               })}
               defaultValue={telegram.channelName}
-              label="Channel"
+              label={t('integrations.telegram.channel')}
               required
             />
           </FormGroup>

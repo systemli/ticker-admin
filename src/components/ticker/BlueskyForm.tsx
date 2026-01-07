@@ -6,6 +6,7 @@ import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerBlueskyFormData, putTickerBlueskyApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   callback: () => void
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const bluesky = ticker.bluesky
   const { token } = useAuth()
@@ -37,12 +39,12 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerBlueskyApi(token, data, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Bluesky integration was successfully updated', severity: 'success' })
+        createNotification({ content: t('integrations.bluesky.updated'), severity: 'success' })
         callback()
       },
       onError: () => {
-        setError('root.authenticationFailed', { message: 'Authentication failed' })
-        createNotification({ content: 'Failed to update Bluesky integration', severity: 'error' })
+        setError('root.authenticationFailed', { message: t('error.authentication') })
+        createNotification({ content: t('integrations.bluesky.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -54,7 +56,7 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
     <form id="configureBluesky" onSubmit={onSubmit}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ xs: 12 }}>
-          <Typography>You need to create a application password in Bluesky.</Typography>
+          <Typography>{t('integrations.bluesky.createAppPassword')}</Typography>
         </Grid>
         {errors.root?.authenticationFailed && (
           <Grid size={{ xs: 12 }}>
@@ -63,32 +65,38 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
         )}
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.bluesky.active} />} label="Active" />
+            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.bluesky.active} />} label={t('status.active')} />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('handle')} defaultValue={ticker.bluesky.handle} label="Handle" placeholder="handle.bsky.social" required={!isConnected} />
+            <TextField
+              {...register('handle')}
+              defaultValue={ticker.bluesky.handle}
+              label={t('action.handle')}
+              placeholder="handle.bsky.social"
+              required={!isConnected}
+            />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('appKey')} label="Application Password" type="password" required={!isConnected} />
+            <TextField {...register('appKey')} label={t('integrations.bluesky.appPassword')} type="password" required={!isConnected} />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <InputLabel id="replyRestriction-label">Reply Restriction</InputLabel>
+            <InputLabel id="replyRestriction-label">{t('integrations.bluesky.replyRestriction')}</InputLabel>
             <Controller
               name="replyRestriction"
               control={control}
               render={({ field }) => (
                 <Select {...field} labelId="replyRestriction-label" size="small">
-                  <MenuItem value="">Anyone</MenuItem>
-                  <MenuItem value="followers">Followers only</MenuItem>
-                  <MenuItem value="following">People you follow</MenuItem>
-                  <MenuItem value="mentioned">Mentioned users only</MenuItem>
-                  <MenuItem value="nobody">Nobody</MenuItem>
+                  <MenuItem value="">{t('integrations.bluesky.replyRestrictionAnyone')}</MenuItem>
+                  <MenuItem value="followers">{t('integrations.bluesky.replyRestrictionFollowers')}</MenuItem>
+                  <MenuItem value="following">{t('integrations.bluesky.replyRestrictionFollowing')}</MenuItem>
+                  <MenuItem value="mentioned">{t('integrations.bluesky.replyRestrictionMentioned')}</MenuItem>
+                  <MenuItem value="nobody">{t('integrations.bluesky.replyRestrictionNobody')}</MenuItem>
                 </Select>
               )}
             />

@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 const Twitter: FC = () => {
+  const { t } = useTranslation()
   const { control } = useFormContext()
 
   return (
@@ -15,7 +17,7 @@ const Twitter: FC = () => {
         required: false,
         pattern: {
           value: /^([a-zA-Z0-9._]+)$/,
-          message: 'Invalid Twitter username',
+          message: t('social.errorTwitterUser'),
         },
       }}
       render={({ field, fieldState: { error } }) => (
@@ -33,7 +35,7 @@ const Twitter: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label="Twitter"
+          label={t("social.twitter")}
           margin="dense"
         />
       )}
