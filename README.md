@@ -27,5 +27,6 @@ TICKER_API_URL=http://localhost:8080/v1
 Strings are localized on the [locales](./src/i18n/locales) folder. To add more languages, please update those files:
 
 - [i18n.ts](./src/i18n/i18n.ts) to localize all strings
+- [UserListItem.tsx](./src/components/user/UserListItem.tsx) to localize `dayjs` relative times
 
 To add a new string, please use the `t('stringKey')` notation and update all the locales.
