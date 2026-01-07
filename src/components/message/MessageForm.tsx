@@ -4,6 +4,7 @@ import { Box, Button, FormGroup, Stack, TextField } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { postMessageApi } from '../../api/Message'
 import { Ticker } from '../../api/Ticker'
@@ -26,6 +27,7 @@ interface FormValues {
 }
 
 const MessageForm: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const {
     formState: { isSubmitSuccessful, errors },
@@ -94,13 +96,13 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
         setAttachments([])
-        createNotification({ content: 'Message successfully posted', severity: 'success' })
+        createNotification({ content: t("message.posted"), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to post message', severity: 'error' })
+        createNotification({ content: t("message.errorFailedToPost"), severity: 'error' })
       },
       onFailure: () => {
-        createNotification({ content: 'Failed to post message', severity: 'error' })
+        createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })
       },
     })
 
@@ -116,7 +118,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
   const message = watch('message')
   const disabled = !ticker.active || isSubmitting
   const color = disabled ? palette.action.disabled : palette.primary['main']
-  const placeholder = ticker.active ? 'Write a message' : "You can't post messages to inactive tickers."
+  const placeholder = ticker.active ? t('message.writeActive') : t('writeInactive')
 
   return (
     <Box>
@@ -130,7 +132,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
             color={errors.message ? 'error' : 'primary'}
             error={!!errors.message}
             helperText={
-              errors.message?.type === 'maxLength' ? 'The message is too long.' : errors.message?.type === 'required' ? 'The message is required.' : null
+              errors.message?.type === 'maxLength' ? t('message.errorTooLong') : errors.message?.type === 'required' ? t('message.errorRequired') : null
             }
             multiline
             placeholder={placeholder}
@@ -141,7 +143,7 @@ const MessageForm: FC<Props> = ({ ticker }) => {
         <Stack alignItems="center" direction="row" justifyContent="space-between">
           <Box display="flex">
             <Button disabled={disabled} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
-              Send
+              {t('action.send')}
             </Button>
             <EmojiPicker color={color} disabled={disabled} onChange={onSelectEmoji} />
             <UploadButton color={color} disabled={disabled} onUpload={onUpload} ticker={ticker} />

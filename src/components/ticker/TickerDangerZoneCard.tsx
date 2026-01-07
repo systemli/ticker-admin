@@ -4,11 +4,13 @@ import { Ticker } from '../../api/Ticker'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBiohazard, faTrash } from '@fortawesome/free-solid-svg-icons'
 import TickerResetModal from './TickerResetModal'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const [resetOpen, setResetOpen] = useState<boolean>(false)
 
   return (
@@ -19,7 +21,7 @@ const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
         </Typography>
         <Box>
           <Button color="error" onClick={() => setResetOpen(true)} startIcon={<FontAwesomeIcon icon={faTrash} />} variant="outlined">
-            Reset Ticker
+            {t("tickers.reset")}
           </Button>
           <TickerResetModal onClose={() => setResetOpen(false)} open={resetOpen} ticker={ticker} />
         </Box>

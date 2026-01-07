@@ -9,12 +9,14 @@ import ErrorView from '../../views/ErrorView'
 import Loader from '../Loader'
 import TickerUserList from './TickerUserList'
 import TickerUsersModal from './TickerUsersModal'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const TickerUsersCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { token } = useAuth()
   const [formOpen, setFormOpen] = useState<boolean>(false)
   const { isLoading, error, data } = useTickerUsersQuery({ ticker, token })
@@ -24,7 +26,7 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
   }
 
   if (error || data === undefined || data.data === undefined || data.status === 'error') {
-    return <ErrorView queryKey={['tickerUsers', ticker.id]}>Unable to fetch users from server.</ErrorView>
+    return <ErrorView queryKey={['tickerUsers', ticker.id]}>{t("user.errorUnableToFetch")}</ErrorView>
   }
 
   const users = data.data.users
@@ -35,10 +37,10 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
           <FontAwesomeIcon icon={faUsers} /> Users
         </Typography>
-        <Typography variant="body2">List of all granted users to this ticker. Only Admins can manage this list.</Typography>
+        <Typography variant="body2">{t("user.list")}</Typography>
         <TickerUserList ticker={ticker} users={users} />
         <Button onClick={() => setFormOpen(true)} startIcon={<FontAwesomeIcon icon={faShieldDog} />} variant="outlined">
-          Manage Users
+          {t("user.manage")}
         </Button>
         <TickerUsersModal onClose={() => setFormOpen(false)} open={formOpen} ticker={ticker} users={users} />
       </CardContent>

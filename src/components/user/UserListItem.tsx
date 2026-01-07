@@ -8,6 +8,7 @@ import React, { FC, useState } from 'react'
 import { User } from '../../api/User'
 import UserModalDelete from './UserModalDelete'
 import UserModalForm from './UserModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   user: User
@@ -16,6 +17,7 @@ interface Props {
 dayjs.extend(relativeTime)
 
 const UserListItem: FC<Props> = ({ user }) => {
+  const { t } = useTranslation()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -72,7 +74,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             }}
           >
             <FontAwesomeIcon icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>Edit</Typography>
+            <Typography sx={{ ml: 2 }}>{t("action.edit")}</Typography>
           </MenuItem>
           <MenuItem
             data-testid="usermenu-delete"
@@ -83,7 +85,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             sx={{ color: colors.red[400] }}
           >
             <FontAwesomeIcon icon={faTrash} />
-            <Typography sx={{ ml: 2 }}>Delete</Typography>
+            <Typography sx={{ ml: 2 }}>{t("action.delete")}</Typography>
           </MenuItem>
         </Popover>
         <UserModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} user={user} />

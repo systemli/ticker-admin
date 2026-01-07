@@ -2,9 +2,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Controller, useFormContext } from 'react-hook-form'
 
 const Author: FC = () => {
+  const { t } = useTranslation()
   const { control } = useFormContext()
 
   return (
@@ -23,7 +25,7 @@ const Author: FC = () => {
               ),
             },
           }}
-          label="Author"
+          label={t("common.author")}
           margin="dense"
         />
       )}

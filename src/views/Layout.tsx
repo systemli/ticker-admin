@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Container } from '@mui/material'
 import { FC } from 'react'
 import { useLocation } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import Nav from '../components/navigation/Nav'
 import NavItem from '../components/navigation/NavItem'
 import UserDropdown from '../components/navigation/UserDropdown'
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const Layout: FC<Props> = ({ children }) => {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const location = useLocation()
 
@@ -20,12 +22,12 @@ const Layout: FC<Props> = ({ children }) => {
     <>
       <Nav>
         <Box sx={{ flexGrow: 1 }}>
-          <NavItem active={location.pathname === '/'} icon={<FontAwesomeIcon icon={faGaugeHigh} />} title="Dashboard" to="/" />
+          <NavItem active={location.pathname === '/'} icon={<FontAwesomeIcon icon={faGaugeHigh} />} title={t('title.dashboard')} to="/" />
           {user?.roles.includes('admin') && (
-            <NavItem active={location.pathname === '/users'} icon={<FontAwesomeIcon icon={faUsers} />} title="Users" to="/users" />
+            <NavItem active={location.pathname === '/users'} icon={<FontAwesomeIcon icon={faUsers} />} title={t('title.users')} to="/users" />
           )}
           {user?.roles.includes('admin') && (
-            <NavItem active={location.pathname === '/settings'} icon={<FontAwesomeIcon icon={faGears} />} title="Settings" to="/settings" />
+            <NavItem active={location.pathname === '/settings'} icon={<FontAwesomeIcon icon={faGears} />} title={t('title.settings')} to="/settings" />
           )}
         </Box>
         <Box>

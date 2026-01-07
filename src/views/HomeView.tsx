@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { Navigate, useSearchParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import Loader from '../components/Loader'
 import useAuth from '../contexts/useAuth'
 import useTickersQuery from '../queries/useTickersQuery'
@@ -8,6 +9,7 @@ import Layout from './Layout'
 import TickerListView from './TickerListView'
 
 const HomeView: FC = () => {
+  const { t } = useTranslation()
   const { token, user } = useAuth()
   const [params] = useSearchParams()
   const { data, error, isLoading } = useTickersQuery({
@@ -33,7 +35,7 @@ const HomeView: FC = () => {
     return (
       <Layout>
         <ErrorView queryKey={['tickers']}>
-          <p>Unable to fetch tickers from server.</p>
+          <p>{t('tickers.errorUnableToFetch')}</p>
         </ErrorView>
       </Layout>
     )

@@ -2,6 +2,7 @@ import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Se
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { Ticker, putTickerUsersApi } from '../../api/Ticker'
 import { User, fetchUsersApi } from '../../api/User'
@@ -19,6 +20,7 @@ interface FormValues {
 }
 
 const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const [users, setUsers] = useState<Array<User>>(defaultValue)
   const [options, setOptions] = useState<Array<User>>([])
@@ -41,11 +43,11 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
     handleApiCall(putTickerUsersApi(token, ticker, users), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
-        createNotification({ content: 'Users were successfully updated', severity: 'success' })
+        createNotification({ content: t("user.updatedMultiple"), severity: 'success' })
         onSubmit()
       },
       onError: () => {
-        createNotification({ content: 'Failed to update users', severity: 'error' })
+        createNotification({ content: t("user.errorUpdateMultiple"), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -68,7 +70,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
         )
       },
       onError: () => {
-        createNotification({ content: 'Failed to fetch users', severity: 'error' })
+        createNotification({ content: t("user.errorFetch"), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -115,11 +117,11 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
   return (
     <form id="tickerUsersForm" onSubmit={handleSubmit(updateTickerUsers)}>
       <FormControl sx={{ width: '100%', mt: 1 }}>
-        <InputLabel>Users</InputLabel>
+        <InputLabel>{t('title.users')}</InputLabel>
         <Select
           open={open}
-          input={<OutlinedInput label="Users" />}
-          label="Users"
+          input={<OutlinedInput label={t('title.users')} />}
+          label={t('title.users')}
           multiple
           name="users"
           onChange={handleChange}

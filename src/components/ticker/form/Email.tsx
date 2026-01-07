@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 const Email: FC = () => {
+  const { t } = useTranslation()
   const { control } = useFormContext()
 
   return (
@@ -15,7 +17,7 @@ const Email: FC = () => {
         required: false,
         pattern: {
           value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-          message: 'E-Mail is invalid',
+          message: t('user.errorEmailInvalid'),
         },
       }}
       render={({ field, fieldState: { error } }) => (
@@ -32,7 +34,7 @@ const Email: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label="E-Mail"
+          label={t('user.email')}
           margin="dense"
         />
       )}

@@ -2,12 +2,14 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button, Card, Grid, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import TickerList from '../components/ticker/TickerList'
 import TickerModalForm from '../components/ticker/TickerModalForm'
 import useAuth from '../contexts/useAuth'
 import Layout from './Layout'
 
 const TickerListView: FC = () => {
+  const { t } = useTranslation()
   const { token, user } = useAuth()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
 
@@ -17,7 +19,7 @@ const TickerListView: FC = () => {
         <Grid size={{ xs: 12 }}>
           <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" gutterBottom variant="h3">
-              Tickers
+              {t('title.tickers')}
             </Typography>
             {user?.roles.includes('admin') ? (
               <Button
@@ -27,7 +29,7 @@ const TickerListView: FC = () => {
                 startIcon={<FontAwesomeIcon icon={faPlus} />}
                 variant="contained"
               >
-                New Ticker
+                {t('tickers.new')}
               </Button>
             ) : null}
           </Stack>

@@ -1,5 +1,6 @@
 import { Autocomplete, TextField } from '@mui/material'
 import React, { FC, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface SearchResult {
   place_id: number
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const LocationSearch: FC<Props> = ({ callback }) => {
+  const { t } = useTranslation()
   const [options, setOptions] = useState<SearchResult[]>([])
   const previousController = useRef<AbortController>()
 
@@ -57,7 +59,7 @@ const LocationSearch: FC<Props> = ({ callback }) => {
       onChange={handleChange}
       onInputChange={handleInputChange}
       options={options}
-      renderInput={params => <TextField {...params} label="Location" variant="outlined" />}
+      renderInput={params => <TextField {...params} label={t("common.location")} variant="outlined" />}
     />
   )
 }

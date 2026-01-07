@@ -2,11 +2,13 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button, Card, Grid, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import UserList from '../components/user/UserList'
 import UserModalForm from '../components/user/UserModalForm'
 import Layout from './Layout'
 
 const UsersView: FC = () => {
+  const { t } = useTranslation()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
 
   return (
@@ -15,7 +17,7 @@ const UsersView: FC = () => {
         <Grid size={{ xs: 12 }}>
           <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
             <Typography component="h2" gutterBottom variant="h3">
-              Users
+              {t('title.users')}
             </Typography>
             <Button
               onClick={() => {
@@ -24,7 +26,7 @@ const UsersView: FC = () => {
               startIcon={<FontAwesomeIcon icon={faPlus} />}
               variant="contained"
             >
-              New User
+              {t('user.new')}
             </Button>
           </Stack>
         </Grid>

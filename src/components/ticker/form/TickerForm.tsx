@@ -2,6 +2,7 @@ import { FormGroup, Grid, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../../api/Api'
 import { postTickerApi, putTickerApi, Ticker, TickerFormData } from '../../../api/Ticker'
 import useAuth from '../../../contexts/useAuth'
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const form = useForm<TickerFormData>({
     defaultValues: {
@@ -61,11 +63,11 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker?.id] })
-        createNotification({ content: `Ticker was successfully ${ticker ? 'updated' : 'created'}`, severity: 'success' })
+        createNotification({ content: t(ticker ? "tickers.updated" : "tickers.created"), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: `Failed to ${ticker ? 'update' : 'create'} ticker`, severity: 'error' })
+        createNotification({ content: t(ticker ? 'tickers.errorUpdate' : 'tickers.errorCreate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -96,7 +98,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
           </Grid>
           <Grid size={{ xs: 12 }}>
             <Typography component="h6" variant="h6">
-              Information
+              {t('common.information')}
             </Typography>
           </Grid>
           <Grid size={{ sm: 6, xs: 12 }}>
