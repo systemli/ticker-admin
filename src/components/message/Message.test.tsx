@@ -9,7 +9,7 @@ describe('Message', () => {
       id: 1,
       ticker: 1,
       createdAt: '2021-10-01T00:00:00Z',
-      text: 'Multi line message with links\nhttps://example.com\nhttps://example.net',
+      text: '# Header\nMulti line message with links\nhttps://example.com\nhttps://example.net\n**and bold text**',
       attachments: [
         {
           contentType: 'image/jpeg',
@@ -23,9 +23,11 @@ describe('Message', () => {
 
     renderWithProviders(<Message message={message} />)
 
+    expect(screen.getByRole('heading')).toBeInTheDocument()
     expect(screen.getByText('Multi line message with links')).toBeInTheDocument()
-    expect(screen.getByText('example.com')).toBeInTheDocument()
-    expect(screen.getByText('example.net')).toBeInTheDocument()
+    expect(screen.getByText('https://example.com')).toBeInTheDocument()
+    expect(screen.getByText('https://example.net')).toBeInTheDocument()
+    expect(screen.getByRole('strong')).toBeInTheDocument()
     expect(screen.getByRole('img')).toBeInTheDocument()
   })
 })
