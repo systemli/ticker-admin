@@ -75,6 +75,7 @@ describe('TickerView', function () {
             telegram: {},
             bluesky: {},
             signalGroup: {},
+            matrix: {},
             location: {},
             websites: [],
           },
