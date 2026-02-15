@@ -19,7 +19,7 @@ describe('MessageForm', () => {
       id: 1,
       title: 'ticker',
       active: active,
-      bluesky: { active: false },
+      bluesky: { active: false, replyRestriction: '' },
       mastodon: { active: false },
       telegram: { active: false },
       location: { lat: 0, lon: 0 },

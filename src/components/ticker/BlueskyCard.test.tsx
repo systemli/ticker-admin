@@ -10,7 +10,19 @@ describe('BlueSkyCard', () => {
     fetchMock.resetMocks()
   })
 
-  const ticker = ({ active, connected, handle = '', appKey = '' }: { active: boolean; connected: boolean; handle?: string; appKey?: string }) => {
+  const ticker = ({
+    active,
+    connected,
+    handle = '',
+    appKey = '',
+    replyRestriction = '',
+  }: {
+    active: boolean
+    connected: boolean
+    handle?: string
+    appKey?: string
+    replyRestriction?: string
+  }) => {
     return {
       id: 1,
       bluesky: {
@@ -18,6 +30,7 @@ describe('BlueSkyCard', () => {
         connected: connected,
         handle: handle,
         appKey: appKey,
+        replyRestriction: replyRestriction,
       },
     } as Ticker
   }
@@ -40,6 +53,7 @@ describe('BlueSkyCard', () => {
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
     expect(screen.getByText('You are connected with Bluesky.')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'handle.bsky.social' })).toBeInTheDocument()
+    expect(screen.getByText('Reply restriction: Anyone')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Disable' })).toBeInTheDocument()
@@ -76,6 +90,12 @@ describe('BlueSkyCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Configure' }))
 
     expect(screen.getByRole('dialog')).toBeInTheDocument()
+  })
+
+  it('should display reply restriction when connected', () => {
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social', replyRestriction: 'followers' }) }))
+
+    expect(screen.getByText('Reply restriction: Followers only')).toBeInTheDocument()
   })
 
   it('should fail when response fails', async () => {

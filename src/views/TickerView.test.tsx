@@ -73,7 +73,7 @@ describe('TickerView', function () {
             mastodon: {},
             twitter: {},
             telegram: {},
-            bluesky: {},
+            bluesky: { replyRestriction: '' },
             signalGroup: {},
             location: {},
             websites: [],

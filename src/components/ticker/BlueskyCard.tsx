@@ -59,6 +59,21 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
     </Link>
   )
 
+  const replyRestrictionLabel = (restriction: string): string => {
+    switch (restriction) {
+      case 'followers':
+        return 'Followers only'
+      case 'following':
+        return 'People you follow'
+      case 'mentioned':
+        return 'Mentioned users only'
+      case 'nobody':
+        return 'Nobody'
+      default:
+        return 'Anyone'
+    }
+  }
+
   return (
     <Card>
       <CardContent>
@@ -77,6 +92,7 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
           <Box>
             <Typography variant="body2">You are connected with Bluesky.</Typography>
             <Typography variant="body2">Your Profile: {profileLink}</Typography>
+            <Typography variant="body2">Reply restriction: {replyRestrictionLabel(bluesky.replyRestriction)}</Typography>
           </Box>
         ) : (
           <Box>

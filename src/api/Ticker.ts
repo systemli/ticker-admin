@@ -95,12 +95,14 @@ export interface TickerBluesky {
   connected: boolean
   handle: string
   appKey: string
+  replyRestriction: string
 }
 
 export interface TickerBlueskyFormData {
   active: boolean
   handle?: string
   appKey?: string
+  replyRestriction?: string
 }
 
 export interface TickerSignalGroup {

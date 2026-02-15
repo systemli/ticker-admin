@@ -9,7 +9,7 @@ describe('TickerCard', () => {
     websites = [] as TickerWebsite[],
     mastodon = { connected: false } as TickerMastodon,
     telegram = { connected: false } as TickerTelegram,
-    bluesky = { connected: false } as TickerBluesky,
+    bluesky = { connected: false, replyRestriction: '' } as TickerBluesky,
     signalGroup = { connected: false } as TickerSignalGroup,
   }) => {
     return {
@@ -96,6 +96,7 @@ describe('TickerCard', () => {
             active: true,
             handle: 'systemli.bsky.app',
             appKey: '',
+            replyRestriction: '',
           },
         })}
       />

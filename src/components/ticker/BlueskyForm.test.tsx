@@ -11,7 +11,19 @@ describe('BlueskyForm', () => {
     fetchMock.resetMocks()
   })
 
-  const ticker = ({ active, connected, handle = '', appKey = '' }: { active: boolean; connected: boolean; handle?: string; appKey?: string }) => {
+  const ticker = ({
+    active,
+    connected,
+    handle = '',
+    appKey = '',
+    replyRestriction = '',
+  }: {
+    active: boolean
+    connected: boolean
+    handle?: string
+    appKey?: string
+    replyRestriction?: string
+  }) => {
     return {
       id: 1,
       bluesky: {
@@ -19,6 +31,7 @@ describe('BlueskyForm', () => {
         connected: connected,
         handle: handle,
         appKey: appKey,
+        replyRestriction: replyRestriction,
       },
     } as Ticker
   }
@@ -41,6 +54,7 @@ describe('BlueskyForm', () => {
     expect(screen.getByRole('checkbox', { name: 'Active' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Handle' })).toBeInTheDocument()
     expect(screen.getByLabelText('Application Password *')).toBeInTheDocument()
+    expect(screen.getByText('Reply Restriction')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
@@ -54,7 +68,30 @@ describe('BlueskyForm', () => {
     expect(callback).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/bluesky', {
-      body: '{"active":true,"handle":"handle.bsky.social","appKey":"password"}',
+      body: '{"active":true,"handle":"handle.bsky.social","appKey":"password","replyRestriction":""}',
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + userToken,
+        'Content-Type': 'application/json',
+      },
+      method: 'put',
+    })
+  })
+
+  it('should submit without appKey when already connected', async () => {
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social' }) }))
+
+    expect(screen.getByLabelText('Application Password')).toBeInTheDocument()
+    expect(screen.getByLabelText('Application Password')).not.toBeRequired()
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/bluesky', {
+      body: '{"active":true,"handle":"handle.bsky.social","appKey":"","replyRestriction":""}',
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + userToken,

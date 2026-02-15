@@ -1,7 +1,7 @@
-import { Alert, Checkbox, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material'
+import { Alert, Checkbox, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerBlueskyFormData, putTickerBlueskyApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
@@ -16,16 +16,19 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
   const { createNotification } = useNotification()
   const bluesky = ticker.bluesky
   const { token } = useAuth()
+  const isConnected = bluesky.connected
   const {
     formState: { errors },
     handleSubmit,
     register,
     setError,
+    control,
   } = useForm<TickerBlueskyFormData>({
     defaultValues: {
       active: bluesky.active,
       handle: bluesky.handle,
       appKey: bluesky.appKey,
+      replyRestriction: bluesky.replyRestriction || '',
     },
   })
   const queryClient = useQueryClient()
@@ -65,12 +68,30 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('handle')} defaultValue={ticker.bluesky.handle} label="Handle" placeholder="handle.bsky.social" required />
+            <TextField {...register('handle')} defaultValue={ticker.bluesky.handle} label="Handle" placeholder="handle.bsky.social" required={!isConnected} />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('appKey')} label="Application Password" type="password" required />
+            <TextField {...register('appKey')} label="Application Password" type="password" required={!isConnected} />
+          </FormGroup>
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <FormGroup>
+            <InputLabel id="replyRestriction-label">Reply Restriction</InputLabel>
+            <Controller
+              name="replyRestriction"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} labelId="replyRestriction-label" size="small">
+                  <MenuItem value="">Anyone</MenuItem>
+                  <MenuItem value="followers">Followers only</MenuItem>
+                  <MenuItem value="following">People you follow</MenuItem>
+                  <MenuItem value="mentioned">Mentioned users only</MenuItem>
+                  <MenuItem value="nobody">Nobody</MenuItem>
+                </Select>
+              )}
+            />
           </FormGroup>
         </Grid>
       </Grid>
