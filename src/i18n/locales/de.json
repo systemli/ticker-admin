@@ -42,7 +42,7 @@
     "phone": "Telefonnummer",
     "reloading": "Wird neu geladen",
     "subheadline": "Unterüberschrift",
-    "webOrigins": "Web-Ursprünge"
+    "webOrigins": "Erlaubte Websites"
   },
   "error": {
     "authentication": "Authentifizierung fehlgeschlagen",
@@ -54,9 +54,9 @@
   },
   "filter": {
     "all": "Alle",
-    "byOrigin": "Nach Ursprung filtern",
+    "byOrigin": "Nach Website filtern",
     "byTitle": "Nach Titel filtern",
-    "origin": "Ursprung"
+    "origin": "Website"
   },
   "integrations": {
     "bluesky": {
@@ -133,16 +133,16 @@
       "yourChannel": "Dein Kanal:"
     },
     "website": {
-      "addOrigin": "Ursprung hinzufügen",
-      "allowed": "Du hast den folgenden Websites Zugriff auf deinen Ticker gewährt: {{links}}",
+      "addOrigin": "Website hinzufügen",
+      "allowed": "Folgende Websites dürfen deinen Ticker einbinden: {{links}}",
       "configure": "Website konfigurieren",
-      "configureMessage": "Du kannst Website-Ursprünge für deinen Ticker konfigurieren. Der Ticker ist nur über die konfigurierten Websites erreichbar.",
+      "configureMessage": "Du kannst festlegen, welche Websites deinen Ticker einbinden dürfen. Der Ticker ist nur über die konfigurierten Websites erreichbar.",
       "deleted": "Website-Integration erfolgreich gelöscht",
       "errorDelete": "Website-Integration konnte nicht gelöscht werden",
       "errorUpdate": "Websites konnten nicht aktualisiert werden",
-      "noOrigins": "Keine Ursprünge",
-      "noOriginsConfigured": "Keine Website-Ursprünge konfiguriert.",
-      "noOriginsMessage": "Ohne konfigurierte Website-Ursprünge ist der Ticker von keiner Website aus erreichbar.",
+      "noOrigins": "Keine Websites",
+      "noOriginsConfigured": "Keine Websites konfiguriert.",
+      "noOriginsMessage": "Ohne konfigurierte Websites ist der Ticker von keiner Website aus erreichbar.",
       "updated": "Websites wurden erfolgreich aktualisiert"
     },
     "yourProfile": "Dein Profil:"
