@@ -69,6 +69,13 @@
       "errorDelete": "Échec de la suppression de l'intégration Bluesky",
       "errorUpdate": "Échec de la mise à jour de l'intégration Bluesky",
       "notConnected": "Vous n'êtes pas connecté à Bluesky.",
+      "appPassword": "Mot de passe d'application",
+      "replyRestriction": "Restriction de réponse",
+      "replyRestrictionAnyone": "Tout le monde",
+      "replyRestrictionFollowers": "Abonnés uniquement",
+      "replyRestrictionFollowing": "Personnes que vous suivez",
+      "replyRestrictionMentioned": "Utilisateurs mentionnés uniquement",
+      "replyRestrictionNobody": "Personne",
       "title": "Bluesky",
       "updated": "L'intégration Bluesky a été mise à jour avec succès"
     },

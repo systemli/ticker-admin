@@ -69,6 +69,13 @@
       "errorDelete": "Failed to delete Bluesky integration",
       "errorUpdate": "Failed to update Bluesky integration",
       "notConnected": "You are not connected with Bluesky.",
+      "appPassword": "Application Password",
+      "replyRestriction": "Reply Restriction",
+      "replyRestrictionAnyone": "Anyone",
+      "replyRestrictionFollowers": "Followers only",
+      "replyRestrictionFollowing": "People you follow",
+      "replyRestrictionMentioned": "Mentioned users only",
+      "replyRestrictionNobody": "Nobody",
       "title": "Bluesky",
       "updated": "Bluesky integration was successfully updated"
     },
