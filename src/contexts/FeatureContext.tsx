@@ -1,7 +1,13 @@
-import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
 import { ApiResponse } from '../api/Api'
 import { Features, fetchFeaturesApi } from '../api/Features'
 import useAuth from './useAuth'
+
+interface FeatureState {
+  features: Features
+  loading: boolean
+  error: string | null
+}
 
 interface FeatureContextType {
   features: Features
@@ -11,47 +17,49 @@ interface FeatureContextType {
 
 const FeatureContext = createContext<FeatureContextType | undefined>(undefined)
 
-const initalState: Features = {
+const initialFeatures: Features = {
   telegramEnabled: false,
 }
 
 export function FeatureProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {
-  const [features, setFeatures] = useState<Features>(initalState)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
   const { token } = useAuth()
+  const [state, setState] = useState<FeatureState>({
+    features: initialFeatures,
+    loading: token !== '',
+    error: null,
+  })
 
-  const fetchFeatures = useCallback(async () => {
+  useEffect(() => {
     if (token === '') {
-      setLoading(false)
       return
     }
 
-    setLoading(true)
-    setError(null)
+    let cancelled = false
 
-    const result: ApiResponse<{ features: Features }> = await fetchFeaturesApi(token)
+    fetchFeaturesApi(token).then((result: ApiResponse<{ features: Features }>) => {
+      if (cancelled) return
 
-    if (result.error) {
-      setError(result.error.message)
-    } else if (result.data) {
-      setFeatures(result.data.features)
+      if (result.error) {
+        setState({ features: initialFeatures, loading: false, error: result.error.message })
+      } else if (result.data) {
+        setState({ features: result.data.features, loading: false, error: null })
+      } else {
+        setState(prev => ({ ...prev, loading: false }))
+      }
+    })
+
+    return () => {
+      cancelled = true
     }
-
-    setLoading(false)
   }, [token])
-
-  useEffect(() => {
-    fetchFeatures()
-  }, [fetchFeatures])
 
   const contextValue = useMemo(
     () => ({
-      features,
-      loading,
-      error,
+      features: state.features,
+      loading: state.loading,
+      error: state.error,
     }),
-    [features, loading, error]
+    [state.features, state.loading, state.error]
   )
 
   return <FeatureContext.Provider value={contextValue}>{children}</FeatureContext.Provider>

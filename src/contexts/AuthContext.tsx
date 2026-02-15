@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode'
-import { JSX, ReactNode, createContext, useCallback, useEffect, useMemo, useState } from 'react'
+import { JSX, ReactNode, createContext, useCallback, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { login as loginApi } from '../api/Auth'
 
@@ -22,84 +22,92 @@ export interface IAuthContext {
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined)
 
+function loadAuthFromStorage(): { user: User | undefined; token: string; error: Error | undefined } {
+  const storedToken = localStorage.getItem('token')
+
+  if (!storedToken) {
+    return { user: undefined, token: '', error: undefined }
+  }
+
+  let user: User
+  try {
+    user = jwtDecode(storedToken) as User
+  } catch (error) {
+    return { user: undefined, token: '', error: error as Error }
+  }
+
+  const now = Math.floor(new Date().getTime() / 1000)
+  if (user.exp > now) {
+    return { user, token: storedToken, error: undefined }
+  }
+
+  return { user: undefined, token: '', error: undefined }
+}
+
+interface AuthState {
+  user: User | undefined
+  token: string
+  errorState: { error: Error; pathname: string } | undefined
+  loading: boolean
+}
+
 export function AuthProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {
-  const [user, setUser] = useState<User>()
-  const [token, setToken] = useState<string>('')
-  const [error, setError] = useState<Error>()
-  const [loading, setLoading] = useState<boolean>(false)
-  const [loadingInitial, setLoadingInitial] = useState<boolean>(true)
+  const [state, setState] = useState<AuthState>(() => {
+    const init = loadAuthFromStorage()
+    return {
+      user: init.user,
+      token: init.token,
+      errorState: init.error ? { error: init.error, pathname: '' } : undefined,
+      loading: false,
+    }
+  })
   const navigate = useNavigate()
   const location = useLocation()
 
-  useEffect(() => {
-    setError(undefined)
-  }, [location.pathname])
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    if (!token) {
-      setLoadingInitial(false)
-      return
-    }
-
-    let user: User
-    try {
-      user = jwtDecode(token) as User
-    } catch (error) {
-      setError(error as Error)
-      setLoadingInitial(false)
-      return
-    }
-    const now = Math.floor(new Date().getTime() / 1000)
-
-    if (user.exp > now) {
-      setUser(user)
-      setToken(token)
-    }
-
-    setLoadingInitial(false)
-  }, [])
+  // Error is automatically cleared when the user navigates to a different page
+  const error = state.errorState?.pathname === location.pathname ? state.errorState.error : undefined
 
   const login = useCallback(
     (email: string, password: string) => {
-      setLoading(true)
+      setState(prev => ({ ...prev, loading: true }))
 
       loginApi(email, password)
         .then(response => {
           localStorage.setItem('token', response.token)
-          setToken(response.token)
-
           const user = jwtDecode(response.token) as User
-          setUser(user)
+          setState(prev => ({ ...prev, user, token: response.token, loading: false }))
           navigate('/')
         })
-        .catch((error: Error) => setError(error))
-        .finally(() => setLoading(false))
+        .catch((error: Error) => {
+          setState(prev => ({
+            ...prev,
+            errorState: { error, pathname: location.pathname },
+            loading: false,
+          }))
+        })
     },
-    [navigate]
+    [navigate, location.pathname]
   )
 
   const logout = useCallback(() => {
     localStorage.removeItem('token')
-    setUser(undefined)
-    setToken('')
+    setState(prev => ({ ...prev, user: undefined, token: '' }))
     navigate('/login')
   }, [navigate])
 
   const memoedValue = useMemo(
     () => ({
-      user,
-      token,
-      loading,
+      user: state.user,
+      token: state.token,
+      loading: state.loading,
       error,
       login,
       logout,
     }),
-    [user, token, loading, error, login, logout]
+    [state.user, state.token, state.loading, error, login, logout]
   )
 
-  return <AuthContext.Provider value={memoedValue}>{!loadingInitial && children}</AuthContext.Provider>
+  return <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>
 }
 
 export default AuthContext
