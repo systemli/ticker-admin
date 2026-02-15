@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useMemo } from 'react'
 import { ChipPropsColorOverrides, Chip } from '@mui/material'
 import { OverridableStringUnion } from '@mui/types'
 
@@ -8,18 +8,15 @@ interface Props {
 }
 
 const MessageFormCounter: FC<Props> = ({ letterCount, maxLength }) => {
-  const [color, setColor] =
-    useState<OverridableStringUnion<'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning', ChipPropsColorOverrides>>('default')
-
-  useEffect(() => {
+  const color: OverridableStringUnion<'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning', ChipPropsColorOverrides> = useMemo(() => {
     if (letterCount > maxLength) {
-      setColor('error')
+      return 'error'
     } else if (letterCount >= maxLength * 0.9) {
-      setColor('warning')
+      return 'warning'
     } else if (letterCount === 0) {
-      setColor('default')
+      return 'default'
     } else {
-      setColor('success')
+      return 'success'
     }
   }, [letterCount, maxLength])
 
