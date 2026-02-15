@@ -23,8 +23,8 @@ const UserDropdown: FC = () => {
 
   const handleLogout = useCallback(() => {
     logout()
-    createNotification({ content: t("user.loggedOut") })
-  }, [createNotification, logout])
+    createNotification({ content: t('user.loggedOut') })
+  }, [createNotification, logout, t])
 
   return (
     <>
@@ -56,9 +56,9 @@ const UserDropdown: FC = () => {
             setFormModalOpen(true)
           }}
         >
-          {t("user.changePassword")}
+          {t('user.changePassword')}
         </MenuItem>
-        <MenuItem onClick={handleLogout}>{t("user.logout")}</MenuItem>
+        <MenuItem onClick={handleLogout}>{t('user.logout')}</MenuItem>
       </Menu>
       <UserChangePasswordModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} />
     </>

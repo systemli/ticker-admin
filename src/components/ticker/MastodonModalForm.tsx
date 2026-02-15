@@ -14,7 +14,7 @@ const MastodonModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   const { t } = useTranslation()
 
   return (
-    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureMastodon" title={t("integrations.mastodon.configure")}>
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureMastodon" title={t('integrations.mastodon.configure')}>
       <MastodonForm callback={onClose} ticker={ticker} />
     </Modal>
   )

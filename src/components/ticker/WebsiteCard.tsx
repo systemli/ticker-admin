@@ -28,10 +28,10 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerWebsitesApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.website.deleted"), severity: 'success' })
+        createNotification({ content: t('integrations.website.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: "integrations.website.errorDelete", severity: 'error' })
+        createNotification({ content: 'integrations.website.errorDelete', severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -56,7 +56,7 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
             <FontAwesomeIcon icon={faGlobe} /> Websites
           </Typography>
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            {t("action.configure")}
+            {t('action.configure')}
           </Button>
         </Stack>
       </CardContent>
@@ -65,16 +65,16 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
         {websites.length > 0 ? (
           <Box>
             <Typography component="p" variant="body2">
-              {t("integrations.website.allowed", {links: links})}
+              {t('integrations.website.allowed', { links: links })}
             </Typography>
           </Box>
         ) : (
           <Box>
             <Typography component="p" variant="body2">
-              {t("integrations.website.noOriginsConfigured")}
+              {t('integrations.website.noOriginsConfigured')}
             </Typography>
             <Typography component="p" variant="body2">
-              {t("integrations.website.noOriginsMessage")}
+              {t('integrations.website.noOriginsMessage')}
             </Typography>
           </Box>
         )}
@@ -82,7 +82,7 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
       {websites.length > 0 ? (
         <CardActions>
           <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            {t("action.delete")}
+            {t('action.delete')}
           </Button>
         </CardActions>
       ) : null}

@@ -34,7 +34,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
     navigate(`/ticker/${ticker.id}`)
   }
 
-  const origins = ticker.websites.length > 0 ? ticker.websites.map(website => website.origin).join(', ') : t("integrations.website.noOrigins")
+  const origins = ticker.websites.length > 0 ? ticker.websites.map(website => website.origin).join(', ') : t('integrations.website.noOrigins')
 
   return (
     <TableRow hover style={{ cursor: 'pointer' }}>
@@ -83,7 +83,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
             }}
           >
             <FontAwesomeIcon icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>{t("action.edit")}</Typography>
+            <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
           </MenuItem>
           {user?.roles.includes('admin') ? (
             <>

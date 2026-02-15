@@ -14,7 +14,7 @@ const WebsiteModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   const { t } = useTranslation()
 
   return (
-    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureWebsites" title={t("integrations.website.configure")}>
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureWebsites" title={t('integrations.website.configure')}>
       <WebsiteForm callback={onClose} ticker={ticker} />
     </Modal>
   )

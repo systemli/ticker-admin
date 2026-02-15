@@ -46,7 +46,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
   }
 
   if (status === 'error') {
-    return <ErrorView queryKey={['messages', ticker.id]}>{t("message.errorUnableToFetch")}</ErrorView>
+    return <ErrorView queryKey={['messages', ticker.id]}>{t('message.errorUnableToFetch')}</ErrorView>
   }
 
   return (
@@ -56,7 +56,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
         <CircularProgress size="3rem" />
       ) : hasNextPage ? (
         <Button disabled={!hasNextPage || isFetchingNextPage} onClick={() => fetchNextPage()} variant="outlined">
-          {t("message.loadMore")}
+          {t('message.loadMore')}
         </Button>
       ) : null}
     </>

@@ -15,7 +15,7 @@ const Active: FC<Props> = ({ defaultChecked }) => {
     <Controller
       name="active"
       control={control}
-      render={({ field }) => <FormControlLabel control={<Checkbox {...field} defaultChecked={defaultChecked} />} label={t("status.active")} />}
+      render={({ field }) => <FormControlLabel control={<Checkbox {...field} defaultChecked={defaultChecked} />} label={t('status.active')} />}
     />
   )
 }

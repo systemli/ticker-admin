@@ -29,10 +29,10 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerMastodonApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.mastodon.deleted"), severity: 'success' })
+        createNotification({ content: t('integrations.mastodon.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: t("integrations.mastodon.errorDelete"), severity: 'error' })
+        createNotification({ content: t('integrations.mastodon.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -44,10 +44,10 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerMastodonApi(token, { active: !mastodon.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t(mastodon.active ? "integrations.mastodon.disabled" : "integrations.mastodon.enabled"), severity: 'success' })
+        createNotification({ content: t(mastodon.active ? 'integrations.mastodon.disabled' : 'integrations.mastodon.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: t("integrations.mastodon.errorUpdate"), severity: 'error' })
+        createNotification({ content: t('integrations.mastodon.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -78,7 +78,9 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
         {mastodon.connected ? (
           <Box>
             <Typography variant="body2">{t('integrations.mastodon.connected')}</Typography>
-            <Typography variant="body2">{t('integrations.yourProfile')} {profileLink}</Typography>
+            <Typography variant="body2">
+              {t('integrations.yourProfile')} {profileLink}
+            </Typography>
           </Box>
         ) : (
           <Box>

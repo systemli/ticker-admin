@@ -23,7 +23,7 @@ const MessageListReload: FC<Props> = ({ ticker }) => {
   return (
     <Box sx={{ textAlign: 'right' }}>
       <Button aria-label="reload" onClick={handleClick} size="small" startIcon={<Refresh />} loading={loading} loadingPosition="start">
-        {t("message.reload")}
+        {t('message.reload')}
       </Button>
     </Box>
   )

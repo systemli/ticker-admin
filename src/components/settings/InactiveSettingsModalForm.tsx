@@ -15,7 +15,7 @@ const InactiveSettingsModalForm: FC<Props> = ({ open, onClose, setting }) => {
   const [submitting, setSubmitting] = useState<boolean>(false)
 
   return (
-    <Modal submitting={submitting} fullWidth={true} onClose={onClose} open={open} submitForm="inactiveSettingForm" title={t("status.editInactive")}>
+    <Modal submitting={submitting} fullWidth={true} onClose={onClose} open={open} submitForm="inactiveSettingForm" title={t('status.editInactive')}>
       <InactiveSettingsForm callback={onClose} name="inactiveSettingForm" setting={setting} setSubmitting={setSubmitting} />
     </Modal>
   )

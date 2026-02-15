@@ -35,7 +35,7 @@ const Twitter: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label={t("social.twitter")}
+          label={t('social.twitter')}
           margin="dense"
         />
       )}

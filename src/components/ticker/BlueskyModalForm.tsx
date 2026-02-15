@@ -14,7 +14,7 @@ const BlueskyModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   const { t } = useTranslation()
 
   return (
-    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureBluesky" title={t("integrations.bluesky.configure")}>
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureBluesky" title={t('integrations.bluesky.configure')}>
       <BlueskyForm callback={onClose} ticker={ticker} />
     </Modal>
   )

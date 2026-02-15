@@ -14,7 +14,7 @@ const TelegramModalForm: FC<Props> = ({ onClose, open, ticker }) => {
   const { t } = useTranslation()
 
   return (
-    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureTelegram" title={t("integrations.telegram.configure")}>
+    <Modal maxWidth="sm" onClose={onClose} open={open} submitForm="configureTelegram" title={t('integrations.telegram.configure')}>
       <TelegramForm callback={onClose} ticker={ticker} />
     </Modal>
   )

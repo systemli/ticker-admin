@@ -64,7 +64,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
       <Grid size={{ xs: 12 }}>{headline()}</Grid>
       {!ticker.active ? (
         <Grid size={{ xs: 12 }}>
-          <Alert severity="warning">{t("tickers.disabled")}</Alert>
+          <Alert severity="warning">{t('tickers.disabled')}</Alert>
         </Grid>
       ) : null}
       <Grid display={{ xs: 'none', md: 'block' }} size={{ md: 4, xs: 12 }}>

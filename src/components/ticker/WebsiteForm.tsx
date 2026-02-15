@@ -42,11 +42,11 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerWebsitesApi(token, ticker, data.websites), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.website.updated"), severity: 'success' })
+        createNotification({ content: t('integrations.website.updated'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: t("integrations.website.errorUpdate"), severity: 'error' })
+        createNotification({ content: t('integrations.website.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -58,7 +58,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
     <form id="configureWebsites" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ xs: 12 }}>
-          <Typography>{t("integrations.website.configureMessage")}</Typography>
+          <Typography>{t('integrations.website.configureMessage')}</Typography>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
@@ -87,7 +87,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
               </FormControl>
             ))}
           </FormGroup>
-          <Button onClick={() => append({ origin: '' } as TickerWebsite)}>{t("integrations.website.addOrigin")}</Button>
+          <Button onClick={() => append({ origin: '' } as TickerWebsite)}>{t('integrations.website.addOrigin')}</Button>
         </Grid>
       </Grid>
     </form>

@@ -51,11 +51,11 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerSignalGroupApi(token, { active: true }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.signal.enabled"), severity: 'success' })
+        createNotification({ content: t('integrations.signal.enabled'), severity: 'success' })
         setSubmittingAdd(false)
       },
       onError: () => {
-        createNotification({ content: t("integrations.signal.errorConfigure"), severity: 'error' })
+        createNotification({ content: t('integrations.signal.errorConfigure'), severity: 'error' })
         setSubmittingAdd(false)
       },
       onFailure: error => {
@@ -71,10 +71,10 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerSignalGroupApi(token, { active: !signalGroup.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t(signalGroup.active ? "integrations.signal.disabled" : "integrations.signal.enabled"), severity: 'success' })
+        createNotification({ content: t(signalGroup.active ? 'integrations.signal.disabled' : 'integrations.signal.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: t("integrations.signal.errorUpdate"), severity: 'error' })
+        createNotification({ content: t('integrations.signal.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -89,10 +89,10 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     deleteTickerSignalGroupApi(token, ticker)
       .finally(() => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.signal.deleted"), severity: 'success' })
+        createNotification({ content: t('integrations.signal.deleted'), severity: 'success' })
       })
       .catch(() => {
-        createNotification({ content: ("integrations.signal.errorDelete"), severity: 'error' })
+        createNotification({ content: 'integrations.signal.errorDelete', severity: 'error' })
       })
       .finally(() => {
         setDialogDeleteOpen(false)
@@ -145,7 +145,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         ) : (
           <Box>
             <Typography variant="body2">{t('integrations.signal.notConnected')}</Typography>
-            <Typography variant="body2">{t('integrations.noNewMessages', { type: t("common.group") })}</Typography>
+            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.group') })}</Typography>
           </Box>
         )}
       </CardContent>
@@ -185,7 +185,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       ) : null}
       <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
       <Dialog open={dialogDeleteOpen}>
-        <DialogTitle>{t("integrations.signal.delete")}</DialogTitle>
+        <DialogTitle>{t('integrations.signal.delete')}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t('integrations.signal.questionDelete')}</DialogContentText>
         </DialogContent>

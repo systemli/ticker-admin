@@ -36,7 +36,7 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
 
     handleApiCall(putMeApi(token, data), {
       onSuccess: () => {
-        createNotification({ content: t("user.passwordUpdated"), severity: 'success' })
+        createNotification({ content: t('user.passwordUpdated'), severity: 'success' })
         onClose()
       },
       onError: response => {

@@ -59,7 +59,7 @@ const LocationSearch: FC<Props> = ({ callback }) => {
       onChange={handleChange}
       onInputChange={handleInputChange}
       options={options}
-      renderInput={params => <TextField {...params} label={t("common.location")} variant="outlined" />}
+      renderInput={params => <TextField {...params} label={t('common.location')} variant="outlined" />}
     />
   )
 }

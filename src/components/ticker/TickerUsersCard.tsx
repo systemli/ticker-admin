@@ -26,7 +26,7 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
   }
 
   if (error || data === undefined || data.data === undefined || data.status === 'error') {
-    return <ErrorView queryKey={['tickerUsers', ticker.id]}>{t("user.errorUnableToFetch")}</ErrorView>
+    return <ErrorView queryKey={['tickerUsers', ticker.id]}>{t('user.errorUnableToFetch')}</ErrorView>
   }
 
   const users = data.data.users
@@ -37,10 +37,10 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
           <FontAwesomeIcon icon={faUsers} /> Users
         </Typography>
-        <Typography variant="body2">{t("user.list")}</Typography>
+        <Typography variant="body2">{t('user.list')}</Typography>
         <TickerUserList ticker={ticker} users={users} />
         <Button onClick={() => setFormOpen(true)} startIcon={<FontAwesomeIcon icon={faShieldDog} />} variant="outlined">
-          {t("user.manage")}
+          {t('user.manage')}
         </Button>
         <TickerUsersModal onClose={() => setFormOpen(false)} open={formOpen} ticker={ticker} users={users} />
       </CardContent>

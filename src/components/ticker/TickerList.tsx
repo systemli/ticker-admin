@@ -72,20 +72,20 @@ const TickerList: FC<Props> = ({ token }) => {
           <TableRow>
             <TableCell align="center" sortDirection={setDirection('id')}>
               <TableSortLabel active={sortActive('id')} direction={setDirection('id')} onClick={() => handleSortChange('id')}>
-                {t("common.ID")}
+                {t('common.ID')}
               </TableSortLabel>
             </TableCell>
             <TableCell align="center" sortDirection={setDirection('active')}>
               <TableSortLabel active={sortActive('active')} direction={setDirection('active')} onClick={() => handleSortChange('active')}>
-                {t("status.active")}
+                {t('status.active')}
               </TableSortLabel>
             </TableCell>
             <TableCell sortDirection={setDirection('title')}>
               <TableSortLabel active={sortActive('title')} direction={setDirection('title')} onClick={() => handleSortChange('title')}>
-                {t("title.title")}
+                {t('title.title')}
               </TableSortLabel>
             </TableCell>
-            <TableCell sortDirection={setDirection('origin')}>{t("common.webOrigins")}</TableCell>
+            <TableCell sortDirection={setDirection('origin')}>{t('common.webOrigins')}</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>

@@ -12,12 +12,12 @@ const Title: FC = () => {
       name="title"
       control={control}
       rules={{
-        required: t("message.titleRequired"),
-        minLength: { value: 3, message: t("message.errorTitleShort") },
-        maxLength: { value: 255, message: t("message.errorTitleLong") },
+        required: t('message.titleRequired'),
+        minLength: { value: 3, message: t('message.errorTitleShort') },
+        maxLength: { value: 255, message: t('message.errorTitleLong') },
       }}
       render={({ field, fieldState: { error } }) => (
-        <TextField {...field} error={!!error} helperText={error?.message ? error.message : null} label={t("title.title")} margin="dense" required />
+        <TextField {...field} error={!!error} helperText={error?.message ? error.message : null} label={t('title.title')} margin="dense" required />
       )}
     />
   )

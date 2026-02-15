@@ -17,7 +17,7 @@ const Instagram: FC = () => {
         required: false,
         pattern: {
           value: /^([a-zA-Z0-9._]+)$/,
-          message: t('social.errorInstagramUser')
+          message: t('social.errorInstagramUser'),
         },
       }}
       render={({ field, fieldState: { error } }) => (

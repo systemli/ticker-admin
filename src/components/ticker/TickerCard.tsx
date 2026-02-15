@@ -15,7 +15,7 @@ interface Props {
 const TickerCard: FC<Props> = ({ ticker }) => {
   const { t } = useTranslation()
   const icon = ticker.active ? <Check /> : <Pause />
-  const status = t(ticker.active ? "status.showActive" : "status.showInactive")
+  const status = t(ticker.active ? 'status.showActive' : 'status.showInactive')
   const color = ticker.active ? 'primary' : 'warning'
 
   const hasIntegrations =
@@ -42,7 +42,7 @@ const TickerCard: FC<Props> = ({ ticker }) => {
             {t('title.integrations')}
           </Typography>
         </Stack>
-        {hasIntegrations ? <Integrations ticker={ticker} /> : <Chip label={t("integrations.noIntegrations")} variant="outlined" sx={{ mt: 2 }} size="small" />}
+        {hasIntegrations ? <Integrations ticker={ticker} /> : <Chip label={t('integrations.noIntegrations')} variant="outlined" sx={{ mt: 2 }} size="small" />}
       </CardContent>
     </Card>
   )

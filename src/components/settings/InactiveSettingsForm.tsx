@@ -94,7 +94,15 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('homepage')} defaultValue={setting.value.homepage} label={t('integrations.homepage')} name="homepage" required type="url" />
+            <TextField
+              margin="dense"
+              {...register('homepage')}
+              defaultValue={setting.value.homepage}
+              label={t('integrations.homepage')}
+              name="homepage"
+              required
+              type="url"
+            />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
@@ -104,7 +112,7 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('twitter')} defaultValue={setting.value.twitter} label={t("social.twitter")} name="twitter" required />
+            <TextField margin="dense" {...register('twitter')} defaultValue={setting.value.twitter} label={t('social.twitter')} name="twitter" required />
           </FormGroup>
         </Grid>
       </Grid>

@@ -16,7 +16,7 @@ const TickerUsersModal: FC<Props> = ({ onClose, open, ticker, users }) => {
   const { t } = useTranslation()
 
   return (
-    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="tickerUsersForm" title={t("user.manageAccess")}>
+    <Modal fullWidth={true} onClose={onClose} open={open} submitForm="tickerUsersForm" title={t('user.manageAccess')}>
       <TickerUsersForm defaultValue={users} onSubmit={onClose} ticker={ticker} />
     </Modal>
   )

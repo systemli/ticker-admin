@@ -37,7 +37,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
       <TableBody>
         <TableRow>
           <TableCell colSpan={5}>
-            <Typography variant="body1">{t("tickers.errorUnableToFetch")}</Typography>
+            <Typography variant="body1">{t('tickers.errorUnableToFetch')}</Typography>
           </TableCell>
         </TableRow>
       </TableBody>
@@ -50,7 +50,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
         <TableRow>
           <TableCell colSpan={5}>
             <Stack alignItems="center" justifyContent="center">
-              <Typography variant="body1">{t("tickers.error0Found")}</Typography>
+              <Typography variant="body1">{t('tickers.error0Found')}</Typography>
             </Stack>
           </TableCell>
         </TableRow>

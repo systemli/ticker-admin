@@ -20,7 +20,7 @@ const Description: FC = () => {
           maxRows={10}
           minRows={3}
           multiline
-          label={t("common.description")}
+          label={t('common.description')}
         />
       )}
     />

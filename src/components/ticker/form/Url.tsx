@@ -17,7 +17,7 @@ const Url: FC = () => {
         required: false,
         pattern: {
           value: /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(:\d{1,5})?(\/.*)?$/i,
-          message: t("integrations.errorHomepage"),
+          message: t('integrations.errorHomepage'),
         },
       }}
       render={({ field, fieldState: { error } }) => (
@@ -34,7 +34,7 @@ const Url: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label={t("integrations.homepage")}
+          label={t('integrations.homepage')}
           margin="dense"
         />
       )}

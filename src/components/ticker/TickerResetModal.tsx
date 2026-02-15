@@ -25,24 +25,24 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
         queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
         queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("tickers.reseted"), severity: 'success' })
+        createNotification({ content: t('tickers.reseted'), severity: 'success' })
         onClose()
       },
       onError: () => {
-        createNotification({ content: t("tickers.errorReset"), severity: 'error' })
+        createNotification({ content: t('tickers.errorReset'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
       },
     })
-  }, [token, ticker, queryClient, createNotification, onClose])
+  }, [token, ticker, queryClient, createNotification, onClose, t])
 
   return (
-    <Modal dangerActionButtonText="Reset" onClose={onClose} onDangerAction={handleReset} open={open} title={t("tickers.reset")}>
+    <Modal dangerActionButtonText="Reset" onClose={onClose} onDangerAction={handleReset} open={open} title={t('tickers.reset')}>
       <p>
-        <strong>{t("tickers.questionReset")}</strong>
+        <strong>{t('tickers.questionReset')}</strong>
       </p>
-      <p>{t("tickers.resetMessage")}</p>
+      <p>{t('tickers.resetMessage')}</p>
     </Modal>
   )
 }

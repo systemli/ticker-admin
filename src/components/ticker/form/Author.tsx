@@ -25,7 +25,7 @@ const Author: FC = () => {
               ),
             },
           }}
-          label={t("common.author")}
+          label={t('common.author')}
           margin="dense"
         />
       )}

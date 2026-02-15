@@ -14,7 +14,7 @@ const TickerUserList: FC<Props> = ({ ticker, users }) => {
   const { t } = useTranslation()
 
   if (users.length === 0) {
-    return <Typography sx={{ my: 2 }}>{t("user.errorAccess")}</Typography>
+    return <Typography sx={{ my: 2 }}>{t('user.errorAccess')}</Typography>
   }
 
   return (

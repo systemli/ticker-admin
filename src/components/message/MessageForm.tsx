@@ -96,10 +96,10 @@ const MessageForm: FC<Props> = ({ ticker }) => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
         setAttachments([])
-        createNotification({ content: t("message.posted"), severity: 'success' })
+        createNotification({ content: t('message.posted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: t("message.errorFailedToPost"), severity: 'error' })
+        createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })
       },
       onFailure: () => {
         createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })

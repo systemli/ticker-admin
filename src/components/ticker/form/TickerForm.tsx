@@ -63,7 +63,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker?.id] })
-        createNotification({ content: t(ticker ? "tickers.updated" : "tickers.created"), severity: 'success' })
+        createNotification({ content: t(ticker ? 'tickers.updated' : 'tickers.created'), severity: 'success' })
         callback()
       },
       onError: () => {

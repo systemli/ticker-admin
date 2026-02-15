@@ -45,7 +45,7 @@ const UserListItem: FC<Props> = ({ user }) => {
 
   const emptyDate = '0001-01-01T00:00:00Z'
   const createdAt = dayjs(user.createdAt).format('lll')
-  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : t("user.never")
+  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : t('user.never')
 
   return (
     <TableRow hover>
@@ -87,7 +87,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             }}
           >
             <FontAwesomeIcon icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>{t("action.edit")}</Typography>
+            <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
           </MenuItem>
           <MenuItem
             data-testid="usermenu-delete"
@@ -98,7 +98,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             sx={{ color: colors.red[400] }}
           >
             <FontAwesomeIcon icon={faTrash} />
-            <Typography sx={{ ml: 2 }}>{t("action.delete")}</Typography>
+            <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
           </MenuItem>
         </Popover>
         <UserModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} user={user} />

@@ -35,11 +35,11 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerTelegramApi(token, data, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.telegram.updated"), severity: 'success' })
+        createNotification({ content: t('integrations.telegram.updated'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: t("integrations.telegram.errorUpdate"), severity: 'error' })
+        createNotification({ content: t('integrations.telegram.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -55,7 +55,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.telegram.active} />} label={t("status.active")} />
+            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.telegram.active} />} label={t('status.active')} />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
@@ -64,7 +64,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
               {...register('channelName', {
                 pattern: {
                   value: /@\w+/i,
-                  message: t("integrations.telegram.errorNaming"),
+                  message: t('integrations.telegram.errorNaming'),
                 },
               })}
               defaultValue={telegram.channelName}

@@ -31,11 +31,11 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
 
     handleApiCall(putTickerSignalGroupAdminApi(token, data, ticker), {
       onSuccess: () => {
-        createNotification({ content: t("integrations.signal.numberAdded"), severity: 'success' })
+        createNotification({ content: t('integrations.signal.numberAdded'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: t("integrations.signal.errorAddNumber"), severity: 'error' })
+        createNotification({ content: t('integrations.signal.errorAddNumber'), severity: 'error' })
         setError('number', { message: t('integrations.signal.errorAddNumber') })
       },
       onFailure: error => {
@@ -56,7 +56,7 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
           <FormGroup>
             <TextField
               {...register('number')}
-              label={t("common.phone")}
+              label={t('common.phone')}
               placeholder="+49123456789"
               required
               helperText={errors.number ? errors.number?.message : null}

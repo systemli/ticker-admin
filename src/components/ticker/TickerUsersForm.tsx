@@ -43,11 +43,11 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
     handleApiCall(putTickerUsersApi(token, ticker, users), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickerUsers', ticker.id] })
-        createNotification({ content: t("user.updatedMultiple"), severity: 'success' })
+        createNotification({ content: t('user.updatedMultiple'), severity: 'success' })
         onSubmit()
       },
       onError: () => {
-        createNotification({ content: t("user.errorUpdateMultiple"), severity: 'error' })
+        createNotification({ content: t('user.errorUpdateMultiple'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -70,7 +70,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
         )
       },
       onError: () => {
-        createNotification({ content: t("user.errorFetch"), severity: 'error' })
+        createNotification({ content: t('user.errorFetch'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })

@@ -17,7 +17,7 @@ const Telegram: FC = () => {
         required: false,
         pattern: {
           value: /^\w{5,32}$/,
-          message: t("social.errorTelegramUser")
+          message: t('social.errorTelegramUser'),
         },
       }}
       render={({ field, fieldState: { error } }) => (
@@ -35,7 +35,7 @@ const Telegram: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label={t("integrations.telegram.title")}
+          label={t('integrations.telegram.title')}
           margin="dense"
         />
       )}

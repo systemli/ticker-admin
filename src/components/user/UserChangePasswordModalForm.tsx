@@ -13,7 +13,7 @@ const UserChangePasswordModalForm: FC<Props> = ({ open, onClose }) => {
   const [submitting, setSubmitting] = useState<boolean>(false)
 
   return (
-    <Modal submitting={submitting} onClose={onClose} open={open} submitForm="changePasswordForm" title={t("user.changePassword")}>
+    <Modal submitting={submitting} onClose={onClose} open={open} submitForm="changePasswordForm" title={t('user.changePassword')}>
       <UserChangePasswordForm id="changePasswordForm" onClose={onClose} setSubmitting={setSubmitting} />
     </Modal>
   )

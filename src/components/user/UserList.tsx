@@ -17,7 +17,7 @@ const UserList: FC = () => {
   }
 
   if (error || data === undefined || data.status === 'error') {
-    return <ErrorView queryKey={['users']}>{t("user.errorUnableToFetch")}</ErrorView>
+    return <ErrorView queryKey={['users']}>{t('user.errorUnableToFetch')}</ErrorView>
   }
 
   const users = data.data?.users || []

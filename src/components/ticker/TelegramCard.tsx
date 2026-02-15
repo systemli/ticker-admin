@@ -28,10 +28,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerTelegramApi(token, { active: !telegram.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t(telegram.active ? "integrations.telegram.disabled" : "integrations.telegram.enabled"), severity: 'success' })
+        createNotification({ content: t(telegram.active ? 'integrations.telegram.disabled' : 'integrations.telegram.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: t("integrations.telegram.errorUpdate"), severity: 'error' })
+        createNotification({ content: t('integrations.telegram.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -43,10 +43,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerTelegramApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.telegram.deleted"), severity: 'success' })
+        createNotification({ content: t('integrations.telegram.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: t("integrations.telegram.errorDelete"), severity: 'error' })
+        createNotification({ content: t('integrations.telegram.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -77,7 +77,9 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
         {telegram.connected ? (
           <Box>
             <Typography variant="body2">{t('integrations.telegram.connected')}</Typography>
-            <Typography variant="body2">{t('integrations.telegram.yourChannel')} {channelLink} {t("integrations.telegram.bot", {bot: telegram.botUsername})}</Typography>
+            <Typography variant="body2">
+              {t('integrations.telegram.yourChannel')} {channelLink} {t('integrations.telegram.bot', { bot: telegram.botUsername })}
+            </Typography>
           </Box>
         ) : (
           <Box>

@@ -23,7 +23,7 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
     handleApiCall(deleteTickerApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tickers'] })
-        createNotification({ content: t("tickers.deleted"), severity: 'success' })
+        createNotification({ content: t('tickers.deleted'), severity: 'success' })
       },
       onError: () => {
         createNotification({ content: t('tickers.errorDelete'), severity: 'error' })
@@ -35,7 +35,7 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   }, [token, ticker, queryClient, createNotification, t])
 
   return (
-    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title={t("tickers.delete")}>
+    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title={t('tickers.delete')}>
       {t('tickers.questionDelete')}
     </Modal>
   )

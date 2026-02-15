@@ -38,7 +38,7 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
         setOptions(tickers)
       },
       onError: () => {
-        createNotification({ content: t("tickers.errorFetch"), severity: 'error' })
+        createNotification({ content: t('tickers.errorFetch'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -87,8 +87,8 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
     <FormControl sx={sx}>
       <InputLabel>Tickers</InputLabel>
       <Select
-        input={<OutlinedInput label={t("title.tickers")} />}
-        label={t("title.tickers")}
+        input={<OutlinedInput label={t('title.tickers')} />}
+        label={t('title.tickers')}
         multiple
         name={name}
         onChange={handleChange}

@@ -21,7 +21,7 @@ const ProtectedRoute: FC<Props> = ({ role, outlet }) => {
     //TODO: ErrorView
     return (
       <>
-        <h1>{t("error.permissionDenied")}</h1>
+        <h1>{t('error.permissionDenied')}</h1>
       </>
     )
   }

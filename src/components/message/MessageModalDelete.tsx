@@ -22,21 +22,21 @@ const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
     handleApiCall(deleteMessageApi(token, message), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['messages', message.ticker] })
-        createNotification({ content: t("message.deleted"), severity: 'success' })
+        createNotification({ content: t('message.deleted'), severity: 'success' })
         onClose()
       },
       onError: () => {
-        createNotification({ content: t("message.errorFailedToDelete"), severity: 'error' })
+        createNotification({ content: t('message.errorFailedToDelete'), severity: 'error' })
       },
       onFailure: () => {
-        createNotification({ content: t("message.errorFailedToDelete"), severity: 'error' })
+        createNotification({ content: t('message.errorFailedToDelete'), severity: 'error' })
       },
     })
   }
 
   return (
     <Modal dangerActionButtonText="Delete" maxWidth="sm" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete Message">
-      {t("message.questionDelete")}
+      {t('message.questionDelete')}
     </Modal>
   )
 }

@@ -35,7 +35,7 @@ const Threads: FC = () => {
           }}
           error={!!error}
           helperText={error?.message ? error.message : null}
-          label={t("social.threads")}
+          label={t('social.threads')}
           margin="dense"
         />
       )}

@@ -30,7 +30,7 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
       onClose={onClose}
       open={open}
       submitForm={tabValue === 0 ? 'tickerForm' : undefined}
-      title={t(ticker ? "tickers.configure" : "tickers.create")}
+      title={t(ticker ? 'tickers.configure' : 'tickers.create')}
       submitting={submitting}
     >
       <Tabs onChange={handleTabChange} value={tabValue}>

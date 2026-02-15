@@ -17,7 +17,7 @@ const Facebook: FC = () => {
         required: false,
         pattern: {
           value: /^([a-zA-Z0-9._]+)$/,
-          message: t('social.errorFacebookUser')
+          message: t('social.errorFacebookUser'),
         },
       }}
       render={({ field, fieldState: { error } }) => (

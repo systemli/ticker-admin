@@ -30,11 +30,11 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerMastodonApi(token, data, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t("integrations.mastodon.updated"), severity: 'success' })
+        createNotification({ content: t('integrations.mastodon.updated'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: t("integrations.mastodon.errorUpdate"), severity: 'error' })
+        createNotification({ content: t('integrations.mastodon.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })

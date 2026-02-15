@@ -61,11 +61,11 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
     handleApiCall(apiCall, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['users'] })
-        createNotification({ content: t(user ? "user.updated" : "user.created"), severity: 'success' })
+        createNotification({ content: t(user ? 'user.updated' : 'user.created'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: t(user ? "user.errorUpdate" : "user.errorCreate"), severity: 'error' })
+        createNotification({ content: t(user ? 'user.errorUpdate' : 'user.errorCreate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
