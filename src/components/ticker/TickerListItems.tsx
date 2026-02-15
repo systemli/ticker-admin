@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { GetTickersQueryParams } from '../../api/Ticker'
 import useTickersQuery from '../../queries/useTickersQuery'
 import TickerListItem from './TickerListItem'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   token: string
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const TickerListItems: FC<Props> = ({ token, params }) => {
+  const { t } = useTranslation()
   const { data, isLoading, error } = useTickersQuery({ token, params: params })
   const tickers = data?.data?.tickers || []
 
@@ -21,7 +23,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
             <Stack alignItems="center" justifyContent="center">
               <CircularProgress size="2rem" />
               <Typography component="span" sx={{ pt: 1 }}>
-                Loading
+                {t('common.loading')}
               </Typography>
             </Stack>
           </TableCell>
@@ -35,7 +37,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
       <TableBody>
         <TableRow>
           <TableCell colSpan={5}>
-            <Typography variant="body1">Unable to fetch tickers from server.</Typography>
+            <Typography variant="body1">{t('tickers.errorUnableToFetch')}</Typography>
           </TableCell>
         </TableRow>
       </TableBody>
@@ -48,7 +50,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
         <TableRow>
           <TableCell colSpan={5}>
             <Stack alignItems="center" justifyContent="center">
-              <Typography variant="body1">No tickers found.</Typography>
+              <Typography variant="body1">{t('tickers.error0Found')}</Typography>
             </Stack>
           </TableCell>
         </TableRow>

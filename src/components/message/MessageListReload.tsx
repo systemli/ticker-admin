@@ -3,12 +3,14 @@ import { Box, Button } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
 import { Ticker } from '../../api/Ticker'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const MessageListReload: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState<boolean>(false)
   const queryClient = useQueryClient()
 
@@ -21,7 +23,7 @@ const MessageListReload: FC<Props> = ({ ticker }) => {
   return (
     <Box sx={{ textAlign: 'right' }}>
       <Button aria-label="reload" onClick={handleClick} size="small" startIcon={<Refresh />} loading={loading} loadingPosition="start">
-        Reload Messages
+        {t('message.reload')}
       </Button>
     </Box>
   )

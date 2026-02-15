@@ -2,6 +2,7 @@ import Campaign from '@mui/icons-material/Campaign'
 import Tune from '@mui/icons-material/Tune'
 import { Tab, Tabs } from '@mui/material'
 import React, { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Ticker } from '../../api/Ticker'
 import Modal from '../common/Modal'
 import TabPanel from '../common/TabPanel'
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
+  const { t } = useTranslation()
   const [submitting, setSubmitting] = useState<boolean>(false)
   const [tabValue, setTabValue] = useState<number>(0)
 
@@ -28,12 +30,12 @@ const TickerModalForm: FC<Props> = ({ onClose, open, ticker }) => {
       onClose={onClose}
       open={open}
       submitForm={tabValue === 0 ? 'tickerForm' : undefined}
-      title={ticker ? 'Configure Ticker' : 'Create Ticker'}
+      title={t(ticker ? 'tickers.configure' : 'tickers.create')}
       submitting={submitting}
     >
       <Tabs onChange={handleTabChange} value={tabValue}>
-        <Tab icon={<Tune />} iconPosition="start" label="General" />
-        <Tab disabled={!ticker} icon={<Campaign />} iconPosition="start" label="Integrations" />
+        <Tab icon={<Tune />} iconPosition="start" label={t('common.general')} />
+        <Tab disabled={!ticker} icon={<Campaign />} iconPosition="start" label={t('title.integrations')} />
       </Tabs>
       <TabPanel index={0} value={tabValue}>
         <TickerForm callback={onClose} id="tickerForm" ticker={ticker} setSubmitting={setSubmitting} />

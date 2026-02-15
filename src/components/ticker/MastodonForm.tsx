@@ -6,6 +6,7 @@ import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerMastodonFormData, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   callback: () => void
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const MastodonForm: FC<Props> = ({ callback, ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const mastodon = ticker.mastodon
   const { token } = useAuth()
@@ -28,11 +30,11 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
     handleApiCall(putTickerMastodonApi(token, data, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Mastodon integration was successfully updated', severity: 'success' })
+        createNotification({ content: t('integrations.mastodon.updated'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: 'Failed to update Mastodon integration', severity: 'error' })
+        createNotification({ content: t('integrations.mastodon.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -44,37 +46,40 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
     <form id="configureMastodon" onSubmit={handleSubmit(onSubmit)}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ xs: 12 }}>
-          <Typography>
-            You need to create a Application for Ticker in Mastodon. Go to your profile settings in Mastodon. You find a menu point "Developer" where you need
-            to create an Application. After saving you see the required secrets and tokens.
-          </Typography>
+          <Typography>{t('integrations.mastodon.createApplication')}</Typography>
           <Typography sx={{ mt: 1 }}>
-            Required Scopes: <code>read write write:media write:statuses</code>
+            {t('application.requiredScopes')} <code>read write write:media write:statuses</code>
           </Typography>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.mastodon.active} />} label="Active" />
+            <FormControlLabel control={<Checkbox {...register('active')} defaultChecked={ticker.mastodon.active} />} label={t('status.active')} />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('server')} defaultValue={ticker.mastodon.server} label="Server" placeholder="https://mastodon.social" required />
+            <TextField
+              {...register('server')}
+              defaultValue={ticker.mastodon.server}
+              label={t('application.server')}
+              placeholder="https://mastodon.social"
+              required
+            />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('token')} label="Client Key" required />
+            <TextField {...register('token')} label={t('application.clientKey')} required />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('secret')} label="Client Secret" required type="password" />
+            <TextField {...register('secret')} label={t('application.clientSecret')} required type="password" />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('accessToken')} label="Access Token" required type="password" />
+            <TextField {...register('accessToken')} label={t('application.accessToken')} required type="password" />
           </FormGroup>
         </Grid>
       </Grid>

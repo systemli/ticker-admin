@@ -42,8 +42,8 @@ describe('UserForm', () => {
     expect(screen.getByLabelText('Super Admin')).toBeInTheDocument()
 
     await userEvent.type(screen.getByLabelText('E-Mail *'), 'user@example.org')
-    await userEvent.type(screen.getByLabelText('Password *'), 'password')
-    await userEvent.type(screen.getByLabelText('Repeat Password *'), 'password')
+    await userEvent.type(screen.getByLabelText('Password *'), 'password10')
+    await userEvent.type(screen.getByLabelText('Repeat Password *'), 'password10')
     await userEvent.click(screen.getByLabelText('Super Admin'))
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
@@ -64,7 +64,7 @@ describe('UserForm', () => {
       body: JSON.stringify({
         email: 'user@example.org',
         isSuperAdmin: true,
-        password: 'password',
+        password: 'password10',
       }),
     })
   })
@@ -93,8 +93,8 @@ describe('UserForm', () => {
     expect(screen.getByLabelText('Super Admin')).toBeInTheDocument()
 
     await userEvent.click(screen.getByLabelText('Super Admin'))
-    await userEvent.type(screen.getByLabelText('Password'), 'password')
-    await userEvent.type(screen.getByLabelText('Repeat Password'), 'password')
+    await userEvent.type(screen.getByLabelText('Password'), 'password10')
+    await userEvent.type(screen.getByLabelText('Repeat Password'), 'password10')
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -113,7 +113,7 @@ describe('UserForm', () => {
       body: JSON.stringify({
         email: 'user@example.org',
         isSuperAdmin: false,
-        password: 'password',
+        password: 'password10',
       }),
     })
   })

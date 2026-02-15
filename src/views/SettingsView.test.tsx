@@ -101,6 +101,6 @@ describe('SettingsView', function () {
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })
-    expect(await screen.findByText('Oh no! An error occured')).toBeInTheDocument()
+    expect(await screen.findByText('Oh no! An error occurred')).toBeInTheDocument()
   })
 })

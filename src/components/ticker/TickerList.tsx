@@ -5,12 +5,14 @@ import { GetTickersQueryParams } from '../../api/Ticker'
 import useDebounce from '../../hooks/useDebounce'
 import TickerListFilter from './TickerListFilter'
 import TickerListItems from './TickerListItems'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   token: string
 }
 
 const TickerList: FC<Props> = ({ token }) => {
+  const { t } = useTranslation()
   const [params, setParams] = useState<GetTickersQueryParams>({})
   const debouncedValue = useDebounce<GetTickersQueryParams>(params, 200, {})
   const [, setSearchParams] = useSearchParams()
@@ -70,20 +72,20 @@ const TickerList: FC<Props> = ({ token }) => {
           <TableRow>
             <TableCell align="center" sortDirection={setDirection('id')}>
               <TableSortLabel active={sortActive('id')} direction={setDirection('id')} onClick={() => handleSortChange('id')}>
-                ID
+                {t('common.ID')}
               </TableSortLabel>
             </TableCell>
             <TableCell align="center" sortDirection={setDirection('active')}>
               <TableSortLabel active={sortActive('active')} direction={setDirection('active')} onClick={() => handleSortChange('active')}>
-                Active
+                {t('status.active')}
               </TableSortLabel>
             </TableCell>
             <TableCell sortDirection={setDirection('title')}>
               <TableSortLabel active={sortActive('title')} direction={setDirection('title')} onClick={() => handleSortChange('title')}>
-                Title
+                {t('title.title')}
               </TableSortLabel>
             </TableCell>
-            <TableCell sortDirection={setDirection('origin')}>Web Origins</TableCell>
+            <TableCell sortDirection={setDirection('origin')}>{t('common.webOrigins')}</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>

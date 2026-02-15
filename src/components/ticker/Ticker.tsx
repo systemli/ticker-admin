@@ -12,6 +12,7 @@ import TickerCard from './TickerCard'
 import TickerDangerZoneCard from './TickerDangerZoneCard'
 import TickerModalForm from './TickerModalForm'
 import TickerUsersCard from './TickerUsersCard'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker?: Model
@@ -19,13 +20,14 @@ interface Props {
 }
 
 const Ticker: FC<Props> = ({ ticker, isLoading }) => {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
 
   const headline = () => (
     <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
       <Typography component="h2" gutterBottom variant="h3">
-        Ticker
+        {t('title.ticker')}
       </Typography>
       <Button
         onClick={() => {
@@ -34,7 +36,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
         startIcon={<FontAwesomeIcon icon={faGear} />}
         variant="contained"
       >
-        Configure
+        {t('action.configure')}
       </Button>
       <TickerModalForm
         onClose={() => {
@@ -62,7 +64,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
       <Grid size={{ xs: 12 }}>{headline()}</Grid>
       {!ticker.active ? (
         <Grid size={{ xs: 12 }}>
-          <Alert severity="warning">This ticker is currently disabled.</Alert>
+          <Alert severity="warning">{t('tickers.disabled')}</Alert>
         </Grid>
       ) : null}
       <Grid display={{ xs: 'none', md: 'block' }} size={{ md: 4, xs: 12 }}>

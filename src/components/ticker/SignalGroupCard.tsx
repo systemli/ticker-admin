@@ -25,12 +25,14 @@ import { Ticker, deleteTickerSignalGroupApi, putTickerSignalGroupApi } from '../
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import SignalGroupAdminModalForm from './SignalGroupAdminModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const SignalGroupCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { token } = useAuth()
   const [dialogDeleteOpen, setDialogDeleteOpen] = useState<boolean>(false)
   const [adminOpen, setAdminOpen] = useState<boolean>(false)
@@ -49,11 +51,11 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerSignalGroupApi(token, { active: true }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Signal Group enabled successfully', severity: 'success' })
+        createNotification({ content: t('integrations.signal.enabled'), severity: 'success' })
         setSubmittingAdd(false)
       },
       onError: () => {
-        createNotification({ content: 'Failed to configure Signal group', severity: 'error' })
+        createNotification({ content: t('integrations.signal.errorConfigure'), severity: 'error' })
         setSubmittingAdd(false)
       },
       onFailure: error => {
@@ -69,10 +71,10 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerSignalGroupApi(token, { active: !signalGroup.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: `Signal group ${signalGroup.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+        createNotification({ content: t(signalGroup.active ? 'integrations.signal.disabled' : 'integrations.signal.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to update Signal group', severity: 'error' })
+        createNotification({ content: t('integrations.signal.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -87,10 +89,10 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
     deleteTickerSignalGroupApi(token, ticker)
       .finally(() => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Signal Group deleted successfully', severity: 'success' })
+        createNotification({ content: t('integrations.signal.deleted'), severity: 'success' })
       })
       .catch(() => {
-        createNotification({ content: 'Failed to delete Signal group', severity: 'error' })
+        createNotification({ content: 'integrations.signal.errorDelete', severity: 'error' })
       })
       .finally(() => {
         setDialogDeleteOpen(false)
@@ -109,12 +111,12 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         <Stack alignItems="center" direction="row" justifyContent="space-between">
           <Typography component="h5" variant="h5">
-            <FontAwesomeIcon icon={faSignalMessenger} /> Signal Group
+            <FontAwesomeIcon icon={faSignalMessenger} /> {t('integrations.signal.title')}
           </Typography>
           {signalGroup.connected ? null : (
             <Box sx={{ display: 'inline', position: 'relative' }}>
               <Button onClick={handleAdd} size="small" startIcon={<FontAwesomeIcon icon={faAdd} />} disabled={submittingAdd}>
-                Add
+                {t('action.add')}
               </Button>
               {submittingAdd && (
                 <CircularProgress
@@ -137,29 +139,29 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         {signalGroup.connected ? (
           <Box>
-            <Typography variant="body2">You have a Signal group connected.</Typography>
-            <Typography variant="body2">Your Signal group invite link: {groupLink}</Typography>
+            <Typography variant="body2">{t('integrations.signal.connected')}</Typography>
+            <Typography variant="body2">{t('integrations.signal.inviteLink', { link: groupLink })}</Typography>
           </Box>
         ) : (
           <Box>
-            <Typography variant="body2">You don't have a Signal group connected.</Typography>
-            <Typography variant="body2">New messages will not be published to a group and old messages can not be deleted.</Typography>
+            <Typography variant="body2">{t('integrations.signal.notConnected')}</Typography>
+            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.group') })}</Typography>
           </Box>
         )}
       </CardContent>
       {signalGroup.connected ? (
         <CardActions>
           <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
-            Admin
+            {t('common.admin')}
           </Button>
           <Box sx={{ display: 'inline', position: 'relative' }}>
             {signalGroup.active ? (
               <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />} disabled={submittingToggle}>
-                Disable
+                {t('action.disable')}
               </Button>
             ) : (
               <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />} disabled={submittingToggle}>
-                Enable
+                {t('action.enable')}
               </Button>
             )}
             {submittingToggle && (
@@ -177,21 +179,21 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
             )}
           </Box>
           <Button onClick={() => setDialogDeleteOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            Delete
+            {t('action.delete')}
           </Button>
         </CardActions>
       ) : null}
       <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
       <Dialog open={dialogDeleteOpen}>
-        <DialogTitle>Delete Signal Group</DialogTitle>
+        <DialogTitle>{t('integrations.signal.delete')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to delete the Signal group? This is irreversible.</DialogContentText>
+          <DialogContentText>{t('integrations.signal.questionDelete')}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogDeleteOpen(false)}>Cancel</Button>
+          <Button onClick={() => setDialogDeleteOpen(false)}>{t('action.cancel')}</Button>
           <Box sx={{ display: 'inline', position: 'relative' }}>
             <Button onClick={handleDelete} color="error" disabled={submittingDelete} data-testid="dialog-delete">
-              Delete
+              {t('action.delete')}
             </Button>
             {submittingDelete && (
               <CircularProgress

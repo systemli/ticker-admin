@@ -9,12 +9,14 @@ import { Ticker, deleteTickerTelegramApi, putTickerTelegramApi } from '../../api
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import TelegramModalForm from './TelegramModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const TelegramCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
@@ -26,10 +28,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerTelegramApi(token, { active: !telegram.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: `Telegram integration ${telegram.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+        createNotification({ content: t(telegram.active ? 'integrations.telegram.disabled' : 'integrations.telegram.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to update Telegram integration', severity: 'error' })
+        createNotification({ content: t('integrations.telegram.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -41,10 +43,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerTelegramApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Telegram integration successfully deleted', severity: 'success' })
+        createNotification({ content: t('integrations.telegram.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to delete Telegram integration', severity: 'error' })
+        createNotification({ content: t('integrations.telegram.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -63,10 +65,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         <Stack alignItems="center" direction="row" justifyContent="space-between">
           <Typography component="h5" variant="h5">
-            <FontAwesomeIcon icon={faTelegram} /> Telegram
+            <FontAwesomeIcon icon={faTelegram} /> {t('integrations.telegram.title')}
           </Typography>
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            Configure
+            {t('action.configure')}
           </Button>
         </Stack>
       </CardContent>
@@ -74,15 +76,15 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         {telegram.connected ? (
           <Box>
-            <Typography variant="body2">You are connected with Telegram.</Typography>
+            <Typography variant="body2">{t('integrations.telegram.connected')}</Typography>
             <Typography variant="body2">
-              Your Channel: {channelLink} (Bot: {telegram.botUsername})
+              {t('integrations.telegram.yourChannel')} {channelLink} {t('integrations.telegram.bot', { bot: telegram.botUsername })}
             </Typography>
           </Box>
         ) : (
           <Box>
-            <Typography variant="body2">You are not connected with Telegram.</Typography>
-            <Typography variant="body2">New messages will not be published to your channel and old messages can not be deleted anymore.</Typography>
+            <Typography variant="body2">{t('integrations.telegram.notConnected')}</Typography>
+            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.channel') })}</Typography>
           </Box>
         )}
       </CardContent>
@@ -90,15 +92,15 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
         <CardActions>
           {telegram.active ? (
             <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPause} />}>
-              Disable
+              {t('action.disable')}
             </Button>
           ) : (
             <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              Enable
+              {t('action.enable')}
             </Button>
           )}
           <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            Delete
+            {t('action.delete')}
           </Button>
         </CardActions>
       ) : null}

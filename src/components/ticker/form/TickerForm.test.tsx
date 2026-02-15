@@ -14,6 +14,7 @@ describe('TickerForm', () => {
 
   const callback = vi.fn()
   const setSubmitting = vi.fn()
+  const user = userEvent.setup()
 
   const component = ({ ticker }: { ticker?: Ticker }) => {
     return (
@@ -22,6 +23,14 @@ describe('TickerForm', () => {
         <input name="Submit" type="submit" value="Submit" form="tickerForm" />
       </>
     )
+  }
+
+  // Helper to fill a text field quickly using paste instead of typing
+  // character by character, avoiding CI timeout issues.
+  const fillField = async (name: string, value: string) => {
+    const field = screen.getByRole('textbox', { name })
+    await user.click(field)
+    await user.paste(value)
   }
 
   it('should render the component', async () => {
@@ -46,21 +55,21 @@ describe('TickerForm', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
-    await userEvent.type(screen.getByRole('textbox', { name: 'Title' }), 'New Ticker')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Description' }), 'Description')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Author' }), 'Author')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Homepage' }), 'https://example.org')
-    await userEvent.type(screen.getByRole('textbox', { name: 'E-Mail' }), 'author@example.org')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Twitter' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Facebook' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Threads' }), '@account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Instagram' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Telegram' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Mastodon' }), 'https://mastodon.social/@account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Bluesky' }), 'https://bsky.app/profile/account.bsky.social')
+    await user.click(screen.getByRole('checkbox', { name: 'Active' }))
+    await fillField('Title', 'New Ticker')
+    await fillField('Description', 'Description')
+    await fillField('Author', 'Author')
+    await fillField('Homepage', 'https://example.org')
+    await fillField('E-Mail', 'author@example.org')
+    await fillField('Twitter', 'account')
+    await fillField('Facebook', 'account')
+    await fillField('Threads', '@account')
+    await fillField('Instagram', 'account')
+    await fillField('Telegram', 'account')
+    await fillField('Mastodon', 'https://mastodon.social/@account')
+    await fillField('Bluesky', 'https://bsky.app/profile/account.bsky.social')
 
-    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(setSubmitting).toHaveBeenCalledTimes(2)
@@ -107,22 +116,22 @@ describe('TickerForm', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
-    await userEvent.clear(screen.getByRole('textbox', { name: 'Title' }))
-    await userEvent.type(screen.getByRole('textbox', { name: 'Title' }), 'New Ticker')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Description' }), 'Description')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Author' }), 'Author')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Homepage' }), 'https://example.org')
-    await userEvent.type(screen.getByRole('textbox', { name: 'E-Mail' }), 'author@example.org')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Twitter' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Facebook' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Threads' }), '@account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Instagram' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Telegram' }), 'account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Mastodon' }), 'https://mastodon.social/@account')
-    await userEvent.type(screen.getByRole('textbox', { name: 'Bluesky' }), 'https://bsky.app/profile/account.bsky.social')
+    await user.click(screen.getByRole('checkbox', { name: 'Active' }))
+    await user.clear(screen.getByRole('textbox', { name: 'Title' }))
+    await fillField('Title', 'New Ticker')
+    await fillField('Description', 'Description')
+    await fillField('Author', 'Author')
+    await fillField('Homepage', 'https://example.org')
+    await fillField('E-Mail', 'author@example.org')
+    await fillField('Twitter', 'account')
+    await fillField('Facebook', 'account')
+    await fillField('Threads', '@account')
+    await fillField('Instagram', 'account')
+    await fillField('Telegram', 'account')
+    await fillField('Mastodon', 'https://mastodon.social/@account')
+    await fillField('Bluesky', 'https://bsky.app/profile/account.bsky.social')
 
-    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(setSubmitting).toHaveBeenCalledTimes(2)
@@ -169,10 +178,10 @@ describe('TickerForm', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
-    await userEvent.type(screen.getByRole('textbox', { name: 'Title' }), 'New Ticker')
+    await user.click(screen.getByRole('checkbox', { name: 'Active' }))
+    await fillField('Title', 'New Ticker')
 
-    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(callback).toHaveBeenCalledTimes(0)
     expect(setSubmitting).toHaveBeenCalledTimes(2)
@@ -194,10 +203,10 @@ describe('TickerForm', () => {
 
     fetchMock.mockReject()
 
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Active' }))
-    await userEvent.type(screen.getByRole('textbox', { name: 'Title' }), 'New Ticker')
+    await user.click(screen.getByRole('checkbox', { name: 'Active' }))
+    await fillField('Title', 'New Ticker')
 
-    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(callback).toHaveBeenCalledTimes(0)
     expect(setSubmitting).toHaveBeenCalledTimes(2)

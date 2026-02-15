@@ -1,11 +1,13 @@
 import { AccountCircle } from '@mui/icons-material'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import React, { FC, useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import UserChangePasswordModalForm from '../user/UserChangePasswordModalForm'
 
 const UserDropdown: FC = () => {
+  const { t } = useTranslation()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
@@ -21,8 +23,8 @@ const UserDropdown: FC = () => {
 
   const handleLogout = useCallback(() => {
     logout()
-    createNotification({ content: 'You have been logged out' })
-  }, [createNotification, logout])
+    createNotification({ content: t('user.loggedOut') })
+  }, [createNotification, logout, t])
 
   return (
     <>
@@ -54,9 +56,9 @@ const UserDropdown: FC = () => {
             setFormModalOpen(true)
           }}
         >
-          Change Password
+          {t('user.changePassword')}
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>{t('user.logout')}</MenuItem>
       </Menu>
       <UserChangePasswordModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} />
     </>

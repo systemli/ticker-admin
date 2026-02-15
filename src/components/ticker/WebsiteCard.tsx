@@ -8,12 +8,14 @@ import { deleteTickerWebsitesApi, Ticker } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import WebsiteModalForm from './WebsiteModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const WebsiteCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
@@ -26,10 +28,10 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerWebsitesApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Websites integration successfully deleted', severity: 'success' })
+        createNotification({ content: t('integrations.website.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to delete Websites integration', severity: 'error' })
+        createNotification({ content: 'integrations.website.errorDelete', severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -54,7 +56,7 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
             <FontAwesomeIcon icon={faGlobe} /> Websites
           </Typography>
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            Configure
+            {t('action.configure')}
           </Button>
         </Stack>
       </CardContent>
@@ -63,16 +65,16 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
         {websites.length > 0 ? (
           <Box>
             <Typography component="p" variant="body2">
-              You have allowed the following websites to access your ticker: {links}
+              {t('integrations.website.allowed', { links: links })}
             </Typography>
           </Box>
         ) : (
           <Box>
             <Typography component="p" variant="body2">
-              No website origins configured.
+              {t('integrations.website.noOriginsConfigured')}
             </Typography>
             <Typography component="p" variant="body2">
-              Without configured website origins, the ticker is not reachable from any website.
+              {t('integrations.website.noOriginsMessage')}
             </Typography>
           </Box>
         )}
@@ -80,7 +82,7 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
       {websites.length > 0 ? (
         <CardActions>
           <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            Delete
+            {t('action.delete')}
           </Button>
         </CardActions>
       ) : null}

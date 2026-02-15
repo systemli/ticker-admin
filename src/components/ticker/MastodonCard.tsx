@@ -9,12 +9,14 @@ import { Ticker, deleteTickerMastodonApi, putTickerMastodonApi } from '../../api
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import MastodonModalForm from './MastodonModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const MastodonCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
@@ -27,10 +29,10 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerMastodonApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Mastodon integration successfully deleted', severity: 'success' })
+        createNotification({ content: t('integrations.mastodon.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to delete Mastodon integration', severity: 'error' })
+        createNotification({ content: t('integrations.mastodon.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -42,10 +44,10 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerMastodonApi(token, { active: !mastodon.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: `Mastodon integration ${mastodon.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+        createNotification({ content: t(mastodon.active ? 'integrations.mastodon.disabled' : 'integrations.mastodon.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to update Mastodon integration', severity: 'error' })
+        createNotification({ content: t('integrations.mastodon.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -67,7 +69,7 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
             <FontAwesomeIcon icon={faMastodon} /> Mastodon
           </Typography>
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            Configure
+            {t('action.configure')}
           </Button>
         </Stack>
       </CardContent>
@@ -75,16 +77,18 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         {mastodon.connected ? (
           <Box>
-            <Typography variant="body2">You are connected with Mastodon.</Typography>
-            <Typography variant="body2">Your Profile: {profileLink}</Typography>
+            <Typography variant="body2">{t('integrations.mastodon.connected')}</Typography>
+            <Typography variant="body2">
+              {t('integrations.yourProfile')} {profileLink}
+            </Typography>
           </Box>
         ) : (
           <Box>
             <Typography component="p" variant="body2">
-              You are not connected with Mastodon.
+              {t('integrations.mastodon.notConnected')}
             </Typography>
             <Typography component="p" variant="body2">
-              New messages will not be published to your account and old messages can not be deleted anymore.
+              {t('integrations.noNewMessages', { type: t('common.account') })}
             </Typography>
           </Box>
         )}
@@ -93,15 +97,15 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
         <CardActions>
           {mastodon.active ? (
             <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPause} />}>
-              Disable
+              {t('action.disable')}
             </Button>
           ) : (
             <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              Enable
+              {t('action.enable')}
             </Button>
           )}
           <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            Delete
+            {t('action.delete')}
           </Button>
         </CardActions>
       ) : null}

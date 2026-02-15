@@ -9,12 +9,14 @@ import { Ticker, deleteTickerBlueskyApi, putTickerBlueskyApi } from '../../api/T
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import BlueskyModalForm from './BlueskyModalForm'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
 }
 
 const BlueskyCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const { token } = useAuth()
   const [open, setOpen] = useState<boolean>(false)
@@ -27,10 +29,10 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
     handleApiCall(deleteTickerBlueskyApi(token, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: 'Bluesky integration successfully deleted', severity: 'success' })
+        createNotification({ content: t('integrations.bluesky.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to delete Bluesky integration', severity: 'error' })
+        createNotification({ content: t('integrations.bluesky.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -42,10 +44,10 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
     handleApiCall(putTickerBlueskyApi(token, { active: !bluesky.active }, ticker), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: `Bluesky integration ${bluesky.active ? 'disabled' : 'enabled'} successfully`, severity: 'success' })
+        createNotification({ content: t(bluesky.active ? 'integrations.bluesky.disabled' : 'integrations.bluesky.enabled'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'Failed to update Bluesky integration', severity: 'error' })
+        createNotification({ content: t('integrations.bluesky.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -62,15 +64,15 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
   const replyRestrictionLabel = (restriction: string): string => {
     switch (restriction) {
       case 'followers':
-        return 'Followers only'
+        return t('integrations.bluesky.replyRestrictionFollowers')
       case 'following':
-        return 'People you follow'
+        return t('integrations.bluesky.replyRestrictionFollowing')
       case 'mentioned':
-        return 'Mentioned users only'
+        return t('integrations.bluesky.replyRestrictionMentioned')
       case 'nobody':
-        return 'Nobody'
+        return t('integrations.bluesky.replyRestrictionNobody')
       default:
-        return 'Anyone'
+        return t('integrations.bluesky.replyRestrictionAnyone')
     }
   }
 
@@ -82,7 +84,7 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
             <FontAwesomeIcon icon={faBluesky} /> Bluesky
           </Typography>
           <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            Configure
+            {t('action.configure')}
           </Button>
         </Stack>
       </CardContent>
@@ -90,14 +92,18 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
       <CardContent>
         {bluesky.connected ? (
           <Box>
-            <Typography variant="body2">You are connected with Bluesky.</Typography>
-            <Typography variant="body2">Your Profile: {profileLink}</Typography>
-            <Typography variant="body2">Reply restriction: {replyRestrictionLabel(bluesky.replyRestriction)}</Typography>
+            <Typography variant="body2">{t('integrations.bluesky.connected')}</Typography>
+            <Typography variant="body2">
+              {t('integrations.yourProfile')} {profileLink}
+            </Typography>
+            <Typography variant="body2">
+              {t('integrations.bluesky.replyRestriction')}: {replyRestrictionLabel(bluesky.replyRestriction)}
+            </Typography>
           </Box>
         ) : (
           <Box>
-            <Typography variant="body2">You are not connected with Bluesky.</Typography>
-            <Typography variant="body2">New messages will not be published to your account and old messages can not be deleted anymore.</Typography>
+            <Typography variant="body2">{t('integrations.bluesky.notConnected')}</Typography>
+            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.account') })}</Typography>
           </Box>
         )}
       </CardContent>
@@ -105,15 +111,15 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
         <CardActions>
           {bluesky.active ? (
             <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
-              Disable
+              {t('action.disable')}
             </Button>
           ) : (
             <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              Enable
+              {t('action.enable')}
             </Button>
           )}
           <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            Delete
+            {t('action.delete')}
           </Button>
         </CardActions>
       ) : null}

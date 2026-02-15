@@ -8,6 +8,11 @@ import React, { FC, useState } from 'react'
 import { User } from '../../api/User'
 import UserModalDelete from './UserModalDelete'
 import UserModalForm from './UserModalForm'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import 'dayjs/locale/de'
+import 'dayjs/locale/en'
+import 'dayjs/locale/fr'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   user: User
@@ -16,6 +21,7 @@ interface Props {
 dayjs.extend(relativeTime)
 
 const UserListItem: FC<Props> = ({ user }) => {
+  const { t } = useTranslation()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -28,9 +34,18 @@ const UserListItem: FC<Props> = ({ user }) => {
     setAnchorEl(null)
   }
 
+  const { i18n } = useTranslation()
+  const normalizedLang = i18n.language.split('-')[0].toLowerCase()
+  let dayjsLocale = 'en'
+  if (['en', 'de', 'fr'].includes(normalizedLang)) {
+    dayjsLocale = normalizedLang
+  }
+  dayjs.extend(localizedFormat)
+  dayjs.locale(dayjsLocale)
+
   const emptyDate = '0001-01-01T00:00:00Z'
-  const createdAt = dayjs(user.createdAt).format('MMM D, YYYY h:mm A')
-  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : 'never'
+  const createdAt = dayjs(user.createdAt).format('lll')
+  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : t('user.never')
 
   return (
     <TableRow hover>
@@ -72,7 +87,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             }}
           >
             <FontAwesomeIcon icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>Edit</Typography>
+            <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
           </MenuItem>
           <MenuItem
             data-testid="usermenu-delete"
@@ -83,7 +98,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             sx={{ color: colors.red[400] }}
           >
             <FontAwesomeIcon icon={faTrash} />
-            <Typography sx={{ ml: 2 }}>Delete</Typography>
+            <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
           </MenuItem>
         </Popover>
         <UserModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} user={user} />

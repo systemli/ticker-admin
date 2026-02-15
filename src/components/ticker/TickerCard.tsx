@@ -4,6 +4,7 @@ import { Campaign, Check, Pause } from '@mui/icons-material'
 import { Card, CardContent, Chip, Divider, Link, Stack, Tooltip, Typography } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { FC, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Ticker } from '../../api/Ticker'
 import CopyToClipboard from '../common/CopyToClipboard'
 
@@ -12,8 +13,9 @@ interface Props {
 }
 
 const TickerCard: FC<Props> = ({ ticker }) => {
+  const { t } = useTranslation()
   const icon = ticker.active ? <Check /> : <Pause />
-  const status = `Status: ${ticker.active ? 'Active' : 'Inactive'}`
+  const status = t(ticker.active ? 'status.showActive' : 'status.showInactive')
   const color = ticker.active ? 'primary' : 'warning'
 
   const hasIntegrations =
@@ -25,11 +27,11 @@ const TickerCard: FC<Props> = ({ ticker }) => {
         <Stack direction="row" spacing={1} alignItems="center">
           <FontAwesomeIcon icon={faCircleInfo} />
           <Typography component="h5" variant="h5" flexGrow={1}>
-            Info
+            {t('common.info')}
           </Typography>
         </Stack>
         <Stack sx={{ mt: 2 }}>
-          <Typography variant="overline">Title</Typography>
+          <Typography variant="overline">{t('title.title')}</Typography>
           <Typography variant="body1">{ticker.title}</Typography>
         </Stack>
         <Chip icon={icon} label={status} variant="outlined" sx={{ mt: 2 }} size="small" color={color} />
@@ -37,16 +39,18 @@ const TickerCard: FC<Props> = ({ ticker }) => {
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 2 }}>
           <Campaign />
           <Typography component="h6" variant="h6">
-            Integrations
+            {t('title.integrations')}
           </Typography>
         </Stack>
-        {hasIntegrations ? <Integrations ticker={ticker} /> : <Chip label="No integrations" variant="outlined" sx={{ mt: 2 }} size="small" />}
+        {hasIntegrations ? <Integrations ticker={ticker} /> : <Chip label={t('integrations.noIntegrations')} variant="outlined" sx={{ mt: 2 }} size="small" />}
       </CardContent>
     </Card>
   )
 }
 
 const Integrations = ({ ticker }: { ticker: Ticker }) => {
+  const { t } = useTranslation()
+
   return (
     <Stack>
       {ticker.websites.length > 0 && (
@@ -67,7 +71,7 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
       )}
       {ticker.mastodon.connected && (
         <TickerProperty
-          label="Mastodon"
+          label={t('integrations.mastodon.title')}
           value={
             <IntegrationChip
               active={ticker.mastodon.active}
@@ -79,7 +83,7 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
       )}
       {ticker.telegram.connected && (
         <TickerProperty
-          label="Telegram"
+          label={t('integrations.telegram.title')}
           value={
             <IntegrationChip
               active={ticker.telegram.active}
@@ -91,14 +95,14 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
       )}
       {ticker.bluesky.connected && (
         <TickerProperty
-          label="Bluesky"
+          label={t('integrations.bluesky.title')}
           value={<IntegrationChip active={ticker.bluesky.active} title={ticker.bluesky.handle} link={`https://bsky.app/profile/${ticker.bluesky.handle}`} />}
         />
       )}
       {ticker.signalGroup.connected && (
         <TickerProperty
-          label="Signal Group"
-          value={<IntegrationChip active={ticker.signalGroup.active} title="Signal Group" link={ticker.signalGroup.groupInviteLink} />}
+          label={t('integrations.signal.title')}
+          value={<IntegrationChip active={ticker.signalGroup.active} title={t('integrations.signal.title')} link={ticker.signalGroup.groupInviteLink} />}
         />
       )}
     </Stack>
@@ -115,9 +119,11 @@ const TickerProperty = ({ label, value }: { label: string; value: ReactNode }) =
 }
 
 const IntegrationChip = ({ active, title, link }: { active: boolean; title: string; link: string }) => {
+  const { t } = useTranslation()
+
   return (
     <Stack direction="row" alignItems="center" spacing={0.5}>
-      <Tooltip title={active ? 'Active' : 'Inactive'} arrow placement="top">
+      <Tooltip title={t(active ? 'status.active' : 'status.inactive')} arrow placement="top">
         <FontAwesomeIcon icon={active ? faToggleOn : faToggleOff} color={grey[800]} />
       </Tooltip>
       <Typography variant="body2" flexGrow={1}>

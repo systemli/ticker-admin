@@ -4,6 +4,7 @@ import { handleApiCall } from '../../api/Api'
 import { GetTickersQueryParams, Ticker, fetchTickersApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   name: string
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
+  const { t } = useTranslation()
   const { createNotification } = useNotification()
   const [options, setOptions] = useState<Array<Ticker>>([])
   const [tickers, setTickers] = useState<Array<Ticker>>(defaultValue)
@@ -36,7 +38,7 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
         setOptions(tickers)
       },
       onError: () => {
-        createNotification({ content: 'Failed to fetch tickers', severity: 'error' })
+        createNotification({ content: t('tickers.errorFetch'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -85,8 +87,8 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
     <FormControl sx={sx}>
       <InputLabel>Tickers</InputLabel>
       <Select
-        input={<OutlinedInput label="Tickers" />}
-        label="Tickers"
+        input={<OutlinedInput label={t('title.tickers')} />}
+        label={t('title.tickers')}
         multiple
         name={name}
         onChange={handleChange}

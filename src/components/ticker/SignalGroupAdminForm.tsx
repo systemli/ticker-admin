@@ -7,6 +7,7 @@ import { handleApiCall } from '../../api/Api'
 import { Ticker, TickerSignalGroupAdminFormData, putTickerSignalGroupAdminApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   callback: () => void
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) => {
+  const { t } = useTranslation()
   const { token } = useAuth()
   const {
     formState: { errors },
@@ -29,12 +31,12 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
 
     handleApiCall(putTickerSignalGroupAdminApi(token, data, ticker), {
       onSuccess: () => {
-        createNotification({ content: 'Number successfully added to Signal group', severity: 'success' })
+        createNotification({ content: t('integrations.signal.numberAdded'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: 'Failed to add number to Signal group', severity: 'error' })
-        setError('number', { message: 'Failed to add number to Signal group' })
+        createNotification({ content: t('integrations.signal.errorAddNumber'), severity: 'error' })
+        setError('number', { message: t('integrations.signal.errorAddNumber') })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
@@ -48,13 +50,13 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
     <form id="configureSignalGroupAdmin" onSubmit={onSubmit}>
       <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} container rowSpacing={1}>
         <Grid size={{ xs: 12 }}>
-          <Alert severity="warning">Only do this if extra members with write access are needed.</Alert>
+          <Alert severity="warning">{t('integrations.signal.onlyIfNeeded')}</Alert>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
             <TextField
               {...register('number')}
-              label="Phone number"
+              label={t('common.phone')}
               placeholder="+49123456789"
               required
               helperText={errors.number ? errors.number?.message : null}
