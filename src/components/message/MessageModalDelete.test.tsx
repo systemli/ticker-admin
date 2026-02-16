@@ -41,7 +41,7 @@ describe('MessageModalDelete', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
 
     expect(fetch).toHaveBeenCalledTimes(1)
-    expect(fetch).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/messages/1', {
+    expect(fetch).toHaveBeenCalledWith('/api/admin/tickers/1/messages/1', {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${userToken}`,

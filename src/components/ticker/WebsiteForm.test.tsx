@@ -47,7 +47,7 @@ describe('WebsiteForm', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/websites', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/websites', {
       body: JSON.stringify({ websites: [{ origin: 'https://example.com' }] }),
       headers: {
         Accept: 'application/json',

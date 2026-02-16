@@ -71,7 +71,7 @@ describe('SettingsView', function () {
   }
 
   test('renders settings and open dialogs', async function () {
-    fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
+    fetchMock.mockIf(/\/api\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/settings/inactive_settings')) {
         return Promise.resolve(inactiveSettingsResponse)
       }

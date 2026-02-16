@@ -53,7 +53,7 @@ describe('UserChangePasswordModalForm', () => {
 
     expect(onClose).toHaveBeenCalledTimes(1)
     expect(fetch).toHaveBeenCalledTimes(1)
-    expect(fetch).toHaveBeenCalledWith('http://localhost:8080/v1/admin/users/me', {
+    expect(fetch).toHaveBeenCalledWith('/api/admin/users/me', {
       body: '{"password":"password","newPassword":"newpassword","newPasswordValidate":"newpassword"}',
       headers: {
         Accept: 'application/json',

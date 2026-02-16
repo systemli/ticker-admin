@@ -61,7 +61,7 @@ describe('UsersView', function () {
   test('open new users dialog', async function () {
     setup()
     fetchMock.mockIf(
-      /\/v1\/admin\/users/i,
+      /\/api\/admin\/users/i,
       JSON.stringify({
         data: {
           users: [],
@@ -69,7 +69,7 @@ describe('UsersView', function () {
       })
     )
     fetchMock.mockIf(
-      /\/v1\/admin\/tickers/i,
+      /\/api\/admin\/tickers/i,
       JSON.stringify({
         data: {
           tickers: [],
@@ -95,7 +95,7 @@ describe('UsersView', function () {
 
   test('open dialog for existing user', async function () {
     fetchMock.mockIf(
-      /\/v1\/admin\/users/i,
+      /\/api\/admin\/users/i,
       JSON.stringify({
         data: {
           users: [

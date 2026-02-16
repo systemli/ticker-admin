@@ -55,7 +55,7 @@ describe('MastodonForm', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/mastodon', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/mastodon', {
       body: JSON.stringify({
         active: true,
         server: 'https://mastodon.social',

@@ -74,7 +74,7 @@ describe('TickerForm', () => {
     expect(callback).toHaveBeenCalledTimes(1)
     expect(setSubmitting).toHaveBeenCalledTimes(2)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers', {
       body: JSON.stringify({
         title: 'New Ticker',
         active: true,
@@ -136,7 +136,7 @@ describe('TickerForm', () => {
     expect(callback).toHaveBeenCalledTimes(1)
     expect(setSubmitting).toHaveBeenCalledTimes(2)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1', {
       body: JSON.stringify({
         title: 'New Ticker',
         active: true,

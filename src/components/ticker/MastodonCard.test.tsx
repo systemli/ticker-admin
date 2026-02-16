@@ -50,7 +50,7 @@ describe('MastodonCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/mastodon', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/mastodon', {
       body: JSON.stringify({ active: false }),
       headers: {
         Accept: 'application/json',
@@ -65,7 +65,7 @@ describe('MastodonCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/mastodon', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/mastodon', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

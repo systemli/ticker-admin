@@ -1,4 +1,4 @@
-export const ApiUrl = import.meta.env.TICKER_API_URL
+export const ApiUrl = import.meta.env.TICKER_API_URL || '/api'
 
 type StatusSuccess = 'success'
 type StatusError = 'error'
