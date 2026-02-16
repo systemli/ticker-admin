@@ -164,6 +164,18 @@
     "writeActive": "Rédiger un message",
     "writeInactive": "Vous ne pouvez pas publier de messages sur les Tickers inactifs."
   },
+  "settings": {
+    "telegram": {
+      "botUsername": "Nom d'utilisateur du bot",
+      "description": "Configurez le bot Telegram global utilisé par tous les tickers.",
+      "edit": "Modifier les paramètres Telegram",
+      "errorUpdate": "Échec de la mise à jour des paramètres Telegram",
+      "title": "Telegram",
+      "token": "Jeton du bot",
+      "tokenHelp": "Entrez le jeton du bot provenant de BotFather. Laissez vide pour conserver le jeton actuel.",
+      "updated": "Paramètres Telegram mis à jour avec succès"
+    }
+  },
   "social": {
     "errorFacebookUser": "Nom d'utilisateur Facebook invalide",
     "errorInstagramUser": "Nom d'utilisateur Instagram invalide",

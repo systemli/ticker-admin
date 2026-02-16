@@ -5,6 +5,7 @@ import sign from 'jwt-encode'
 import { MemoryRouter } from 'react-router'
 import { vi } from 'vitest'
 import { AuthProvider } from '../contexts/AuthContext'
+import FeatureContext from '../contexts/FeatureContext'
 import { NotificationProvider } from '../contexts/NotificationContext'
 import SettingsView from './SettingsView'
 
@@ -28,6 +29,19 @@ describe('SettingsView', function () {
     },
   })
 
+  const telegramSettingsResponse = JSON.stringify({
+    data: {
+      setting: {
+        id: 2,
+        name: 'telegram_settings',
+        value: {
+          token: '****wxyz',
+          botUsername: 'test_bot',
+        },
+      },
+    },
+  })
+
   beforeEach(() => {
     vi.mocked(localStorage.getItem).mockReturnValue(jwt)
     fetchMock.resetMocks()
@@ -46,7 +60,9 @@ describe('SettingsView', function () {
         <MemoryRouter>
           <NotificationProvider>
             <AuthProvider>
-              <SettingsView />
+              <FeatureContext.Provider value={{ features: { telegramEnabled: false }, loading: false, error: null, refreshFeatures: vi.fn() }}>
+                <SettingsView />
+              </FeatureContext.Provider>
             </AuthProvider>
           </NotificationProvider>
         </MemoryRouter>
@@ -58,6 +74,9 @@ describe('SettingsView', function () {
     fetchMock.mockIf(/^http:\/\/localhost:8080\/.*$/, (request: Request) => {
       if (request.url.endsWith('/admin/settings/inactive_settings')) {
         return Promise.resolve(inactiveSettingsResponse)
+      }
+      if (request.url.endsWith('/admin/settings/telegram_settings')) {
+        return Promise.resolve(telegramSettingsResponse)
       }
 
       return Promise.resolve(
@@ -72,7 +91,7 @@ describe('SettingsView', function () {
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
-    expect(loaders).toHaveLength(1)
+    expect(loaders).toHaveLength(2)
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })
@@ -97,7 +116,7 @@ describe('SettingsView', function () {
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
-    expect(loaders).toHaveLength(1)
+    expect(loaders).toHaveLength(2)
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })

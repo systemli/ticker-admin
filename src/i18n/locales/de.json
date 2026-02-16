@@ -164,6 +164,18 @@
     "writeActive": "Nachricht schreiben",
     "writeInactive": "Du kannst keine Nachrichten an inaktive Ticker senden."
   },
+  "settings": {
+    "telegram": {
+      "botUsername": "Bot-Benutzername",
+      "description": "Konfiguriere den globalen Telegram-Bot, der von allen Tickern verwendet wird.",
+      "edit": "Telegram-Einstellungen bearbeiten",
+      "errorUpdate": "Telegram-Einstellungen konnten nicht aktualisiert werden",
+      "title": "Telegram",
+      "token": "Bot-Token",
+      "tokenHelp": "Gib den Bot-Token vom BotFather ein. Leer lassen, um den aktuellen Token beizubehalten.",
+      "updated": "Telegram-Einstellungen erfolgreich aktualisiert"
+    }
+  },
   "social": {
     "errorFacebookUser": "Ungültiger Facebook-Benutzername",
     "errorInstagramUser": "Ungültiger Instagram-Benutzername",

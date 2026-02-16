@@ -164,6 +164,18 @@
     "writeActive": "Write a message",
     "writeInactive": "You can't post messages to inactive tickers."
   },
+  "settings": {
+    "telegram": {
+      "botUsername": "Bot Username",
+      "description": "Configure the global Telegram bot used by all tickers.",
+      "edit": "Edit Telegram Settings",
+      "errorUpdate": "Failed to update Telegram settings",
+      "title": "Telegram",
+      "token": "Bot Token",
+      "tokenHelp": "Enter the bot token from BotFather. Leave empty to keep the current token.",
+      "updated": "Telegram settings successfully updated"
+    }
+  },
   "social": {
     "errorFacebookUser": "Invalid Facebook username",
     "errorInstagramUser": "Invalid Instagram username",

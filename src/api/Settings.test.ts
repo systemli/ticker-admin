@@ -1,5 +1,5 @@
 import { ApiUrl, apiHeaders } from './Api'
-import { fetchInactiveSettingsApi, putInactiveSettingsApi } from './Settings'
+import { fetchInactiveSettingsApi, fetchTelegramSettingsApi, putInactiveSettingsApi, putTelegramSettingsApi } from './Settings'
 
 describe('fetchInactiveSettingsApi', () => {
   beforeEach(() => {
@@ -147,6 +147,106 @@ describe('putInactiveSettingsApi', () => {
         homepage: 'homepage',
         twitter: 'twitter',
       }),
+    })
+  })
+})
+
+describe('fetchTelegramSettingsApi', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
+  it('should return data on success', async () => {
+    const data = {
+      status: 'success',
+      data: {
+        setting: {
+          id: 2,
+          name: 'telegram_settings',
+          value: {
+            token: '****wxyz',
+            botUsername: 'test_bot',
+          },
+        },
+      },
+    }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await fetchTelegramSettingsApi('token')
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/settings/telegram_settings`, { headers: apiHeaders('token') })
+  })
+
+  it('should return error on non-200 status', async () => {
+    const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await fetchTelegramSettingsApi('token')
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/settings/telegram_settings`, { headers: apiHeaders('token') })
+  })
+
+  it('should return error on network error', async () => {
+    fetchMock.mockReject(new Error('Network error'))
+    const response = await fetchTelegramSettingsApi('token')
+    expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/settings/telegram_settings`, { headers: apiHeaders('token') })
+  })
+})
+
+describe('putTelegramSettingsApi', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
+  it('should return data on success', async () => {
+    const data = {
+      status: 'success',
+      data: {
+        setting: {
+          id: 2,
+          name: 'telegram_settings',
+          value: {
+            token: '****abcd',
+            botUsername: 'updated_bot',
+          },
+        },
+      },
+    }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await putTelegramSettingsApi('token', { token: 'new-bot-token' })
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/settings/telegram_settings`, {
+      headers: apiHeaders('token'),
+      method: 'put',
+      body: JSON.stringify({ token: 'new-bot-token' }),
+    })
+  })
+
+  it('should return error on non-200 status', async () => {
+    const data = { status: 'error', error: { code: 500, message: 'Internal Server Error' } }
+    fetchMock.mockResponseOnce(JSON.stringify(data))
+    const response = await putTelegramSettingsApi('token', { token: 'new-bot-token' })
+    expect(response).toEqual(data)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/settings/telegram_settings`, {
+      headers: apiHeaders('token'),
+      method: 'put',
+      body: JSON.stringify({ token: 'new-bot-token' }),
+    })
+  })
+
+  it('should return error on network error', async () => {
+    fetchMock.mockReject(new Error('Network error'))
+    const response = await putTelegramSettingsApi('token', { token: 'new-bot-token' })
+    expect(response).toEqual({ status: 'error', error: { code: 500, message: 'Network error' } })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith(`${ApiUrl}/admin/settings/telegram_settings`, {
+      headers: apiHeaders('token'),
+      method: 'put',
+      body: JSON.stringify({ token: 'new-bot-token' }),
     })
   })
 })
