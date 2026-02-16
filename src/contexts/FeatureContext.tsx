@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useMemo, useState } from 'react'
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import { ApiResponse } from '../api/Api'
 import { Features, fetchFeaturesApi } from '../api/Features'
 import useAuth from './useAuth'
@@ -13,6 +13,7 @@ interface FeatureContextType {
   features: Features
   loading: boolean
   error: string | null
+  refreshFeatures: () => void
 }
 
 const FeatureContext = createContext<FeatureContextType | undefined>(undefined)
@@ -29,37 +30,45 @@ export function FeatureProvider({ children }: Readonly<{ children: ReactNode }>)
     error: null,
   })
 
+  const fetchFeatures = useCallback(
+    (authToken: string) => {
+      if (authToken === '') {
+        return
+      }
+
+      fetchFeaturesApi(authToken).then((result: ApiResponse<{ features: Features }>) => {
+        if (result.status === 'error') {
+          setState({ features: initialFeatures, loading: false, error: result.error?.message ?? 'Unknown error' })
+        } else if (result.data) {
+          setState({ features: result.data.features, loading: false, error: null })
+        } else {
+          setState(prev => ({ ...prev, loading: false }))
+        }
+      })
+    },
+    [setState]
+  )
+
   useEffect(() => {
     if (token === '') {
       return
     }
 
-    let cancelled = false
+    fetchFeatures(token)
+  }, [token, fetchFeatures])
 
-    fetchFeaturesApi(token).then((result: ApiResponse<{ features: Features }>) => {
-      if (cancelled) return
-
-      if (result.error) {
-        setState({ features: initialFeatures, loading: false, error: result.error.message })
-      } else if (result.data) {
-        setState({ features: result.data.features, loading: false, error: null })
-      } else {
-        setState(prev => ({ ...prev, loading: false }))
-      }
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [token])
+  const refreshFeatures = useCallback(() => {
+    fetchFeatures(token)
+  }, [token, fetchFeatures])
 
   const contextValue = useMemo(
     () => ({
       features: state.features,
       loading: state.loading,
       error: state.error,
+      refreshFeatures,
     }),
-    [state.features, state.loading, state.error]
+    [state.features, state.loading, state.error, refreshFeatures]
   )
 
   return <FeatureContext.Provider value={contextValue}>{children}</FeatureContext.Provider>

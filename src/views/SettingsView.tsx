@@ -2,10 +2,14 @@ import { Grid, Stack, Typography } from '@mui/material'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import InactiveSettingsCard from '../components/settings/InactiveSettingsCard'
+import TelegramSettingsCard from '../components/settings/TelegramSettingsCard'
+import useFeature from '../contexts/useFeature'
 import Layout from './Layout'
 
 const SettingsView: FC = () => {
   const { t } = useTranslation()
+  const { refreshFeatures } = useFeature()
+
   return (
     <Layout>
       <Grid container spacing={2}>
@@ -18,6 +22,9 @@ const SettingsView: FC = () => {
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
           <InactiveSettingsCard />
+        </Grid>
+        <Grid size={{ md: 6, xs: 12 }}>
+          <TelegramSettingsCard onSaved={refreshFeatures} />
         </Grid>
       </Grid>
     </Layout>

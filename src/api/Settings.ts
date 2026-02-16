@@ -31,3 +31,28 @@ export async function putInactiveSettingsApi(token: string, data: InactiveSettin
     body: JSON.stringify(data),
   })
 }
+
+interface TelegramSettingsResponseData {
+  setting: Setting<TelegramSetting>
+}
+
+export interface TelegramSetting {
+  token: string
+  botUsername: string
+}
+
+export interface TelegramSettingFormData {
+  token: string
+}
+
+export async function fetchTelegramSettingsApi(token: string): Promise<ApiResponse<TelegramSettingsResponseData>> {
+  return apiClient<TelegramSettingsResponseData>(`${ApiUrl}/admin/settings/telegram_settings`, { headers: apiHeaders(token) })
+}
+
+export async function putTelegramSettingsApi(token: string, data: TelegramSettingFormData): Promise<ApiResponse<TelegramSettingsResponseData>> {
+  return apiClient<TelegramSettingsResponseData>(`${ApiUrl}/admin/settings/telegram_settings`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
+}
