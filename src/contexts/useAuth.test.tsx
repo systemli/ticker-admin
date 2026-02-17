@@ -82,7 +82,7 @@ describe('useAuth', () => {
       result.current.login('user@example.org', 'password')
     })
 
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/login', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/login', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

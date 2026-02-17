@@ -54,7 +54,7 @@ describe('UserForm', () => {
     expect(setSubmitting).toBeCalledTimes(2)
     expect(fetchMock).toBeCalledTimes(2)
 
-    expect(fetchMock).toBeCalledWith('http://localhost:8080/v1/admin/users', {
+    expect(fetchMock).toBeCalledWith('/api/admin/users', {
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + adminToken,
@@ -103,7 +103,7 @@ describe('UserForm', () => {
     expect(callback).toBeCalledTimes(1)
     expect(setSubmitting).toBeCalledTimes(2)
     expect(fetchMock).toBeCalledTimes(2)
-    expect(fetchMock).toBeCalledWith('http://localhost:8080/v1/admin/users/1', {
+    expect(fetchMock).toBeCalledWith('/api/admin/users/1', {
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + adminToken,

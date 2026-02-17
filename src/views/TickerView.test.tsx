@@ -60,7 +60,7 @@ describe('TickerView', function () {
 
   it('should render the ticker', async function () {
     fetchMock.doMockOnceIf(
-      /v1\/admin\/tickers\/1/,
+      /\/api\/admin\/tickers\/1/,
       JSON.stringify({
         data: {
           ticker: {
@@ -83,7 +83,7 @@ describe('TickerView', function () {
       })
     )
     fetchMock.doMockOnceIf(
-      /v1\/admin\/messages/,
+      /\/api\/admin\/messages/,
       JSON.stringify({
         data: {
           messages: [

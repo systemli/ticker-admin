@@ -35,7 +35,7 @@ describe('SignalGroupCard', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Add' }))
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/signal_group', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/signal_group', {
       body: JSON.stringify({ active: true }),
       headers: {
         Accept: 'application/json',
@@ -58,7 +58,7 @@ describe('SignalGroupCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Disable' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/signal_group', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/signal_group', {
       body: JSON.stringify({ active: false }),
       headers: {
         Accept: 'application/json',
@@ -78,7 +78,7 @@ describe('SignalGroupCard', () => {
     await userEvent.click(screen.getByTestId('dialog-delete'))
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/signal_group', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/signal_group', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

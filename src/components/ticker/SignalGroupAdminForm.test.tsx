@@ -48,7 +48,7 @@ describe('SignalGroupAdminForm', () => {
     expect(setSubmitting).toHaveBeenCalledTimes(2)
     expect(callback).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/signal_group/admin', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/signal_group/admin', {
       body: '{"number":"+49123456789"}',
       headers: {
         Accept: 'application/json',

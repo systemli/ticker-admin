@@ -55,7 +55,7 @@ describe('InactiveSettingsForm', () => {
     expect(callback).toHaveBeenCalledTimes(1)
     expect(setSubmitting).toHaveBeenCalledTimes(2)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/settings/inactive_settings', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/settings/inactive_settings', {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${adminToken}`,

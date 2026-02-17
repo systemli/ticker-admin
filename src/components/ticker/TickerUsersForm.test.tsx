@@ -64,7 +64,7 @@ describe('TickerUsersForm', () => {
 
     expect(handleSubmit).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(2)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/users', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/users', {
       body: JSON.stringify({ users: [] }),
       headers: {
         Accept: 'application/json',

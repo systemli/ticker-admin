@@ -67,7 +67,7 @@ describe('BlueskyForm', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/bluesky', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/bluesky', {
       body: '{"active":true,"handle":"handle.bsky.social","appKey":"password","replyRestriction":""}',
       headers: {
         Accept: 'application/json',
@@ -90,7 +90,7 @@ describe('BlueskyForm', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/bluesky', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/bluesky', {
       body: '{"active":true,"handle":"handle.bsky.social","appKey":"","replyRestriction":""}',
       headers: {
         Accept: 'application/json',

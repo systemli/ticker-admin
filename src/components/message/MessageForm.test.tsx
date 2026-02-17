@@ -41,7 +41,7 @@ describe('MessageForm', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Send' }))
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/messages', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/messages', {
       body: JSON.stringify({
         text: 'Hello, World!',
         attachments: [],

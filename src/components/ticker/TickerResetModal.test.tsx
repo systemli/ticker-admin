@@ -34,7 +34,7 @@ describe('TickerResetModal', () => {
 
     expect(onClose).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/reset', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/reset', {
       method: 'put',
       headers: {
         Accept: 'application/json',

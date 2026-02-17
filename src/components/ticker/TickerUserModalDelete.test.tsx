@@ -37,7 +37,7 @@ describe('TickerUserModalDelete', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/tickers/1/users/1', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/users/1', {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${userToken}`,

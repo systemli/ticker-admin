@@ -53,7 +53,7 @@ describe('TelegramSettingsForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/v1/admin/settings/telegram_settings', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/settings/telegram_settings', {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${adminToken}`,
