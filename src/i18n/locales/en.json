@@ -108,7 +108,7 @@
       "errorConfigure": "Failed to configure Signal group",
       "errorDelete": "Failed to delete Signal group",
       "errorUpdate": "Failed to update Signal group",
-      "inviteLink": "Your Signal group invite link: {{link}}",
+      "inviteLink": "Your Signal group invite link:",
       "notConnected": "You don't have a Signal group connected.",
       "numberAdded": "Number successfully added to Signal group",
       "onlyIfNeeded": "Only do this if extra members with write access are needed.",
@@ -165,6 +165,16 @@
     "writeInactive": "You can't post messages to inactive tickers."
   },
   "settings": {
+    "signalGroup": {
+      "account": "Account",
+      "apiUrl": "API URL",
+      "avatar": "Avatar",
+      "description": "Configure the global Signal Group settings used by all tickers.",
+      "edit": "Edit Signal Group Settings",
+      "errorUpdate": "Failed to update Signal Group settings",
+      "title": "Signal Group",
+      "updated": "Signal Group settings successfully updated"
+    },
     "telegram": {
       "botUsername": "Bot Username",
       "description": "Configure the global Telegram bot used by all tickers.",

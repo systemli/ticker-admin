@@ -40,7 +40,7 @@ describe('TickerIntegrations', () => {
     fetchMock.resetMocks()
   })
 
-  function setup(telegramEnabled: boolean) {
+  function setup(telegramEnabled: boolean, signalGroupEnabled: boolean = true) {
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     })
@@ -49,7 +49,7 @@ describe('TickerIntegrations', () => {
         <MemoryRouter>
           <AuthProvider>
             <NotificationProvider>
-              <FeatureContext.Provider value={{ features: { telegramEnabled }, loading: false, error: null, refreshFeatures: vi.fn() }}>
+              <FeatureContext.Provider value={{ features: { telegramEnabled, signalGroupEnabled }, loading: false, error: null, refreshFeatures: vi.fn() }}>
                 <TickerIntegrations ticker={ticker} />
               </FeatureContext.Provider>
             </NotificationProvider>
@@ -77,5 +77,24 @@ describe('TickerIntegrations', () => {
     expect(screen.getByText('Mastodon')).toBeInTheDocument()
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
+  })
+
+  it('should hide SignalGroupCard when signalGroupEnabled is false', () => {
+    setup(false, false)
+
+    expect(screen.queryByText('Telegram')).not.toBeInTheDocument()
+    expect(screen.queryByText('Signal Group')).not.toBeInTheDocument()
+    expect(screen.getByText('Websites')).toBeInTheDocument()
+    expect(screen.getByText('Mastodon')).toBeInTheDocument()
+    expect(screen.getByText('Bluesky')).toBeInTheDocument()
+  })
+
+  it('should show SignalGroupCard when signalGroupEnabled is true', () => {
+    setup(false, true)
+
+    expect(screen.getByText('Signal Group')).toBeInTheDocument()
+    expect(screen.getByText('Websites')).toBeInTheDocument()
+    expect(screen.getByText('Mastodon')).toBeInTheDocument()
+    expect(screen.getByText('Bluesky')).toBeInTheDocument()
   })
 })

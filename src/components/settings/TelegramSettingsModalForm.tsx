@@ -1,8 +1,7 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Setting, TelegramSetting } from '../../api/Settings'
-import Modal from '../common/Modal'
+import SettingsModalForm from './SettingsModalForm'
 import TelegramSettingsForm from './TelegramSettingsForm'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   open: boolean
@@ -12,13 +11,12 @@ interface Props {
 }
 
 const TelegramSettingsModalForm: FC<Props> = ({ open, onClose, setting, onSaved }) => {
-  const { t } = useTranslation()
-  const [submitting, setSubmitting] = useState<boolean>(false)
-
   return (
-    <Modal submitting={submitting} fullWidth={true} onClose={onClose} open={open} submitForm="telegramSettingForm" title={t('settings.telegram.edit')}>
-      <TelegramSettingsForm callback={onClose} name="telegramSettingForm" setting={setting} setSubmitting={setSubmitting} onSaved={onSaved} />
-    </Modal>
+    <SettingsModalForm open={open} onClose={onClose} title="settings.telegram.edit" formId="telegramSettingForm">
+      {({ setSubmitting }) => (
+        <TelegramSettingsForm callback={onClose} name="telegramSettingForm" setting={setting} setSubmitting={setSubmitting} onSaved={onSaved} />
+      )}
+    </SettingsModalForm>
   )
 }
 

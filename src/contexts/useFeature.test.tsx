@@ -30,7 +30,12 @@ describe('useFeature', () => {
 
     // Wait for providers to initialize
     await waitFor(() => {
-      expect(result.current).toEqual({ error: null, features: { telegramEnabled: false }, loading: false, refreshFeatures: expect.any(Function) })
+      expect(result.current).toEqual({
+        error: null,
+        features: { signalGroupEnabled: false, telegramEnabled: false },
+        loading: false,
+        refreshFeatures: expect.any(Function),
+      })
     })
   })
 })

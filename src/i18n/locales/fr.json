@@ -108,7 +108,7 @@
       "errorConfigure": "Échec de la configuration du groupe Signal",
       "errorDelete": "Échec de la suppression du groupe Signal",
       "errorUpdate": "Échec de la mise à jour du groupe Signal",
-      "inviteLink": "Votre lien d'invitation de groupe Signal : {{link}}",
+      "inviteLink": "Votre lien d'invitation de groupe Signal :",
       "notConnected": "Vous n'avez pas de groupe Signal connecté.",
       "numberAdded": "Numéro ajouté avec succès au groupe Signal",
       "onlyIfNeeded": "Faites cela seulement si des membres supplémentaires avec un accès en écriture sont nécessaires.",
@@ -165,6 +165,16 @@
     "writeInactive": "Vous ne pouvez pas publier de messages sur les Tickers inactifs."
   },
   "settings": {
+    "signalGroup": {
+      "account": "Compte",
+      "apiUrl": "URL de l'API",
+      "avatar": "Avatar",
+      "description": "Configurez les param\u00e8tres globaux du groupe Signal utilis\u00e9s par tous les tickers.",
+      "edit": "Modifier les param\u00e8tres du groupe Signal",
+      "errorUpdate": "\u00c9chec de la mise \u00e0 jour des param\u00e8tres du groupe Signal",
+      "title": "Groupe Signal",
+      "updated": "Param\u00e8tres du groupe Signal mis \u00e0 jour avec succ\u00e8s"
+    },
     "telegram": {
       "botUsername": "Nom d'utilisateur du bot",
       "description": "Configurez le bot Telegram global utilisé par tous les tickers.",
