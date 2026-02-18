@@ -56,3 +56,31 @@ export async function putTelegramSettingsApi(token: string, data: TelegramSettin
     body: JSON.stringify(data),
   })
 }
+
+interface SignalGroupSettingsResponseData {
+  setting: Setting<SignalGroupSetting>
+}
+
+export interface SignalGroupSetting {
+  apiUrl: string
+  account: string
+  avatar: string
+}
+
+export interface SignalGroupSettingFormData {
+  apiUrl: string
+  account: string
+  avatar: string
+}
+
+export async function fetchSignalGroupSettingsApi(token: string): Promise<ApiResponse<SignalGroupSettingsResponseData>> {
+  return apiClient<SignalGroupSettingsResponseData>(`${ApiUrl}/admin/settings/signal_group_settings`, { headers: apiHeaders(token) })
+}
+
+export async function putSignalGroupSettingsApi(token: string, data: SignalGroupSettingFormData): Promise<ApiResponse<SignalGroupSettingsResponseData>> {
+  return apiClient<SignalGroupSettingsResponseData>(`${ApiUrl}/admin/settings/signal_group_settings`, {
+    headers: apiHeaders(token),
+    method: 'put',
+    body: JSON.stringify(data),
+  })
+}

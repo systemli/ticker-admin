@@ -108,7 +108,7 @@
       "errorConfigure": "Signal-Gruppe konnte nicht konfiguriert werden",
       "errorDelete": "Signal-Gruppe konnte nicht gelöscht werden",
       "errorUpdate": "Signal-Gruppe konnte nicht aktualisiert werden",
-      "inviteLink": "Dein Signal-Gruppen-Einladungslink: {{link}}",
+      "inviteLink": "Dein Signal-Gruppen-Einladungslink:",
       "notConnected": "Du hast keine Signal-Gruppe verbunden.",
       "numberAdded": "Nummer erfolgreich zur Signal-Gruppe hinzugefügt",
       "onlyIfNeeded": "Führe dies nur aus, wenn zusätzliche Mitglieder mit Schreibzugriff benötigt werden.",
@@ -165,6 +165,16 @@
     "writeInactive": "Du kannst keine Nachrichten an inaktive Ticker senden."
   },
   "settings": {
+    "signalGroup": {
+      "account": "Konto",
+      "apiUrl": "API-URL",
+      "avatar": "Avatar",
+      "description": "Konfiguriere die globalen Signal-Gruppen-Einstellungen, die von allen Tickern verwendet werden.",
+      "edit": "Signal-Gruppen-Einstellungen bearbeiten",
+      "errorUpdate": "Signal-Gruppen-Einstellungen konnten nicht aktualisiert werden",
+      "title": "Signal-Gruppe",
+      "updated": "Signal-Gruppen-Einstellungen erfolgreich aktualisiert"
+    },
     "telegram": {
       "botUsername": "Bot-Benutzername",
       "description": "Konfiguriere den globalen Telegram-Bot, der von allen Tickern verwendet wird.",

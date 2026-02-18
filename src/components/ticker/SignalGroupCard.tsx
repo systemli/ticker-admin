@@ -100,12 +100,6 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       })
   }
 
-  const groupLink = (
-    <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank">
-      {ticker.title}
-    </Link>
-  )
-
   return (
     <Card>
       <CardContent>
@@ -140,7 +134,12 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         {signalGroup.connected ? (
           <Box>
             <Typography variant="body2">{t('integrations.signal.connected')}</Typography>
-            <Typography variant="body2">{t('integrations.signal.inviteLink', { link: groupLink })}</Typography>
+            <Typography variant="body2">
+              {t('integrations.signal.inviteLink')}{' '}
+              <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank">
+                {ticker.title}
+              </Link>
+            </Typography>
           </Box>
         ) : (
           <Box>

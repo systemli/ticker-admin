@@ -31,9 +31,11 @@ const TickerIntegrations: FC<Props> = ({ ticker }) => {
       <Grid size={{ md: 6, xs: 12 }}>
         <BlueskyCard ticker={ticker} />
       </Grid>
-      <Grid size={{ md: 6, xs: 12 }}>
-        <SignalGroupCard ticker={ticker} />
-      </Grid>
+      {features.signalGroupEnabled ? (
+        <Grid size={{ md: 6, xs: 12 }}>
+          <SignalGroupCard ticker={ticker} />
+        </Grid>
+      ) : null}
     </Grid>
   )
 }

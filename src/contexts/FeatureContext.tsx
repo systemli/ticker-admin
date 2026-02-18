@@ -20,6 +20,7 @@ const FeatureContext = createContext<FeatureContextType | undefined>(undefined)
 
 const initialFeatures: Features = {
   telegramEnabled: false,
+  signalGroupEnabled: false,
 }
 
 export function FeatureProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {

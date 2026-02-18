@@ -42,6 +42,20 @@ describe('SettingsView', function () {
     },
   })
 
+  const signalGroupSettingsResponse = JSON.stringify({
+    data: {
+      setting: {
+        id: 3,
+        name: 'signal_group_settings',
+        value: {
+          apiUrl: 'https://signal-cli.example.org/api/v1/rpc',
+          account: '+1234567890',
+          avatar: '/path/to/avatar.png',
+        },
+      },
+    },
+  })
+
   beforeEach(() => {
     vi.mocked(localStorage.getItem).mockReturnValue(jwt)
     fetchMock.resetMocks()
@@ -60,7 +74,9 @@ describe('SettingsView', function () {
         <MemoryRouter>
           <NotificationProvider>
             <AuthProvider>
-              <FeatureContext.Provider value={{ features: { telegramEnabled: false }, loading: false, error: null, refreshFeatures: vi.fn() }}>
+              <FeatureContext.Provider
+                value={{ features: { telegramEnabled: false, signalGroupEnabled: false }, loading: false, error: null, refreshFeatures: vi.fn() }}
+              >
                 <SettingsView />
               </FeatureContext.Provider>
             </AuthProvider>
@@ -78,6 +94,9 @@ describe('SettingsView', function () {
       if (request.url.endsWith('/admin/settings/telegram_settings')) {
         return Promise.resolve(telegramSettingsResponse)
       }
+      if (request.url.endsWith('/admin/settings/signal_group_settings')) {
+        return Promise.resolve(signalGroupSettingsResponse)
+      }
 
       return Promise.resolve(
         JSON.stringify({
@@ -91,7 +110,7 @@ describe('SettingsView', function () {
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
-    expect(loaders).toHaveLength(2)
+    expect(loaders).toHaveLength(3)
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })
@@ -116,7 +135,7 @@ describe('SettingsView', function () {
     setup()
 
     const loaders = screen.getAllByText(/loading/i)
-    expect(loaders).toHaveLength(2)
+    expect(loaders).toHaveLength(3)
     loaders.forEach(loader => {
       expect(loader).toBeInTheDocument()
     })

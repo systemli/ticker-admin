@@ -6,6 +6,7 @@ interface FeaturesResponseData {
 
 export interface Features {
   telegramEnabled: boolean
+  signalGroupEnabled: boolean
 }
 
 export async function fetchFeaturesApi(token: string): Promise<ApiResponse<FeaturesResponseData>> {

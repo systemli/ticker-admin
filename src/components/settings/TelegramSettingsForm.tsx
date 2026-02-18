@@ -1,12 +1,9 @@
 import { FormGroup, Grid, TextField } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { handleApiCall } from '../../api/Api'
 import { Setting, TelegramSetting, TelegramSettingFormData, putTelegramSettingsApi } from '../../api/Settings'
-import useAuth from '../../contexts/useAuth'
-import useNotification from '../../contexts/useNotification'
+import useSettingsFormSubmit from './useSettingsFormSubmit'
 
 interface Props {
   name: string
@@ -18,34 +15,21 @@ interface Props {
 
 const TelegramSettingsForm: FC<Props> = ({ name, setting, callback, setSubmitting, onSaved }) => {
   const { t } = useTranslation()
-  const { createNotification } = useNotification()
   const { handleSubmit, register } = useForm<TelegramSettingFormData>({
     defaultValues: {
       token: '',
     },
   })
-  const { token } = useAuth()
-  const queryClient = useQueryClient()
 
-  const onSubmit: SubmitHandler<TelegramSettingFormData> = data => {
-    setSubmitting(true)
-    handleApiCall(putTelegramSettingsApi(token, data), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['telegram_settings'] })
-        onSaved?.()
-        createNotification({ content: t('settings.telegram.updated'), severity: 'success' })
-        callback()
-      },
-      onError: () => {
-        createNotification({ content: t('settings.telegram.errorUpdate'), severity: 'error' })
-      },
-      onFailure: () => {
-        createNotification({ content: t('settings.telegram.errorUpdate'), severity: 'error' })
-      },
-    }).finally(() => {
-      setSubmitting(false)
-    })
-  }
+  const onSubmit = useSettingsFormSubmit<TelegramSettingFormData>({
+    putApi: putTelegramSettingsApi,
+    queryKey: 'telegram_settings',
+    successMessage: 'settings.telegram.updated',
+    errorMessage: 'settings.telegram.errorUpdate',
+    setSubmitting,
+    callback,
+    onSaved,
+  })
 
   return (
     <form id={name} onSubmit={handleSubmit(onSubmit)}>
