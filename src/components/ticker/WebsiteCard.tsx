@@ -1,6 +1,6 @@
 import { faGear, faGlobe, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Card, CardActions, CardContent, Chip, Divider, Link, Stack, Typography } from '@mui/material'
+import { Button, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +8,7 @@ import { handleApiCall } from '../../api/Api'
 import { deleteTickerWebsitesApi, Ticker } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import IntegrationCard, { IntegrationStatus } from './IntegrationCard'
 import WebsiteModalForm from './WebsiteModalForm'
 
 interface Props {
@@ -41,57 +42,38 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
 
   const isConfigured = websites.length > 0
 
-  const statusChip = isConfigured ? (
-    <Chip label={t('integrations.integrationStatus.configured')} color="success" size="small" variant="outlined" />
-  ) : (
-    <Chip label={t('integrations.integrationStatus.notConfigured')} size="small" variant="outlined" />
+  const status: IntegrationStatus = isConfigured ? 'configured' : 'notConfigured'
+
+  const details = isConfigured ? (
+    <Stack spacing={0.5}>
+      <Typography variant="caption" color="text.secondary">
+        {t('integrations.website.allowed')}
+      </Typography>
+      {websites.map(website => (
+        <Link href={website.origin} rel="noreferrer" target="_blank" variant="body2" key={website.id}>
+          {website.origin}
+        </Link>
+      ))}
+    </Stack>
+  ) : null
+
+  const actions = (
+    <>
+      <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
+        {t('action.configure')}
+      </Button>
+      {isConfigured ? (
+        <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
+          {t('action.delete')}
+        </Button>
+      ) : null}
+    </>
   )
 
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
-          <Typography component="h5" variant="h5">
-            <FontAwesomeIcon icon={faGlobe} /> Websites
-          </Typography>
-          {statusChip}
-        </Stack>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          {t('integrations.website.description')}
-        </Typography>
-      </CardContent>
-      <Divider variant="middle" />
-      <CardContent sx={{ flexGrow: 1 }}>
-        {isConfigured ? (
-          <Stack spacing={0.5}>
-            <Typography variant="caption" color="text.secondary">
-              {t('integrations.website.allowed')}
-            </Typography>
-            {websites.map(website => (
-              <Link href={website.origin} rel="noreferrer" target="_blank" variant="body2" key={website.id}>
-                {website.origin}
-              </Link>
-            ))}
-          </Stack>
-        ) : (
-          <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
-            {t('integrations.notConfiguredHint')}
-          </Typography>
-        )}
-      </CardContent>
-      <Divider variant="middle" />
-      <CardActions>
-        <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-          {t('action.configure')}
-        </Button>
-        {isConfigured ? (
-          <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            {t('action.delete')}
-          </Button>
-        ) : null}
-      </CardActions>
+    <IntegrationCard icon={faGlobe} title="Websites" description={t('integrations.website.description')} status={status} details={details} actions={actions}>
       <WebsiteModalForm onClose={() => setOpen(false)} open={open} ticker={ticker} />
-    </Card>
+    </IntegrationCard>
   )
 }
 

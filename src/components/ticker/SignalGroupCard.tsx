@@ -1,24 +1,7 @@
 import { faSignalMessenger } from '@fortawesome/free-brands-svg-icons'
 import { faPause, faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Chip,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -27,6 +10,7 @@ import { Ticker, deleteTickerSignalGroupApi, putTickerSignalGroupApi } from '../
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
 import CopyToClipboard from '../common/CopyToClipboard'
+import IntegrationCard, { IntegrationStatus } from './IntegrationCard'
 import SignalGroupAdminModalForm from './SignalGroupAdminModalForm'
 
 interface Props {
@@ -102,107 +86,87 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       })
   }
 
-  const statusChip = signalGroup.connected ? (
-    signalGroup.active ? (
-      <Chip label={t('integrations.integrationStatus.active')} color="success" size="small" variant="outlined" />
-    ) : (
-      <Chip label={t('integrations.integrationStatus.inactive')} color="warning" size="small" variant="outlined" />
-    )
+  const status: IntegrationStatus = signalGroup.connected ? (signalGroup.active ? 'active' : 'inactive') : 'notConfigured'
+
+  const details = signalGroup.connected ? (
+    <Stack spacing={1}>
+      <div>
+        <Typography variant="caption" color="text.secondary">
+          {t('integrations.signal.inviteLink')}
+        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank" variant="body2">
+            {ticker.title}
+          </Link>
+          <CopyToClipboard text={signalGroup.groupInviteLink} />
+        </Stack>
+      </div>
+    </Stack>
+  ) : null
+
+  const actions = signalGroup.connected ? (
+    <>
+      <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
+        {t('common.admin')}
+      </Button>
+      <Box sx={{ display: 'inline', position: 'relative' }}>
+        {signalGroup.active ? (
+          <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />} disabled={submittingToggle}>
+            {t('action.disable')}
+          </Button>
+        ) : (
+          <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />} disabled={submittingToggle}>
+            {t('action.enable')}
+          </Button>
+        )}
+        {submittingToggle && (
+          <CircularProgress
+            size={24}
+            sx={{
+              color: 'primary',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        )}
+      </Box>
+      <Button onClick={() => setDialogDeleteOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
+        {t('action.delete')}
+      </Button>
+    </>
   ) : (
-    <Chip label={t('integrations.integrationStatus.notConfigured')} size="small" variant="outlined" />
+    <Box sx={{ display: 'inline', position: 'relative' }}>
+      <Button onClick={handleAdd} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />} disabled={submittingAdd}>
+        {t('action.add')}
+      </Button>
+      {submittingAdd && (
+        <CircularProgress
+          size={24}
+          sx={{
+            color: 'primary',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-12px',
+            marginLeft: '-12px',
+          }}
+        />
+      )}
+    </Box>
   )
 
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
-          <Typography component="h5" variant="h5">
-            <FontAwesomeIcon icon={faSignalMessenger} /> {t('integrations.signal.title')}
-          </Typography>
-          {statusChip}
-        </Stack>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          {t('integrations.signal.description')}
-        </Typography>
-      </CardContent>
-      <Divider variant="middle" />
-      <CardContent sx={{ flexGrow: 1 }}>
-        {signalGroup.connected ? (
-          <Stack spacing={1}>
-            <div>
-              <Typography variant="caption" color="text.secondary">
-                {t('integrations.signal.inviteLink')}
-              </Typography>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank" variant="body2">
-                  {ticker.title}
-                </Link>
-                <CopyToClipboard text={signalGroup.groupInviteLink} />
-              </Stack>
-            </div>
-          </Stack>
-        ) : (
-          <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
-            {t('integrations.notConfiguredHint')}
-          </Typography>
-        )}
-      </CardContent>
-      <Divider variant="middle" />
-      <CardActions>
-        {signalGroup.connected ? (
-          <>
-            <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
-              {t('common.admin')}
-            </Button>
-            <Box sx={{ display: 'inline', position: 'relative' }}>
-              {signalGroup.active ? (
-                <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />} disabled={submittingToggle}>
-                  {t('action.disable')}
-                </Button>
-              ) : (
-                <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />} disabled={submittingToggle}>
-                  {t('action.enable')}
-                </Button>
-              )}
-              {submittingToggle && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    color: 'primary',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    marginTop: '-12px',
-                    marginLeft: '-12px',
-                  }}
-                />
-              )}
-            </Box>
-            <Button onClick={() => setDialogDeleteOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-              {t('action.delete')}
-            </Button>
-          </>
-        ) : (
-          <Box sx={{ display: 'inline', position: 'relative' }}>
-            <Button onClick={handleAdd} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />} disabled={submittingAdd}>
-              {t('action.add')}
-            </Button>
-            {submittingAdd && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: 'primary',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  marginTop: '-12px',
-                  marginLeft: '-12px',
-                }}
-              />
-            )}
-          </Box>
-        )}
-      </CardActions>
+    <IntegrationCard
+      icon={faSignalMessenger}
+      title={t('integrations.signal.title')}
+      description={t('integrations.signal.description')}
+      status={status}
+      details={details}
+      actions={actions}
+    >
       <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
       <Dialog open={dialogDeleteOpen}>
         <DialogTitle>{t('integrations.signal.delete')}</DialogTitle>
@@ -231,7 +195,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           </Box>
         </DialogActions>
       </Dialog>
-    </Card>
+    </IntegrationCard>
   )
 }
 
