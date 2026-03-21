@@ -77,7 +77,8 @@
       "replyRestrictionMentioned": "Utilisateurs mentionnés uniquement",
       "replyRestrictionNobody": "Personne",
       "title": "Bluesky",
-      "updated": "L'intégration Bluesky a été mise à jour avec succès"
+      "updated": "L'intégration Bluesky a été mise à jour avec succès",
+      "description": "Publie les messages sur votre profil Bluesky."
     },
     "errorHomepage": "La page d'accueil est invalide",
     "homepage": "Page d'accueil",
@@ -93,7 +94,8 @@
       "errorUpdate": "Échec de la mise à jour de l'intégration Mastodon",
       "notConnected": "Vous n'êtes pas connecté à Mastodon.",
       "title": "Mastodon",
-      "updated": "L'intégration Mastodon a été mise à jour avec succès"
+      "updated": "L'intégration Mastodon a été mise à jour avec succès",
+      "description": "Publie les messages sur votre profil Mastodon."
     },
     "noIntegrations": "Aucune intégration",
     "noNewMessages": "Les nouveaux messages ne seront pas publiés sur votre {{type}} et les anciens messages ne peuvent plus être supprimés.",
@@ -113,7 +115,8 @@
       "numberAdded": "Numéro ajouté avec succès au groupe Signal",
       "onlyIfNeeded": "Faites cela seulement si des membres supplémentaires avec un accès en écriture sont nécessaires.",
       "questionDelete": "Êtes-vous sûr de vouloir supprimer le groupe Signal ? Cela est irréversible.",
-      "title": "Groupe Signal"
+      "title": "Groupe Signal",
+      "description": "Envoie les messages dans un groupe Signal."
     },
     "telegram": {
       "bot": "(Bot : {{bot}})",
@@ -130,7 +133,10 @@
       "onlyPublic": "Seuls les canaux Telegram publics sont pris en charge. Le nom du canal est préfixé avec un @ (par exemple @channel).",
       "title": "Telegram",
       "updated": "L'intégration Telegram a été mise à jour avec succès",
-      "yourChannel": "Votre canal :"
+      "yourChannel": "Votre canal :",
+      "botLabel": "Bot",
+      "botHint": "Le bot doit être invité dans le canal en tant qu'administrateur.",
+      "description": "Envoie les messages dans un canal Telegram."
     },
     "website": {
       "addOrigin": "Ajouter une origine",
@@ -143,9 +149,20 @@
       "noOrigins": "Pas d'origine",
       "noOriginsConfigured": "Aucune origine de site Web configurée.",
       "noOriginsMessage": "Sans origines de site Web configurées, le Ticker n'est accessible à partir d'aucun site Web.",
-      "updated": "Les sites Web ont été mis à jour avec succès"
+      "updated": "Les sites Web ont été mis à jour avec succès",
+      "description": "Sites web autorisés pour l'intégration du ticker."
     },
-    "yourProfile": "Votre profil :"
+    "yourProfile": "Votre profil :",
+    "profile": "Profil",
+    "messagesDelivered": "Les messages sont envoyés.",
+    "messagesPaused": "Les messages ne sont pas envoyés.",
+    "activeIntegrationsInfo": "Les intégrations actives enverront automatiquement les nouveaux messages.",
+    "integrationStatus": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "notConfigured": "Non configuré",
+      "configured": "Configuré"
+    }
   },
   "message": {
     "deleted": "Message supprimé avec succès",

@@ -26,20 +26,26 @@ describe('TelegramCard', () => {
     return <TelegramCard ticker={ticker} />
   }
 
-  it('should render the component', () => {
+  it('should render the component when not connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Telegram')).toBeInTheDocument()
-    expect(screen.getByText('You are not connected with Telegram.')).toBeInTheDocument()
+    expect(screen.getByText('Sends messages to a Telegram channel.')).toBeInTheDocument()
+    expect(screen.getByText('Not configured')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
   })
 
   it('should render the component when connected and active', async () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, channelName: 'channel' }) }))
 
     expect(screen.getByText('Telegram')).toBeInTheDocument()
-    expect(screen.getByText('You are connected with Telegram.')).toBeInTheDocument()
+    expect(screen.getByText('Active')).toBeInTheDocument()
+    expect(screen.getByText('Channel')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'channel' })).toBeInTheDocument()
+    expect(screen.getByText('Bot')).toBeInTheDocument()
+    expect(screen.getByText('bot')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Disable' })).toBeInTheDocument()
@@ -76,6 +82,14 @@ describe('TelegramCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Configure' }))
 
     expect(screen.getByRole('dialog')).toBeInTheDocument()
+  })
+
+  it('should render Enable button when connected but inactive', () => {
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: true, channelName: 'channel' }) }))
+
+    expect(screen.getByText('Inactive')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Enable' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
   })
 
   it('should fail when response fails', async () => {

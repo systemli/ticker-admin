@@ -39,21 +39,25 @@ describe('BlueSkyCard', () => {
     return <BlueskyCard ticker={ticker} />
   }
 
-  it('should render the component', () => {
+  it('should render the component when not connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
-    expect(screen.getByText('You are not connected with Bluesky.')).toBeInTheDocument()
+    expect(screen.getByText('Publishes messages to your Bluesky profile.')).toBeInTheDocument()
+    expect(screen.getByText('Not configured')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
   })
 
   it('should render the component when connected and active', async () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social' }) }))
 
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
-    expect(screen.getByText('You are connected with Bluesky.')).toBeInTheDocument()
+    expect(screen.getByText('Active')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'handle.bsky.social' })).toBeInTheDocument()
-    expect(screen.getByText((_content, element) => element?.textContent === 'Reply Restriction: Anyone')).toBeInTheDocument()
+    expect(screen.getByText('Reply Restriction')).toBeInTheDocument()
+    expect(screen.getByText('Anyone')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Disable' })).toBeInTheDocument()
@@ -92,33 +96,38 @@ describe('BlueSkyCard', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
-  it('should display reply restriction when connected', () => {
+  it('should display reply restriction "followers" when connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social', replyRestriction: 'followers' }) }))
 
-    expect(screen.getByText((_content, element) => element?.textContent === 'Reply Restriction: Followers only')).toBeInTheDocument()
+    expect(screen.getByText('Reply Restriction')).toBeInTheDocument()
+    expect(screen.getByText('Followers only')).toBeInTheDocument()
   })
 
   it('should display reply restriction "following" when connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social', replyRestriction: 'following' }) }))
 
-    expect(screen.getByText((_content, element) => element?.textContent === 'Reply Restriction: People you follow')).toBeInTheDocument()
+    expect(screen.getByText('Reply Restriction')).toBeInTheDocument()
+    expect(screen.getByText('People you follow')).toBeInTheDocument()
   })
 
   it('should display reply restriction "mentioned" when connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social', replyRestriction: 'mentioned' }) }))
 
-    expect(screen.getByText((_content, element) => element?.textContent === 'Reply Restriction: Mentioned users only')).toBeInTheDocument()
+    expect(screen.getByText('Reply Restriction')).toBeInTheDocument()
+    expect(screen.getByText('Mentioned users only')).toBeInTheDocument()
   })
 
   it('should display reply restriction "nobody" when connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, handle: 'handle.bsky.social', replyRestriction: 'nobody' }) }))
 
-    expect(screen.getByText((_content, element) => element?.textContent === 'Reply Restriction: Nobody')).toBeInTheDocument()
+    expect(screen.getByText('Reply Restriction')).toBeInTheDocument()
+    expect(screen.getByText('Nobody')).toBeInTheDocument()
   })
 
   it('should render Enable button when connected but inactive', async () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: true, handle: 'handle.bsky.social' }) }))
 
+    expect(screen.getByText('Inactive')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Enable' })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
 

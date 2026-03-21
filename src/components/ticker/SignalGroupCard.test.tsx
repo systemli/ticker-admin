@@ -10,12 +10,14 @@ describe('SignalGroupCard', () => {
     fetchMock.resetMocks()
   })
 
-  const ticker = ({ active, connected }: { active: boolean; connected: boolean }) => {
+  const ticker = ({ active, connected, groupInviteLink = '' }: { active: boolean; connected: boolean; groupInviteLink?: string }) => {
     return {
       id: 1,
+      title: 'Test Ticker',
       signalGroup: {
         active: active,
         connected: connected,
+        groupInviteLink: groupInviteLink,
       },
     } as Ticker
   }
@@ -24,11 +26,12 @@ describe('SignalGroupCard', () => {
     return <SignalGroupCard ticker={ticker} />
   }
 
-  it('should render the component', async () => {
+  it('should render the component when not connected', async () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
-    expect(screen.getByText("You don't have a Signal group connected.")).toBeInTheDocument()
+    expect(screen.getByText('Sends messages to a Signal group.')).toBeInTheDocument()
+    expect(screen.getByText('Not configured')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
@@ -47,10 +50,12 @@ describe('SignalGroupCard', () => {
   })
 
   it('should render the component when connected and active', async () => {
-    renderWithProviders(component({ ticker: ticker({ active: true, connected: true }) }))
+    renderWithProviders(component({ ticker: ticker({ active: true, connected: true, groupInviteLink: 'https://signal.group/invite' }) }))
 
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
-    expect(screen.getByText('You have a Signal group connected.')).toBeInTheDocument()
+    expect(screen.getByText('Active')).toBeInTheDocument()
+    expect(screen.getByText('Your Signal group invite link:')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Test Ticker' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
@@ -86,6 +91,14 @@ describe('SignalGroupCard', () => {
       },
       method: 'delete',
     })
+  })
+
+  it('should render Enable button when connected but inactive', () => {
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: true, groupInviteLink: 'https://signal.group/invite' }) }))
+
+    expect(screen.getByText('Inactive')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Enable' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
   })
 
   it('should fail when response fails', async () => {

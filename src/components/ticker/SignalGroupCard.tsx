@@ -1,31 +1,17 @@
 import { faSignalMessenger } from '@fortawesome/free-brands-svg-icons'
-import { faAdd, faPause, faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPause, faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerSignalGroupApi, putTickerSignalGroupApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import CopyToClipboard from '../common/CopyToClipboard'
+import IntegrationCard, { IntegrationStatus } from './IntegrationCard'
 import SignalGroupAdminModalForm from './SignalGroupAdminModalForm'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
@@ -100,88 +86,87 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       })
   }
 
-  return (
-    <Card>
-      <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
-          <Typography component="h5" variant="h5">
-            <FontAwesomeIcon icon={faSignalMessenger} /> {t('integrations.signal.title')}
-          </Typography>
-          {signalGroup.connected ? null : (
-            <Box sx={{ display: 'inline', position: 'relative' }}>
-              <Button onClick={handleAdd} size="small" startIcon={<FontAwesomeIcon icon={faAdd} />} disabled={submittingAdd}>
-                {t('action.add')}
-              </Button>
-              {submittingAdd && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    color: 'primary',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    marginTop: '-12px',
-                    marginLeft: '-12px',
-                  }}
-                />
-              )}
-            </Box>
-          )}
+  const status: IntegrationStatus = signalGroup.connected ? (signalGroup.active ? 'active' : 'inactive') : 'notConfigured'
+
+  const details = signalGroup.connected ? (
+    <Stack spacing={1}>
+      <div>
+        <Typography variant="caption" color="text.secondary">
+          {t('integrations.signal.inviteLink')}
+        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank" variant="body2">
+            {ticker.title}
+          </Link>
+          <CopyToClipboard text={signalGroup.groupInviteLink} />
         </Stack>
-      </CardContent>
-      <Divider variant="middle" />
-      <CardContent>
-        {signalGroup.connected ? (
-          <Box>
-            <Typography variant="body2">{t('integrations.signal.connected')}</Typography>
-            <Typography variant="body2">
-              {t('integrations.signal.inviteLink')}{' '}
-              <Link href={signalGroup.groupInviteLink} rel="noreferrer" target="_blank">
-                {ticker.title}
-              </Link>
-            </Typography>
-          </Box>
+      </div>
+    </Stack>
+  ) : null
+
+  const actions = signalGroup.connected ? (
+    <>
+      <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
+        {t('common.admin')}
+      </Button>
+      <Box sx={{ display: 'inline', position: 'relative' }}>
+        {signalGroup.active ? (
+          <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />} disabled={submittingToggle}>
+            {t('action.disable')}
+          </Button>
         ) : (
-          <Box>
-            <Typography variant="body2">{t('integrations.signal.notConnected')}</Typography>
-            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.group') })}</Typography>
-          </Box>
+          <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />} disabled={submittingToggle}>
+            {t('action.enable')}
+          </Button>
         )}
-      </CardContent>
-      {signalGroup.connected ? (
-        <CardActions>
-          <Button onClick={() => setAdminOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />}>
-            {t('common.admin')}
-          </Button>
-          <Box sx={{ display: 'inline', position: 'relative' }}>
-            {signalGroup.active ? (
-              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />} disabled={submittingToggle}>
-                {t('action.disable')}
-              </Button>
-            ) : (
-              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />} disabled={submittingToggle}>
-                {t('action.enable')}
-              </Button>
-            )}
-            {submittingToggle && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: 'primary',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  marginTop: '-12px',
-                  marginLeft: '-12px',
-                }}
-              />
-            )}
-          </Box>
-          <Button onClick={() => setDialogDeleteOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-            {t('action.delete')}
-          </Button>
-        </CardActions>
-      ) : null}
+        {submittingToggle && (
+          <CircularProgress
+            size={24}
+            sx={{
+              color: 'primary',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        )}
+      </Box>
+      <Button onClick={() => setDialogDeleteOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
+        {t('action.delete')}
+      </Button>
+    </>
+  ) : (
+    <Box sx={{ display: 'inline', position: 'relative' }}>
+      <Button onClick={handleAdd} size="small" startIcon={<FontAwesomeIcon icon={faPlus} />} disabled={submittingAdd}>
+        {t('action.add')}
+      </Button>
+      {submittingAdd && (
+        <CircularProgress
+          size={24}
+          sx={{
+            color: 'primary',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-12px',
+            marginLeft: '-12px',
+          }}
+        />
+      )}
+    </Box>
+  )
+
+  return (
+    <IntegrationCard
+      icon={faSignalMessenger}
+      title={t('integrations.signal.title')}
+      description={t('integrations.signal.description')}
+      status={status}
+      details={details}
+      actions={actions}
+    >
       <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
       <Dialog open={dialogDeleteOpen}>
         <DialogTitle>{t('integrations.signal.delete')}</DialogTitle>
@@ -210,7 +195,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
           </Box>
         </DialogActions>
       </Dialog>
-    </Card>
+    </IntegrationCard>
   )
 }
 
