@@ -1,61 +1,29 @@
 import { faBluesky } from '@fortawesome/free-brands-svg-icons'
-import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Link, Stack, Typography } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
+import { Link, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerBlueskyApi, putTickerBlueskyApi } from '../../api/Ticker'
-import useAuth from '../../contexts/useAuth'
-import useNotification from '../../contexts/useNotification'
+import useIntegrationActions from '../../hooks/useIntegrationActions'
 import CopyToClipboard from '../common/CopyToClipboard'
-import BlueskyModalForm from './BlueskyModalForm'
+import BlueskyForm from './BlueskyForm'
 import IntegrationCard, { IntegrationStatus } from './IntegrationCard'
+import IntegrationModalForm from './IntegrationModalForm'
 
 interface Props {
   ticker: Ticker
 }
 
 const BlueskyCard: FC<Props> = ({ ticker }) => {
-  const { t } = useTranslation()
-  const { createNotification } = useNotification()
-  const { token } = useAuth()
-  const [open, setOpen] = useState<boolean>(false)
-
-  const queryClient = useQueryClient()
+  const [open, setOpen] = useState(false)
 
   const bluesky = ticker.bluesky
 
-  const handleDelete = () => {
-    handleApiCall(deleteTickerBlueskyApi(token, ticker), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t('integrations.bluesky.deleted'), severity: 'success' })
-      },
-      onError: () => {
-        createNotification({ content: t('integrations.bluesky.errorDelete'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-  }
-
-  const handleToggle = () => {
-    handleApiCall(putTickerBlueskyApi(token, { active: !bluesky.active }, ticker), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t(bluesky.active ? 'integrations.bluesky.disabled' : 'integrations.bluesky.enabled'), severity: 'success' })
-      },
-      onError: () => {
-        createNotification({ content: t('integrations.bluesky.errorUpdate'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-  }
+  const { handleDelete, handleToggle, t } = useIntegrationActions({
+    ticker,
+    i18nPrefix: 'integrations.bluesky',
+    deleteApi: deleteTickerBlueskyApi,
+    toggleApi: putTickerBlueskyApi,
+    active: bluesky.active,
+  })
 
   const profileUrl = 'https://bsky.app/profile/' + bluesky.handle
 
@@ -98,35 +66,27 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
     </Stack>
   ) : null
 
-  const actions = (
-    <>
-      {bluesky.connected ? (
-        <>
-          {bluesky.active ? (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
-              {t('action.disable')}
-            </Button>
-          ) : (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              {t('action.enable')}
-            </Button>
-          )}
-        </>
-      ) : null}
-      <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-        {t('action.configure')}
-      </Button>
-      {bluesky.connected ? (
-        <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-          {t('action.delete')}
-        </Button>
-      ) : null}
-    </>
-  )
-
   return (
-    <IntegrationCard icon={faBluesky} title="Bluesky" description={t('integrations.bluesky.description')} status={status} details={details} actions={actions}>
-      <BlueskyModalForm open={open} onClose={() => setOpen(false)} ticker={ticker} />
+    <IntegrationCard
+      icon={faBluesky}
+      title="Bluesky"
+      description={t('integrations.bluesky.description')}
+      status={status}
+      details={details}
+      connected={bluesky.connected}
+      active={bluesky.active}
+      onToggle={handleToggle}
+      onDelete={handleDelete}
+      onConfigure={() => setOpen(true)}
+    >
+      <IntegrationModalForm
+        open={open}
+        onClose={() => setOpen(false)}
+        ticker={ticker}
+        formId="configureBluesky"
+        titleKey="integrations.bluesky.configure"
+        FormComponent={BlueskyForm}
+      />
     </IntegrationCard>
   )
 }

@@ -1,61 +1,29 @@
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
-import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Link, Stack, Typography } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
+import { Link, Stack, Typography } from '@mui/material'
 import { FC, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerMastodonApi, putTickerMastodonApi } from '../../api/Ticker'
-import useAuth from '../../contexts/useAuth'
-import useNotification from '../../contexts/useNotification'
+import useIntegrationActions from '../../hooks/useIntegrationActions'
 import CopyToClipboard from '../common/CopyToClipboard'
 import IntegrationCard, { IntegrationStatus } from './IntegrationCard'
-import MastodonModalForm from './MastodonModalForm'
+import IntegrationModalForm from './IntegrationModalForm'
+import MastodonForm from './MastodonForm'
 
 interface Props {
   ticker: Ticker
 }
 
 const MastodonCard: FC<Props> = ({ ticker }) => {
-  const { t } = useTranslation()
-  const { createNotification } = useNotification()
-  const { token } = useAuth()
-  const [open, setOpen] = useState<boolean>(false)
-
-  const queryClient = useQueryClient()
+  const [open, setOpen] = useState(false)
 
   const mastodon = ticker.mastodon
 
-  const handleDelete = () => {
-    handleApiCall(deleteTickerMastodonApi(token, ticker), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t('integrations.mastodon.deleted'), severity: 'success' })
-      },
-      onError: () => {
-        createNotification({ content: t('integrations.mastodon.errorDelete'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-  }
-
-  const handleToggle = () => {
-    handleApiCall(putTickerMastodonApi(token, { active: !mastodon.active }, ticker), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
-        createNotification({ content: t(mastodon.active ? 'integrations.mastodon.disabled' : 'integrations.mastodon.enabled'), severity: 'success' })
-      },
-      onError: () => {
-        createNotification({ content: t('integrations.mastodon.errorUpdate'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-  }
+  const { handleDelete, handleToggle, t } = useIntegrationActions({
+    ticker,
+    i18nPrefix: 'integrations.mastodon',
+    deleteApi: deleteTickerMastodonApi,
+    toggleApi: putTickerMastodonApi,
+    active: mastodon.active,
+  })
 
   const profileUrl = mastodon.server + '/web/@' + mastodon.name
   const profileHandle = `@${mastodon.name}@${mastodon.server.replace(/^https?:\/\//, '')}`
@@ -78,32 +46,6 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     </Stack>
   ) : null
 
-  const actions = (
-    <>
-      {mastodon.connected ? (
-        <>
-          {mastodon.active ? (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
-              {t('action.disable')}
-            </Button>
-          ) : (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              {t('action.enable')}
-            </Button>
-          )}
-        </>
-      ) : null}
-      <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-        {t('action.configure')}
-      </Button>
-      {mastodon.connected ? (
-        <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
-          {t('action.delete')}
-        </Button>
-      ) : null}
-    </>
-  )
-
   return (
     <IntegrationCard
       icon={faMastodon}
@@ -111,9 +53,20 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
       description={t('integrations.mastodon.description')}
       status={status}
       details={details}
-      actions={actions}
+      connected={mastodon.connected}
+      active={mastodon.active}
+      onToggle={handleToggle}
+      onDelete={handleDelete}
+      onConfigure={() => setOpen(true)}
     >
-      <MastodonModalForm onClose={() => setOpen(false)} open={open} ticker={ticker} />
+      <IntegrationModalForm
+        open={open}
+        onClose={() => setOpen(false)}
+        ticker={ticker}
+        formId="configureMastodon"
+        titleKey="integrations.mastodon.configure"
+        FormComponent={MastodonForm}
+      />
     </IntegrationCard>
   )
 }

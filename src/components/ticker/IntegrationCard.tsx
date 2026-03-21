@@ -1,6 +1,7 @@
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Card, CardActions, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
 import { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -12,8 +13,15 @@ interface IntegrationCardProps {
   description: string
   status: IntegrationStatus
   details: ReactNode | null
-  actions: ReactNode
   children?: ReactNode
+  // Standard actions (used by most cards)
+  connected?: boolean
+  active?: boolean
+  onToggle?: () => void
+  onDelete?: () => void
+  onConfigure?: () => void
+  // Custom actions (used by SignalGroup)
+  actions?: ReactNode
 }
 
 const statusConfig: Record<IntegrationStatus, { color?: 'success' | 'warning' }> = {
@@ -23,10 +31,53 @@ const statusConfig: Record<IntegrationStatus, { color?: 'success' | 'warning' }>
   notConfigured: {},
 }
 
-const IntegrationCard: FC<IntegrationCardProps> = ({ icon, title, description, status, details, actions, children }) => {
+const IntegrationCard: FC<IntegrationCardProps> = ({
+  icon,
+  title,
+  description,
+  status,
+  details,
+  children,
+  connected,
+  active,
+  onToggle,
+  onDelete,
+  onConfigure,
+  actions,
+}) => {
   const { t } = useTranslation()
 
   const { color } = statusConfig[status]
+
+  const renderActions = () => {
+    if (actions) return actions
+
+    return (
+      <>
+        {connected && onToggle ? (
+          active ? (
+            <Button onClick={onToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
+              {t('action.disable')}
+            </Button>
+          ) : (
+            <Button onClick={onToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
+              {t('action.enable')}
+            </Button>
+          )
+        ) : null}
+        {onConfigure ? (
+          <Button onClick={onConfigure} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
+            {t('action.configure')}
+          </Button>
+        ) : null}
+        {connected && onDelete ? (
+          <Button onClick={onDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
+            {t('action.delete')}
+          </Button>
+        ) : null}
+      </>
+    )
+  }
 
   return (
     <>
@@ -53,7 +104,7 @@ const IntegrationCard: FC<IntegrationCardProps> = ({ icon, title, description, s
           )}
         </CardContent>
         <Divider variant="middle" />
-        <CardActions>{actions}</CardActions>
+        <CardActions>{renderActions()}</CardActions>
       </Card>
       {children}
     </>
