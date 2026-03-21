@@ -134,7 +134,7 @@
     },
     "website": {
       "addOrigin": "Ajouter une origine",
-      "allowed": "Vous avez autorisé les sites Web suivants à accéder à votre Ticker : {{links}}",
+      "allowed": "Les sites Web suivants sont autorisés à accéder à ce Ticker :",
       "configure": "Configurer le site Web",
       "configureMessage": "Vous pouvez configurer les origines de site Web pour votre Ticker. Le Ticker ne sera accessible que depuis les sites Web configurés.",
       "deleted": "Intégration de sites Web supprimée avec succès",
