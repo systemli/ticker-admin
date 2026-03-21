@@ -1,15 +1,16 @@
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
-import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCircleInfo, faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Chip, Divider, Link, Stack, Tooltip, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerTelegramApi, putTickerTelegramApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import CopyToClipboard from '../common/CopyToClipboard'
 import TelegramModalForm from './TelegramModalForm'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
@@ -54,56 +55,88 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
     })
   }
 
-  const channelLink = (
-    <Link href={`https://t.me/${telegram.channelName}`} rel="noreferrer" target="_blank">
-      {telegram.channelName}
-    </Link>
+  const channelUrl = `https://t.me/${telegram.channelName}`
+
+  const statusChip = telegram.connected ? (
+    telegram.active ? (
+      <Chip label={t('integrations.integrationStatus.active')} color="success" size="small" variant="outlined" />
+    ) : (
+      <Chip label={t('integrations.integrationStatus.inactive')} color="warning" size="small" variant="outlined" />
+    )
+  ) : (
+    <Chip label={t('integrations.integrationStatus.notConfigured')} size="small" variant="outlined" />
   )
 
   return (
-    <Card>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faTelegram} /> {t('integrations.telegram.title')}
           </Typography>
-          <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            {t('action.configure')}
-          </Button>
+          {statusChip}
         </Stack>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          {t('integrations.telegram.description')}
+        </Typography>
       </CardContent>
       <Divider variant="middle" />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         {telegram.connected ? (
-          <Box>
-            <Typography variant="body2">{t('integrations.telegram.connected')}</Typography>
-            <Typography variant="body2">
-              {t('integrations.telegram.yourChannel')} {channelLink} {t('integrations.telegram.bot', { bot: telegram.botUsername })}
-            </Typography>
-          </Box>
+          <Stack spacing={1}>
+            <div>
+              <Typography variant="caption" color="text.secondary">
+                {t('integrations.telegram.channel')}
+              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Link href={channelUrl} rel="noreferrer" target="_blank" variant="body2">
+                  {telegram.channelName}
+                </Link>
+                <CopyToClipboard text={channelUrl} />
+              </Stack>
+            </div>
+            <div>
+              <Typography variant="caption" color="text.secondary">
+                {t('integrations.telegram.botLabel')}
+              </Typography>
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Typography variant="body2">{telegram.botUsername}</Typography>
+                <Tooltip title={t('integrations.telegram.botHint')}>
+                  <FontAwesomeIcon icon={faCircleInfo} size="sm" style={{ color: 'gray', cursor: 'help' }} />
+                </Tooltip>
+              </Stack>
+            </div>
+          </Stack>
         ) : (
-          <Box>
-            <Typography variant="body2">{t('integrations.telegram.notConnected')}</Typography>
-            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.channel') })}</Typography>
-          </Box>
+          <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
+            {t('integrations.notConfiguredHint')}
+          </Typography>
         )}
       </CardContent>
-      {telegram.connected ? (
-        <CardActions>
-          {telegram.active ? (
-            <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPause} />}>
-              {t('action.disable')}
-            </Button>
-          ) : (
-            <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              {t('action.enable')}
-            </Button>
-          )}
-          <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
+      <Divider variant="middle" />
+      <CardActions>
+        {telegram.connected ? (
+          <>
+            {telegram.active ? (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
+                {t('action.disable')}
+              </Button>
+            ) : (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
+                {t('action.enable')}
+              </Button>
+            )}
+          </>
+        ) : null}
+        <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
+          {t('action.configure')}
+        </Button>
+        {telegram.connected ? (
+          <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
             {t('action.delete')}
           </Button>
-        </CardActions>
-      ) : null}
+        ) : null}
+      </CardActions>
       <TelegramModalForm onClose={() => setOpen(false)} open={open} ticker={ticker} />
     </Card>
   )

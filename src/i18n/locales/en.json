@@ -77,7 +77,8 @@
       "replyRestrictionMentioned": "Mentioned users only",
       "replyRestrictionNobody": "Nobody",
       "title": "Bluesky",
-      "updated": "Bluesky integration was successfully updated"
+      "updated": "Bluesky integration was successfully updated",
+      "description": "Publishes messages to your Bluesky profile."
     },
     "errorHomepage": "Homepage is invalid",
     "homepage": "Homepage",
@@ -93,7 +94,8 @@
       "errorUpdate": "Failed to update Mastodon integration",
       "notConnected": "You are not connected with Mastodon.",
       "title": "Mastodon",
-      "updated": "Mastodon integration was successfully updated"
+      "updated": "Mastodon integration was successfully updated",
+      "description": "Publishes messages to your Mastodon profile."
     },
     "noIntegrations": "No integrations",
     "noNewMessages": "New messages will not be published to your {{type}} and old messages can not be deleted anymore.",
@@ -113,7 +115,8 @@
       "numberAdded": "Number successfully added to Signal group",
       "onlyIfNeeded": "Only do this if extra members with write access are needed.",
       "questionDelete": "Are you sure you want to delete the Signal group? This is irreversible.",
-      "title": "Signal Group"
+      "title": "Signal Group",
+      "description": "Sends messages to a Signal group."
     },
     "telegram": {
       "bot": "(Bot: {{bot}})",
@@ -130,7 +133,10 @@
       "onlyPublic": "Only public Telegram Channels are supported. The name of the Channel is prefixed with an @ (e.g. @channel).",
       "title": "Telegram",
       "updated": "Telegram integration was successfully updated",
-      "yourChannel": "Your channel:"
+      "yourChannel": "Your channel:",
+      "botLabel": "Bot",
+      "botHint": "The bot must be invited to the channel as an administrator.",
+      "description": "Sends messages to a Telegram channel."
     },
     "website": {
       "addOrigin": "Add Origin",
@@ -143,9 +149,21 @@
       "noOrigins": "No origins",
       "noOriginsConfigured": "No website origins configured.",
       "noOriginsMessage": "Without configured website origins, the ticker is not reachable from any website.",
-      "updated": "Websites were successfully updated"
+      "updated": "Websites were successfully updated",
+      "description": "Defines which websites can embed and display this ticker."
     },
-    "yourProfile": "Your Profile:"
+    "yourProfile": "Your Profile:",
+    "profile": "Profile",
+    "messagesDelivered": "Messages are being sent.",
+    "messagesPaused": "Messages are not being sent.",
+    "notConfiguredHint": "Use the Configure button below to set up this integration.",
+    "activeIntegrationsInfo": "Active integrations will automatically send new messages.",
+    "integrationStatus": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "notConfigured": "Not configured",
+      "configured": "Configured"
+    }
   },
   "message": {
     "deleted": "Message successfully deleted",

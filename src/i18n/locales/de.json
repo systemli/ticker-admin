@@ -77,7 +77,8 @@
       "replyRestrictionMentioned": "Nur erwähnte Personen",
       "replyRestrictionNobody": "Niemand",
       "title": "Bluesky",
-      "updated": "Bluesky-Integration erfolgreich aktualisiert"
+      "updated": "Bluesky-Integration erfolgreich aktualisiert",
+      "description": "Veröffentlicht Nachrichten auf deinem Bluesky-Profil."
     },
     "errorHomepage": "Homepage ist ungültig",
     "homepage": "Homepage",
@@ -93,7 +94,8 @@
       "errorUpdate": "Mastodon-Integration konnte nicht aktualisiert werden",
       "notConnected": "Du bist nicht mit Mastodon verbunden.",
       "title": "Mastodon",
-      "updated": "Mastodon-Integration erfolgreich aktualisiert"
+      "updated": "Mastodon-Integration erfolgreich aktualisiert",
+      "description": "Veröffentlicht Nachrichten auf deinem Mastodon-Profil."
     },
     "noIntegrations": "Keine Integrationen",
     "noNewMessages": "Neue Nachrichten werden nicht mehr in deinem {{type}} veröffentlicht und alte Nachrichten können nicht mehr gelöscht werden.",
@@ -113,7 +115,8 @@
       "numberAdded": "Nummer erfolgreich zur Signal-Gruppe hinzugefügt",
       "onlyIfNeeded": "Führe dies nur aus, wenn zusätzliche Mitglieder mit Schreibzugriff benötigt werden.",
       "questionDelete": "Bist du sicher, dass du die Signal-Gruppe löschen möchtest? Dies kann nicht rückgängig gemacht werden.",
-      "title": "Signal-Gruppe"
+      "title": "Signal-Gruppe",
+      "description": "Sendet Nachrichten in eine Signal-Gruppe."
     },
     "telegram": {
       "bot": "(Bot: {{bot}})",
@@ -130,7 +133,10 @@
       "onlyPublic": "Es werden nur öffentliche Telegram-Kanäle unterstützt. Der Kanalname wird mit einem @ vorangestellt (z.B. @channel).",
       "title": "Telegram",
       "updated": "Telegram-Integration erfolgreich aktualisiert",
-      "yourChannel": "Dein Kanal:"
+      "yourChannel": "Dein Kanal:",
+      "botLabel": "Bot",
+      "botHint": "Der Bot muss als Administrator zum Kanal eingeladen werden.",
+      "description": "Sendet Nachrichten in einen Telegram-Kanal."
     },
     "website": {
       "addOrigin": "Website hinzufügen",
@@ -143,9 +149,21 @@
       "noOrigins": "Keine Websites",
       "noOriginsConfigured": "Keine Websites konfiguriert.",
       "noOriginsMessage": "Ohne konfigurierte Websites ist der Ticker von keiner Website aus erreichbar.",
-      "updated": "Websites wurden erfolgreich aktualisiert"
+      "updated": "Websites wurden erfolgreich aktualisiert",
+      "description": "Legt fest, welche Websites diesen Ticker einbinden und anzeigen dürfen."
     },
-    "yourProfile": "Dein Profil:"
+    "yourProfile": "Dein Profil:",
+    "profile": "Profil",
+    "messagesDelivered": "Nachrichten werden gesendet.",
+    "messagesPaused": "Nachrichten werden nicht gesendet.",
+    "notConfiguredHint": "Verwende die Schaltfläche \"Konfigurieren\" unten, um diese Integration einzurichten.",
+    "activeIntegrationsInfo": "Aktive Integrationen senden neue Nachrichten automatisch.",
+    "integrationStatus": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "notConfigured": "Nicht konfiguriert",
+      "configured": "Konfiguriert"
+    }
   },
   "message": {
     "deleted": "Nachricht erfolgreich gelöscht",

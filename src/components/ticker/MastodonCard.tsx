@@ -1,15 +1,16 @@
 import { faMastodon } from '@fortawesome/free-brands-svg-icons'
 import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Chip, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerMastodonApi, putTickerMastodonApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import CopyToClipboard from '../common/CopyToClipboard'
 import MastodonModalForm from './MastodonModalForm'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
@@ -55,60 +56,78 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
     })
   }
 
-  const profileLink = (
-    <Link href={mastodon.server + '/web/@' + mastodon.name} rel="noreferrer" target="_blank">
-      @{mastodon.name}@{mastodon.server.replace(/^https?:\/\//, '')}
-    </Link>
+  const profileUrl = mastodon.server + '/web/@' + mastodon.name
+  const profileHandle = `@${mastodon.name}@${mastodon.server.replace(/^https?:\/\//, '')}`
+
+  const statusChip = mastodon.connected ? (
+    mastodon.active ? (
+      <Chip label={t('integrations.integrationStatus.active')} color="success" size="small" variant="outlined" />
+    ) : (
+      <Chip label={t('integrations.integrationStatus.inactive')} color="warning" size="small" variant="outlined" />
+    )
+  ) : (
+    <Chip label={t('integrations.integrationStatus.notConfigured')} size="small" variant="outlined" />
   )
 
   return (
-    <Card>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faMastodon} /> Mastodon
           </Typography>
-          <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            {t('action.configure')}
-          </Button>
+          {statusChip}
         </Stack>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          {t('integrations.mastodon.description')}
+        </Typography>
       </CardContent>
       <Divider variant="middle" />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         {mastodon.connected ? (
-          <Box>
-            <Typography variant="body2">{t('integrations.mastodon.connected')}</Typography>
-            <Typography variant="body2">
-              {t('integrations.yourProfile')} {profileLink}
-            </Typography>
-          </Box>
+          <Stack spacing={1}>
+            <div>
+              <Typography variant="caption" color="text.secondary">
+                {t('integrations.profile')}
+              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Link href={profileUrl} rel="noreferrer" target="_blank" variant="body2">
+                  {profileHandle}
+                </Link>
+                <CopyToClipboard text={profileUrl} />
+              </Stack>
+            </div>
+          </Stack>
         ) : (
-          <Box>
-            <Typography component="p" variant="body2">
-              {t('integrations.mastodon.notConnected')}
-            </Typography>
-            <Typography component="p" variant="body2">
-              {t('integrations.noNewMessages', { type: t('common.account') })}
-            </Typography>
-          </Box>
+          <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
+            {t('integrations.notConfiguredHint')}
+          </Typography>
         )}
       </CardContent>
-      {mastodon.connected ? (
-        <CardActions>
-          {mastodon.active ? (
-            <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPause} />}>
-              {t('action.disable')}
-            </Button>
-          ) : (
-            <Button onClick={handleToggle} startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              {t('action.enable')}
-            </Button>
-          )}
-          <Button onClick={handleDelete} startIcon={<FontAwesomeIcon icon={faTrash} />}>
+      <Divider variant="middle" />
+      <CardActions>
+        {mastodon.connected ? (
+          <>
+            {mastodon.active ? (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
+                {t('action.disable')}
+              </Button>
+            ) : (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
+                {t('action.enable')}
+              </Button>
+            )}
+          </>
+        ) : null}
+        <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
+          {t('action.configure')}
+        </Button>
+        {mastodon.connected ? (
+          <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
             {t('action.delete')}
           </Button>
-        </CardActions>
-      ) : null}
+        ) : null}
+      </CardActions>
       <MastodonModalForm onClose={() => setOpen(false)} open={open} ticker={ticker} />
     </Card>
   )

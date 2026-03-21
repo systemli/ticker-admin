@@ -26,20 +26,25 @@ describe('MastodonCard', () => {
     return <MastodonCard ticker={ticker} />
   }
 
-  it('should render the component', () => {
+  it('should render the component when not connected', () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Mastodon')).toBeInTheDocument()
-    expect(screen.getByText('You are not connected with Mastodon.')).toBeInTheDocument()
+    expect(screen.getByText('Publishes messages to your Mastodon profile.')).toBeInTheDocument()
+    expect(screen.getByText('Not configured')).toBeInTheDocument()
+    expect(screen.getByText('Use the Configure button below to set up this integration.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Enable' })).not.toBeInTheDocument()
   })
 
   it('should render the component when connected and active', async () => {
     renderWithProviders(component({ ticker: ticker({ active: true, connected: true, name: 'user' }) }))
 
     expect(screen.getByText('Mastodon')).toBeInTheDocument()
-    expect(screen.getByText('You are connected with Mastodon.')).toBeInTheDocument()
-    expect(screen.getByText('Your Profile:')).toBeInTheDocument()
+    expect(screen.getByText('Active')).toBeInTheDocument()
+    expect(screen.getByText('Profile')).toBeInTheDocument()
     expect(screen.getByText('@user@mastodon.social')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
@@ -77,6 +82,14 @@ describe('MastodonCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Configure' }))
 
     expect(screen.getByRole('dialog')).toBeInTheDocument()
+  })
+
+  it('should render Enable button when connected but inactive', () => {
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: true, name: 'user' }) }))
+
+    expect(screen.getByText('Inactive')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Enable' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
   })
 
   it('should fail when response fails', async () => {

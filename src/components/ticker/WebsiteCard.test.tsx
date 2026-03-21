@@ -26,18 +26,28 @@ describe('WebsiteCard', () => {
     )
   }
 
-  it('should render the component', async () => {
+  it('should render the component when not configured', async () => {
     renderWithProviders(component({ websites: [] }))
 
+    expect(screen.getByText('Websites')).toBeInTheDocument()
+    expect(screen.getByText('Defines which websites can embed and display this ticker.')).toBeInTheDocument()
+    expect(screen.getByText('Not configured')).toBeInTheDocument()
+    expect(screen.getByText('Use the Configure button below to set up this integration.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
-    expect(screen.getByText('No website origins configured.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
+  })
+
+  it('should render the component when configured', () => {
+    renderWithProviders(component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
+
+    expect(screen.getByText('Configured')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'http://localhost' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
   })
 
   it('should delete the origins', async () => {
     renderWithProviders(component({ websites: [{ origin: 'http://localhost', id: 1 }] }))
-
-    expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 

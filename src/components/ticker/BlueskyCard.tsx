@@ -1,15 +1,16 @@
 import { faBluesky } from '@fortawesome/free-brands-svg-icons'
 import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, Button, Card, CardActions, CardContent, Divider, Link, Stack, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Chip, Divider, Link, Stack, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { handleApiCall } from '../../api/Api'
 import { Ticker, deleteTickerBlueskyApi, putTickerBlueskyApi } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
 import useNotification from '../../contexts/useNotification'
+import CopyToClipboard from '../common/CopyToClipboard'
 import BlueskyModalForm from './BlueskyModalForm'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   ticker: Ticker
@@ -55,11 +56,7 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
     })
   }
 
-  const profileLink = (
-    <Link href={'https://bsky.app/profile/' + bluesky.handle} rel="noreferrer" target="_blank">
-      {bluesky.handle}
-    </Link>
-  )
+  const profileUrl = 'https://bsky.app/profile/' + bluesky.handle
 
   const replyRestrictionLabel = (restriction: string): string => {
     switch (restriction) {
@@ -76,53 +73,81 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
     }
   }
 
+  const statusChip = bluesky.connected ? (
+    bluesky.active ? (
+      <Chip label={t('integrations.integrationStatus.active')} color="success" size="small" variant="outlined" />
+    ) : (
+      <Chip label={t('integrations.integrationStatus.inactive')} color="warning" size="small" variant="outlined" />
+    )
+  ) : (
+    <Chip label={t('integrations.integrationStatus.notConfigured')} size="small" variant="outlined" />
+  )
+
   return (
-    <Card>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
           <Typography component="h5" variant="h5">
             <FontAwesomeIcon icon={faBluesky} /> Bluesky
           </Typography>
-          <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
-            {t('action.configure')}
-          </Button>
+          {statusChip}
         </Stack>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          {t('integrations.bluesky.description')}
+        </Typography>
       </CardContent>
       <Divider variant="middle" />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         {bluesky.connected ? (
-          <Box>
-            <Typography variant="body2">{t('integrations.bluesky.connected')}</Typography>
-            <Typography variant="body2">
-              {t('integrations.yourProfile')} {profileLink}
-            </Typography>
-            <Typography variant="body2">
-              {t('integrations.bluesky.replyRestriction')}: {replyRestrictionLabel(bluesky.replyRestriction)}
-            </Typography>
-          </Box>
+          <Stack spacing={1}>
+            <div>
+              <Typography variant="caption" color="text.secondary">
+                {t('integrations.profile')}
+              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Link href={profileUrl} rel="noreferrer" target="_blank" variant="body2">
+                  {bluesky.handle}
+                </Link>
+                <CopyToClipboard text={profileUrl} />
+              </Stack>
+            </div>
+            <div>
+              <Typography variant="caption" color="text.secondary">
+                {t('integrations.bluesky.replyRestriction')}
+              </Typography>
+              <Typography variant="body2">{replyRestrictionLabel(bluesky.replyRestriction)}</Typography>
+            </div>
+          </Stack>
         ) : (
-          <Box>
-            <Typography variant="body2">{t('integrations.bluesky.notConnected')}</Typography>
-            <Typography variant="body2">{t('integrations.noNewMessages', { type: t('common.account') })}</Typography>
-          </Box>
+          <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
+            {t('integrations.notConfiguredHint')}
+          </Typography>
         )}
       </CardContent>
-      {bluesky.connected ? (
-        <CardActions>
-          {bluesky.active ? (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
-              {t('action.disable')}
-            </Button>
-          ) : (
-            <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
-              {t('action.enable')}
-            </Button>
-          )}
+      <Divider variant="middle" />
+      <CardActions>
+        {bluesky.connected ? (
+          <>
+            {bluesky.active ? (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
+                {t('action.disable')}
+              </Button>
+            ) : (
+              <Button onClick={handleToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
+                {t('action.enable')}
+              </Button>
+            )}
+          </>
+        ) : null}
+        <Button onClick={() => setOpen(true)} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
+          {t('action.configure')}
+        </Button>
+        {bluesky.connected ? (
           <Button onClick={handleDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
             {t('action.delete')}
           </Button>
-        </CardActions>
-      ) : null}
+        ) : null}
+      </CardActions>
       <BlueskyModalForm open={open} onClose={() => setOpen(false)} ticker={ticker} />
     </Card>
   )

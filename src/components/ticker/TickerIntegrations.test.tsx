@@ -59,6 +59,12 @@ describe('TickerIntegrations', () => {
     )
   }
 
+  it('should show info banner', () => {
+    setup(true)
+
+    expect(screen.getByText('Active integrations will automatically send new messages.')).toBeInTheDocument()
+  })
+
   it('should show TelegramCard when telegramEnabled is true', () => {
     setup(true)
 
