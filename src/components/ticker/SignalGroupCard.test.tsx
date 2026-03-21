@@ -32,7 +32,6 @@ describe('SignalGroupCard', () => {
     expect(screen.getByText('Signal Group')).toBeInTheDocument()
     expect(screen.getByText('Sends messages to a Signal group.')).toBeInTheDocument()
     expect(screen.getByText('Not configured')).toBeInTheDocument()
-    expect(screen.getByText('Use the Configure button below to set up this integration.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))

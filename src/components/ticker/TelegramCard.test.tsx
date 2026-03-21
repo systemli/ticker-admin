@@ -32,7 +32,6 @@ describe('TelegramCard', () => {
     expect(screen.getByText('Telegram')).toBeInTheDocument()
     expect(screen.getByText('Sends messages to a Telegram channel.')).toBeInTheDocument()
     expect(screen.getByText('Not configured')).toBeInTheDocument()
-    expect(screen.getByText('Use the Configure button below to set up this integration.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()

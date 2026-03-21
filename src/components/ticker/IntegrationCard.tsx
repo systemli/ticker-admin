@@ -1,7 +1,7 @@
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { faGear, faPause, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Card, CardActions, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
+import { Button, Box, Card, CardActions, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
 import { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -98,9 +98,9 @@ const IntegrationCard: FC<IntegrationCardProps> = ({
           {details !== null ? (
             details
           ) : (
-            <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
-              {t('integrations.notConfiguredHint')}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+              <FontAwesomeIcon icon={icon} size="3x" style={{ opacity: 0.08 }} />
+            </Box>
           )}
         </CardContent>
         <Divider variant="middle" />

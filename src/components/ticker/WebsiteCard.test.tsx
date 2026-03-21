@@ -30,9 +30,8 @@ describe('WebsiteCard', () => {
     renderWithProviders(component({ websites: [] }))
 
     expect(screen.getByText('Websites')).toBeInTheDocument()
-    expect(screen.getByText('Defines which websites can embed and display this ticker.')).toBeInTheDocument()
+    expect(screen.getByText('Allowed websites for ticker embedding.')).toBeInTheDocument()
     expect(screen.getByText('Not configured')).toBeInTheDocument()
-    expect(screen.getByText('Use the Configure button below to set up this integration.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
   })

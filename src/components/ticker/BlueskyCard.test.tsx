@@ -45,7 +45,6 @@ describe('BlueSkyCard', () => {
     expect(screen.getByText('Bluesky')).toBeInTheDocument()
     expect(screen.getByText('Publishes messages to your Bluesky profile.')).toBeInTheDocument()
     expect(screen.getByText('Not configured')).toBeInTheDocument()
-    expect(screen.getByText('Use the Configure button below to set up this integration.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Configure' })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()

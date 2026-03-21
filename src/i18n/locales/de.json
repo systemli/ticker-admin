@@ -150,13 +150,12 @@
       "noOriginsConfigured": "Keine Websites konfiguriert.",
       "noOriginsMessage": "Ohne konfigurierte Websites ist der Ticker von keiner Website aus erreichbar.",
       "updated": "Websites wurden erfolgreich aktualisiert",
-      "description": "Legt fest, welche Websites diesen Ticker einbinden und anzeigen dürfen."
+      "description": "Erlaubte Websites für die Ticker-Einbindung."
     },
     "yourProfile": "Dein Profil:",
     "profile": "Profil",
     "messagesDelivered": "Nachrichten werden gesendet.",
     "messagesPaused": "Nachrichten werden nicht gesendet.",
-    "notConfiguredHint": "Verwende die Schaltfläche \"Konfigurieren\" unten, um diese Integration einzurichten.",
     "activeIntegrationsInfo": "Aktive Integrationen senden neue Nachrichten automatisch.",
     "integrationStatus": {
       "active": "Aktiv",

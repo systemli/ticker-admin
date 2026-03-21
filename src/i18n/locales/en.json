@@ -150,13 +150,12 @@
       "noOriginsConfigured": "No website origins configured.",
       "noOriginsMessage": "Without configured website origins, the ticker is not reachable from any website.",
       "updated": "Websites were successfully updated",
-      "description": "Defines which websites can embed and display this ticker."
+      "description": "Allowed websites for ticker embedding."
     },
     "yourProfile": "Your Profile:",
     "profile": "Profile",
     "messagesDelivered": "Messages are being sent.",
     "messagesPaused": "Messages are not being sent.",
-    "notConfiguredHint": "Use the Configure button below to set up this integration.",
     "activeIntegrationsInfo": "Active integrations will automatically send new messages.",
     "integrationStatus": {
       "active": "Active",

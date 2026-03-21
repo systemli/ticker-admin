@@ -150,13 +150,12 @@
       "noOriginsConfigured": "Aucune origine de site Web configurée.",
       "noOriginsMessage": "Sans origines de site Web configurées, le Ticker n'est accessible à partir d'aucun site Web.",
       "updated": "Les sites Web ont été mis à jour avec succès",
-      "description": "Définit quels sites web peuvent intégrer et afficher ce ticker."
+      "description": "Sites web autorisés pour l'intégration du ticker."
     },
     "yourProfile": "Votre profil :",
     "profile": "Profil",
     "messagesDelivered": "Les messages sont envoyés.",
     "messagesPaused": "Les messages ne sont pas envoyés.",
-    "notConfiguredHint": "Utilisez le bouton Configurer ci-dessous pour mettre en place cette intégration.",
     "activeIntegrationsInfo": "Les intégrations actives enverront automatiquement les nouveaux messages.",
     "integrationStatus": {
       "active": "Actif",
