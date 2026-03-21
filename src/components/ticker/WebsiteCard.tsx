@@ -31,22 +31,13 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
         createNotification({ content: t('integrations.website.deleted'), severity: 'success' })
       },
       onError: () => {
-        createNotification({ content: 'integrations.website.errorDelete', severity: 'error' })
+        createNotification({ content: t('integrations.website.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
         createNotification({ content: error as string, severity: 'error' })
       },
     })
   }
-
-  const links = websites.map(website => (
-    <Box component="span" key={website.id}>
-      <Link href={website.origin} key={website.id}>
-        {website.origin}
-      </Link>
-      {websites.indexOf(website) < websites.length - 1 ? ', ' : ''}
-    </Box>
-  ))
 
   return (
     <Card>
@@ -65,8 +56,15 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
         {websites.length > 0 ? (
           <Box>
             <Typography component="p" variant="body2">
-              {t('integrations.website.allowed', { links: links })}
+              {t('integrations.website.allowed')}
             </Typography>
+            <Box component="ul" sx={{ m: 0, mt: 1, pl: 2 }}>
+              {websites.map(website => (
+                <Typography component="li" key={website.id} variant="body2">
+                  <Link href={website.origin}>{website.origin}</Link>
+                </Typography>
+              ))}
+            </Box>
           </Box>
         ) : (
           <Box>

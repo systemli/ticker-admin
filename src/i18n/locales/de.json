@@ -134,7 +134,7 @@
     },
     "website": {
       "addOrigin": "Website hinzufügen",
-      "allowed": "Folgende Websites dürfen deinen Ticker einbinden: {{links}}",
+      "allowed": "Folgende Websites sind berechtigt, auf diesen Ticker zuzugreifen:",
       "configure": "Website konfigurieren",
       "configureMessage": "Du kannst festlegen, welche Websites deinen Ticker einbinden dürfen. Der Ticker ist nur über die konfigurierten Websites erreichbar.",
       "deleted": "Website-Integration erfolgreich gelöscht",

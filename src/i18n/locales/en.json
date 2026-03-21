@@ -134,7 +134,7 @@
     },
     "website": {
       "addOrigin": "Add Origin",
-      "allowed": "You have allowed the following websites to access your ticker: {{links}}",
+      "allowed": "The following websites are allowed to access this ticker:",
       "configure": "Configure Website",
       "configureMessage": "You can configure website origins for your ticker. The ticker will only be reachable from the configured websites.",
       "deleted": "Websites integration successfully deleted",
