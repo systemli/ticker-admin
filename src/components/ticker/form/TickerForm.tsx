@@ -54,27 +54,29 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
   const queryClient = useQueryClient()
   const { handleSubmit } = form
 
-  const onSubmit: SubmitHandler<TickerFormData> = data => {
+  const onSubmit: SubmitHandler<TickerFormData> = async data => {
     setSubmitting(true)
 
     const apiCall = ticker ? putTickerApi(token, data, ticker.id) : postTickerApi(token, data)
 
-    handleApiCall(apiCall, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['tickers'] })
-        queryClient.invalidateQueries({ queryKey: ['ticker', ticker?.id] })
-        createNotification({ content: t(ticker ? 'tickers.updated' : 'tickers.created'), severity: 'success' })
-        callback()
-      },
-      onError: () => {
-        createNotification({ content: t(ticker ? 'tickers.errorUpdate' : 'tickers.errorCreate'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-
-    setSubmitting(false)
+    try {
+      await handleApiCall(apiCall, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['tickers'] })
+          queryClient.invalidateQueries({ queryKey: ['ticker', ticker?.id] })
+          createNotification({ content: t(ticker ? 'tickers.updated' : 'tickers.created'), severity: 'success' })
+          callback()
+        },
+        onError: () => {
+          createNotification({ content: t(ticker ? 'tickers.errorUpdate' : 'tickers.errorCreate'), severity: 'error' })
+        },
+        onFailure: error => {
+          createNotification({ content: error as string, severity: 'error' })
+        },
+      })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (

@@ -26,24 +26,26 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
   } = useForm<TickerSignalGroupAdminFormData>()
   const { createNotification } = useNotification()
 
-  const onSubmit = handleSubmit(data => {
+  const onSubmit = handleSubmit(async data => {
     setSubmitting(true)
 
-    handleApiCall(putTickerSignalGroupAdminApi(token, data, ticker), {
-      onSuccess: () => {
-        createNotification({ content: t('integrations.signal.numberAdded'), severity: 'success' })
-        callback()
-      },
-      onError: () => {
-        createNotification({ content: t('integrations.signal.errorAddNumber'), severity: 'error' })
-        setError('number', { message: t('integrations.signal.errorAddNumber') })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-
-    setSubmitting(false)
+    try {
+      await handleApiCall(putTickerSignalGroupAdminApi(token, data, ticker), {
+        onSuccess: () => {
+          createNotification({ content: t('integrations.signal.numberAdded'), severity: 'success' })
+          callback()
+        },
+        onError: () => {
+          createNotification({ content: t('integrations.signal.errorAddNumber'), severity: 'error' })
+          setError('number', { message: t('integrations.signal.errorAddNumber') })
+        },
+        onFailure: error => {
+          createNotification({ content: error as string, severity: 'error' })
+        },
+      })
+    } finally {
+      setSubmitting(false)
+    }
   })
 
   return (
