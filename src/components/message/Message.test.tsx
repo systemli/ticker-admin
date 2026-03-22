@@ -26,6 +26,6 @@ describe('Message', () => {
     expect(screen.getByText('Multi line message with links')).toBeInTheDocument()
     expect(screen.getByText('example.com')).toBeInTheDocument()
     expect(screen.getByText('example.net')).toBeInTheDocument()
-    expect(screen.getByRole('img')).toBeInTheDocument()
+    expect(document.querySelector('img')).toBeInTheDocument()
   })
 })

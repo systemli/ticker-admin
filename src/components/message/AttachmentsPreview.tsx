@@ -9,8 +9,8 @@ interface Props {
 }
 
 const AttachmentsPreview: FC<Props> = ({ attachments, onDelete }) => {
-  const images = attachments.map((upload, key) => {
-    return <AttachmentPreview key={key} onDelete={() => onDelete(upload)} upload={upload} />
+  const images = attachments.map(upload => {
+    return <AttachmentPreview key={upload.id} onDelete={() => onDelete(upload)} upload={upload} />
   })
 
   if (images.length === 0) {

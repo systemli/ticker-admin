@@ -42,7 +42,7 @@ const Lightbox: FC<Props> = ({ images, initialImage = 0, open, onClose }) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overscrollBehavior: 'contain' }}>
-        <img alt={images[currentImage]} src={images[currentImage]} style={{ maxWidth: '100%', maxHeight: '100%' }} />
+        <img alt="" src={images[currentImage]} style={{ maxWidth: '100%', maxHeight: '100%' }} />
         <IconButton onClick={onClose} sx={{ position: 'absolute', top: -42, right: -42 }} color="primary" aria-label="close">
           <FontAwesomeIcon icon={faXmark} />
         </IconButton>

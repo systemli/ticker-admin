@@ -26,7 +26,7 @@ const MessageAttachements: FC<Props> = ({ message }) => {
       <ImageList sx={{ mt: 1 }}>
         {attachments.map((image, key) => (
           <ImageListItem key={image.url} sx={{ position: 'relative' }} onClick={() => handleClick(key)}>
-            <img src={image.url} alt={image.url} />
+            <img src={image.url} alt="" />
           </ImageListItem>
         ))}
       </ImageList>
