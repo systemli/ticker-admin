@@ -42,23 +42,26 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
   const { token } = useAuth()
   const queryClient = useQueryClient()
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<FormValues> = async data => {
     setSubmitting(true)
-    handleApiCall(putInactiveSettingsApi(token, data), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['inactive_settings'] })
-        createNotification({ content: t('status.updatedInactive'), severity: 'success' })
-        callback()
-      },
-      onError: () => {
-        createNotification({ content: t('status.errorUpdateInactive'), severity: 'error' })
-      },
-      onFailure: () => {
-        createNotification({ content: t('status.errorUpdateInactive'), severity: 'error' })
-      },
-    })
 
-    setSubmitting(false)
+    try {
+      await handleApiCall(putInactiveSettingsApi(token, data), {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['inactive_settings'] })
+          createNotification({ content: t('status.updatedInactive'), severity: 'success' })
+          callback()
+        },
+        onError: () => {
+          createNotification({ content: t('status.errorUpdateInactive'), severity: 'error' })
+        },
+        onFailure: () => {
+          createNotification({ content: t('status.errorUpdateInactive'), severity: 'error' })
+        },
+      })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (

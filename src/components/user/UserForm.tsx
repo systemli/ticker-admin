@@ -46,7 +46,7 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
   const isSuperAdminChecked = watch('isSuperAdmin')
   const password = watch('password', '')
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<FormValues> = async data => {
     setSubmitting(true)
 
     const formData = {
@@ -58,21 +58,23 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
 
     const apiCall = user ? putUserApi(token, user, formData) : postUserApi(token, formData)
 
-    handleApiCall(apiCall, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['users'] })
-        createNotification({ content: t(user ? 'user.updated' : 'user.created'), severity: 'success' })
-        callback()
-      },
-      onError: () => {
-        createNotification({ content: t(user ? 'user.errorUpdate' : 'user.errorCreate'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-
-    setSubmitting(false)
+    try {
+      await handleApiCall(apiCall, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['users'] })
+          createNotification({ content: t(user ? 'user.updated' : 'user.created'), severity: 'success' })
+          callback()
+        },
+        onError: () => {
+          createNotification({ content: t(user ? 'user.errorUpdate' : 'user.errorCreate'), severity: 'error' })
+        },
+        onFailure: error => {
+          createNotification({ content: error as string, severity: 'error' })
+        },
+      })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   useEffect(() => {

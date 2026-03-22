@@ -85,28 +85,30 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     setValue('message', message.toString() + emoji.native + ' ')
   }
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<FormValues> = async data => {
     setIsSubmitting(true)
 
     const uploads = attachments.map(upload => {
       return upload.id
     })
 
-    handleApiCall(postMessageApi(token, ticker.id.toString(), data.message, uploads), {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
-        setAttachments([])
-        createNotification({ content: t('message.posted'), severity: 'success' })
-      },
-      onError: () => {
-        createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })
-      },
-      onFailure: () => {
-        createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })
-      },
-    })
-
-    setIsSubmitting(false)
+    try {
+      await handleApiCall(postMessageApi(token, ticker.id.toString(), data.message, uploads), {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['messages', ticker.id] })
+          setAttachments([])
+          createNotification({ content: t('message.posted'), severity: 'success' })
+        },
+        onError: () => {
+          createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })
+        },
+        onFailure: () => {
+          createNotification({ content: t('message.errorFailedToPost'), severity: 'error' })
+        },
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   useEffect(() => {

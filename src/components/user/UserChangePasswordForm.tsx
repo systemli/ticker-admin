@@ -31,30 +31,32 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
   } = useForm<FormValues>()
   const { token } = useAuth()
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<FormValues> = async data => {
     setSubmitting(true)
 
-    handleApiCall(putMeApi(token, data), {
-      onSuccess: () => {
-        createNotification({ content: t('user.passwordUpdated'), severity: 'success' })
-        onClose()
-      },
-      onError: response => {
-        const message = t(response.error?.message === 'could not authenticate password' ? 'user.errorWrongPassword' : 'error.somethingWentWrong')
+    try {
+      await handleApiCall(putMeApi(token, data), {
+        onSuccess: () => {
+          createNotification({ content: t('user.passwordUpdated'), severity: 'success' })
+          onClose()
+        },
+        onError: response => {
+          const message = t(response.error?.message === 'could not authenticate password' ? 'user.errorWrongPassword' : 'error.somethingWentWrong')
 
-        setError('password', {
-          type: 'custom',
-          message: message,
-        })
+          setError('password', {
+            type: 'custom',
+            message: message,
+          })
 
-        createNotification({ content: t('user.errorUpdatePassword'), severity: 'error' })
-      },
-      onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
-      },
-    })
-
-    setSubmitting(false)
+          createNotification({ content: t('user.errorUpdatePassword'), severity: 'error' })
+        },
+        onFailure: error => {
+          createNotification({ content: error as string, severity: 'error' })
+        },
+      })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const newPassword = watch('newPassword', '')
