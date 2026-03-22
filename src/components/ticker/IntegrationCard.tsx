@@ -56,22 +56,22 @@ const IntegrationCard: FC<IntegrationCardProps> = ({
       <>
         {connected && onToggle ? (
           active ? (
-            <Button onClick={onToggle} size="small" startIcon={<FontAwesomeIcon icon={faPause} />}>
+            <Button onClick={onToggle} size="small" startIcon={<FontAwesomeIcon aria-hidden="true" icon={faPause} />}>
               {t('action.disable')}
             </Button>
           ) : (
-            <Button onClick={onToggle} size="small" startIcon={<FontAwesomeIcon icon={faPlay} />}>
+            <Button onClick={onToggle} size="small" startIcon={<FontAwesomeIcon aria-hidden="true" icon={faPlay} />}>
               {t('action.enable')}
             </Button>
           )
         ) : null}
         {onConfigure ? (
-          <Button onClick={onConfigure} size="small" startIcon={<FontAwesomeIcon icon={faGear} />}>
+          <Button onClick={onConfigure} size="small" startIcon={<FontAwesomeIcon aria-hidden="true" icon={faGear} />}>
             {t('action.configure')}
           </Button>
         ) : null}
         {connected && onDelete ? (
-          <Button onClick={onDelete} size="small" startIcon={<FontAwesomeIcon icon={faTrash} />}>
+          <Button onClick={onDelete} size="small" startIcon={<FontAwesomeIcon aria-hidden="true" icon={faTrash} />}>
             {t('action.delete')}
           </Button>
         ) : null}
@@ -85,7 +85,7 @@ const IntegrationCard: FC<IntegrationCardProps> = ({
         <CardContent>
           <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
             <Typography component="h5" variant="h5">
-              <FontAwesomeIcon icon={icon} /> {title}
+              <FontAwesomeIcon aria-hidden="true" icon={icon} /> {title}
             </Typography>
             <Chip label={t(`integrations.integrationStatus.${status}`)} color={color} size="small" variant="outlined" />
           </Stack>
@@ -99,7 +99,7 @@ const IntegrationCard: FC<IntegrationCardProps> = ({
             details
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-              <FontAwesomeIcon icon={icon} size="3x" style={{ opacity: 0.08 }} />
+              <FontAwesomeIcon aria-hidden="true" icon={icon} size="3x" style={{ opacity: 0.08 }} />
             </Box>
           )}
         </CardContent>

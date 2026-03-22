@@ -53,13 +53,13 @@ const UserListItem: FC<Props> = ({ user }) => {
         {user.id}
       </TableCell>
       <TableCell align="center" padding="none">
-        {user.isSuperAdmin ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
+        {user.isSuperAdmin ? <FontAwesomeIcon aria-hidden="true" icon={faCheck} /> : <FontAwesomeIcon aria-hidden="true" icon={faXmark} />}
       </TableCell>
       <TableCell>{user.email}</TableCell>
       <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{createdAt}</TableCell>
       <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{lastLogin}</TableCell>
       <TableCell align="right">
-        <IconButton data-testid="usermenu" onClick={handleMenu} size="large">
+        <IconButton aria-label={t('action.menu')} data-testid="usermenu" onClick={handleMenu} size="large">
           <MoreVert />
         </IconButton>
         <Popover
@@ -86,7 +86,7 @@ const UserListItem: FC<Props> = ({ user }) => {
               setFormModalOpen(true)
             }}
           >
-            <FontAwesomeIcon icon={faPencil} />
+            <FontAwesomeIcon aria-hidden="true" icon={faPencil} />
             <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
           </MenuItem>
           <MenuItem
@@ -97,7 +97,7 @@ const UserListItem: FC<Props> = ({ user }) => {
             }}
             sx={{ color: colors.red[400] }}
           >
-            <FontAwesomeIcon icon={faTrash} />
+            <FontAwesomeIcon aria-hidden="true" icon={faTrash} />
             <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
           </MenuItem>
         </Popover>

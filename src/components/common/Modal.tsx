@@ -38,7 +38,7 @@ const Modal: FC<Props> = ({
       <DialogTitle>
         <Stack alignItems="center" direction="row" justifyContent="space-between">
           {title}
-          <IconButton onClick={onClose}>
+          <IconButton aria-label={t('action.close')} onClick={onClose}>
             <Close />
           </IconButton>
         </Stack>

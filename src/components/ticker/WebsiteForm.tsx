@@ -77,7 +77,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
                   sx={{ width: '100%' }}
                   endAdornment={
                     <InputAdornment position="end">
-                      <IconButton onClick={() => remove(index)} edge="end" size="small">
+                      <IconButton aria-label={t('action.delete')} onClick={() => remove(index)} edge="end" size="small">
                         <Delete />
                       </IconButton>
                     </InputAdornment>

@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material'
 import { Box, Card, CardContent, IconButton, useTheme } from '@mui/material'
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Message as MessageType } from '../../api/Message'
 import Links from './Links'
 import MessageAttachements from './MessageAttachments'
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const Message: FC<Props> = ({ message }) => {
+  const { t } = useTranslation()
   const theme = useTheme()
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
 
@@ -19,6 +21,7 @@ const Message: FC<Props> = ({ message }) => {
     <Card sx={{ mb: 2 }}>
       <CardContent>
         <IconButton
+          aria-label={t('action.delete')}
           onClick={() => {
             setDeleteModalOpen(true)
           }}

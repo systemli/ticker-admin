@@ -25,7 +25,7 @@ describe('UserChangePasswordModalForm', () => {
     expect(screen.getByLabelText('Repeat new Password *')).toBeInTheDocument()
 
     // Check if the close button works
-    await userEvent.click(screen.getByRole('button', { name: 'Close' }))
+    await userEvent.click(screen.getAllByRole('button', { name: 'Close' })[1])
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 

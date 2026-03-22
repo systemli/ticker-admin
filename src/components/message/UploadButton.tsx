@@ -7,6 +7,8 @@ import { postUploadApi, Upload } from '../../api/Upload'
 import useAuth from '../../contexts/useAuth'
 import palette from '../../theme/palette'
 
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   color?: string
   disabled: boolean
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const UploadButton: FC<Props> = ({ color, disabled, onUpload, ticker }) => {
+  const { t } = useTranslation()
   const ref = createRef<HTMLInputElement>()
   const { token } = useAuth()
 
@@ -45,10 +48,10 @@ const UploadButton: FC<Props> = ({ color, disabled, onUpload, ticker }) => {
 
   return (
     <>
-      <IconButton onClick={refClick} sx={{ mr: 1 }} disabled={disabled}>
+      <IconButton aria-label={t('action.upload')} onClick={refClick} sx={{ mr: 1 }} disabled={disabled}>
         <FontAwesomeIcon color={color} icon={faImages} size="xs" />
       </IconButton>
-      <input ref={ref} hidden multiple onChange={handleUpload} type="file" />
+      <input ref={ref} aria-label={t('action.upload')} hidden multiple onChange={handleUpload} type="file" />
     </>
   )
 }

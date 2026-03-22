@@ -26,7 +26,7 @@ describe('TickerResetModal', () => {
     renderWithProviders(component({ ticker }))
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: 'Close' })).toHaveLength(2)
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -49,7 +49,7 @@ describe('TickerResetModal', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
-    await userEvent.click(screen.getByRole('button', { name: 'Close' }))
+    await userEvent.click(screen.getAllByRole('button', { name: 'Close' })[1])
 
     expect(onClose).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledTimes(0)

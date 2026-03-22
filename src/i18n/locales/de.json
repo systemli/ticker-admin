@@ -9,11 +9,14 @@
     "disable": "Deaktivieren",
     "edit": "Bearbeiten",
     "enable": "Aktivieren",
+    "emoji": "Emoji",
     "handle": "Handle",
+    "menu": "Menü",
     "reload": "Neu laden",
     "reset": "Zurücksetzen",
     "save": "Speichern",
     "send": "Senden",
+    "upload": "Hochladen",
     "use": "Verwenden"
   },
   "application": {
@@ -260,6 +263,7 @@
     "updated": "Ticker wurde erfolgreich aktualisiert"
   },
   "user": {
+    "account": "Konto",
     "changePassword": "Passwort ändern",
     "create": "Benutzer erstellen",
     "created": "Benutzer wurde erfolgreich erstellt",

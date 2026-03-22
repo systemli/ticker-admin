@@ -25,7 +25,7 @@ const TickerCard: FC<Props> = ({ ticker }) => {
     <Card>
       <CardContent>
         <Stack direction="row" spacing={1} alignItems="center">
-          <FontAwesomeIcon icon={faCircleInfo} />
+          <FontAwesomeIcon aria-hidden="true" icon={faCircleInfo} />
           <Typography component="h5" variant="h5" flexGrow={1}>
             {t('common.info')}
           </Typography>
@@ -58,7 +58,7 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
           label="Websites"
           value={ticker.websites.map(website => (
             <Stack key={website.origin} direction="row" alignItems="center" spacing={0.5}>
-              <FontAwesomeIcon icon={faGlobeEurope} color={grey[800]} />
+              <FontAwesomeIcon aria-hidden="true" icon={faGlobeEurope} color={grey[800]} />
               <Typography variant="body2" flexGrow={1}>
                 <Link href={website.origin} target="_blank" rel="noopener noreferrer">
                   {website.origin.replace(/(^\w+:|^)\/\//, '')}
@@ -124,7 +124,9 @@ const IntegrationChip = ({ active, title, link }: { active: boolean; title: stri
   return (
     <Stack direction="row" alignItems="center" spacing={0.5}>
       <Tooltip title={t(active ? 'status.active' : 'status.inactive')} arrow placement="top">
-        <FontAwesomeIcon icon={active ? faToggleOn : faToggleOff} color={grey[800]} />
+        <span>
+          <FontAwesomeIcon aria-hidden="true" icon={active ? faToggleOn : faToggleOff} color={grey[800]} />
+        </span>
       </Tooltip>
       <Typography variant="body2" flexGrow={1}>
         <Link href={link} target="_blank" rel="noopener noreferrer">

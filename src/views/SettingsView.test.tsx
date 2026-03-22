@@ -125,7 +125,7 @@ describe('SettingsView', function () {
     const inactiveSettingsDialogTitle = screen.getByText('Edit Inactive Settings')
     expect(inactiveSettingsDialogTitle).toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole('button', { name: /close/i }))
+    await userEvent.click(screen.getAllByRole('button', { name: /close/i })[1])
 
     expect(inactiveSettingsDialogTitle).not.toBeVisible()
   })

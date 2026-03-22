@@ -4,12 +4,15 @@ import { IconButton, ImageListItem } from '@mui/material'
 import { Upload } from '../../api/Upload'
 import { faXmarkSquare } from '@fortawesome/free-solid-svg-icons'
 
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   onDelete: (upload: Upload) => void
   upload: Upload
 }
 
 const AttachmentPreview: FC<Props> = ({ onDelete, upload }) => {
+  const { t } = useTranslation()
   const handleDelete = () => {
     onDelete(upload)
   }
@@ -23,7 +26,7 @@ const AttachmentPreview: FC<Props> = ({ onDelete, upload }) => {
           objectFit: 'cover',
         }}
       />
-      <IconButton onClick={handleDelete} sx={{ position: 'absolute', right: 0 }}>
+      <IconButton aria-label={t('action.delete')} onClick={handleDelete} sx={{ position: 'absolute', right: 0 }}>
         <FontAwesomeIcon icon={faXmarkSquare} />
       </IconButton>
     </ImageListItem>

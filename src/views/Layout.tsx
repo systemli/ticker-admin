@@ -22,12 +22,22 @@ const Layout: FC<Props> = ({ children }) => {
     <>
       <Nav>
         <Box sx={{ flexGrow: 1 }}>
-          <NavItem active={location.pathname === '/'} icon={<FontAwesomeIcon icon={faGaugeHigh} />} title={t('title.dashboard')} to="/" />
+          <NavItem active={location.pathname === '/'} icon={<FontAwesomeIcon aria-hidden="true" icon={faGaugeHigh} />} title={t('title.dashboard')} to="/" />
           {user?.roles.includes('admin') && (
-            <NavItem active={location.pathname === '/users'} icon={<FontAwesomeIcon icon={faUsers} />} title={t('title.users')} to="/users" />
+            <NavItem
+              active={location.pathname === '/users'}
+              icon={<FontAwesomeIcon aria-hidden="true" icon={faUsers} />}
+              title={t('title.users')}
+              to="/users"
+            />
           )}
           {user?.roles.includes('admin') && (
-            <NavItem active={location.pathname === '/settings'} icon={<FontAwesomeIcon icon={faGears} />} title={t('title.settings')} to="/settings" />
+            <NavItem
+              active={location.pathname === '/settings'}
+              icon={<FontAwesomeIcon aria-hidden="true" icon={faGears} />}
+              title={t('title.settings')}
+              to="/settings"
+            />
           )}
         </Box>
         <Box>

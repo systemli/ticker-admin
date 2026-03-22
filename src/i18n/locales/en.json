@@ -9,11 +9,14 @@
     "disable": "Disable",
     "edit": "Edit",
     "enable": "Enable",
+    "emoji": "Emoji",
     "handle": "Handle",
+    "menu": "Menu",
     "reload": "Reload",
     "reset": "Reset",
     "save": "Save",
     "send": "Send",
+    "upload": "Upload",
     "use": "Use"
   },
   "application": {
@@ -260,6 +263,7 @@
     "updated": "Ticker was successfully updated"
   },
   "user": {
+    "account": "Account",
     "changePassword": "Change Password",
     "create": "Create User",
     "created": "User was successfully created",

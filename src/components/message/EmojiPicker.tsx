@@ -4,6 +4,7 @@ import { faSmile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, IconButton, Popper } from '@mui/material'
 import React, { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import palette from '../../theme/palette'
 import { Emoji } from './Emoji'
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const EmojiPicker: FC<Props> = ({ color, disabled, onChange }) => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleChange = (emoji: Emoji) => {
@@ -32,7 +34,7 @@ const EmojiPicker: FC<Props> = ({ color, disabled, onChange }) => {
 
   return (
     <Box>
-      <IconButton component="span" onClick={handleClick} style={{ marginRight: '8px' }} disabled={disabled}>
+      <IconButton aria-label={t('action.emoji')} component="span" onClick={handleClick} style={{ marginRight: '8px' }} disabled={disabled}>
         <FontAwesomeIcon color={color} icon={faSmile} size="xs" />
       </IconButton>
       <Popper anchorEl={anchorEl} id={id} open={open}>
