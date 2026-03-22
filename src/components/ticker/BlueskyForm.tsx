@@ -72,16 +72,25 @@ const BlueskyForm: FC<Props> = ({ callback, ticker }) => {
           <FormGroup>
             <TextField
               {...register('handle')}
+              autoComplete="off"
               defaultValue={ticker.bluesky.handle}
               label={t('action.handle')}
               placeholder="handle.bsky.social"
               required={!isConnected}
+              spellCheck={false}
             />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('appKey')} label={t('integrations.bluesky.appPassword')} type="password" required={!isConnected} />
+            <TextField
+              {...register('appKey')}
+              autoComplete="off"
+              label={t('integrations.bluesky.appPassword')}
+              spellCheck={false}
+              type="password"
+              required={!isConnected}
+            />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>

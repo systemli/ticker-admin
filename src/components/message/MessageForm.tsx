@@ -131,12 +131,15 @@ const MessageForm: FC<Props> = ({ ticker }) => {
               required: true,
               maxLength: maxLength,
             })}
+            aria-label={t('message.writeActive')}
+            autoComplete="off"
             color={errors.message ? 'error' : 'primary'}
             error={!!errors.message}
             helperText={
               errors.message?.type === 'maxLength' ? t('message.errorTooLong') : errors.message?.type === 'required' ? t('message.errorRequired') : null
             }
             multiline
+            name="message"
             placeholder={placeholder}
             rows="3"
             disabled={!ticker.active}

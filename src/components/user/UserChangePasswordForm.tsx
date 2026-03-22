@@ -67,7 +67,7 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
         <Grid size={{ xs: 12 }}>
           {errors.password && <Alert severity="error">{errors.password.message}</Alert>}
           <FormGroup>
-            <TextField margin="normal" {...register('password')} label={t('user.password')} required type="password" />
+            <TextField margin="normal" {...register('password')} autoComplete="current-password" label={t('user.password')} required type="password" />
           </FormGroup>
           <FormGroup>
             <TextField
@@ -79,6 +79,7 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
                   message: t('user.errorPasswordMinLength'),
                 },
               })}
+              autoComplete="new-password"
               helperText={errors.newPassword?.message}
               label={t('user.newPassword')}
               type="password"
@@ -89,6 +90,7 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
               {...register('newPasswordValidate', {
                 validate: value => value === newPassword || t('user.errorPasswordMatch'),
               })}
+              autoComplete="new-password"
               helperText={errors.newPasswordValidate?.message}
               label={t('user.repeatNewPassword')}
               required

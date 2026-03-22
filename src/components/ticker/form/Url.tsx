@@ -23,6 +23,7 @@ const Url: FC = () => {
       render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
+          autoComplete="url"
           slotProps={{
             input: {
               startAdornment: (
@@ -36,6 +37,8 @@ const Url: FC = () => {
           helperText={error?.message ? error.message : null}
           label={t('integrations.homepage')}
           margin="dense"
+          spellCheck={false}
+          type="url"
         />
       )}
     />

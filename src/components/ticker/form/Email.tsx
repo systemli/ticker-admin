@@ -23,6 +23,7 @@ const Email: FC = () => {
       render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
+          autoComplete="email"
           slotProps={{
             input: {
               startAdornment: (
@@ -36,6 +37,8 @@ const Email: FC = () => {
           helperText={error?.message ? error.message : null}
           label={t('user.email')}
           margin="dense"
+          spellCheck={false}
+          type="email"
         />
       )}
     />

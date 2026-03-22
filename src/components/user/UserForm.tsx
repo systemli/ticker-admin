@@ -90,10 +90,12 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
               error={errors.email !== undefined}
               margin="normal"
               {...register('email')}
+              autoComplete="email"
               defaultValue={user ? user.email : ''}
               label={t('user.email')}
               name="email"
               required
+              spellCheck={false}
               type="email"
             />
           </FormGroup>
@@ -112,6 +114,7 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
                   message: t('user.errorPasswordMinLength'),
                 },
               })}
+              autoComplete="new-password"
               helperText={errors.password?.message}
               label={t('user.password')}
               name="password"
@@ -124,6 +127,7 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
               {...register('password_validate', {
                 validate: value => value === password || t('user.errorPasswordMatch'),
               })}
+              autoComplete="new-password"
               helperText={errors.password_validate?.message}
               label={t('user.repeatPassword')}
               name="password_validate"

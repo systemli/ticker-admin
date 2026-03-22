@@ -100,22 +100,43 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
             <TextField
               margin="dense"
               {...register('homepage')}
+              autoComplete="url"
               defaultValue={setting.value.homepage}
               label={t('integrations.homepage')}
               name="homepage"
               required
+              spellCheck={false}
               type="url"
             />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('email')} defaultValue={setting.value.email} label={t('user.email')} name="email" required type="email" />
+            <TextField
+              margin="dense"
+              {...register('email')}
+              autoComplete="email"
+              defaultValue={setting.value.email}
+              label={t('user.email')}
+              name="email"
+              required
+              spellCheck={false}
+              type="email"
+            />
           </FormGroup>
         </Grid>
         <Grid size={{ sm: 6, xs: 12 }}>
           <FormGroup>
-            <TextField margin="dense" {...register('twitter')} defaultValue={setting.value.twitter} label={t('social.twitter')} name="twitter" required />
+            <TextField
+              margin="dense"
+              {...register('twitter')}
+              autoComplete="off"
+              defaultValue={setting.value.twitter}
+              label={t('social.twitter')}
+              name="twitter"
+              required
+              spellCheck={false}
+            />
           </FormGroup>
         </Grid>
       </Grid>
