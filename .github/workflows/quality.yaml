@@ -33,6 +33,9 @@ jobs:
   eslint:
     name: ESLint
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -47,9 +50,9 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        uses: wearerequired/lint-action@v2
+        uses: reviewdog/action-eslint@v1
         with:
-          check_name: ESLint Results
-          eslint: true
-          eslint_extensions: ts,tsx,js,jsx
-          eslint_dir: src
+          reporter: github-pr-review
+          eslint_flags: 'src/'
+          filter_mode: added
+          fail_level: error
