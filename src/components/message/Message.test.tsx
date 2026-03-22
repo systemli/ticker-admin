@@ -27,5 +27,6 @@ describe('Message', () => {
     expect(screen.getByText('example.com')).toBeInTheDocument()
     expect(screen.getByText('example.net')).toBeInTheDocument()
     expect(document.querySelector('img')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
   })
 })
