@@ -18,7 +18,7 @@ const TickerListFilter: FC<Props> = ({ params, onTitleChange, onOriginChange, on
   return (
     <Stack direction="row" alignItems="center">
       <Box sx={{ px: 1 }}>
-        <FontAwesomeIcon icon={faFilter} />
+        <FontAwesomeIcon aria-hidden="true" icon={faFilter} />
       </Box>
       <Box sx={{ px: 1 }}>
         <TextField

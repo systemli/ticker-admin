@@ -17,10 +17,10 @@ const TickerDangerZoneCard: FC<Props> = ({ ticker }) => {
     <Card>
       <CardContent>
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
-          <FontAwesomeIcon icon={faBiohazard} /> {t('common.dangerZone')}
+          <FontAwesomeIcon aria-hidden="true" icon={faBiohazard} /> {t('common.dangerZone')}
         </Typography>
         <Box>
-          <Button color="error" onClick={() => setResetOpen(true)} startIcon={<FontAwesomeIcon icon={faTrash} />} variant="outlined">
+          <Button color="error" onClick={() => setResetOpen(true)} startIcon={<FontAwesomeIcon aria-hidden="true" icon={faTrash} />} variant="outlined">
             {t('tickers.reset')}
           </Button>
           <TickerResetModal onClose={() => setResetOpen(false)} open={resetOpen} ticker={ticker} />

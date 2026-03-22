@@ -28,7 +28,7 @@ const UserDropdown: FC = () => {
 
   return (
     <>
-      <IconButton onClick={handleMenu} size="large">
+      <IconButton aria-label={t('user.account')} onClick={handleMenu} size="large">
         <AccountCircle />
       </IconButton>
       <Menu

@@ -42,12 +42,12 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
         {ticker.id}
       </TableCell>
       <TableCell align="center" onClick={handleUse} padding="none" size="small">
-        {ticker.active ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faXmark} />}
+        {ticker.active ? <FontAwesomeIcon aria-hidden="true" icon={faCheck} /> : <FontAwesomeIcon aria-hidden="true" icon={faXmark} />}
       </TableCell>
       <TableCell onClick={handleUse}>{ticker.title}</TableCell>
       <TableCell onClick={handleUse}>{origins}</TableCell>
       <TableCell align="right">
-        <IconButton data-testid="tickermenu" onClick={handleMenu} size="large">
+        <IconButton aria-label={t('action.menu')} data-testid="tickermenu" onClick={handleMenu} size="large">
           <MoreVert />
         </IconButton>
         <Popover
@@ -73,7 +73,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
               handleUse()
             }}
           >
-            <FontAwesomeIcon icon={faHandPointer} />
+            <FontAwesomeIcon aria-hidden="true" icon={faHandPointer} />
             <Typography sx={{ ml: 2 }}>{t('action.use')}</Typography>
           </MenuItem>
           <MenuItem
@@ -82,7 +82,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
               setFormModalOpen(true)
             }}
           >
-            <FontAwesomeIcon icon={faPencil} />
+            <FontAwesomeIcon aria-hidden="true" icon={faPencil} />
             <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
           </MenuItem>
           {user?.roles.includes('admin') ? (
@@ -94,7 +94,7 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
                 }}
                 sx={{ color: colors.red[400] }}
               >
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon aria-hidden="true" icon={faTrash} />
                 <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
               </MenuItem>
             </>

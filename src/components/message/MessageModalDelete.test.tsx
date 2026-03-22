@@ -23,13 +23,13 @@ describe('MessageModalDelete', () => {
 
     expect(screen.getByText('Delete Message')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: 'Close' })).toHaveLength(2)
   })
 
   it('should close the modal', async () => {
     renderWithProviders(component(true))
 
-    await userEvent.click(screen.getByRole('button', { name: 'Close' }))
+    await userEvent.click(screen.getAllByRole('button', { name: 'Close' })[1])
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 

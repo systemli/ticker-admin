@@ -85,7 +85,7 @@ describe('UsersView', function () {
     const dialogTitle = await screen.findByText(/create user/i)
     expect(dialogTitle).toBeInTheDocument()
 
-    const close = screen.getByRole('button', { name: /close/i })
+    const close = screen.getAllByRole('button', { name: /close/i })[1]
     expect(close).toBeInTheDocument()
 
     await userEvent.click(close)
@@ -126,7 +126,7 @@ describe('UsersView', function () {
     expect(editButton).not.toBeVisible()
 
     const editTitle = screen.getByText(/update user/i)
-    const editClose = screen.getByRole('button', { name: /close/i })
+    const editClose = screen.getAllByRole('button', { name: /close/i })[1]
 
     expect(editTitle).toBeInTheDocument()
     expect(editClose).toBeInTheDocument()
@@ -146,7 +146,7 @@ describe('UsersView', function () {
     expect(deleteButton).not.toBeVisible()
 
     const deleteTitle = screen.getByText(/delete user/i)
-    const deleteClose = screen.getByRole('button', { name: /close/i })
+    const deleteClose = screen.getAllByRole('button', { name: /close/i })[1]
 
     expect(deleteTitle).toBeInTheDocument()
     expect(deleteClose).toBeInTheDocument()

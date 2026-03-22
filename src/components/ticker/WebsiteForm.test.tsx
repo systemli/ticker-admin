@@ -58,6 +58,17 @@ describe('WebsiteForm', () => {
     })
   })
 
+  it('should render existing websites with delete button', async () => {
+    renderWithProviders(component({ websites: [{ id: 1, origin: 'https://example.com' } as TickerWebsite] }))
+
+    expect(screen.getByDisplayValue('https://example.com')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Delete' }))
+
+    expect(screen.queryByDisplayValue('https://example.com')).not.toBeInTheDocument()
+  })
+
   it('should fail when URL is already exists', async () => {
     renderWithProviders(component({ websites: [] }))
 

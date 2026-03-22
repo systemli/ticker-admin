@@ -25,7 +25,7 @@ const MessageFooter: FC<Props> = ({ message }) => {
   return (
     <Stack alignItems="center" direction="row" justifyContent="space-between" sx={{ mt: 2, pr: 2.5 }}>
       <Stack alignItems="center" direction="row" spacing={0.5}>
-        <FontAwesomeIcon icon={faClock} size="2xs" color={colors.grey[600]} />
+        <FontAwesomeIcon aria-hidden="true" icon={faClock} size="2xs" color={colors.grey[600]} />
         <Typography variant="caption">{formatDate(message.createdAt)}</Typography>
       </Stack>
       <Stack alignItems="center" direction="row" spacing="0.5">
@@ -48,7 +48,7 @@ const Icon: FC<IconProps> = ({ url, icon, label }) => {
 
   return url ? (
     <Link href={url} rel="noopener noreferrer" style={{ marginLeft: theme.spacing(1) }} target="_blank" aria-label={label}>
-      <FontAwesomeIcon icon={icon} size="sm" color={colors.grey[600]} />
+      <FontAwesomeIcon aria-hidden="true" icon={icon} size="sm" color={colors.grey[600]} />
     </Link>
   ) : null
 }
