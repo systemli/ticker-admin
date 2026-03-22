@@ -35,7 +35,7 @@ const TickerModalDelete: FC<Props> = ({ open, onClose, ticker }) => {
   }, [token, ticker, queryClient, createNotification, t])
 
   return (
-    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title={t('tickers.delete')}>
+    <Modal dangerActionButtonText={t('action.delete')} onClose={onClose} onDangerAction={handleDelete} open={open} title={t('tickers.delete')}>
       {t('tickers.questionDelete')}
     </Modal>
   )

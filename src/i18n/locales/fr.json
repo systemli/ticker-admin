@@ -11,6 +11,7 @@
     "enable": "Activer",
     "handle": "Gérer",
     "reload": "Recharger",
+    "reset": "Réinitialiser",
     "save": "Enregistrer",
     "send": "Envoyer",
     "use": "Utiliser"
@@ -176,6 +177,7 @@
     "loadMore": "Charger Plus",
     "posted": "Message publié avec succès",
     "questionDelete": "Êtes-vous sûr de vouloir supprimer le message ? Cette action ne peut pas être annulée.",
+    "delete": "Supprimer le message",
     "reload": "Recharger les messages",
     "titleRequired": "Le titre est requis",
     "writeActive": "Rédiger un message",
@@ -218,9 +220,11 @@
     "active": "Actif",
     "description": "Ces paramètres ont un effet pour les Tickers inactifs ou non configurés.",
     "editInactive": "Modifier les paramètres inactifs",
+    "errorUpdateInactive": "Échec de la mise à jour des paramètres inactifs",
     "inactive": "Inactif",
     "showActive": "Statut : Actif",
-    "showInactive": "Statut : Inactif"
+    "showInactive": "Statut : Inactif",
+    "updatedInactive": "Paramètres inactifs mis à jour avec succès"
   },
   "title": {
     "dashboard": "Tableau de bord",

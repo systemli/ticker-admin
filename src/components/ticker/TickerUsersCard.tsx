@@ -35,7 +35,7 @@ const TickerUsersCard: FC<Props> = ({ ticker }) => {
     <Card>
       <CardContent>
         <Typography component="h5" sx={{ mb: 2 }} variant="h5">
-          <FontAwesomeIcon icon={faUsers} /> Users
+          <FontAwesomeIcon icon={faUsers} /> {t('title.users')}
         </Typography>
         <Typography variant="body2">{t('user.list')}</Typography>
         <TickerUserList ticker={ticker} users={users} />

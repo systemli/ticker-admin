@@ -11,6 +11,7 @@
     "enable": "Aktivieren",
     "handle": "Handle",
     "reload": "Neu laden",
+    "reset": "Zurücksetzen",
     "save": "Speichern",
     "send": "Senden",
     "use": "Verwenden"
@@ -176,6 +177,7 @@
     "loadMore": "Mehr laden",
     "posted": "Nachricht erfolgreich veröffentlicht",
     "questionDelete": "Bist du sicher, dass du die Nachricht löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "delete": "Nachricht löschen",
     "reload": "Nachrichten neu laden",
     "titleRequired": "Titel ist erforderlich",
     "writeActive": "Nachricht schreiben",
@@ -218,9 +220,11 @@
     "active": "Aktiv",
     "description": "Diese Einstellungen gelten für inaktive oder nicht konfigurierte Ticker.",
     "editInactive": "Inaktiv-Einstellungen bearbeiten",
+    "errorUpdateInactive": "Inaktiv-Einstellungen konnten nicht aktualisiert werden",
     "inactive": "Inaktiv",
     "showActive": "Status: Aktiv",
-    "showInactive": "Status: Inaktiv"
+    "showInactive": "Status: Inaktiv",
+    "updatedInactive": "Inaktiv-Einstellungen erfolgreich aktualisiert"
   },
   "title": {
     "dashboard": "Dashboard",

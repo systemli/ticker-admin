@@ -24,7 +24,7 @@ const UserModalDelete: FC<Props> = ({ onClose, open, user }) => {
   }, [token, user, queryClient, onClose])
 
   return (
-    <Modal dangerActionButtonText="Delete" onClose={onClose} onDangerAction={handleDelete} open={open} title={t('user.delete')}>
+    <Modal dangerActionButtonText={t('action.delete')} onClose={onClose} onDangerAction={handleDelete} open={open} title={t('user.delete')}>
       {t('user.questionPermanentDelete')}
     </Modal>
   )
