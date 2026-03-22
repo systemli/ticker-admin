@@ -69,6 +69,26 @@ describe('TickerCard', () => {
     expect(screen.getByText('Mastodon')).toBeInTheDocument()
   })
 
+  it('renders inactive mastodon integration', () => {
+    render(
+      <TickerCard
+        ticker={ticker({
+          mastodon: {
+            connected: true,
+            active: false,
+            server: 'https://systemli.social',
+            name: 'systemli',
+            screen_name: '',
+            description: '',
+            imageUrl: '',
+          },
+        })}
+      />
+    )
+
+    expect(screen.getByText('Mastodon')).toBeInTheDocument()
+  })
+
   it('renders telegram integration', () => {
     render(
       <TickerCard

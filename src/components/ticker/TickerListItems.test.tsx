@@ -46,6 +46,14 @@ describe('TickerListItems', function () {
               active: true,
               websites: [{ id: 1, origin: 'http://localhost' }],
             },
+            {
+              id: 2,
+              createdAt: new Date(),
+              title: 'inactive ticker',
+              description: 'description',
+              active: false,
+              websites: [],
+            },
           ],
         },
         status: 'success',
@@ -57,6 +65,7 @@ describe('TickerListItems', function () {
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(await screen.findByText('title')).toBeInTheDocument()
     expect(await screen.findByText('http://localhost')).toBeInTheDocument()
+    expect(await screen.findByText('inactive ticker')).toBeInTheDocument()
   })
 
   it('should render error message', async function () {
