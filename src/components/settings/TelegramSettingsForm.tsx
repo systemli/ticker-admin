@@ -44,9 +44,12 @@ const TelegramSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
             <TextField
               margin="dense"
               {...register('token')}
+              autoComplete="off"
               label={t('settings.telegram.token')}
               placeholder={setting.value.token || ''}
               helperText={t('settings.telegram.tokenHelp')}
+              spellCheck={false}
+              type="password"
             />
           </FormGroup>
         </Grid>

@@ -57,8 +57,28 @@ const LoginView: FC = () => {
                   {error.message}
                 </Alert>
               ) : null}
-              <TextField {...register('email')} autoFocus data-testid="email" fullWidth label={t('user.email')} required sx={{ my: 1 }} type="email" />
-              <TextField {...register('password')} data-testid="password" fullWidth label={t('user.password')} required sx={{ my: 1 }} type="password" />
+              <TextField
+                {...register('email')}
+                autoComplete="email"
+                autoFocus
+                data-testid="email"
+                fullWidth
+                label={t('user.email')}
+                required
+                spellCheck={false}
+                sx={{ my: 1 }}
+                type="email"
+              />
+              <TextField
+                {...register('password')}
+                autoComplete="current-password"
+                data-testid="password"
+                fullWidth
+                label={t('user.password')}
+                required
+                sx={{ my: 1 }}
+                type="password"
+              />
               <Button data-testid="submit" fullWidth size="large" sx={{ my: 1 }} type="submit" variant="contained">
                 {t('user.login')}
               </Button>

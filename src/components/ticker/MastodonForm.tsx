@@ -60,26 +60,29 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
           <FormGroup>
             <TextField
               {...register('server')}
+              autoComplete="url"
               defaultValue={ticker.mastodon.server}
               label={t('application.server')}
               placeholder="https://mastodon.social"
               required
+              spellCheck={false}
+              type="url"
             />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('token')} label={t('application.clientKey')} required />
+            <TextField {...register('token')} autoComplete="off" label={t('application.clientKey')} required spellCheck={false} type="password" />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('secret')} label={t('application.clientSecret')} required type="password" />
+            <TextField {...register('secret')} autoComplete="off" label={t('application.clientSecret')} required spellCheck={false} type="password" />
           </FormGroup>
         </Grid>
         <Grid size={{ xs: 12 }}>
           <FormGroup>
-            <TextField {...register('accessToken')} label={t('application.accessToken')} required type="password" />
+            <TextField {...register('accessToken')} autoComplete="off" label={t('application.accessToken')} required spellCheck={false} type="password" />
           </FormGroup>
         </Grid>
       </Grid>
