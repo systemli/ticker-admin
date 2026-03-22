@@ -25,8 +25,20 @@ const MessageAttachements: FC<Props> = ({ message }) => {
     <>
       <ImageList sx={{ mt: 1 }}>
         {attachments.map((image, key) => (
-          <ImageListItem key={image.url} sx={{ position: 'relative' }} onClick={() => handleClick(key)}>
-            <img src={image.url} alt="" />
+          <ImageListItem
+            key={image.url}
+            role="button"
+            tabIndex={0}
+            sx={{ position: 'relative', cursor: 'pointer' }}
+            onClick={() => handleClick(key)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleClick(key)
+              }
+            }}
+          >
+            <img src={image.url} alt={image.url} />
           </ImageListItem>
         ))}
       </ImageList>

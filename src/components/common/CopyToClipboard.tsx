@@ -1,6 +1,6 @@
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Tooltip } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,9 @@ const CopyToClipboard: FC<Props> = ({ text }) => {
 
   return (
     <Tooltip title={copied ? t('common.copied') : t('action.copyToClipboard')} arrow placement="top">
-      <FontAwesomeIcon icon={faCopy} onClick={handleClick} color={grey[800]} style={{ cursor: 'pointer' }} aria-label={t('action.copyToClipboard')} />
+      <IconButton aria-label={t('action.copyToClipboard')} onClick={handleClick} size="small">
+        <FontAwesomeIcon aria-hidden="true" icon={faCopy} color={grey[800]} size="xs" />
+      </IconButton>
     </Tooltip>
   )
 }
