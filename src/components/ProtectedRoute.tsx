@@ -1,8 +1,9 @@
+import { Container, Typography } from '@mui/material'
 import { FC } from 'react'
 import { Navigate, RouteProps } from 'react-router'
-import useAuth from '../contexts/useAuth'
-import { Roles } from '../contexts/AuthContext'
 import { useTranslation } from 'react-i18next'
+import { Roles } from '../contexts/AuthContext'
+import useAuth from '../contexts/useAuth'
 
 type Props = RouteProps & {
   role: Roles
@@ -18,11 +19,12 @@ const ProtectedRoute: FC<Props> = ({ role, outlet }) => {
   }
 
   if (!user.roles.includes(role)) {
-    //TODO: ErrorView
     return (
-      <>
-        <h1>{t('error.permissionDenied')}</h1>
-      </>
+      <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Typography component="h1" variant="h5">
+          {t('error.permissionDenied')}
+        </Typography>
+      </Container>
     )
   }
 

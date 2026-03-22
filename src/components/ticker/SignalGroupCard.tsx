@@ -168,7 +168,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
       actions={actions}
     >
       <SignalGroupAdminModalForm open={adminOpen} onClose={() => setAdminOpen(false)} ticker={ticker} />
-      <Dialog open={dialogDeleteOpen}>
+      <Dialog open={dialogDeleteOpen} onClose={() => setDialogDeleteOpen(false)}>
         <DialogTitle>{t('integrations.signal.delete')}</DialogTitle>
         <DialogContent>
           <DialogContentText>{t('integrations.signal.questionDelete')}</DialogContentText>
