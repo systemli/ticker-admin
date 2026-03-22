@@ -35,7 +35,7 @@ const MessageModalDelete: FC<Props> = ({ message, onClose, open }) => {
   }
 
   return (
-    <Modal dangerActionButtonText="Delete" maxWidth="sm" onClose={onClose} onDangerAction={handleDelete} open={open} title="Delete Message">
+    <Modal dangerActionButtonText={t('action.delete')} maxWidth="sm" onClose={onClose} onDangerAction={handleDelete} open={open} title={t('message.delete')}>
       {t('message.questionDelete')}
     </Modal>
   )

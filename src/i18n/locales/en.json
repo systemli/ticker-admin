@@ -11,6 +11,7 @@
     "enable": "Enable",
     "handle": "Handle",
     "reload": "Reload",
+    "reset": "Reset",
     "save": "Save",
     "send": "Send",
     "use": "Use"
@@ -176,6 +177,7 @@
     "loadMore": "Load More",
     "posted": "Message successfully posted",
     "questionDelete": "Are you sure to delete the message? This action cannot be undone.",
+    "delete": "Delete Message",
     "reload": "Reload Messages",
     "titleRequired": "Title is required",
     "writeActive": "Write a message",
@@ -218,9 +220,11 @@
     "active": "Active",
     "description": "These settings have affect for inactive or non-configured tickers.",
     "editInactive": "Edit Inactive Settings",
+    "errorUpdateInactive": "Failed to update inactive settings",
     "inactive": "Inactive",
     "showActive": "Status: Active",
-    "showInactive": "Status: Inactive"
+    "showInactive": "Status: Inactive",
+    "updatedInactive": "Inactive settings successfully updated"
   },
   "title": {
     "dashboard": "Dashboard",

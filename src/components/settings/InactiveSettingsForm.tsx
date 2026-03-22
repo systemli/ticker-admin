@@ -47,14 +47,14 @@ const InactiveSettingsForm: FC<Props> = ({ name, setting, callback, setSubmittin
     handleApiCall(putInactiveSettingsApi(token, data), {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['inactive_settings'] })
-        createNotification({ content: 'Inactive settings successfully updated', severity: 'success' })
+        createNotification({ content: t('status.updatedInactive'), severity: 'success' })
         callback()
       },
       onError: () => {
-        createNotification({ content: 'Failed to updating inactive settings', severity: 'error' })
+        createNotification({ content: t('status.errorUpdateInactive'), severity: 'error' })
       },
       onFailure: () => {
-        createNotification({ content: 'Failed to updating inactive settings', severity: 'error' })
+        createNotification({ content: t('status.errorUpdateInactive'), severity: 'error' })
       },
     })
 

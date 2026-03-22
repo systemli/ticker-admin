@@ -85,7 +85,7 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
 
   return (
     <FormControl sx={sx}>
-      <InputLabel>Tickers</InputLabel>
+      <InputLabel>{t('title.tickers')}</InputLabel>
       <Select
         input={<OutlinedInput label={t('title.tickers')} />}
         label={t('title.tickers')}
