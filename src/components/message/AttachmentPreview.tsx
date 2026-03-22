@@ -17,6 +17,7 @@ const AttachmentPreview: FC<Props> = ({ onDelete, upload }) => {
   return (
     <ImageListItem sx={{ position: 'relative' }}>
       <img
+        alt=""
         src={upload.url}
         style={{
           objectFit: 'cover',
