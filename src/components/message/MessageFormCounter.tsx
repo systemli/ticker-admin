@@ -20,7 +20,7 @@ const MessageFormCounter: FC<Props> = ({ letterCount, maxLength }) => {
     }
   }, [letterCount, maxLength])
 
-  return <Chip color={color} label={`${letterCount}/${maxLength}`} size="small" variant="outlined" />
+  return <Chip color={color} label={`${letterCount}/${maxLength}`} size="small" variant="outlined" sx={{ fontVariantNumeric: 'tabular-nums' }} />
 }
 
 export default MessageFormCounter

@@ -60,7 +60,7 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
             <Stack key={website.origin} direction="row" alignItems="center" spacing={0.5}>
               <FontAwesomeIcon icon={faGlobeEurope} color={grey[800]} />
               <Typography variant="body2" flexGrow={1}>
-                <Link href={website.origin} target="_blank">
+                <Link href={website.origin} target="_blank" rel="noopener noreferrer">
                   {website.origin.replace(/(^\w+:|^)\/\//, '')}
                 </Link>
               </Typography>
@@ -127,7 +127,7 @@ const IntegrationChip = ({ active, title, link }: { active: boolean; title: stri
         <FontAwesomeIcon icon={active ? faToggleOn : faToggleOff} color={grey[800]} />
       </Tooltip>
       <Typography variant="body2" flexGrow={1}>
-        <Link href={link} target="_blank">
+        <Link href={link} target="_blank" rel="noopener noreferrer">
           {title}
         </Link>
       </Typography>
