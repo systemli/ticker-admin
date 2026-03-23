@@ -16,9 +16,12 @@ import TickerView from './views/TickerView'
 import UsersView from './views/UsersView'
 
 const App: FC = () => {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: { queries: { staleTime: 60 * 1000 } },
-  }))
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { staleTime: 60 * 1000 } },
+      })
+  )
 
   return (
     <ThemeProvider>
