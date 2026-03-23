@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Notification from './components/Notification.js'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -16,9 +16,9 @@ import TickerView from './views/TickerView'
 import UsersView from './views/UsersView'
 
 const App: FC = () => {
-  const queryClient = new QueryClient({
+  const [queryClient] = useState(() => new QueryClient({
     defaultOptions: { queries: { staleTime: 60 * 1000 } },
-  })
+  }))
 
   return (
     <ThemeProvider>
