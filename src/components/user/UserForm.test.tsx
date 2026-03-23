@@ -117,4 +117,38 @@ describe('UserForm', () => {
       }),
     })
   })
+
+  it('should fail when response fails', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify({ data: { tickers: [] }, status: 'success' }))
+
+    renderWithProviders(component())
+
+    await userEvent.type(screen.getByLabelText('E-Mail *'), 'user@example.org')
+    await userEvent.type(screen.getByLabelText('Password *'), 'password10')
+    await userEvent.type(screen.getByLabelText('Repeat Password *'), 'password10')
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(callback).not.toHaveBeenCalled()
+    expect(fetchMock).toBeCalledTimes(2)
+  })
+
+  it('should fail when request fails', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify({ data: { tickers: [] }, status: 'success' }))
+
+    renderWithProviders(component())
+
+    await userEvent.type(screen.getByLabelText('E-Mail *'), 'user@example.org')
+    await userEvent.type(screen.getByLabelText('Password *'), 'password10')
+    await userEvent.type(screen.getByLabelText('Repeat Password *'), 'password10')
+
+    fetchMock.mockReject()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(callback).not.toHaveBeenCalled()
+    expect(fetchMock).toBeCalledTimes(2)
+  })
 })
