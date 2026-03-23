@@ -2,26 +2,19 @@ import { faCheck, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
 import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import React, { FC, useState } from 'react'
+import React, { FC, memo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { User } from '../../api/User'
+import dayjs from '../../lib/dayjs'
 import UserModalDelete from './UserModalDelete'
 import UserModalForm from './UserModalForm'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import 'dayjs/locale/de'
-import 'dayjs/locale/en'
-import 'dayjs/locale/fr'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   user: User
 }
 
-dayjs.extend(relativeTime)
-
 const UserListItem: FC<Props> = ({ user }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -34,18 +27,12 @@ const UserListItem: FC<Props> = ({ user }) => {
     setAnchorEl(null)
   }
 
-  const { i18n } = useTranslation()
   const normalizedLang = i18n.language.split('-')[0].toLowerCase()
-  let dayjsLocale = 'en'
-  if (['en', 'de', 'fr'].includes(normalizedLang)) {
-    dayjsLocale = normalizedLang
-  }
-  dayjs.extend(localizedFormat)
-  dayjs.locale(dayjsLocale)
+  const dayjsLocale = ['en', 'de', 'fr'].includes(normalizedLang) ? normalizedLang : 'en'
 
   const emptyDate = '0001-01-01T00:00:00Z'
-  const createdAt = dayjs(user.createdAt).format('lll')
-  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).fromNow() : t('user.never')
+  const createdAt = dayjs(user.createdAt).locale(dayjsLocale).format('lll')
+  const lastLogin = user.lastLogin !== emptyDate ? dayjs(user.lastLogin).locale(dayjsLocale).fromNow() : t('user.never')
 
   return (
     <TableRow hover>
@@ -108,4 +95,4 @@ const UserListItem: FC<Props> = ({ user }) => {
   )
 }
 
-export default UserListItem
+export default memo(UserListItem)

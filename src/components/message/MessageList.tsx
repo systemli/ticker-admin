@@ -51,7 +51,7 @@ const MessageList: FC<Props> = ({ ticker }) => {
 
   return (
     <>
-      {data.pages.map(group => group.data?.messages.map(message => <Message key={message.id} message={message} ticker={ticker} />))}
+      {data.pages.map(group => group.data?.messages.map(message => <Message key={message.id} message={message} />))}
       {isFetchingNextPage ? (
         <CircularProgress size="3rem" />
       ) : hasNextPage ? (

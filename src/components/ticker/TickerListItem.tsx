@@ -2,7 +2,7 @@ import { faCheck, faHandPointer, faPencil, faTrash, faXmark } from '@fortawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
 import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
-import React, { FC, useState } from 'react'
+import React, { FC, memo, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Ticker } from '../../api/Ticker'
 import useAuth from '../../contexts/useAuth'
@@ -107,4 +107,4 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
   )
 }
 
-export default TickerListItem
+export default memo(TickerListItem)
