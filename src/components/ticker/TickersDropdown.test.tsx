@@ -2,11 +2,12 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import { Ticker } from '../../api/Ticker'
-import { renderWithProviders } from '../../tests/utils'
+import { renderWithProviders, setMockToken, userToken } from '../../tests/utils'
 import TickersDropdown from './TickersDropdown'
 
 describe('TickersDropdown', () => {
   beforeEach(() => {
+    setMockToken(userToken)
     fetchMock.resetMocks()
   })
 
@@ -42,5 +43,23 @@ describe('TickersDropdown', () => {
     await userEvent.click(screen.getByText('Ticker 1'))
 
     expect(onChange).toHaveBeenCalledWith([ticker])
+  })
+
+  it('should handle error response on fetch', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
+
+    renderWithProviders(component({ tickers: [] }))
+
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should handle request failure on fetch', async () => {
+    fetchMock.mockReject()
+
+    renderWithProviders(component({ tickers: [] }))
+
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

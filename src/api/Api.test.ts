@@ -59,11 +59,19 @@ describe('handleApiCall', async () => {
     expect(onFailure).not.toHaveBeenCalled()
   })
 
-  it('should call onFailure on failure', async () => {
+  it('should call onFailure with error message when an Error is thrown', async () => {
     const apiCall = Promise.reject(new Error('Network error'))
     await handleApiCall(apiCall, { onSuccess, onError, onFailure })
     expect(onSuccess).not.toHaveBeenCalled()
     expect(onError).not.toHaveBeenCalled()
-    expect(onFailure).toHaveBeenCalledTimes(1)
+    expect(onFailure).toHaveBeenCalledWith('Network error')
+  })
+
+  it('should call onFailure with stringified value for non-Error throws', async () => {
+    const apiCall = Promise.reject('string error')
+    await handleApiCall(apiCall, { onSuccess, onError, onFailure })
+    expect(onSuccess).not.toHaveBeenCalled()
+    expect(onError).not.toHaveBeenCalled()
+    expect(onFailure).toHaveBeenCalledWith('string error')
   })
 })

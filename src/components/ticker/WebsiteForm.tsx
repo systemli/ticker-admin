@@ -49,7 +49,7 @@ const WebsiteForm: FC<Props> = ({ callback, ticker }) => {
         createNotification({ content: t('integrations.website.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }

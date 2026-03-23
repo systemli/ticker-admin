@@ -69,7 +69,7 @@ const UserForm: FC<Props> = ({ id, user, callback, setSubmitting }) => {
           createNotification({ content: t(user ? 'user.errorUpdate' : 'user.errorCreate'), severity: 'error' })
         },
         onFailure: error => {
-          createNotification({ content: error as string, severity: 'error' })
+          createNotification({ content: error, severity: 'error' })
         },
       })
     } finally {

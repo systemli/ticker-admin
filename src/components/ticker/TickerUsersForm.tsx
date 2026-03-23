@@ -50,7 +50,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
         createNotification({ content: t('user.errorUpdateMultiple'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }
@@ -73,7 +73,7 @@ const TickerUsersForm: FC<Props> = ({ onSubmit, ticker, defaultValue }) => {
         createNotification({ content: t('user.errorFetch'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

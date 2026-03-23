@@ -32,7 +32,7 @@ const useIntegrationActions = ({ ticker, i18nPrefix, deleteApi, toggleApi, activ
         createNotification({ content: t(`${i18nPrefix}.errorDelete`), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }
@@ -49,7 +49,7 @@ const useIntegrationActions = ({ ticker, i18nPrefix, deleteApi, toggleApi, activ
               createNotification({ content: t(`${i18nPrefix}.errorUpdate`), severity: 'error' })
             },
             onFailure: error => {
-              createNotification({ content: error as string, severity: 'error' })
+              createNotification({ content: error, severity: 'error' })
             },
           })
         }

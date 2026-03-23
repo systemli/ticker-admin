@@ -32,7 +32,7 @@ const TickerResetModal: FC<Props> = ({ onClose, open, ticker }) => {
         createNotification({ content: t('tickers.errorReset'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }, [token, ticker, queryClient, createNotification, onClose, t])
