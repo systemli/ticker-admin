@@ -61,25 +61,13 @@ const MessageForm: FC<Props> = ({ ticker }) => {
     return 4096
   })(ticker)
 
-  const onUpload = useCallback(
-    (uploads: Upload[]) => {
-      setAttachments(attachments.concat(uploads))
-    },
-    [attachments]
-  )
+  const onUpload = useCallback((uploads: Upload[]) => {
+    setAttachments(prev => prev.concat(uploads))
+  }, [])
 
-  const onUploadDelete = useCallback(
-    (upload: Upload) => {
-      setAttachments(
-        attachments.filter((attachment: Upload) => {
-          if (attachment.id !== upload.id) {
-            return true
-          }
-        })
-      )
-    },
-    [attachments]
-  )
+  const onUploadDelete = useCallback((upload: Upload) => {
+    setAttachments(prev => prev.filter(attachment => attachment.id !== upload.id))
+  }, [])
 
   const onSelectEmoji = (emoji: Emoji) => {
     setValue('message', message.toString() + emoji.native + ' ')
