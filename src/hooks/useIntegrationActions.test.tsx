@@ -5,19 +5,19 @@ import { Ticker } from '../api/Ticker'
 import { renderWithProviders, setMockToken, userToken } from '../tests/utils'
 import useIntegrationActions from './useIntegrationActions'
 
-interface TestComponentProps {
+interface Props {
   ticker: Ticker
   deleteApi: () => Promise<ApiResponse<unknown>>
   toggleApi?: () => Promise<ApiResponse<unknown>>
   active?: boolean
 }
 
-const TestComponent = ({ ticker, deleteApi, toggleApi, active }: TestComponentProps) => {
+const TestComponent = ({ ticker, deleteApi, toggleApi, active }: Props) => {
   const { handleDelete, handleToggle } = useIntegrationActions({
     ticker,
     i18nPrefix: 'bluesky',
     deleteApi: () => deleteApi(),
-    toggleApi: toggleApi ? (_token, _data, _ticker) => toggleApi() : undefined,
+    toggleApi: toggleApi ? () => toggleApi() : undefined,
     active,
   })
 
