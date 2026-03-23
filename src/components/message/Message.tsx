@@ -1,6 +1,6 @@
 import { Close } from '@mui/icons-material'
 import { Box, Card, CardContent, IconButton, useTheme } from '@mui/material'
-import { FC, useState } from 'react'
+import { FC, memo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Message as MessageType } from '../../api/Message'
 import Links from './Links'
@@ -42,4 +42,4 @@ const Message: FC<Props> = ({ message }) => {
   )
 }
 
-export default Message
+export default memo(Message)
