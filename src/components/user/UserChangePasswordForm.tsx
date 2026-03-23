@@ -51,7 +51,7 @@ const UserChangePasswordForm: FC<Props> = ({ id, onClose, setSubmitting }) => {
           createNotification({ content: t('user.errorUpdatePassword'), severity: 'error' })
         },
         onFailure: error => {
-          createNotification({ content: error as string, severity: 'error' })
+          createNotification({ content: error, severity: 'error' })
         },
       })
     } finally {

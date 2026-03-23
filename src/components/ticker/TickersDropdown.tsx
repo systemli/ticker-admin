@@ -41,7 +41,7 @@ const TickersDropdown: FC<Props> = ({ name, defaultValue, onChange, sx }) => {
         createNotification({ content: t('tickers.errorFetch'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

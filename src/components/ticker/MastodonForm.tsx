@@ -37,7 +37,7 @@ const MastodonForm: FC<Props> = ({ callback, ticker }) => {
         createNotification({ content: t('integrations.mastodon.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }

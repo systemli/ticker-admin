@@ -42,7 +42,7 @@ const TelegramForm: FC<Props> = ({ callback, ticker }) => {
         createNotification({ content: t('integrations.telegram.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }

@@ -32,7 +32,7 @@ const TickerUserModalDelete: FC<Props> = ({ open, onClose, ticker, user }) => {
         createNotification({ content: t('user.errorDelete'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
   }, [token, ticker, user, queryClient, createNotification, onClose, t])

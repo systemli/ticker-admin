@@ -45,7 +45,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         setSubmittingAdd(false)
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
         setSubmittingAdd(false)
       },
     })
@@ -63,7 +63,7 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
         createNotification({ content: t('integrations.signal.errorUpdate'), severity: 'error' })
       },
       onFailure: error => {
-        createNotification({ content: error as string, severity: 'error' })
+        createNotification({ content: error, severity: 'error' })
       },
     })
 

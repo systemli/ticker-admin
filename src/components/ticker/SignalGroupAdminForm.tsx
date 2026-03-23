@@ -40,7 +40,7 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
           setError('number', { message: t('integrations.signal.errorAddNumber') })
         },
         onFailure: error => {
-          createNotification({ content: error as string, severity: 'error' })
+          createNotification({ content: error, severity: 'error' })
         },
       })
     } finally {

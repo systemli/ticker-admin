@@ -71,7 +71,7 @@ const TickerForm: FC<Props> = ({ callback, id, ticker, setSubmitting }) => {
           createNotification({ content: t(ticker ? 'tickers.errorUpdate' : 'tickers.errorCreate'), severity: 'error' })
         },
         onFailure: error => {
-          createNotification({ content: error as string, severity: 'error' })
+          createNotification({ content: error, severity: 'error' })
         },
       })
     } finally {

@@ -51,7 +51,7 @@ export function apiHeaders(token: string): HeadersInit {
 interface ApiCallParams<T> {
   onSuccess: (response: ApiResponse<T>) => void
   onError: (response: ApiResponse<T>) => void
-  onFailure: (error: unknown) => void
+  onFailure: (error: string) => void
 }
 
 export async function handleApiCall<T>(apiCall: Promise<ApiResponse<T>>, params: ApiCallParams<T>): Promise<void> {
@@ -65,6 +65,6 @@ export async function handleApiCall<T>(apiCall: Promise<ApiResponse<T>>, params:
       onSuccess(response)
     }
   } catch (error) {
-    onFailure(error)
+    onFailure(error instanceof Error ? error.message : String(error))
   }
 }
