@@ -1,60 +1,80 @@
 ---
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
+    groups:
+      github-actions:
+        patterns:
+          - '*'
 
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'docker'
+    directory: '/'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
     ignore:
-      - dependency-name: "eslint"
-        versions: [">=9.0.0"]
+      - dependency-name: 'node'
+        update-types: ['version-update:semver-major']
+    groups:
+      docker:
+        patterns:
+          - '*'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    ignore:
+      - dependency-name: 'eslint'
+        versions: ['>=9.0.0']
+      - dependency-name: '@eslint/js'
+        versions: ['>=10.0.0']
+      - dependency-name: 'typescript'
+        versions: ['>=6.1.0']
     groups:
       react-query:
         patterns:
-          - "@tanstack/*"
+          - '@tanstack/*'
       leaflet:
         patterns:
-          - "@types/leaflet"
-          - "leaflet"
-          - "leaflet-*"
-          - "react-leaflet"
-          - "react-leaflet-*"
+          - '@types/leaflet'
+          - 'leaflet'
+          - 'leaflet-*'
+          - 'react-leaflet'
+          - 'react-leaflet-*'
       react:
         patterns:
-          - "@emoji-mart/*"
-          - "@types/react"
-          - "dayjs"
-          - "emoji-mart"
-          - "jwt-decode"
-          - "react"
-          - "react-*"
+          - '@emoji-mart/*'
+          - '@types/react'
+          - 'dayjs'
+          - 'emoji-mart'
+          - 'jwt-decode'
+          - 'react'
+          - 'react-*'
       mui:
         patterns:
-          - "@emotion/*"
-          - "@fontsource/*"
-          - "@fortawesome/*"
-          - "@mui/*"
+          - '@emotion/*'
+          - '@fontsource/*'
+          - '@fortawesome/*'
+          - '@mui/*'
       development:
         patterns:
-          - "@testing-library/*"
-          - "@types/*"
-          - "@typescript-eslint/*"
-          - "@vitejs/plugin-react"
-          - "@vitest/coverage-v8"
-          - "cssnano"
-          - "eslint"
-          - "eslint-*"
-          - "jsdom"
-          - "jwt-encode"
-          - "postcss"
-          - "postcss-*"
-          - "prettier"
-          - "typescript"
-          - "vite"
-          - "vitest"
-          - "vitest-*"
+          - '@testing-library/*'
+          - '@types/*'
+          - '@typescript-eslint/*'
+          - '@vitejs/plugin-react'
+          - '@vitest/coverage-v8'
+          - 'cssnano'
+          - 'eslint'
+          - 'eslint-*'
+          - 'jsdom'
+          - 'jwt-encode'
+          - 'postcss'
+          - 'postcss-*'
+          - 'prettier'
+          - 'typescript'
+          - 'vite'
+          - 'vitest'
+          - 'vitest-*'
