@@ -1,7 +1,7 @@
 import { faCheck, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
-import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
+import { colors, IconButton, MenuItem, MenuList, Popover, TableCell, TableRow, Typography } from '@mui/material'
 import React, { FC, memo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { User } from '../../api/User'
@@ -66,27 +66,29 @@ const UserListItem: FC<Props> = ({ user }) => {
           open={Boolean(anchorEl)}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem
-            data-testid="usermenu-edit"
-            onClick={() => {
-              handleClose()
-              setFormModalOpen(true)
-            }}
-          >
-            <FontAwesomeIcon aria-hidden="true" icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
-          </MenuItem>
-          <MenuItem
-            data-testid="usermenu-delete"
-            onClick={() => {
-              handleClose()
-              setDeleteModalOpen(true)
-            }}
-            sx={{ color: colors.red[400] }}
-          >
-            <FontAwesomeIcon aria-hidden="true" icon={faTrash} />
-            <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
-          </MenuItem>
+          <MenuList>
+            <MenuItem
+              data-testid="usermenu-edit"
+              onClick={() => {
+                handleClose()
+                setFormModalOpen(true)
+              }}
+            >
+              <FontAwesomeIcon aria-hidden="true" icon={faPencil} />
+              <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
+            </MenuItem>
+            <MenuItem
+              data-testid="usermenu-delete"
+              onClick={() => {
+                handleClose()
+                setDeleteModalOpen(true)
+              }}
+              sx={{ color: colors.red[400] }}
+            >
+              <FontAwesomeIcon aria-hidden="true" icon={faTrash} />
+              <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
+            </MenuItem>
+          </MenuList>
         </Popover>
         <UserModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} user={user} />
         <UserModalDelete onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} user={user} />
