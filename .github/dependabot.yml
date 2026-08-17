@@ -34,7 +34,7 @@ updates:
       - dependency-name: 'typescript'
         versions: ['>=6.1.0']
     groups:
-      react-query:
+      tanstack:
         patterns:
           - '@tanstack/*'
       leaflet:
@@ -55,6 +55,7 @@ updates:
           - 'react-*'
           - 'i18next'
           - 'i18next-*'
+          - 'linkify*'
       mui:
         patterns:
           - '@emotion/*'
@@ -63,20 +64,23 @@ updates:
           - '@mui/*'
       development:
         patterns:
+          - '@eslint/*'
           - '@testing-library/*'
           - '@types/*'
           - '@typescript-eslint/*'
           - '@vitejs/plugin-react'
           - '@vitest/coverage-v8'
           - 'cssnano'
-          - 'eslint'
           - 'eslint-*'
+          - 'eslint'
+          - 'globals'
           - 'jsdom'
           - 'jwt-encode'
-          - 'postcss'
           - 'postcss-*'
+          - 'postcss'
           - 'prettier'
+          - 'typescript-eslint'
           - 'typescript'
           - 'vite'
-          - 'vitest'
           - 'vitest-*'
+          - 'vitest'
