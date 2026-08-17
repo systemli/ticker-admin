@@ -53,6 +53,8 @@ updates:
           - 'jwt-decode'
           - 'react'
           - 'react-*'
+          - 'i18next'
+          - 'i18next-*'
       mui:
         patterns:
           - '@emotion/*'
