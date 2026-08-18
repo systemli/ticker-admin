@@ -154,7 +154,10 @@ describe('ComponentName', () => {
 ## Environment Variables
 
 - Prefixed with `TICKER_` for Vite exposure (configured in `vite.config.ts`)
-- `TICKER_API_URL` — backend API base URL (see `.env` and `.env.test`)
+- `TICKER_API_URL` — backend API base URL, including the `/v1` suffix. Normally unset: the app then
+  uses a relative `/api`, which the dev-server proxy and the image's nginx both forward. Attachment
+  URLs come back relative as `/api/media/<file>`; resolve them with `mediaUrl()` from
+  `src/api/Api.ts` so they also work with an absolute value.
 
 ## Commits and Pull Requests
 
@@ -219,9 +222,9 @@ GitHub Actions workflows: `integration.yml` (test + build + SonarCloud + Dependa
 automerge), `quality.yaml` (Prettier + ESLint), `release-drafter.yml` (maintains the draft
 release), `release-monthly.yml` (publishes a patch draft monthly), `release.yml` (build
 artifact + Docker multi-arch push to `systemli/ticker-admin`).
-Docker: multi-stage build (node:24-alpine → nginx:stable-alpine). The image bakes
-`docker/nginx.conf`, which serves the SPA only; the `/api/` proxy lives in
-`docker/nginx.conf.template` and is mounted at runtime.
+Docker: multi-stage build (node:24-alpine → nginx:stable-alpine). The image ships
+`docker/nginx.conf.template` to `/etc/nginx/templates/`, which the base image renders at start with
+`TICKER_API_URL` substituted, so the container serves the SPA and proxies `/api/` itself.
 
 Deployment, configuration and troubleshooting are documented centrally at
 <https://systemli.github.io/ticker/>.
