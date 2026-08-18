@@ -1,5 +1,6 @@
 import { ImageList, ImageListItem } from '@mui/material'
 import { FC, useState } from 'react'
+import { mediaUrl } from '../../api/Api'
 import { Message } from '../../api/Message'
 import Lightbox from '../common/Lightbox'
 
@@ -38,11 +39,11 @@ const MessageAttachements: FC<Props> = ({ message }) => {
               }
             }}
           >
-            <img src={image.url} alt={image.url} />
+            <img src={mediaUrl(image.url)} alt={image.url} />
           </ImageListItem>
         ))}
       </ImageList>
-      <Lightbox images={attachments.map(image => image.url)} initialImage={currentImage} open={open} onClose={() => setOpen(false)} />
+      <Lightbox images={attachments.map(image => mediaUrl(image.url))} initialImage={currentImage} open={open} onClose={() => setOpen(false)} />
     </>
   )
 }

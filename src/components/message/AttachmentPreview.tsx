@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton, ImageListItem } from '@mui/material'
+import { mediaUrl } from '../../api/Api'
 import { Upload } from '../../api/Upload'
 import { faXmarkSquare } from '@fortawesome/free-solid-svg-icons'
 
@@ -21,7 +22,7 @@ const AttachmentPreview: FC<Props> = ({ onDelete, upload }) => {
     <ImageListItem sx={{ position: 'relative' }}>
       <img
         alt=""
-        src={upload.url}
+        src={mediaUrl(upload.url)}
         style={{
           objectFit: 'cover',
         }}
