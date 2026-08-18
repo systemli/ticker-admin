@@ -3,8 +3,9 @@
 ## Project Overview
 
 React 19 admin UI for the [systemli/ticker](https://github.com/systemli/ticker) backend.
-Built with TypeScript (strict), Vite 7, MUI 7, TanStack React Query 5, react-hook-form 7,
-react-router 7, and i18next. Node 22 (see `.nvmrc`), npm as package manager.
+Built with TypeScript (strict), Vite, MUI, TanStack React Query, react-hook-form,
+react-router, and i18next. See `package.json` for versions. Node 24 (see `.nvmrc`), npm as
+package manager (`package-lock.json`; do not use yarn).
 
 ## Commands
 
@@ -43,8 +44,8 @@ Configured in `.prettierrc.json`:
 - **Trailing commas (ES5)**
 - **No parens for single arrow params** (`x => x`, not `(x) => x`)
 
-ESLint (`.eslintrc.cjs`): `eslint:recommended` + `@typescript-eslint/recommended` +
-`react-hooks/recommended` + `react-refresh/only-export-components` (warn).
+ESLint (`eslint.config.js`, flat config): `eslint:recommended` + `typescript-eslint`
+recommended + `react-hooks/recommended` + `react-refresh/only-export-components` (warn).
 
 ## TypeScript Conventions
 
@@ -155,31 +156,72 @@ describe('ComponentName', () => {
 - Prefixed with `TICKER_` for Vite exposure (configured in `vite.config.ts`)
 - `TICKER_API_URL` — backend API base URL (see `.env` and `.env.test`)
 
-## Commit Conventions
+## Commits and Pull Requests
 
-- Commit messages **start with a Unicode Gitmoji** followed by a space and a short description
-- Reference: https://gitmoji.dev/
-- Examples:
-  - `✨ Add ticker filter component`
-  - `🐛 Fix message form validation`
-  - `♻️ Refactor API error handling`
-  - `🧪 Add tests for TickerList`
-  - `⬆️ Upgrade MUI to v7.3`
+### Commit messages
 
-## Pull Requests
+Start every commit with a [Gitmoji](https://gitmoji.dev/), followed by a space and a short
+description in the imperative mood. Use the **Unicode emoji**, not the `:shortcode:` form — both
+occur in the history, but new commits should use the emoji.
 
-PRs must be labeled for the release-drafter (`.github/release-drafter.yml`).
-The label determines the version bump and changelog category:
+| Emoji | Use for |
+| ----- | ------- |
+| ✨ | New feature |
+| 🐛 | Bug fix |
+| 🩹 | Minor, non-critical fix |
+| ♻️ | Refactor |
+| ✅ | Add, update or pass tests |
+| 🧪 | Add a deliberately failing test |
+| 📝 | Documentation |
+| ⬆️ | Upgrade dependencies |
+| ➖ | Remove a dependency |
+| 🔥 | Remove code or files |
+| 👷 | CI / build system |
+| 🔧 | Configuration files |
+| 🚨 | Fix linter or compiler warnings |
+| ⚡️ | Performance |
+| 🔒️ | Security fix |
+| 🗃️ | Database schema or storage changes |
+| 🔊 | Logging |
+| 💄 | UI and styling |
+| 🌐 | Internationalization and localization |
 
-| Label                   | Category    | Version bump |
-| ----------------------- | ----------- | ------------ |
-| `feature`               | Features    | major        |
-| `enhancement`           | Features    | minor        |
-| `fix`, `bugfix`, `bug`  | Bug Fixes   | patch        |
-| `chore`, `dependencies` | Maintenance | patch        |
+Examples:
+
+```
+✨ Add Bluesky reply restrictions
+🐛 Fix message ordering on the public timeline
+♻️ Extract origin handling into a helper
+✅ Cover the upload handler
+⬆️ Upgrade dependencies
+```
+
+### Pull requests
+
+PR titles follow the same Gitmoji convention as commits.
+
+Every PR must be labeled. `release-drafter` (`.github/release-drafter.yml`) uses the label to
+choose both the changelog category and the version bump:
+
+| Label                   | Category       | Version bump |
+| ----------------------- | -------------- | ------------ |
+| `feature`               | 🚀 Features    | major        |
+| `enhancement`           | 🚀 Features    | minor        |
+| `fix`, `bugfix`, `bug`  | 🐛 Bug Fixes   | patch        |
+| `chore`, `dependencies` | 🧹 Maintenance | patch        |
+
+An unlabeled PR falls back to a patch bump. A release draft is kept up to date on every push to
+`main`; drafts that are a pure patch bump are published automatically on the first of each month.
 
 ## CI/CD
 
-GitHub Actions workflows: `integration.yml` (test + build + SonarCloud), `quality.yaml`
-(Prettier + ESLint), `release.yaml` (build artifact + Docker multi-arch push).
-Docker: multi-stage build (node:22-alpine → nginx:stable-alpine).
+GitHub Actions workflows: `integration.yml` (test + build + SonarCloud + Dependabot
+automerge), `quality.yaml` (Prettier + ESLint), `release-drafter.yml` (maintains the draft
+release), `release-monthly.yml` (publishes a patch draft monthly), `release.yml` (build
+artifact + Docker multi-arch push to `systemli/ticker-admin`).
+Docker: multi-stage build (node:24-alpine → nginx:stable-alpine). The image bakes
+`docker/nginx.conf`, which serves the SPA only; the `/api/` proxy lives in
+`docker/nginx.conf.template` and is mounted at runtime.
+
+Deployment, configuration and troubleshooting are documented centrally at
+<https://systemli.github.io/ticker/>.
