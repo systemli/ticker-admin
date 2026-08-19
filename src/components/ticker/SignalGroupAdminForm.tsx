@@ -63,12 +63,14 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
               required
               helperText={errors.number ? errors.number?.message : null}
               error={errors.number ? true : false}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <FontAwesomeIcon icon={faPhone} />
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FontAwesomeIcon icon={faPhone} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
           </FormGroup>

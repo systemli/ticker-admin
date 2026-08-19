@@ -50,13 +50,15 @@ const UserListItem: FC<Props> = ({ user }) => {
           <MoreVert />
         </IconButton>
         <Popover
-          PaperProps={{
-            sx: {
-              p: 1,
-              width: 140,
-              '& .MuiMenuItem-root': {
-                px: 1,
-                borderRadius: 0.75,
+          slotProps={{
+            paper: {
+              sx: {
+                p: 1,
+                width: 140,
+                '& .MuiMenuItem-root': {
+                  px: 1,
+                  borderRadius: 0.75,
+                },
               },
             },
           }}

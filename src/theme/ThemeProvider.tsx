@@ -36,33 +36,50 @@ theme.components = {
         '&:hover': {
           boxShadow: 'none',
         },
+        variants: [
+          {
+            props: { variant: 'contained', color: 'inherit' },
+            style: {
+              color: palette.grey[800],
+              boxShadow: customShadows.z8,
+              '&:hover': {
+                backgroundColor: palette.grey[400],
+              },
+            },
+          },
+          {
+            props: { variant: 'contained', color: 'primary' },
+            style: {
+              boxShadow: customShadows.primary,
+            },
+          },
+          {
+            props: { variant: 'contained', color: 'secondary' },
+            style: {
+              boxShadow: customShadows.secondary,
+            },
+          },
+          {
+            props: { variant: 'outlined', color: 'inherit' },
+            style: {
+              border: `1px solid ${alpha(palette.grey[500], 0.32)}`,
+              '&:hover': {
+                backgroundColor: palette.action.hover,
+              },
+            },
+          },
+          {
+            props: { variant: 'text', color: 'inherit' },
+            style: {
+              '&:hover': {
+                backgroundColor: palette.action.hover,
+              },
+            },
+          },
+        ],
       },
       sizeLarge: {
         height: 48,
-      },
-      containedInherit: {
-        color: palette.grey[800],
-        boxShadow: customShadows.z8,
-        '&:hover': {
-          backgroundColor: palette.grey[400],
-        },
-      },
-      containedPrimary: {
-        boxShadow: customShadows.primary,
-      },
-      containedSecondary: {
-        boxShadow: customShadows.secondary,
-      },
-      outlinedInherit: {
-        border: `1px solid ${alpha(palette.grey[500], 0.32)}`,
-        '&:hover': {
-          backgroundColor: palette.action.hover,
-        },
-      },
-      textInherit: {
-        '&:hover': {
-          backgroundColor: palette.action.hover,
-        },
       },
     },
   },
@@ -78,8 +95,10 @@ theme.components = {
   },
   MuiCardHeader: {
     defaultProps: {
-      titleTypographyProps: { variant: 'h6' },
-      subheaderTypographyProps: { variant: 'body2' },
+      slotProps: {
+        title: { variant: 'h6' },
+        subheader: { variant: 'body2' },
+      },
     },
     styleOverrides: {
       root: {
@@ -193,9 +212,6 @@ theme.components = {
   },
   MuiTypography: {
     styleOverrides: {
-      paragraph: {
-        marginBottom: theme.spacing(1),
-      },
       gutterBottom: {
         marginBottom: theme.spacing(1),
       },
