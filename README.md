@@ -35,14 +35,13 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Point it at your API with a `.env` file. The URL must include the `/v1` suffix:
+The dev server proxies `/api` to `http://localhost:8080/v1`, so run the API alongside it and nothing
+needs configuring.
 
-```shell
-TICKER_API_URL=http://localhost:8080/v1
-```
-
-Without this the application falls back to a relative `/api`, which only works when something is
-proxying that path — as the Docker image expects. Restart the dev server after changing `.env`.
+> **Delete a leftover `.env`.** `TICKER_API_URL` overrides the proxy with an absolute address.
+> Requests still work, but attachment images do not: their URLs are relative and would resolve
+> against the dev server instead of the API. The file is gitignored, so an old one may still be in
+> your checkout.
 
 ### Commands
 

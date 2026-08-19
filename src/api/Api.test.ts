@@ -1,4 +1,15 @@
-import { apiClient, apiHeaders, ApiResponse, handleApiCall } from './Api'
+import { apiClient, apiHeaders, ApiResponse, handleApiCall, mediaUrl } from './Api'
+
+describe('mediaUrl', () => {
+  it('passes through relative attachment URLs', () => {
+    // ApiUrl is the relative default in tests.
+    expect(mediaUrl('/api/media/uuid.jpg')).toEqual('/api/media/uuid.jpg')
+  })
+
+  it('leaves anything else alone', () => {
+    expect(mediaUrl('https://cdn.example.org/media/uuid.jpg')).toEqual('https://cdn.example.org/media/uuid.jpg')
+  })
+})
 
 describe('apiClient', () => {
   beforeEach(() => {
