@@ -34,10 +34,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
   const details = telegram.connected ? (
     <Stack spacing={1}>
       <div>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="textSecondary">
           {t('integrations.telegram.channel')}
         </Typography>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <Link href={channelUrl} rel="noreferrer" target="_blank" variant="body2">
             {telegram.channelName}
           </Link>
@@ -45,10 +45,10 @@ const TelegramCard: FC<Props> = ({ ticker }) => {
         </Stack>
       </div>
       <div>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="textSecondary">
           {t('integrations.telegram.botLabel')}
         </Typography>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
+        <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
           <Typography variant="body2">{telegram.botUsername}</Typography>
           <Tooltip title={t('integrations.telegram.botHint')}>
             <FontAwesomeIcon icon={faCircleInfo} size="sm" style={{ color: 'gray', cursor: 'help' }} />

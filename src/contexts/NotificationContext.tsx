@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useMemo, useState } from 'react'
+import { ReactElement, ReactNode, createContext, useMemo, useState } from 'react'
 
 type Severity = 'success' | 'error' | 'warning' | 'info'
 
@@ -16,7 +16,7 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
 
-export function NotificationProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {
+export function NotificationProvider({ children }: Readonly<{ children: ReactNode }>): ReactElement {
   const [notification, setNotification] = useState<Notification | undefined>(undefined)
   const [isOpen, setIsOpen] = useState<boolean>(false)
 

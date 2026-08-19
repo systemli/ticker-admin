@@ -1,7 +1,7 @@
 import { faCheck, faHandPointer, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MoreVert } from '@mui/icons-material'
-import { colors, IconButton, MenuItem, Popover, TableCell, TableRow, Typography } from '@mui/material'
+import { colors, IconButton, MenuItem, MenuList, Popover, TableCell, TableRow, Typography } from '@mui/material'
 import React, { FC, memo, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Ticker } from '../../api/Ticker'
@@ -51,13 +51,15 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
           <MoreVert />
         </IconButton>
         <Popover
-          PaperProps={{
-            sx: {
-              p: 1,
-              width: 140,
-              '& .MuiMenuItem-root': {
-                px: 1,
-                borderRadius: 0.75,
+          slotProps={{
+            paper: {
+              sx: {
+                p: 1,
+                width: 140,
+                '& .MuiMenuItem-root': {
+                  px: 1,
+                  borderRadius: 0.75,
+                },
               },
             },
           }}
@@ -67,38 +69,40 @@ const TickerListItem: FC<Props> = ({ ticker }: Props) => {
           open={Boolean(anchorEl)}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem
-            onClick={() => {
-              handleClose()
-              handleUse()
-            }}
-          >
-            <FontAwesomeIcon aria-hidden="true" icon={faHandPointer} />
-            <Typography sx={{ ml: 2 }}>{t('action.use')}</Typography>
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleClose()
-              setFormModalOpen(true)
-            }}
-          >
-            <FontAwesomeIcon aria-hidden="true" icon={faPencil} />
-            <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
-          </MenuItem>
-          {user?.roles.includes('admin') ? (
-            <>
-              <MenuItem
-                onClick={() => {
-                  handleClose()
-                  setDeleteModalOpen(true)
-                }}
-                sx={{ color: colors.red[400] }}
-              >
-                <FontAwesomeIcon aria-hidden="true" icon={faTrash} />
-                <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
-              </MenuItem>
-            </>
-          ) : null}
+          <MenuList>
+            <MenuItem
+              onClick={() => {
+                handleClose()
+                handleUse()
+              }}
+            >
+              <FontAwesomeIcon aria-hidden="true" icon={faHandPointer} />
+              <Typography sx={{ ml: 2 }}>{t('action.use')}</Typography>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose()
+                setFormModalOpen(true)
+              }}
+            >
+              <FontAwesomeIcon aria-hidden="true" icon={faPencil} />
+              <Typography sx={{ ml: 2 }}>{t('action.edit')}</Typography>
+            </MenuItem>
+            {user?.roles.includes('admin') ? (
+              <>
+                <MenuItem
+                  onClick={() => {
+                    handleClose()
+                    setDeleteModalOpen(true)
+                  }}
+                  sx={{ color: colors.red[400] }}
+                >
+                  <FontAwesomeIcon aria-hidden="true" icon={faTrash} />
+                  <Typography sx={{ ml: 2 }}>{t('action.delete')}</Typography>
+                </MenuItem>
+              </>
+            ) : null}
+          </MenuList>
         </Popover>
         <TickerModalForm onClose={() => setFormModalOpen(false)} open={formModalOpen} ticker={ticker} />
         <TickerModalDelete onClose={() => setDeleteModalOpen(false)} open={deleteModalOpen} ticker={ticker} />

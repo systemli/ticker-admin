@@ -133,8 +133,8 @@ const MessageForm: FC<Props> = ({ ticker }) => {
             disabled={!ticker.active}
           />
         </FormGroup>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
-          <Box display="flex">
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex' }}>
             <Button disabled={disabled} startIcon={<FontAwesomeIcon icon={faPaperPlane} />} sx={{ mr: 1 }} type="submit" variant="outlined">
               {t('action.send')}
             </Button>

@@ -36,7 +36,7 @@ function SettingsCard<T>({ title, description, editTestId, queryKey, errorMessag
   return (
     <Card>
       <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography component="h3" variant="h5">
             {t(title)}
           </Typography>
@@ -44,7 +44,7 @@ function SettingsCard<T>({ title, description, editTestId, queryKey, errorMessag
             {t('action.edit')}
           </Button>
         </Stack>
-        <Typography color="GrayText" component="span" variant="body2">
+        <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
           {t(description)}
         </Typography>
       </CardContent>

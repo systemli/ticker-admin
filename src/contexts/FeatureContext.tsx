@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import { createContext, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import { ApiResponse } from '../api/Api'
 import { Features, fetchFeaturesApi } from '../api/Features'
 import useAuth from './useAuth'
@@ -23,7 +23,7 @@ const initialFeatures: Features = {
   signalGroupEnabled: false,
 }
 
-export function FeatureProvider({ children }: Readonly<{ children: ReactNode }>): JSX.Element {
+export function FeatureProvider({ children }: Readonly<{ children: ReactNode }>): ReactElement {
   const { token } = useAuth()
   const [state, setState] = useState<FeatureState>({
     features: initialFeatures,

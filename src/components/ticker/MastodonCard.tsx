@@ -33,10 +33,10 @@ const MastodonCard: FC<Props> = ({ ticker }) => {
   const details = mastodon.connected ? (
     <Stack spacing={1}>
       <div>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="textSecondary">
           {t('integrations.profile')}
         </Typography>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <Link href={profileUrl} rel="noreferrer" target="_blank" variant="body2">
             {profileHandle}
           </Link>

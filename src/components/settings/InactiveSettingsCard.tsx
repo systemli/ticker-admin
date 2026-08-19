@@ -37,7 +37,7 @@ const InactiveSettingsCard: FC = () => {
   return (
     <Card>
       <CardContent>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography component="h3" variant="h5">
             {t('title.inactive')}
           </Typography>
@@ -45,26 +45,26 @@ const InactiveSettingsCard: FC = () => {
             {t('action.edit')}
           </Button>
         </Stack>
-        <Typography color="GrayText" component="span" variant="body2">
+        <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
           {t('status.description')}
         </Typography>
       </CardContent>
       <Divider variant="middle" />
       <CardContent>
         <Box sx={{ mb: 1 }}>
-          <Typography color="GrayText" component="span" variant="body2">
+          <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
             {t('common.headline')}
           </Typography>
           <Typography>{setting.value.headline}</Typography>
         </Box>
         <Box sx={{ mb: 1 }}>
-          <Typography color="GrayText" component="span" variant="body2">
+          <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
             {t('common.subheadline')}
           </Typography>
           <Typography>{setting.value.subHeadline}</Typography>
         </Box>
         <Box sx={{ mb: 1 }}>
-          <Typography color="GrayText" component="span" variant="body2">
+          <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
             {t('common.description')}
           </Typography>
           <Typography>{setting.value.description}</Typography>
@@ -72,7 +72,7 @@ const InactiveSettingsCard: FC = () => {
         <Grid container>
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
-              <Typography color="GrayText" component="span" variant="body2">
+              <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
                 {t('common.author')}
               </Typography>
               <Typography>{setting.value.author}</Typography>
@@ -80,7 +80,7 @@ const InactiveSettingsCard: FC = () => {
           </Grid>
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
-              <Typography color="GrayText" component="span" variant="body2">
+              <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
                 {t('integrations.homepage')}
               </Typography>
               <Typography>{setting.value.homepage}</Typography>
@@ -88,7 +88,7 @@ const InactiveSettingsCard: FC = () => {
           </Grid>
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
-              <Typography color="GrayText" component="span" variant="body2">
+              <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
                 {t('user.email')}
               </Typography>
               <Typography>{setting.value.email}</Typography>
@@ -96,7 +96,7 @@ const InactiveSettingsCard: FC = () => {
           </Grid>
           <Grid size={{ lg: 6, xs: 12 }}>
             <Box sx={{ mb: 1 }}>
-              <Typography color="GrayText" component="span" variant="body2">
+              <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
                 {t('social.twitter')}
               </Typography>
               <Typography>{setting.value.twitter}</Typography>

@@ -24,9 +24,9 @@ const TickerCard: FC<Props> = ({ ticker }) => {
   return (
     <Card>
       <CardContent>
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <FontAwesomeIcon aria-hidden="true" icon={faCircleInfo} />
-          <Typography component="h5" variant="h5" flexGrow={1}>
+          <Typography component="h5" variant="h5" sx={{ flexGrow: 1 }}>
             {t('common.info')}
           </Typography>
         </Stack>
@@ -36,7 +36,7 @@ const TickerCard: FC<Props> = ({ ticker }) => {
         </Stack>
         <Chip icon={icon} label={status} variant="outlined" sx={{ mt: 2 }} size="small" color={color} />
         <Divider sx={{ mt: 2 }} />
-        <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 2 }}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 2 }}>
           <Campaign />
           <Typography component="h6" variant="h6">
             {t('title.integrations')}
@@ -57,9 +57,9 @@ const Integrations = ({ ticker }: { ticker: Ticker }) => {
         <TickerProperty
           label="Websites"
           value={ticker.websites.map(website => (
-            <Stack key={website.origin} direction="row" alignItems="center" spacing={0.5}>
+            <Stack key={website.origin} direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
               <FontAwesomeIcon aria-hidden="true" icon={faGlobeEurope} color={grey[800]} />
-              <Typography variant="body2" flexGrow={1}>
+              <Typography variant="body2" sx={{ flexGrow: 1 }}>
                 <Link href={website.origin} target="_blank" rel="noopener noreferrer">
                   {website.origin.replace(/(^\w+:|^)\/\//, '')}
                 </Link>
@@ -122,13 +122,13 @@ const IntegrationChip = ({ active, title, link }: { active: boolean; title: stri
   const { t } = useTranslation()
 
   return (
-    <Stack direction="row" alignItems="center" spacing={0.5}>
+    <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
       <Tooltip title={t(active ? 'status.active' : 'status.inactive')} arrow placement="top">
         <span>
           <FontAwesomeIcon aria-hidden="true" icon={active ? faToggleOn : faToggleOff} color={grey[800]} />
         </span>
       </Tooltip>
-      <Typography variant="body2" flexGrow={1}>
+      <Typography variant="body2" sx={{ flexGrow: 1 }}>
         <Link href={link} target="_blank" rel="noopener noreferrer">
           {title}
         </Link>

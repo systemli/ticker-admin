@@ -28,7 +28,7 @@ interface Props {
 const LocationSearch: FC<Props> = ({ callback }) => {
   const { t } = useTranslation()
   const [options, setOptions] = useState<SearchResult[]>([])
-  const previousController = useRef<AbortController>()
+  const previousController = useRef<AbortController | null>(null)
 
   const handleInputChange = (_: React.SyntheticEvent, value: string) => {
     if (previousController.current) {

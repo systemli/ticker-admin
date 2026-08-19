@@ -1,5 +1,5 @@
 import { Container, Typography } from '@mui/material'
-import { FC } from 'react'
+import { FC, ReactElement } from 'react'
 import { Navigate, RouteProps } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { Roles } from '../contexts/AuthContext'
@@ -7,7 +7,7 @@ import useAuth from '../contexts/useAuth'
 
 type Props = RouteProps & {
   role: Roles
-  outlet: JSX.Element
+  outlet: ReactElement
 }
 
 const ProtectedRoute: FC<Props> = ({ role, outlet }) => {

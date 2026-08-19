@@ -47,10 +47,10 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
   const details = bluesky.connected ? (
     <Stack spacing={1}>
       <div>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="textSecondary">
           {t('integrations.profile')}
         </Typography>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <Link href={profileUrl} rel="noreferrer" target="_blank" variant="body2">
             {bluesky.handle}
           </Link>
@@ -58,7 +58,7 @@ const BlueskyCard: FC<Props> = ({ ticker }) => {
         </Stack>
       </div>
       <div>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="textSecondary">
           {t('integrations.bluesky.replyRestriction')}
         </Typography>
         <Typography variant="body2">{replyRestrictionLabel(bluesky.replyRestriction)}</Typography>

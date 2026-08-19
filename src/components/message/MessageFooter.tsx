@@ -23,12 +23,12 @@ const formatDate = (dateString: string): string => {
 
 const MessageFooter: FC<Props> = ({ message }) => {
   return (
-    <Stack alignItems="center" direction="row" justifyContent="space-between" sx={{ mt: 2, pr: 2.5 }}>
-      <Stack alignItems="center" direction="row" spacing={0.5}>
+    <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mt: 2, pr: 2.5 }}>
+      <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
         <FontAwesomeIcon aria-hidden="true" icon={faClock} size="2xs" color={colors.grey[600]} />
         <Typography variant="caption">{formatDate(message.createdAt)}</Typography>
       </Stack>
-      <Stack alignItems="center" direction="row" spacing="0.5">
+      <Stack direction="row" spacing="0.5" sx={{ alignItems: 'center' }}>
         <Icon icon={faTelegram} url={message.telegramUrl} label="Telegram" />
         <Icon icon={faMastodon} url={message.mastodonUrl} label="Mastodon" />
         <Icon icon={faBluesky} url={message.blueskyUrl} label="Bluesky" />

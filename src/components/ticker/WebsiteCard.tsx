@@ -27,7 +27,7 @@ const WebsiteCard: FC<Props> = ({ ticker }) => {
 
   const details = isConfigured ? (
     <Stack spacing={0.5}>
-      <Typography variant="caption" color="text.secondary">
+      <Typography variant="caption" color="textSecondary">
         {t('integrations.website.allowed')}
       </Typography>
       {websites.map(website => (
