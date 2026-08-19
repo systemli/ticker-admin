@@ -17,7 +17,7 @@ const TickerListView: FC = () => {
     <Layout>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>
-          <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
+          <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
             <Typography component="h2" gutterBottom variant="h3">
               {t('title.tickers')}
             </Typography>

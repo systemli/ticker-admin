@@ -83,13 +83,13 @@ const IntegrationCard: FC<IntegrationCardProps> = ({
     <>
       <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <CardContent>
-          <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={1}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography component="h5" variant="h5">
               <FontAwesomeIcon aria-hidden="true" icon={icon} /> {title}
             </Typography>
             <Chip label={t(`integrations.integrationStatus.${status}`)} color={color} size="small" variant="outlined" />
           </Stack>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
             {description}
           </Typography>
         </CardContent>

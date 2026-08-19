@@ -16,7 +16,7 @@ const TickerListFilter: FC<Props> = ({ params, onTitleChange, onOriginChange, on
   const { t } = useTranslation()
 
   return (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{ alignItems: 'center' }}>
       <Box sx={{ px: 1 }}>
         <FontAwesomeIcon aria-hidden="true" icon={faFilter} />
       </Box>

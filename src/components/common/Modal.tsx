@@ -36,7 +36,7 @@ const Modal: FC<Props> = ({
   return (
     <Dialog fullWidth={fullWidth} maxWidth={maxWidth} open={open}>
       <DialogTitle>
-        <Stack alignItems="center" direction="row" justifyContent="space-between">
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           {title}
           <IconButton aria-label={t('action.close')} onClick={onClose}>
             <Close />

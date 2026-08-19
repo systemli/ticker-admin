@@ -23,7 +23,7 @@ const ErrorView: FC<Props> = ({ children, queryKey }) => {
           {t('error.ohNo')}
         </Typography>
         <Divider sx={{ mt: 1, mb: 2 }} />
-        <Stack alignItems="center" direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
           <Box>
             <Button color="secondary" onClick={handleClick} variant="contained">
               {t('action.reload')}
@@ -33,7 +33,7 @@ const ErrorView: FC<Props> = ({ children, queryKey }) => {
             <Typography component="div" variant="body1">
               {children}
             </Typography>
-            <Typography color={colors.grey[700]} component="p" variant="body2">
+            <Typography component="p" variant="body2" sx={{ color: colors.grey[700] }}>
               {t('error.contactAdmin')}
             </Typography>
           </Box>

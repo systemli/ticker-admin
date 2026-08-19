@@ -24,13 +24,13 @@ const TelegramSettingsCard: FC<{ onSaved?: () => void }> = ({ onSaved }) => {
       {({ data, formOpen, onFormClose }) => (
         <>
           <Box sx={{ mb: 1 }}>
-            <Typography color="GrayText" component="span" variant="body2">
+            <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
               {t('settings.telegram.botUsername')}
             </Typography>
             <Typography>{data.setting.value.botUsername || '—'}</Typography>
           </Box>
           <Box sx={{ mb: 1 }}>
-            <Typography color="GrayText" component="span" variant="body2">
+            <Typography component="span" variant="body2" sx={{ color: 'GrayText' }}>
               {t('settings.telegram.token')}
             </Typography>
             <Typography>{data.setting.value.token || '—'}</Typography>

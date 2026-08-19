@@ -20,7 +20,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
       <TableBody>
         <TableRow>
           <TableCell colSpan={5}>
-            <Stack alignItems="center" justifyContent="center">
+            <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
               <CircularProgress size="2rem" />
               <Typography component="span" sx={{ pt: 1 }}>
                 {t('common.loading')}
@@ -49,7 +49,7 @@ const TickerListItems: FC<Props> = ({ token, params }) => {
       <TableBody>
         <TableRow>
           <TableCell colSpan={5}>
-            <Stack alignItems="center" justifyContent="center">
+            <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
               <Typography variant="body1">{t('tickers.error0Found')}</Typography>
             </Stack>
           </TableCell>

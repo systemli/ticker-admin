@@ -25,7 +25,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
   const [formModalOpen, setFormModalOpen] = useState<boolean>(false)
 
   const headline = () => (
-    <Stack alignItems="center" direction="row" justifyContent="space-between" mb={2}>
+    <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
       <Typography component="h2" gutterBottom variant="h3">
         {t('title.ticker')}
       </Typography>
@@ -67,7 +67,7 @@ const Ticker: FC<Props> = ({ ticker, isLoading }) => {
           <Alert severity="warning">{t('tickers.disabled')}</Alert>
         </Grid>
       ) : null}
-      <Grid display={{ xs: 'none', md: 'block' }} size={{ md: 4, xs: 12 }}>
+      <Grid size={{ md: 4, xs: 12 }} sx={{ display: { xs: 'none', md: 'block' } }}>
         <TickerCard ticker={ticker} />
         {user?.roles.includes('admin') ? (
           <>
