@@ -20,7 +20,7 @@ const mockedLocalStorage = {
   length: 0,
   key: vi.fn(),
 }
-global.localStorage = mockedLocalStorage
+globalThis.localStorage = mockedLocalStorage
 
 beforeEach(() => {
   vi.clearAllMocks()
