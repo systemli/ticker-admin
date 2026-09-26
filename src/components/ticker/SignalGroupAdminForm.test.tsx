@@ -37,9 +37,9 @@ describe('SignalGroupAdminForm', () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Only do this if extra members with write access are needed.')).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Phone number or username' })).toBeInTheDocument()
 
-    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number or username' }), '+49123456789')
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
 
@@ -59,25 +59,48 @@ describe('SignalGroupAdminForm', () => {
     })
   })
 
+  it('should submit a username', async () => {
+    renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
+
+    expect(screen.getByText('Signal usernames include their number, e.g. alice.42')).toBeInTheDocument()
+
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number or username' }), 'alice.42')
+
+    fetchMock.mockResponseOnce(JSON.stringify({ status: 'success' }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/tickers/1/signal_group/admin', {
+      body: '{"number":"alice.42"}',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'put',
+    })
+  })
+
   it('should render the error message', async () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
     expect(screen.getByText('Only do this if extra members with write access are needed.')).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'Phone number' })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Phone number or username' })).toBeInTheDocument()
 
-    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number or username' }), '+49123456789')
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }), { status: 400 })
 
     await userEvent.click(screen.getByRole('button', { name: 'Submit' }))
 
-    expect(screen.getByText('Failed to add number to Signal group')).toBeInTheDocument()
+    expect(screen.getByText('Failed to add admin to Signal group')).toBeInTheDocument()
   })
 
   it('should fail when request fails', async () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
-    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number or username' }), '+49123456789')
 
     fetchMock.mockResponseOnce(JSON.stringify({ status: 'error' }))
 
@@ -86,10 +109,10 @@ describe('SignalGroupAdminForm', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
-  it('should fail when request fails', async () => {
+  it('should fail when fetch is rejected', async () => {
     renderWithProviders(component({ ticker: ticker({ active: false, connected: false }) }))
 
-    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number' }), '+49123456789')
+    await userEvent.type(screen.getByRole('textbox', { name: 'Phone number or username' }), '+49123456789')
 
     fetchMock.mockReject()
 
