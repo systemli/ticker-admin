@@ -1,4 +1,4 @@
-import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Alert, FormGroup, Grid, InputAdornment, TextField } from '@mui/material'
 import { FC } from 'react'
@@ -32,12 +32,12 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
     try {
       await handleApiCall(putTickerSignalGroupAdminApi(token, data, ticker), {
         onSuccess: () => {
-          createNotification({ content: t('integrations.signal.numberAdded'), severity: 'success' })
+          createNotification({ content: t('integrations.signal.adminAdded'), severity: 'success' })
           callback()
         },
         onError: () => {
-          createNotification({ content: t('integrations.signal.errorAddNumber'), severity: 'error' })
-          setError('number', { message: t('integrations.signal.errorAddNumber') })
+          createNotification({ content: t('integrations.signal.errorAddAdmin'), severity: 'error' })
+          setError('number', { message: t('integrations.signal.errorAddAdmin') })
         },
         onFailure: error => {
           createNotification({ content: error, severity: 'error' })
@@ -58,16 +58,16 @@ const SignalGroupAdminForm: FC<Props> = ({ callback, ticker, setSubmitting }) =>
           <FormGroup>
             <TextField
               {...register('number')}
-              label={t('common.phone')}
-              placeholder="+49123456789"
+              label={t('integrations.signal.adminIdentifier')}
+              placeholder="+49123456789 / alice.42"
               required
-              helperText={errors.number ? errors.number?.message : null}
+              helperText={errors.number ? errors.number?.message : t('integrations.signal.adminIdentifierHelp')}
               error={errors.number ? true : false}
               slotProps={{
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <FontAwesomeIcon icon={faPhone} />
+                      <FontAwesomeIcon icon={faUser} />
                     </InputAdornment>
                   ),
                 },
