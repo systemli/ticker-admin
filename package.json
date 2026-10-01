@@ -80,7 +80,7 @@
     }
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.63.1"
+    "@rollup/rollup-linux-x64-gnu": "4.63.5"
   },
   "packageManager": "npm@10.9.2"
 }
