@@ -2,6 +2,15 @@ import { render, screen } from '@testing-library/react'
 import { NotificationProvider } from '../contexts/NotificationContext'
 import Notification from './Notification'
 
+vi.mock('../contexts/useNotification', () => ({
+  __esModule: true,
+  default: () => ({
+    isOpen: true,
+    notification: { content: 'Hello, World!' },
+    closeNotification: vi.fn(),
+  }),
+}))
+
 describe('Notification', () => {
   function setup() {
     return render(
@@ -20,15 +29,6 @@ describe('Notification', () => {
   })
 
   it('should render a notification', () => {
-    vi.mock('../contexts/useNotification', () => ({
-      __esModule: true,
-      default: () => ({
-        isOpen: true,
-        notification: { content: 'Hello, World!' },
-        closeNotification: vi.fn(),
-      }),
-    }))
-
     setup()
 
     expect(screen.getByText('Hello, World!')).toBeInTheDocument()

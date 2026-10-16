@@ -3,6 +3,13 @@ import { renderWithProviders, userToken } from '../../tests/utils'
 import TickerList from './TickerList'
 import TickerListItems from './TickerListItems'
 
+vi.mock('./TickerListItems', () => {
+  return {
+    __esModule: true,
+    default: vi.fn(() => <TableBody></TableBody>),
+  }
+})
+
 describe('TickerList', function () {
   beforeEach(() => {
     fetchMock.resetMocks()
@@ -18,13 +25,6 @@ describe('TickerList', function () {
   }
 
   it('should render', async function () {
-    vi.mock('./TickerListItems', () => {
-      return {
-        __esModule: true,
-        default: vi.fn(() => <TableBody></TableBody>),
-      }
-    })
-
     renderWithProviders(component())
 
     expect(TickerListItems).toHaveBeenCalledTimes(2)
