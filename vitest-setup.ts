@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 import { vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 import { initReactI18next } from 'react-i18next'
@@ -28,11 +28,10 @@ const mockLocalStorage = {
   key: vi.fn(),
 }
 
-// Assign to both global and window for broader compatibility
-global.localStorage = mockLocalStorage
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
   writable: true,
+  configurable: true,
 })
 
 // Reset localStorage mocks before each test
