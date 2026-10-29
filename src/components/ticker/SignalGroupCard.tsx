@@ -72,18 +72,22 @@ const SignalGroupCard: FC<Props> = ({ ticker }) => {
 
   const handleDelete = () => {
     setSubmittingDelete(true)
-    deleteTickerSignalGroupApi(token, ticker)
-      .finally(() => {
+
+    void handleApiCall(deleteTickerSignalGroupApi(token, ticker), {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['ticker', ticker.id] })
         createNotification({ content: t('integrations.signal.deleted'), severity: 'success' })
-      })
-      .catch(() => {
-        createNotification({ content: 'integrations.signal.errorDelete', severity: 'error' })
-      })
-      .finally(() => {
-        setDialogDeleteOpen(false)
-        setSubmittingDelete(false)
-      })
+      },
+      onError: () => {
+        createNotification({ content: t('integrations.signal.errorDelete'), severity: 'error' })
+      },
+      onFailure: error => {
+        createNotification({ content: error, severity: 'error' })
+      },
+    }).finally(() => {
+      setDialogDeleteOpen(false)
+      setSubmittingDelete(false)
+    })
   }
 
   const status: IntegrationStatus = signalGroup.connected ? (signalGroup.active ? 'active' : 'inactive') : 'notConfigured'
